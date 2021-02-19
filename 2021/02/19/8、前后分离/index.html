@@ -1,0 +1,1044 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"github.com","root":"/","images":"/images","scheme":"Muse","version":"8.2.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+<meta name="description" content="1、AJAXAsync JavaScript And XM 用 JS**发请求和收响应，就是 AJAX 的全部内容**  背景   AJAX 是浏览器上的功能     浏览器可以发请求，收响应   浏览器在 window 上加了一个 XMLHttpRequest 函数 用这个构造函数（类）可以构造出一个对象 JS 通过它实现发请求，收响应    服务器     使用 server.js 作为服务器">
+<meta property="og:type" content="article">
+<meta property="og:title" content="八、前后分离">
+<meta property="og:url" content="https://github.com/Straight-GZ/2021/02/19/8%E3%80%81%E5%89%8D%E5%90%8E%E5%88%86%E7%A6%BB/index.html">
+<meta property="og:site_name" content="Straight">
+<meta property="og:description" content="1、AJAXAsync JavaScript And XM 用 JS**发请求和收响应，就是 AJAX 的全部内容**  背景   AJAX 是浏览器上的功能     浏览器可以发请求，收响应   浏览器在 window 上加了一个 XMLHttpRequest 函数 用这个构造函数（类）可以构造出一个对象 JS 通过它实现发请求，收响应    服务器     使用 server.js 作为服务器">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/png/2639360/1604759238617-6d3e531d-453f-4de9-b31f-51e1153a41bb.png">
+<meta property="article:published_time" content="2021-02-19T03:35:19.236Z">
+<meta property="article:modified_time" content="2021-02-19T03:35:19.236Z">
+<meta property="article:author" content="GENGZHI">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2020/png/2639360/1604759238617-6d3e531d-453f-4de9-b31f-51e1153a41bb.png">
+
+
+<link rel="canonical" href="https://github.com/Straight-GZ/2021/02/19/8%E3%80%81%E5%89%8D%E5%90%8E%E5%88%86%E7%A6%BB/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>八、前后分离 | Straight</title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Straight" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Straight</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#1%E3%80%81AJAX"><span class="nav-number">1.</span> <span class="nav-text">1、AJAX</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2%E3%80%81%E5%BC%82%E6%AD%A5%E4%B8%8E-Promise"><span class="nav-number">2.</span> <span class="nav-text">2、异步与 Promise</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E5%BC%82%E6%AD%A5"><span class="nav-number">2.1.</span> <span class="nav-text">一、异步</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%E3%80%81%E4%BB%80%E4%B9%88%E6%98%AF%E5%BC%82%E6%AD%A5%EF%BC%9F%E4%BB%80%E4%B9%88%E6%98%AF%E5%90%8C%E6%AD%A5%EF%BC%9F"><span class="nav-number">2.1.1.</span> <span class="nav-text">1、什么是异步？什么是同步？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%E3%80%81%E5%BC%82%E6%AD%A5%E4%B8%BE%E4%BE%8B"><span class="nav-number">2.1.2.</span> <span class="nav-text">2、异步举例</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4%E3%80%81%E5%BC%82%E6%AD%A5%E5%92%8C%E5%9B%9E%E8%B0%83%E7%9A%84%E5%85%B3%E7%B3%BB"><span class="nav-number">2.1.3.</span> <span class="nav-text">4、异步和回调的关系</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#5%E3%80%81%E6%80%BB%E7%BB%93"><span class="nav-number">2.1.4.</span> <span class="nav-text">5、总结</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E3%80%81Promise"><span class="nav-number">2.2.</span> <span class="nav-text">二、Promise</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%E3%80%81%E5%A6%82%E6%9E%9C%E5%BC%82%E6%AD%A5%E4%BB%BB%E5%8A%A1%E6%9C%89%E4%B8%A4%E4%B8%AA%E7%BB%93%E6%9E%9C%EF%BC%8C%E6%88%90%E5%8A%9F%E6%88%96%E8%80%85%E5%A4%B1%E8%B4%A5%EF%BC%8C%E6%80%8E%E4%B9%88%E5%8A%9E%EF%BC%9F"><span class="nav-number">2.2.1.</span> <span class="nav-text">1、如果异步任务有两个结果，成功或者失败，怎么办？</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%E3%80%81%E4%BB%A5-AJAX-%E4%B8%BA%E4%BE%8B%EF%BC%8C%E8%A7%A3%E9%87%8A-Promise-%E7%9A%84%E7%94%A8%E6%B3%95"><span class="nav-number">2.2.2.</span> <span class="nav-text">2、以 AJAX 为例，解释 Promise 的用法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3%E3%80%81%E6%80%BB%E7%BB%93%EF%BC%9A"><span class="nav-number">2.2.3.</span> <span class="nav-text">3、总结：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4%E3%80%81%E7%BC%BA%E7%82%B9"><span class="nav-number">2.2.4.</span> <span class="nav-text">4、缺点</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E3%80%81%E8%B7%A8%E5%9F%9F"><span class="nav-number">2.3.</span> <span class="nav-text">三、跨域</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%E3%80%81%E5%90%8C%E6%BA%90%E7%AD%96%E7%95%A5"><span class="nav-number">2.3.1.</span> <span class="nav-text">1、同源策略</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%E3%80%81%E8%B7%A8%E5%9F%9F"><span class="nav-number">2.3.2.</span> <span class="nav-text">2、跨域</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%9B%9B%E3%80%81%E9%9D%99%E6%80%81%E6%9C%8D%E5%8A%A1%E5%99%A8"><span class="nav-number">2.4.</span> <span class="nav-text">四、静态服务器</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%94%E3%80%81%E5%8A%A8%E6%80%81%E6%9C%8D%E5%8A%A1%E5%99%A8%EF%BC%9A"><span class="nav-number">2.5.</span> <span class="nav-text">五、动态服务器：</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Cookie"><span class="nav-number">2.5.1.</span> <span class="nav-text">Cookie</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E7%9F%A5%E8%AF%86%E7%82%B9%EF%BC%9A"><span class="nav-number">2.6.</span> <span class="nav-text">知识点：</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">GENGZHI</p>
+  <div class="site-description" itemprop="description">分享成长</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Straight-GZ/2021/02/19/8%E3%80%81%E5%89%8D%E5%90%8E%E5%88%86%E7%A6%BB/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="GENGZHI">
+      <meta itemprop="description" content="分享成长">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Straight">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          八、前后分离
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-02-19 11:35:19" itemprop="dateCreated datePublished" datetime="2021-02-19T11:35:19+08:00">2021-02-19</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="1、AJAX"><a href="#1、AJAX" class="headerlink" title="1、AJAX"></a>1、AJAX</h2><p>Async JavaScript And XM</p>
+<p><strong>用 JS**</strong>发请求和收响应，就是 AJAX 的全部内容**</p>
+<ol>
+<li><p>背景</p>
+</li>
+<li><ol>
+<li>AJAX 是浏览器上的功能</li>
+</ol>
+</li>
+<li><ol>
+<li><ol>
+<li>浏览器可以发请求，收响应</li>
+</ol>
+</li>
+<li>浏览器在 window 上加了一个 XMLHttpRequest 函数</li>
+<li>用这个构造函数（类）可以构造出一个对象</li>
+<li>JS 通过它实现发请求，收响应</li>
+</ol>
+</li>
+<li><ol>
+<li>服务器</li>
+</ol>
+</li>
+<li><ol>
+<li><ol>
+<li>使用 server.js 作为服务器</li>
+</ol>
+</li>
+<li>添加路由</li>
+</ol>
+</li>
+<li><p>加载 CSS</p>
+</li>
+<li><ol>
+<li>以前使用<link rel="stylesheet" href="xx.css"></li>
+<li>用 AJAX</li>
+</ol>
+</li>
+<li><ol>
+<li><ol>
+<li>创建 HttpRequest 对象 （XMLHttpRequest）</li>
+</ol>
+</li>
+<li>调用对象的 open 方法，监听对象的 onload 和 onerror 事件</li>
+<li>专业的是使用 onreadystatechange 事件</li>
+<li>调用对象的 send 方法（发送请求）</li>
+</ol>
+</li>
+<li><ol>
+<li>代码</li>
+</ol>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">getCSS.onclick &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">  const request &#x3D; new XMLHttpRequest()</span><br><span class="line">  request.open(&quot;GET&quot;, &quot;&#x2F;style.css&quot;)</span><br><span class="line">  request.onreadystatechange &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">    console.log(request.readyState)</span><br><span class="line">    if (request.readyState &#x3D;&#x3D;&#x3D; 4) &#123;</span><br><span class="line">      if (request.status &gt;&#x3D; 200 &amp;&amp; request.status &lt; 300) &#123;</span><br><span class="line">        console.log(&quot;下载完成了&quot;)</span><br><span class="line">        const style &#x3D; document.createElement(&quot;style&quot;)</span><br><span class="line">        style.innerHTML &#x3D; request.response</span><br><span class="line">        document.head.appendChild(style)</span><br><span class="line">      &#125; else &#123;</span><br><span class="line">        alert(&quot;加载css失败&quot;)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  request.onerror &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">    console.log(&quot;失败了&quot;)</span><br><span class="line">  &#125;</span><br><span class="line">  request.send()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>加载 XML</p>
+</li>
+<li><ol>
+<li>创建 HttpRequest 对象 （XMLHttpRequest）</li>
+<li>调用对象的 open 方法，监听对象的 onload 和 onerror 事件</li>
+<li>专业的是使用 onreadystatechange 事件</li>
+<li>调用对象的 send 方法（发送请求）</li>
+<li>onreadystatechange readyState <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/API/XMLHttpRequest/readyState">MDN</a></li>
+<li>代码</li>
+</ol>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">getHTML.onclick &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">  const request &#x3D; new XMLHttpRequest()</span><br><span class="line">  request.open(&quot;GET&quot;, &quot;&#x2F;3.html&quot;)</span><br><span class="line">  request.onload &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">    const div &#x3D; document.createElement(&quot;div&quot;)</span><br><span class="line">    div.innerHTML &#x3D; request.response</span><br><span class="line">    document.body.appendChild(div)</span><br><span class="line">  &#125;</span><br><span class="line">  request.onerror &#x3D; () &#x3D;&gt; &#123;&#125;</span><br><span class="line">  request.send()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li><p>总结：</p>
+</li>
+<li><ol>
+<li>HTTP 是个框，什么都能装</li>
+</ol>
+</li>
+<li><ol>
+<li><ol>
+<li>可以装 CSS、html、JS、XML</li>
+</ol>
+</li>
+<li>记得设置正确的 Content-Type，是好习惯</li>
+<li>只要知道怎么解析这些内容，就可以使用这些内容</li>
+</ol>
+</li>
+<li><ol>
+<li>解析方法</li>
+</ol>
+</li>
+<li><ol>
+<li><ol>
+<li>得到 css 后生成 style 标签</li>
+</ol>
+</li>
+<li>得到 JS 后生成 script 标签</li>
+<li>得到 HTML 后使用 innerHTML 和 DOM api</li>
+<li>得到 XML 后使用 responseXML 和 DOM api</li>
+<li>不同类型的数据有不同的解析方法</li>
+</ol>
+</li>
+<li><p>JSON</p>
+</li>
+<li><ol>
+<li>简介</li>
+</ol>
+</li>
+<li><ol>
+<li><ol>
+<li>JSON 是一门语言，不是编程语言，是标记语言，和 HTML、XML、markdown 一样用来展示数据</li>
+</ol>
+</li>
+<li>语法：铁轨图 <a target="_blank" rel="noopener" href="http://json.org/json-zh.html"><strong>中文官网</strong></a></li>
+<li>支持六种数据类型</li>
+</ol>
+</li>
+<li><ol>
+<li><ol>
+<li><ol>
+<li>string：只支持双引号，不支持单引号和无引号</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>number：支持科学计数</li>
+<li>bool：true 和 false</li>
+<li>null：没有 undefined</li>
+<li>Object</li>
+<li>Array</li>
+<li>不支持函数，不支持变量，不支持引用</li>
+</ol>
+</li>
+<li><p>加载 JSON</p>
+</li>
+<li><ol>
+<li>创建 HttpRequest 对象 （XMLHttpRequest）</li>
+<li>调用对象的 open 方法，监听对象的 onload 和 onerror 事件</li>
+<li>专业的是使用 onreadystatechange 事件</li>
+<li>调用对象的 send 方法（发送请求）</li>
+<li>window.JSON</li>
+</ol>
+</li>
+<li><ol>
+<li><ol>
+<li>JSON.parse:</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><ol>
+<li><ol>
+<li><ol>
+<li>将符合 JSON 语法的字符串转换成 JS 对应类型的数据</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>JSON 字符串=&gt;JS 数据</li>
+<li>JSON 只有六种类型，所以转换成的类型也只有六种</li>
+<li>如果出现语法错误 使用 try catch 捕获错误</li>
+</ol>
+</li>
+<li><ol>
+<li><ol>
+<li>JOSN.stringfy</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><ol>
+<li><ol>
+<li><ol>
+<li>JOSN.parse 的逆运算</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>JS 数据=&gt;JSON 字符串</li>
+<li>由于 JS 类型的数据类型比 JSON 多，所以不一定能成功</li>
+</ol>
+</li>
+<li><ol>
+<li>代码</li>
+</ol>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">getJSON.onclick &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">  const request &#x3D; new XMLHttpRequest()</span><br><span class="line">  request.open(&quot;get&quot;, &quot;&#x2F;5.json&quot;)</span><br><span class="line">  request.onreadystatechange &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">    if (request.readyState &#x3D;&#x3D;&#x3D; 4 &amp;&amp; request.status &#x3D;&#x3D;&#x3D; 200) &#123;</span><br><span class="line">      console.log(&quot;request.response&quot;)</span><br><span class="line">      console.log(request.response)</span><br><span class="line">      let object &#x3D; JSON.parse(request.response)</span><br><span class="line">      console.log(&quot;object&quot;)</span><br><span class="line">      console.log(object)</span><br><span class="line">      xName.textContent &#x3D; object.name + object.age</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  request.send()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>综合应用：<a href="https://github.com/Straight-GZ/ajax-1">加载分页</a></li>
+</ol>
+<h2 id="2、异步与-Promise"><a href="#2、异步与-Promise" class="headerlink" title="2、异步与 Promise"></a>2、异步与 Promise</h2><p>JS 异步编程模型</p>
+<h3 id="一、异步"><a href="#一、异步" class="headerlink" title="一、异步"></a>一、异步</h3><h4 id="1、什么是异步？什么是同步？"><a href="#1、什么是异步？什么是同步？" class="headerlink" title="1、什么是异步？什么是同步？"></a>1、什么是异步？什么是同步？</h4><ol>
+<li><ol>
+<li><strong>同步</strong></li>
+</ol>
+</li>
+<li><ol>
+<li><ol>
+<li>如果能直接拿到结果，那就是同步。例如在医院挂号，拿到号才会离开</li>
+</ol>
+</li>
+<li>同步任务可能消耗 10 毫秒，也可能需要 3 秒</li>
+<li>总之拿不到结果是不会离开</li>
+</ol>
+</li>
+<li><ol>
+<li><strong>异步</strong></li>
+</ol>
+</li>
+<li><ol>
+<li><ol>
+<li>如果不能直接拿到结果，那就是异步。例如在餐厅门口等位，可以拿到号去逛街</li>
+</ol>
+</li>
+<li>确定吃饭时间？</li>
+<li>每 10 分钟去餐厅问一下（轮询）</li>
+<li>扫码用微信接收通知（回调）</li>
+</ol>
+</li>
+</ol>
+<h4 id="2、异步举例"><a href="#2、异步举例" class="headerlink" title="2、异步举例"></a>2、异步举例</h4><ol>
+<li><ol>
+<li>以 AJAX 为例</li>
+</ol>
+</li>
+<li><ol>
+<li><ol>
+<li><code>request.send()</code> 之后，并不能直接得到 response</li>
+</ol>
+</li>
+<li>必须等到 <code>readState</code> 变为 4 后，浏览器回头调用 <code>request.onreadystatechange</code> 函数</li>
+<li>我们才能得到 <code>request.response</code></li>
+</ol>
+</li>
+<li><ol>
+<li>回调</li>
+</ol>
+</li>
+<li><ol>
+<li><ol>
+<li>你写给自己用的函数，不是回调</li>
+</ol>
+</li>
+<li>你写给别人用的函数，就是回调</li>
+<li><code>request.onreadystatechange</code> 就是写给浏览器调用的</li>
+<li>意思就是你（浏览器）回头调用一下这个函数</li>
+<li><strong>写了却不调用，给别人调用的函数就是回调</strong></li>
+</ol>
+</li>
+<li><ol>
+<li><ol>
+<li><ol>
+<li>举例</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">function f1()&#123;&#125;</span><br><span class="line">function f2(fn)&#123;</span><br><span class="line">fn()</span><br><span class="line">&#125;</span><br><span class="line">f2(f1)</span><br></pre></td></tr></table></figure>
+<ol>
+<li><ol>
+<li><ol>
+<li><ol>
+<li><ol>
+<li>分析：</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><ol>
+<li><ol>
+<li><ol>
+<li><ol>
+<li><ol>
+<li>是否调用了 f1？ 答：没有调用</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>是否把 f1 传给了别人(f2)了？ 答：传了</li>
+<li>f2 调用 f1 没有？ 答：调用了</li>
+<li>那么，f1 是不是我写给 f2 调用的函数？ 答：是</li>
+<li>所有 f1 是回调</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><ol>
+<li><ol>
+<li><ol>
+<li><ol>
+<li>抬杠 1</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">function f1()&#123;&#125;</span><br><span class="line">function f2(fn)&#123;</span><br><span class="line">&#x2F;&#x2F; fn()</span><br><span class="line">&#125;</span><br><span class="line">f2(f1)</span><br></pre></td></tr></table></figure>
+<ol>
+<li><ol>
+<li><ol>
+<li><ol>
+<li><ol>
+<li><ol>
+<li>如果 f2 没有调用 f1 呢？</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>f2 有病？不调用为什么要接受 fn 参数？</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><ol>
+<li><ol>
+<li><ol>
+<li><ol>
+<li>抬杠 2</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">function f1()&#123;&#125;</span><br><span class="line">function f2(fn)&#123;</span><br><span class="line">fn()</span><br><span class="line">&#125;</span><br><span class="line">f2(&#39;字符串&#39;)</span><br></pre></td></tr></table></figure>
+<ol>
+<li><ol>
+<li><ol>
+<li><ol>
+<li><ol>
+<li><ol>
+<li>如果传给 f2 的参数不是函数呢？</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>会报错，fn 不是一个函数</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><ol>
+<li><ol>
+<li><ol>
+<li><ol>
+<li>抬杠 3</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">function f1(x)&#123;</span><br><span class="line">console.log(x)</span><br><span class="line">&#125;</span><br><span class="line">function f2(fn)&#123;</span><br><span class="line">fn(&#39;你好&#39;)</span><br><span class="line">&#125;</span><br><span class="line">f2(f1)</span><br></pre></td></tr></table></figure>
+<ol>
+<li><ol>
+<li><ol>
+<li><ol>
+<li><ol>
+<li><ol>
+<li>f1 怎么会有一个 x 参数？</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><code>fn(&#39;你好&#39;)</code> 中的 fn 就是 f1</li>
+<li><code>fn(&#39;你好&#39;)</code> 中的’你好’会赋值给参数 x</li>
+<li>所有 x 就是’你好’</li>
+<li>x 可以改为任其他名字，x 表示第一个参数而已</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h4 id="4、异步和回调的关系"><a href="#4、异步和回调的关系" class="headerlink" title="4、异步和回调的关系"></a>4、异步和回调的关系</h4><ol>
+<li><p>关联</p>
+</li>
+<li><ol>
+<li>异步任务需要在得到结果的时候通知 js 来拿结果</li>
+<li>怎么通知呢？</li>
+<li>可以让 JS 留一个函数地址（电话号码）给浏览器</li>
+<li>异步任务完成时浏览器调用该函数地址即可（拨打电话）</li>
+<li>同时把结果作为参数传给该函数（电话告知）</li>
+<li>这个函数是我写给浏览器调用的，所以是回调函数</li>
+</ol>
+</li>
+<li><p>区别</p>
+</li>
+<li><ol>
+<li>异步任务需要用到回调函数来通知结果</li>
+<li>但回调函数不一定只在异步任务里</li>
+<li>也可以用到同步任务里</li>
+<li><code>array.forEach(n=&gt;console(n))</code> 就是同步回调</li>
+</ol>
+</li>
+<li><p>判断同步异步</p>
+</li>
+<li><ol>
+<li>如果一个函数返回值处于</li>
+</ol>
+</li>
+<li><ol>
+<li><ol>
+<li>setTimeout</li>
+</ol>
+</li>
+<li>AJAX（即 XMLHttpRequest）</li>
+<li>AddEventListener</li>
+</ol>
+</li>
+<li><ol>
+<li>这三个东西内部，那么这个函数就是异步函数</li>
+</ol>
+</li>
+<li><p>摇骰子</p>
+</li>
+<li><ol>
+<li>举例</li>
+</ol>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">function 摇骰子()&#123;</span><br><span class="line">setTimeout(()&#x3D;&gt;&#123; &#x2F;&#x2F; 箭头函数</span><br><span class="line">return parseInt(Math.random() * 6) + 1</span><br><span class="line">&#125;,1000)</span><br><span class="line">&#x2F;&#x2F; return undefined</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li><ol>
+<li><ol>
+<li>分析：</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><ol>
+<li><ol>
+<li><ol>
+<li>摇骰子() 没有写 return ，那就是 <code>return undefined</code></li>
+</ol>
+</li>
+</ol>
+</li>
+<li>箭头函数有 <code>return</code> ，返回真正的结果</li>
+<li>所以这是一个异步任务/异步函数</li>
+</ol>
+</li>
+<li><ol>
+<li>摇骰子续</li>
+</ol>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">const n &#x3D; ()</span><br><span class="line">console.log(n) &#x2F;&#x2F; undefined</span><br></pre></td></tr></table></figure>
+<ol>
+<li><ol>
+<li><ol>
+<li>怎么拿到异步结果呢？</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><ol>
+<li><ol>
+<li><ol>
+<li>可以回调。写个函数，把函数地址给他<code>function f1(x)&#123;console.log(x)&#125;;摇骰子(f1)</code></li>
+</ol>
+</li>
+</ol>
+</li>
+<li>然后我要求摇骰子函数得到结果后把结果作为参数传给 f1</li>
+</ol>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">function (fn)&#123;</span><br><span class="line">setTimeout(()&#x3D;&gt;&#123; &#x2F;&#x2F;</span><br><span class="line">fn(parseInt(Math.random() * 6) + 1)</span><br><span class="line">&#125;,1000)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li><ol>
+<li><ol>
+<li><ol>
+<li>摇骰子函数不调用 fn 怎么办？ 答：自己写的代码不调用干嘛要写</li>
+</ol>
+</li>
+</ol>
+</li>
+<li>简化箭头函数</li>
+</ol>
+</li>
+<li><ol>
+<li><ol>
+<li><ol>
+<li><ol>
+<li>由于 f1 声明了之后只用了一次，可以删掉 f1</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">function f1(x)&#123; console.log(x) &#125;</span><br><span class="line">摇骰子(f1)</span><br><span class="line">&#x2F;&#x2F;改为</span><br><span class="line">摇骰子(x &#x3D;&gt; &#123;</span><br><span class="line">console.log(x)</span><br><span class="line">&#125;)</span><br><span class="line">&#x2F;&#x2F;再简化为</span><br><span class="line">摇骰子(console.log)</span><br><span class="line">&#x2F;&#x2F;如果参数个数不一致就不能这样简化</span><br><span class="line">&#x2F;&#x2F;例子</span><br><span class="line">[1,2,3].map(parseInt) &#x2F;&#x2F;返回值为 [1, NaN, NaN]</span><br><span class="line">&#x2F;&#x2F;map有三个参数map(item,i,arr) 数组每一项、下标、数组本身</span><br><span class="line">&#x2F;&#x2F;上面代码相当于</span><br><span class="line">[1,2,3].map((item,i,arr)&#x3D;&gt;&#123;</span><br><span class="line">    return parseInt(item,i,arr)&#125;)</span><br><span class="line">&#x2F;&#x2F; 第一次 parseInt(&#39;1&#39;,0,arr)   0和arr参数无效 &#x3D;&gt;1</span><br><span class="line">&#x2F;&#x2F;第二次 parseInt(&#39;2&#39;,1,arr)    把2作为1进制数解析  &#x3D;&gt;NaN</span><br><span class="line">&#x2F;&#x2F;第三次 parseInt(&#39;3&#39;,2,arr)           把3作为2进制数解析 &#x3D;&gt;NaN</span><br></pre></td></tr></table></figure>
+<h4 id="5、总结"><a href="#5、总结" class="headerlink" title="5、总结"></a>5、总结</h4><ol>
+<li>异步任务不能拿到结果</li>
+<li>于是我们传一个一个回调给异步任务</li>
+<li>异步任务完成时调用回调</li>
+<li>调用的时候把结果作为参数</li>
+</ol>
+<h3 id="二、Promise"><a href="#二、Promise" class="headerlink" title="二、Promise"></a>二、Promise</h3><h4 id="1、如果异步任务有两个结果，成功或者失败，怎么办？"><a href="#1、如果异步任务有两个结果，成功或者失败，怎么办？" class="headerlink" title="1、如果异步任务有两个结果，成功或者失败，怎么办？"></a>1、如果异步任务有两个结果，成功或者失败，怎么办？</h4><p>方法一：回调接受两个参数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">fs.readFile(&#39;.&#x2F;1.txt&#39;, (error, data)&#x3D;&gt;&#123;</span><br><span class="line">if(error)&#123; console.log(&#39;失败了&#39;); return &#125;</span><br><span class="line">console.log(data.toString()) &#x2F;&#x2F; 成功</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>方法二：搞两个回调</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">ajax(&#39;get&#39;,&#39;&#x2F;1.json&#39;, data&#x3D;&gt;&#123;&#125;, error&#x3D;&gt;&#123;&#125;)</span><br><span class="line">&#x2F;&#x2F;前面函数是成功回调，后面函数是失败回调</span><br><span class="line">ajax(&#39;get&#39;, &#39;&#x2F;1.json&#39;, &#123;</span><br><span class="line">    success: ()&#x3D;&gt;&#123;&#125;, fail: ()&#x3D;&gt;&#123;&#125;</span><br><span class="line">&#125;)&#x2F;&#x2F;接受一个对象，对象有两个key表示成功和失败</span><br></pre></td></tr></table></figure>
+<p>不足之处：</p>
+<ol>
+<li>不规范，名称五花八门</li>
+<li>容易出现回调地狱，代码阅读性差</li>
+<li>很难进行错误处理</li>
+<li>回调地狱<img src="https://cdn.nlark.com/yuque/0/2020/png/2639360/1604759238617-6d3e531d-453f-4de9-b31f-51e1153a41bb.png" alt="image.png"></li>
+</ol>
+<h4 id="2、以-AJAX-为例，解释-Promise-的用法"><a href="#2、以-AJAX-为例，解释-Promise-的用法" class="headerlink" title="2、以 AJAX 为例，解释 Promise 的用法"></a>2、以 AJAX 为例，解释 Promise 的用法</h4><p>不使用 Promise</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">ajax &#x3D; (method, url, options)&#x3D;&gt;&#123;</span><br><span class="line">const &#123;success, fail&#125; &#x3D; options &#x2F;&#x2F; 析构赋值</span><br><span class="line">const request &#x3D; new XMLHttpRequest()</span><br><span class="line">request.open(method, url)</span><br><span class="line">request.onreadystatechange &#x3D; ()&#x3D;&gt;&#123;</span><br><span class="line">if(request.readyState &#x3D;&#x3D;&#x3D; 4)&#123;</span><br><span class="line">&#x2F;&#x2F;成功调用success  失败调用fail</span><br><span class="line">if(request.status &lt; 400)&#123;</span><br><span class="line">success.call(null, request.response)</span><br><span class="line">&#125;else if(request.status &gt;&#x3D; 400)&#123;</span><br><span class="line">fail.call(null, request, request.status)</span><br><span class="line">&#125; &#125; &#125;</span><br><span class="line">request.send()</span><br><span class="line">&#125;</span><br><span class="line">ajax(&#39;get&#39;, &#39;&#x2F;xxx&#39;, &#123;</span><br><span class="line">success(response)&#123;&#125;, fail: (request, status)&#x3D;&gt;&#123;&#125;</span><br><span class="line">&#125;) &#x2F;&#x2F; 左边是function缩写，右边是箭头函数</span><br></pre></td></tr></table></figure>
+<p>使用 Promise</p>
+<p>调用：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">ajax(&#39;get&#39;, &#39;&#x2F;xxx&#39;, &#123;</span><br><span class="line">success(response)&#123;&#125;, fail: (request, status)&#x3D;&gt;&#123;&#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>上面用到了两个回调，还使用了 success 和 fail</p>
+<p>改成 Promise 写法</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">ajax(&#39;get&#39;, &#39;&#x2F;xxx&#39;)</span><br><span class="line">  .then((response)&#x3D;&gt;&#123;&#125;, (request, status)&#x3D;&gt;&#123;&#125;)</span><br></pre></td></tr></table></figure>
+<p>虽然也是回调，但是不需要记 success 和 fail</p>
+<p>then 的第一个参数就是 success</p>
+<p>then 的第二个参数就是 fail</p>
+<p>这个 AJAX 返回了一个含有.then 的对象。</p>
+<p>AJAX 源码：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">ajax &#x3D; (method, url, options)&#x3D;&gt;&#123;</span><br><span class="line">  return new Promise((resolve, reject)&#x3D;&gt;&#123;</span><br><span class="line">    const &#123;success, fail&#125; &#x3D; options</span><br><span class="line">    const request &#x3D; new XMLHttpRequest()</span><br><span class="line">    request.open(method, url)</span><br><span class="line">    request.onreadystatechange &#x3D; ()&#x3D;&gt;&#123;</span><br><span class="line">      if(request.readyState &#x3D;&#x3D;&#x3D; 4)&#123;</span><br><span class="line">         &#x2F;&#x2F;成功就调用resolve，失败就调用reject</span><br><span class="line">        if(request.status &lt; 400)&#123;</span><br><span class="line">          resolve.call(null, request.response)</span><br><span class="line">      &#125;else if(request.status &gt;&#x3D; 400)&#123;</span><br><span class="line">        reject.call(null, request)</span><br><span class="line">            &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  request.send()</span><br><span class="line"> &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>如果你想要某个函数拥有 promise 功能，只需让其返回一个 promise <code>return new Promise((resolve,reject)=&gt;&#123;&#125;)</code></p>
+<h4 id="3、总结："><a href="#3、总结：" class="headerlink" title="3、总结："></a>3、总结：</h4><ol>
+<li><p>第一步：</p>
+</li>
+<li><ol>
+<li><code>return new Promise((resolve,reject)=&gt;&#123;&#125;)</code></li>
+<li>任务成功则调用 <code>resolve(result)</code></li>
+<li>任务失败则调用 <code>reject(error)</code></li>
+<li><code>resolve</code> 和 <code>reject</code> 会再去调用成功和失败函数</li>
+</ol>
+</li>
+<li><p>第二步：</p>
+</li>
+<li><ol>
+<li>使用 <code>then(success,fail)</code> 传入成功和失败函数</li>
+</ol>
+</li>
+</ol>
+<h4 id="4、缺点"><a href="#4、缺点" class="headerlink" title="4、缺点"></a>4、缺点</h4><ol>
+<li><p>post 无法上传数据 <code>request.send(这里可以上传数据)</code></p>
+</li>
+<li><p>不能设置请求头 `request.setRequestHeader(key,value)</p>
+</li>
+<li><p>jQuery.ajax</p>
+</li>
+<li><ol>
+<li>优点：支持更多形式的参数，支持 Promise</li>
+</ol>
+</li>
+<li><p>axios</p>
+</li>
+<li><ol>
+<li>点击查看<a target="_blank" rel="noopener" href="https://juejin.im/post/6844903569745788941">Axios 作弊表</a></li>
+<li>高级用法：JSON 自动处理</li>
+</ol>
+</li>
+<li><ol>
+<li><ol>
+<li>axios 如何发现响应的是 <code>Content-Type</code> 是 json</li>
+</ol>
+</li>
+<li>会自动调用 JSON.parse 所有要正确设置 <code>Content-Type</code></li>
+</ol>
+</li>
+</ol>
+<h3 id="三、跨域"><a href="#三、跨域" class="headerlink" title="三、跨域"></a>三、跨域</h3><h4 id="1、同源策略"><a href="#1、同源策略" class="headerlink" title="1、同源策略"></a>1、同源策略</h4><ol>
+<li><p>同源定义：</p>
+</li>
+<li><ol>
+<li>源： <code>window.Origin</code> 或 <code>location.origin</code> 可以得到当前源</li>
+<li>源=协议+域名+端口号</li>
+<li>如果两个 url 协议、域名、端口号完全一致，那么这两个 url 就是同源的</li>
+<li>举例</li>
+</ol>
+</li>
+<li><ol>
+<li><ol>
+<li><a target="_blank" rel="noopener" href="https://www.baidu.com和https//qq.com%E4%B8%8D%E5%90%8C%E6%BA%90">https://www.baidu.com和https://qq.com不同源</a></li>
+</ol>
+</li>
+<li><a target="_blank" rel="noopener" href="https://www.baidu.com和https//baidu.com%E4%B8%8D%E5%90%8C%E6%BA%90">https://www.baidu.com和https://baidu.com不同源</a></li>
+<li>完全一致才算同源</li>
+</ol>
+</li>
+<li><p>同源策略</p>
+</li>
+<li><ol>
+<li>浏览器规定：如果 JS 运行在源 A，那么就只能获取源 A 的数据，不允许获取源 B 的数据，即不允许跨源</li>
+<li>目的：保护隐私</li>
+<li>主要原因：无法区分发送者，如果没有同源策略，任何网站都可以访问别的网站数据(检查 referer)</li>
+</ol>
+</li>
+<li><p>同源策略：不同源的页面中间，不允许互相访问数据</p>
+</li>
+<li><p>同源策略限制访问数据，引用 css、JS 和图片的时候，其实并不知道其内容，只是在引用</p>
+</li>
+</ol>
+<h4 id="2、跨域"><a href="#2、跨域" class="headerlink" title="2、跨域"></a>2、跨域</h4><p>同源：如果两个 url 的协议、域名、端口号完全一致，那么这两个 url 就同源的</p>
+<p>跨域：浏览器有同源策略限制，不允许一个源里的文档访问另一个源里资源。而跨域就是为了解决同源策略限制。</p>
+<p>CORS：跨源资源共享，使用附加的 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Glossary/HTTP">HTTP</a> 头来告诉浏览器，准许运行在一个源上的 Web 应用访问位于另一不同源选定的资源。使用<code>**Access-Control-Allow-Origin**</code>响应头可以指定一个可以访问资源的 URI</p>
+<p>JSONP ：<strong>在无法使用 CORS 跨域的情况下，请求 JS 文件，这个 JS 文件会执行一个回调，回调里面包含数据。可以兼容 IE 浏览器实现跨域，但只能发 get 请求，并且无法读取精确的状态码。</strong></p>
+<h3 id="四、静态服务器"><a href="#四、静态服务器" class="headerlink" title="四、静态服务器"></a>四、静态服务器</h3><p>点击查看 →：<a href="https://github.com/Straight-GZ/static-server">static server</a></p>
+<h3 id="五、动态服务器："><a href="#五、动态服务器：" class="headerlink" title="五、动态服务器："></a>五、动态服务器：</h3><p><strong>判断依据</strong>：是否请求了数据库，请求了数据库就是动态服务器</p>
+<p>使用 JSON 文件当做数据库</p>
+<p>流程：</p>
+<p>1.创建 db/users.json</p>
+<figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">[</span><br><span class="line">  &#123; <span class="attr">&quot;id&quot;</span>: <span class="number">1</span>, <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;123&quot;</span>, <span class="attr">&quot;password&quot;</span>: <span class="string">&quot;123&quot;</span> &#125;,</span><br><span class="line">  &#123; <span class="attr">&quot;id&quot;</span>: <span class="number">2</span>, <span class="attr">&quot;name&quot;</span>: <span class="string">&quot;qqq&quot;</span>, <span class="attr">&quot;password&quot;</span>: <span class="string">&quot;qqq&quot;</span> &#125;</span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<p>2.读取 users 数据</p>
+<p>先<code>fs.readFIleSync(&#39;./db/users.json&#39;).toString()</code></p>
+<p>使用 JSON.parse(反序列化)，得到数组</p>
+<ol start="3">
+<li><p>存储 users 数据</p>
+<p>使用 JSON.Stringfy(序列化),得到字符串</p>
+<p>然后<code>fs.writeFileSync(&#39;./db/user/json&#39;,data)</code></p>
+</li>
+<li><p>实现目标 1：<strong>用户注册</strong></p>
+</li>
+</ol>
+<ul>
+<li><p>用户提交用户名密码,users.json 就增加一行数据</p>
+</li>
+<li><p>思路：前端 html 写一个 form，让用户填写 name 和 password,监听 submit 事件，发送 post 请求，数据位于请求体；后端接收 post 请求，获取请求体中 name 和 password,存储数据</p>
+</li>
+<li><p>关键代码：</p>
+<p><code>form</code>标签</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;form id=<span class="string">&quot;registerForm&quot;</span>&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">    &lt;label&gt;</span><br><span class="line">      用户名</span><br><span class="line">      &lt;input type=<span class="string">&quot;text&quot;</span> name=<span class="string">&quot;name&quot;</span> /&gt;</span><br><span class="line">    &lt;/label&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">    &lt;label&gt;</span><br><span class="line">      密码</span><br><span class="line">      &lt;input type=<span class="string">&quot;password&quot;</span> name=<span class="string">&quot;password&quot;</span> /&gt;</span><br><span class="line">    &lt;/label&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">    &lt;button type=<span class="string">&quot;submit&quot;</span>&gt;注册&lt;/button&gt;</span><br><span class="line">  &lt;/div&gt;</span><br><span class="line">&lt;/form&gt;</span><br></pre></td></tr></table></figure>
+<p><code>server.js</code></p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> array = [];</span><br><span class="line"><span class="keyword">const</span> users = <span class="built_in">JSON</span>.parse(fs.readFileSync(<span class="string">&quot;./db/users.json&quot;</span>).toString());</span><br><span class="line">response.setHeader(<span class="string">&quot;Content-Type&quot;</span>, <span class="string">&quot;text/html,charset=UTF-8&quot;</span>);</span><br><span class="line">request.on(<span class="string">&quot;data&quot;</span>, <span class="function">(<span class="params">chunk</span>) =&gt;</span> &#123;</span><br><span class="line">  array.push(chunk);</span><br><span class="line">&#125;);</span><br><span class="line">request.on(<span class="string">&quot;end&quot;</span>, <span class="function">() =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> obj = <span class="built_in">JSON</span>.parse(Buffer.concat(array).toString());</span><br><span class="line">  <span class="keyword">const</span> lastUser = users[users.length - <span class="number">1</span>];</span><br><span class="line">  <span class="keyword">const</span> newUser = &#123;</span><br><span class="line">    id: lastUser ? lastUser.id + <span class="number">1</span> : <span class="number">1</span>,</span><br><span class="line">    name: obj.name,</span><br><span class="line">    password: obj.password,</span><br><span class="line">  &#125;;</span><br><span class="line">  users.push(newUser);</span><br><span class="line">  fs.writeFileSync(<span class="string">&quot;./db/users.json&quot;</span>, <span class="built_in">JSON</span>.stringify(users));</span><br><span class="line">&#125;);</span><br><span class="line">response.end();</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="5">
+<li>实现目标 2：<strong>用户登录</strong></li>
+</ol>
+<ul>
+<li>首页<code>home.html</code>,已登录用户可以看到自己用户名</li>
+<li>登陆页<code>sign_in.html</code>，用来提交用户名和密码</li>
+<li>输入的用户名和密码是匹配的，就自动跳转首页</li>
+<li><code>sign_in.html</code>，类似用户注册，前端写 form 让用户填写 name 和 password，监听 submit 事件，发送 post 请求，数据位于请求体。后端接收 post 请求，获取请求体中 name 和 password，读取数据，看是否有匹配的 name 和 password。如果匹配，后段应标记用户已登录。</li>
+</ul>
+<h4 id="Cookie"><a href="#Cookie" class="headerlink" title="Cookie"></a>Cookie</h4><ol>
+<li>定义：Cookie 是服务器下发给浏览器的一段字符串</li>
+<li>浏览器必须保存这个 Cookie(除非用户删除)</li>
+<li>之后发起相同二级域名请求，浏览器必须附上 Cookie</li>
+<li>Set-Cookie <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Headers/Set-Cookie">Set-Cookie MDN</a></li>
+</ol>
+<ul>
+<li><p>完成目标显示用户名</p>
+<p>home.html 渲染前获得 user 信息</p>
+<p>如果有 user,则将替换成 user.name</p>
+<p>如果没有 user,则显示登录按钮</p>
+</li>
+<li><p>目标：防篡改 user_id</p>
+<ul>
+<li><p>加密</p>
+</li>
+<li><p>把信息放在服务器，使用 session（会话）</p>
+</li>
+<li><p>关键代码：</p>
+<p>登录之后使用随机数保存 session</p>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">response.statusCode = <span class="number">200</span>;</span><br><span class="line"><span class="keyword">const</span> random = <span class="built_in">Math</span>.random();</span><br><span class="line">session[random] = &#123; <span class="attr">user_id</span>: user.id &#125;;</span><br><span class="line">fs.writeFileSync(<span class="string">&quot;./session.json&quot;</span>, <span class="built_in">JSON</span>.stringify(session));</span><br><span class="line">response.setHeader(<span class="string">&quot;Set-Cookie&quot;</span>, <span class="string">`session_id=<span class="subst">$&#123;random&#125;</span>;HttpOnly`</span>);</span><br><span class="line">response.end();</span><br></pre></td></tr></table></figure>
+<figure class="highlight javascript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> cookie = request.headers[<span class="string">&quot;cookie&quot;</span>];</span><br><span class="line">    <span class="keyword">let</span> sessionId;</span><br><span class="line"></span><br><span class="line">    <span class="keyword">try</span> &#123;</span><br><span class="line">      sessionId = cookie</span><br><span class="line">        .split(<span class="string">&quot;;&quot;</span>)</span><br><span class="line">        .filter(<span class="function">(<span class="params">s</span>) =&gt;</span> s.indexOf(<span class="string">&quot;session_id=&quot;</span>) &gt;= <span class="number">0</span>)[<span class="number">0</span>]</span><br><span class="line">        .split(<span class="string">&quot;=&quot;</span>)[<span class="number">1</span>];</span><br><span class="line">      <span class="built_in">console</span>.log(sessionId);</span><br><span class="line">    &#125; <span class="keyword">catch</span> (error) &#123;&#125;</span><br><span class="line"><span class="keyword">if</span> (sessionId &amp;&amp; session[sessionId]) &#123;</span><br><span class="line">      <span class="keyword">const</span> userId = session[sessionId].user_id;</span><br><span class="line">      <span class="built_in">console</span>.log(userId);</span><br><span class="line">      <span class="keyword">const</span> homeHtml = fs.readFileSync(<span class="string">&quot;./public/home.html&quot;</span>).toString();</span><br><span class="line">      <span class="keyword">const</span> users = <span class="built_in">JSON</span>.parse(fs.readFileSync(<span class="string">&quot;./db/users.json&quot;</span>).toString());</span><br><span class="line">      <span class="keyword">const</span> user = users.find(<span class="function">(<span class="params">user</span>) =&gt;</span> user.id === userId);</span><br><span class="line">      <span class="keyword">let</span> string;</span><br><span class="line">      <span class="keyword">if</span> (user) &#123;</span><br><span class="line">        string = homeHtml</span><br><span class="line">          .replace(<span class="string">&quot;&#123;&#123;loginStatus&#125;&#125;&quot;</span>, <span class="string">&quot;已登录&quot;</span>)</span><br><span class="line">          .replace(<span class="string">&quot;&#123;&#123;userName&#125;&#125;&quot;</span>, user.name);</span><br><span class="line">      &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">        string = homeHtml</span><br><span class="line">          .replace(<span class="string">&quot;&#123;&#123;loginStatus&#125;&#125;&quot;</span>, <span class="string">&quot;未登录&quot;</span>)</span><br><span class="line">          .replace(<span class="string">&quot;&#123;&#123;userName&#125;&#125;&quot;</span>, <span class="string">&quot;&quot;</span>);</span><br><span class="line">      &#125;</span><br><span class="line">      response.write(string);</span><br><span class="line">    response.end();</span><br></pre></td></tr></table></figure>
+<h3 id="知识点："><a href="#知识点：" class="headerlink" title="知识点："></a>知识点：</h3><p>获取 Cookie:<code>const cookie=request.headers[&quot;cookie&quot;]</code></p>
+<p>读取文件：<code>const homeHtml = fs.readFileSync(&quot;./public/home.html&quot;).toString();</code></p>
+<p>写文件：<code>fs.writeFileSync(&quot;./session.json&quot;, JSON.stringify(session));</code></p>
+<p>find:返回数组第一个符合条件的 item</p>
+<p>replace：替换</p>
+</li>
+</ul>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/02/19/7%E3%80%81JS%E7%BC%96%E7%A8%8B%E6%8E%A5%E5%8F%A3/" rel="prev" title="七、JS编程接口">
+                  <i class="fa fa-chevron-left"></i> 七、JS编程接口
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/02/19/9%E3%80%81MVC/" rel="next" title="九、MVC">
+                  九、MVC <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">GENGZHI</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

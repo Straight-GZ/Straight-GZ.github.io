@@ -1,0 +1,483 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"github.com","root":"/","images":"/images","scheme":"Muse","version":"8.2.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+<meta name="description" content="一、使用 Vite 搭建官网1、安装、创建项目命令 vite 文档给出的命令是 npm init vite-app  yarn create vite-app   等价于 全局安装 create-vite-app 然后 cva   等价于 npx createa-vite-app  即 npx 会帮你全局安装用到的包">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue3轮子">
+<meta property="og:url" content="https://github.com/Straight-GZ/2021/02/19/Vue3%E9%80%A0%E8%BD%AE%E5%AD%90/index.html">
+<meta property="og:site_name" content="Straight">
+<meta property="og:description" content="一、使用 Vite 搭建官网1、安装、创建项目命令 vite 文档给出的命令是 npm init vite-app  yarn create vite-app   等价于 全局安装 create-vite-app 然后 cva   等价于 npx createa-vite-app  即 npx 会帮你全局安装用到的包">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-02-19T03:35:19.385Z">
+<meta property="article:modified_time" content="2021-02-19T03:35:19.385Z">
+<meta property="article:author" content="GENGZHI">
+<meta property="article:tag" content="博客">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://github.com/Straight-GZ/2021/02/19/Vue3%E9%80%A0%E8%BD%AE%E5%AD%90/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>Vue3轮子 | Straight</title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="Straight" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">Straight</h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%80%E3%80%81%E4%BD%BF%E7%94%A8-Vite-%E6%90%AD%E5%BB%BA%E5%AE%98%E7%BD%91"><span class="nav-number">1.</span> <span class="nav-text">一、使用 Vite 搭建官网</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%E3%80%81%E5%AE%89%E8%A3%85%E3%80%81%E5%88%9B%E5%BB%BA%E9%A1%B9%E7%9B%AE%E5%91%BD%E4%BB%A4"><span class="nav-number">1.0.1.</span> <span class="nav-text">1、安装、创建项目命令</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%E3%80%81Vue2-%E5%92%8C-Vue3-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">1.0.2.</span> <span class="nav-text">2、Vue2 和 Vue3 的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3%E3%80%81%E5%88%9D%E5%A7%8B%E5%8C%96-vue-router"><span class="nav-number">1.0.3.</span> <span class="nav-text">3、初始化 vue-router</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4%E3%80%81provide-%E5%92%8C-inject"><span class="nav-number">1.0.4.</span> <span class="nav-text">4、provide 和 inject</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%8C%E3%80%81switch-%E7%BB%84%E4%BB%B6"><span class="nav-number">2.</span> <span class="nav-text">二、switch 组件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%E3%80%81router-aftereach-%EF%BC%8Crouter-%E8%B7%AF%E7%94%B1%E5%88%87%E6%8D%A2%E6%97%B6%E8%B0%83%E7%94%A8"><span class="nav-number">2.0.1.</span> <span class="nav-text">1、router.aftereach()，router 路由切换时调用</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%E3%80%81calc"><span class="nav-number">2.0.2.</span> <span class="nav-text">2、calc():</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3%E3%80%81v-model"><span class="nav-number">2.0.3.</span> <span class="nav-text">3、v-model</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4%E3%80%81%E7%9F%A5%E8%AF%86%E7%82%B9%E6%80%BB%E7%BB%93%EF%BC%9A"><span class="nav-number">2.0.4.</span> <span class="nav-text">4、知识点总结：</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%B8%89%E3%80%81Button-%E7%BB%84%E4%BB%B6"><span class="nav-number">3.</span> <span class="nav-text">三、Button 组件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%E3%80%81Vue3-%E5%B1%9E%E6%80%A7%E7%BB%91%E5%AE%9A"><span class="nav-number">3.0.1.</span> <span class="nav-text">1、Vue3 属性绑定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%E3%80%81props-%E5%92%8C-attrs-%E7%9A%84%E5%8C%BA%E5%88%AB"><span class="nav-number">3.0.2.</span> <span class="nav-text">2、props 和 attrs 的区别</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3%E3%80%81CSS"><span class="nav-number">3.0.3.</span> <span class="nav-text">3、CSS</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4%E3%80%81%E5%BA%93%E7%9A%84-css-%E8%A6%81%E6%B1%82"><span class="nav-number">3.0.4.</span> <span class="nav-text">4、库的 css 要求</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%9B%9B%E3%80%81Dialog-%E7%BB%84%E4%BB%B6"><span class="nav-number">4.</span> <span class="nav-text">四、Dialog 组件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%E3%80%81%E5%85%B7%E5%90%8D%E6%8F%92%E6%A7%BD"><span class="nav-number">4.0.1.</span> <span class="nav-text">1、具名插槽</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%E3%80%81Teleport-%E7%BB%84%E4%BB%B6"><span class="nav-number">4.0.2.</span> <span class="nav-text">2、Teleport 组件</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#3%E3%80%81%E5%8A%A8%E6%80%81%E5%8A%A0%E8%BD%BD%E7%BB%84%E4%BB%B6"><span class="nav-number">4.0.3.</span> <span class="nav-text">3、动态加载组件</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E4%BA%94%E3%80%81Tabs-%E7%BB%84%E4%BB%B6"><span class="nav-number">5.</span> <span class="nav-text">五、Tabs 组件</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%E3%80%81context-slots-default"><span class="nav-number">5.0.1.</span> <span class="nav-text">1、context.slots.default()</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%E3%80%81onMounted%E3%80%81onUpdated%E3%80%81watchEffect"><span class="nav-number">5.0.2.</span> <span class="nav-text">2、onMounted、onUpdated、watchEffect</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%85%AD%E3%80%81%E5%AE%98%E7%BD%91%E8%A3%85%E4%BF%AE"><span class="nav-number">6.</span> <span class="nav-text">六、官网装修</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#1%E3%80%81clip-path-%E5%88%B6%E4%BD%9C%E5%9C%86%E8%A7%92"><span class="nav-number">6.0.1.</span> <span class="nav-text">1、clip-path 制作圆角</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%E3%80%81%E9%AB%98%E4%BA%AE%E5%BD%93%E5%89%8D%E8%B7%AF%E7%94%B1"><span class="nav-number">6.0.2.</span> <span class="nav-text">2、高亮当前路由</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#2%E3%80%81%E8%87%AA%E5%88%B6%E6%8F%92%E4%BB%B6-%E6%94%AF%E6%8C%81-markdown"><span class="nav-number">6.0.3.</span> <span class="nav-text">2、自制插件 支持 markdown</span></a></li><li class="nav-item nav-level-4"><a class="nav-link"><span class="nav-number">6.0.4.</span> <span class="nav-text"></span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#4%E3%80%81demo-%E7%BB%84%E4%BB%B6"><span class="nav-number">6.0.5.</span> <span class="nav-text">4、demo 组件</span></a></li></ol></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+  <p class="site-author-name" itemprop="name">GENGZHI</p>
+  <div class="site-description" itemprop="description">分享成长</div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+          <span class="site-state-item-count">16</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Straight-GZ/2021/02/19/Vue3%E9%80%A0%E8%BD%AE%E5%AD%90/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.gif">
+      <meta itemprop="name" content="GENGZHI">
+      <meta itemprop="description" content="分享成长">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Straight">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Vue3轮子
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-02-19 11:35:19" itemprop="dateCreated datePublished" datetime="2021-02-19T11:35:19+08:00">2021-02-19</time>
+    </span>
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-folder"></i>
+      </span>
+      <span class="post-meta-item-text">分类于</span>
+        <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+          <a href="/categories/Vue/" itemprop="url" rel="index"><span itemprop="name">Vue</span></a>
+        </span>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h2 id="一、使用-Vite-搭建官网"><a href="#一、使用-Vite-搭建官网" class="headerlink" title="一、使用 Vite 搭建官网"></a>一、使用 Vite 搭建官网</h2><h4 id="1、安装、创建项目命令"><a href="#1、安装、创建项目命令" class="headerlink" title="1、安装、创建项目命令"></a>1、安装、创建项目命令</h4><ol>
+<li><p>vite 文档给出的命令是</p>
+<p>npm init vite-app <project-name></project-name></p>
+<p>yarn create vite-app <project-name></project-name></p>
+</li>
+<li><p>等价于</p>
+<p>全局安装 create-vite-app 然后</p>
+<p>cva <project-name></project-name></p>
+</li>
+<li><p>等价于</p>
+<p>npx createa-vite-app <project-name></project-name></p>
+<p>即 npx 会帮你全局安装用到的包</p>
+<a id="more"></a>
+
+</li>
+</ol>
+<h4 id="2、Vue2-和-Vue3-的区别"><a href="#2、Vue2-和-Vue3-的区别" class="headerlink" title="2、Vue2 和 Vue3 的区别"></a>2、Vue2 和 Vue3 的区别</h4><ol>
+<li>Vue3 的<code>template</code>标签支持多个根<strong>标签</strong>，Vue2 不支持</li>
+<li>Vue3 有<code>createApp()</code>,而 Vue2 是<code>new Vue()</code></li>
+<li><code>createApp(&#39;组件&#39;)，new Vue(&#123;template,render&#125;)</code></li>
+</ol>
+<h4 id="3、初始化-vue-router"><a href="#3、初始化-vue-router" class="headerlink" title="3、初始化 vue-router"></a>3、初始化 vue-router</h4><p>查看 vue-router 所有版本号：<code>npm info vue-router versions</code></p>
+<ol>
+<li><p>新建 history 对象</p>
+</li>
+<li><p>新建 router 对象</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">import &#123; createWebHashHistory, createRouter &#125; from &quot;vue-router&quot;; const</span><br><span class="line">history &#x3D; createWebHashHistory(); const router &#x3D; createRouter(&#123; history:</span><br><span class="line">history, routes: [ &#123; path: &quot;&#x2F;&quot;, component: Home &#125;, &#123; path: &quot;&#x2F;doc&quot;, component:</span><br><span class="line">Doc, children: [ ​ &#123; path: &quot;&quot;, component: DocDemo &#125;, ​ &#123; path: &quot;switch&quot;,</span><br><span class="line">component: SwitchDemo &#125;, ​ &#123; path: &quot;button&quot;, component: ButtonDemo &#125;, ​ &#123;</span><br><span class="line">path: &quot;dialog&quot;, component: DialogDemo &#125;, ​ &#123; path: &quot;tabs&quot;, component:</span><br><span class="line">TabsDemo &#125;, ], &#125;, ], &#125;);</span><br></pre></td></tr></table></figure></li>
+<li><p>引入 Typescript</p>
+</li>
+<li><p>app.use(router)</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">const app &#x3D; createApp(App); app.use(router); app.mount(&quot;#app&quot;);</span><br></pre></td></tr></table></figure></li>
+<li><p>添加<router-view> //</router-view></p>
+</li>
+<li><p>添加<router-link></router-link></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">&lt;aside v-if&#x3D;&quot;menuVisible&quot;&gt;</span><br><span class="line">   &lt;h2&gt;组件列表&lt;&#x2F;h2&gt;</span><br><span class="line">	&lt;ol&gt;</span><br><span class="line">        &lt;!-- 使用 router-link 组件来导航. --&gt;</span><br><span class="line">    	&lt;!-- 通过传入 &#96;to&#96; 属性指定链接. --&gt;</span><br><span class="line">    	&lt;!-- &lt;router-link&gt; 默认会被渲染成一个 &#96;&lt;a&gt;&#96; 标签 --&gt;</span><br><span class="line">    	&lt;li&gt;&lt;router-link to&#x3D;&quot;&#x2F;doc&#x2F;switch&quot;&gt;Switch 组件&lt;&#x2F;router-link&gt;&lt;&#x2F;li&gt;</span><br><span class="line">    	&lt;li&gt;&lt;router-link to&#x3D;&quot;&#x2F;doc&#x2F;button&quot;&gt;Button 组件&lt;&#x2F;router-link&gt;&lt;&#x2F;li&gt;</span><br><span class="line">    	&lt;li&gt;&lt;router-link to&#x3D;&quot;&#x2F;doc&#x2F;dialog&quot;&gt;Dialog 组件&lt;&#x2F;router-link&gt;&lt;&#x2F;li&gt;</span><br><span class="line">    	&lt;li&gt;&lt;router-link to&#x3D;&quot;&#x2F;doc&#x2F;tabs&quot;&gt;Tabs 组件&lt;&#x2F;router-link&gt;&lt;&#x2F;li&gt;</span><br><span class="line">	&lt;&#x2F;ol&gt;</span><br><span class="line">&lt;&#x2F;aside&gt;</span><br><span class="line">&lt;main&gt;</span><br><span class="line">     &lt;!-- 路由出口 --&gt;</span><br><span class="line"> 	 &lt;!-- 路由匹配到的组件将渲染在这里 --&gt;</span><br><span class="line">    &lt;router-view &#x2F;&gt;</span><br><span class="line">&lt;&#x2F;main&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="4、provide-和-inject"><a href="#4、provide-和-inject" class="headerlink" title="4、provide 和 inject"></a>4、provide 和 inject</h4></li>
+<li><p><strong>set</strong></p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> menuVisible = ref(width &gt; <span class="number">500</span>);</span><br><span class="line">provide(<span class="string">&quot;menuVisible&quot;</span>, menuVisible); <span class="comment">// set</span></span><br></pre></td></tr></table></figure></li>
+<li><p><strong>get</strong></p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">const</span> menuVisible = inject&lt;Ref&lt;<span class="built_in">boolean</span>&gt;&gt;(<span class="string">&quot;menuVisible&quot;</span>);</span><br></pre></td></tr></table></figure>
+<h2 id="二、switch-组件"><a href="#二、switch-组件" class="headerlink" title="二、switch 组件"></a>二、switch 组件</h2></li>
+</ol>
+<h4 id="1、router-aftereach-，router-路由切换时调用"><a href="#1、router-aftereach-，router-路由切换时调用" class="headerlink" title="1、router.aftereach()，router 路由切换时调用"></a>1、router.aftereach()，router 路由切换时调用</h4><h4 id="2、calc"><a href="#2、calc" class="headerlink" title="2、calc():"></a>2、calc():</h4><p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/CSS">CSS</a> 函数允许在声明 CSS 属性值时执行一些计算,calc()函数用一个表达式作为它的参数，用这个表达式的结果作为值</p>
+<h4 id="3、v-model"><a href="#3、v-model" class="headerlink" title="3、v-model"></a>3、v-model</h4><ol>
+<li>要求：</li>
+</ol>
+<ul>
+<li>属性名任意，假设为 x</li>
+<li>事件名必须为 <code>&quot;update:x&quot;</code></li>
+</ul>
+<ol start="2">
+<li>效果</li>
+</ol>
+<ul>
+<li><code>&lt;Switch:value=&quot;y&quot; @update=&quot;y=$event&quot; /&gt;</code></li>
+<li>可以简写为：<code>&lt;Switch v-model:value=&quot;y&quot;&gt;</code></li>
+</ul>
+<h4 id="4、知识点总结："><a href="#4、知识点总结：" class="headerlink" title="4、知识点总结："></a>4、知识点总结：</h4><ol>
+<li><p><code>value=&quot;true&quot;</code>和<code>:value=&quot;true&quot;</code>的区别</p>
+</li>
+<li><p>css transition 添加过渡动画</p>
+</li>
+<li><p>使用 ref 创建内部数据</p>
+</li>
+<li><p>使用 <code>:value</code> 和 <code>@input</code> 让父子组件通信</p>
+</li>
+<li><p>使用<code>$event</code></p>
+</li>
+<li><p><code>v-model</code></p>
+</li>
+<li><p>不允许修改<code>props</code></p>
+</li>
+<li><p>vue2 与 vue3 的区别：</p>
+</li>
+</ol>
+<ul>
+<li>新增<code>v-model</code>代替以前的<code>v-model</code>和<code>.sync</code></li>
+<li>新增<code>context.emit</code>，与<code>this.$event</code>作用相同</li>
+</ul>
+<h2 id="三、Button-组件"><a href="#三、Button-组件" class="headerlink" title="三、Button 组件"></a>三、Button 组件</h2><h4 id="1、Vue3-属性绑定"><a href="#1、Vue3-属性绑定" class="headerlink" title="1、Vue3 属性绑定"></a>1、Vue3 属性绑定</h4><ol>
+<li><p>默认所有属性都绑定到根元素</p>
+<p>//<strong>Button.vue</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">    &lt;button&gt;&lt;slot &#x2F;&gt;&lt;&#x2F;button&gt;</span><br><span class="line">  &lt;&#x2F;div&gt;</span><br><span class="line">&lt;&#x2F;template&gt;</span><br></pre></td></tr></table></figure>
+<p>//<strong>ButtonDemo.vue</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;button 内容&lt;&#x2F;div&gt;</span><br><span class="line">  &lt;h1&gt;示例&lt;&#x2F;h1&gt;</span><br><span class="line">  &lt;Button @click&#x3D;&quot;&quot; @focus&#x3D;&quot;&quot;&gt;按钮&lt;&#x2F;Button&gt; &#x2F;&#x2F;Button上所有时间属性</span><br><span class="line">  会绑定到Button组件跟元素上</span><br><span class="line">&lt;&#x2F;template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">import Button from &quot;..&#x2F;lib&#x2F;Button.vue&quot;;</span><br><span class="line">export default &#123;</span><br><span class="line">  components: &#123; Button &#125;,</span><br><span class="line">&#125;;</span><br><span class="line">&lt;&#x2F;script&gt;</span><br></pre></td></tr></table></figure></li>
+<li><p>使用<code>inheritAttrs:false</code>可以取消默认绑定</p>
+</li>
+<li><p>使用<code>$attrs</code>或者 <code>context.attrs</code> 获取所有属性</p>
+</li>
+<li><p>使用 <code>v-bind=&#39;$attrs&#39;</code>批量绑定属性</p>
+</li>
+<li><p>使用<code>const &#123;size,onclick,...xxx&#125;=context.attrs</code>将属性分开</p>
+</li>
+</ol>
+<h4 id="2、props-和-attrs-的区别"><a href="#2、props-和-attrs-的区别" class="headerlink" title="2、props 和 attrs 的区别"></a>2、props 和 attrs 的区别</h4><ol>
+<li>props 要先声明才能取值，attrs 不需要</li>
+<li>props 不包含事件，attrs 包含</li>
+<li>props 没有声明的属性，会跑到 attrs 里</li>
+<li>props 支持 String 之外的类型，attrs 只支持 String 类型</li>
+</ol>
+<h4 id="3、CSS"><a href="#3、CSS" class="headerlink" title="3、CSS"></a>3、CSS</h4><ol>
+<li><code> white-space: nowrap;</code> 来设置如何处理元素中的空白 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/white-space">MDN</a></li>
+<li>**<code>box-shadow</code>**用于在元素的框架上添加阴影效果 <a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/box-shadow">MDN</a></li>
+</ol>
+<h4 id="4、库的-css-要求"><a href="#4、库的-css-要求" class="headerlink" title="4、库的 css 要求"></a>4、库的 css 要求</h4><ol>
+<li>不能用<code>scoped</code></li>
+<li>每个 css 类加前缀，防止污染</li>
+<li>css 最小邮箱原则</li>
+</ol>
+<h2 id="四、Dialog-组件"><a href="#四、Dialog-组件" class="headerlink" title="四、Dialog 组件"></a>四、Dialog 组件</h2><h4 id="1、具名插槽"><a href="#1、具名插槽" class="headerlink" title="1、具名插槽"></a>1、具名插槽</h4><p><strong>//DialogDemo.vue</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;template v-slot:content&gt;</span><br><span class="line">  &lt;strong&gt;hi&lt;&#x2F;strong&gt;</span><br><span class="line">  &lt;div&gt;你好&lt;&#x2F;div&gt;</span><br><span class="line">&lt;&#x2F;template&gt;</span><br><span class="line">&lt;template v-slot:title&gt;</span><br><span class="line">  &lt;strong&gt;加粗的标签 &lt;&#x2F;strong&gt;</span><br><span class="line">&lt;&#x2F;template&gt;</span><br></pre></td></tr></table></figure>
+<p>//Dialog.vue</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&lt;header&gt;</span><br><span class="line">            &lt;slot name&#x3D;&quot;title&quot; &#x2F;&gt;  &#x2F;&#x2F;对应 v-slot:title</span><br><span class="line">            &lt;span @click&#x3D;&quot;close&quot; class&#x3D;&quot;lunzi-dialog-close&quot;&gt;&lt;&#x2F;span&gt;</span><br><span class="line">          &lt;&#x2F;header&gt;</span><br><span class="line">&lt;main&gt;</span><br><span class="line">            &lt;slot name&#x3D;&quot;content&quot; &#x2F;&gt;  &#x2F;&#x2F;对应 v-slot:content</span><br><span class="line">          &lt;&#x2F;main&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="2、Teleport-组件"><a href="#2、Teleport-组件" class="headerlink" title="2、Teleport 组件"></a>2、Teleport 组件</h4><p>Teleport 提供了一种干净的方法，允许我们控制在 DOM 中哪个父节点下呈现 HTML，而不必求助于全局状态或将其拆分为两个组件。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&lt;teleport to&#x3D;&quot;body&quot;&gt;</span><br><span class="line">	&lt;div&gt;</span><br><span class="line">    &lt;&#x2F;div&gt;</span><br><span class="line">&lt;&#x2F;teleport&gt;</span><br><span class="line">&#x2F;&#x2F;将 div放在body里面</span><br></pre></td></tr></table></figure>
+<h4 id="3、动态加载组件"><a href="#3、动态加载组件" class="headerlink" title="3、动态加载组件"></a>3、动态加载组件</h4><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">const</span> openDialog = <span class="function">(<span class="params">options</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> &#123; title, content, ok, cancel, closeOnClickOverlay &#125; = options; <span class="comment">//获取参数选项</span></span><br><span class="line">  <span class="keyword">const</span> div = <span class="built_in">document</span>.createElement(<span class="string">&quot;div&quot;</span>); <span class="comment">//创建div</span></span><br><span class="line">  <span class="built_in">document</span>.body.appendChild(div); <span class="comment">//将div作为body的子元素</span></span><br><span class="line">  <span class="keyword">const</span> close = <span class="function">() =&gt;</span> &#123;</span><br><span class="line">    app.unmount(div); <span class="comment">//卸载app组件</span></span><br><span class="line">    div.remove(); <span class="comment">//删除多余div</span></span><br><span class="line">  &#125;;</span><br><span class="line">  <span class="keyword">const</span> app = createApp(&#123;</span><br><span class="line">    <span class="comment">//创建组件</span></span><br><span class="line">    <span class="function"><span class="title">render</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">      <span class="keyword">return</span> h(</span><br><span class="line">        <span class="comment">//通过h函数获取参数 需要的参数</span></span><br><span class="line">        Dialog,</span><br><span class="line">        &#123;</span><br><span class="line">          visible: <span class="literal">true</span>,</span><br><span class="line">          <span class="string">&quot;onUpdate:visible&quot;</span>: <span class="function">(<span class="params">newVisible</span>) =&gt;</span> &#123;</span><br><span class="line">            <span class="keyword">if</span> (newVisible === <span class="literal">false</span>) &#123;</span><br><span class="line">              <span class="comment">//当新的visible的值为false</span></span><br><span class="line">              close(); <span class="comment">//直接卸载组件，并删除div</span></span><br><span class="line">            &#125;</span><br><span class="line">          &#125;,</span><br><span class="line">          ok,</span><br><span class="line">          cancel,</span><br><span class="line">          closeOnClickOverlay,</span><br><span class="line">        &#125;,</span><br><span class="line">        &#123;</span><br><span class="line">          title,</span><br><span class="line">          content,</span><br><span class="line">        &#125;</span><br><span class="line">      );</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;);</span><br><span class="line">  app.mount(div); <span class="comment">//将app 挂载到div上</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<h2 id="五、Tabs-组件"><a href="#五、Tabs-组件" class="headerlink" title="五、Tabs 组件"></a>五、Tabs 组件</h2><h4 id="1、context-slots-default"><a href="#1、context-slots-default" class="headerlink" title="1、context.slots.default()"></a>1、context.slots.default()</h4><p><strong>检查组件内部标签类型</strong></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">setup(props, context) &#123; const defaults &#x3D; context.slots.default();</span><br><span class="line">defaults.forEach((tag) &#x3D;&gt; &#123; if (tag.type !&#x3D;&#x3D; Tab) &#123; throw new Error(&quot;Tabs</span><br><span class="line">子标签必须是Tab标签&quot;); &#125; &#125;); &#125;,</span><br></pre></td></tr></table></figure>
+<h4 id="2、onMounted、onUpdated、watchEffect"><a href="#2、onMounted、onUpdated、watchEffect" class="headerlink" title="2、onMounted、onUpdated、watchEffect"></a>2、onMounted、onUpdated、watchEffect</h4><p>使用<strong>watchEffect</strong>代替<strong>onMounted</strong>和<strong>onUpdated</strong>时，若第一次无法取到值，导致报错，可以</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">onMounted(()&#x3D;&gt;&#123;</span><br><span class="line">	onUpdated(()&#x3D;&gt;&#123;</span><br><span class="line">	...</span><br><span class="line">	&#125;)</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>一个 bug：<a href="https://github.com/vuejs/vue-next/issues/2013">https://github.com/vuejs/vue-next/issues/2013</a></p>
+<h2 id="六、官网装修"><a href="#六、官网装修" class="headerlink" title="六、官网装修"></a>六、官网装修</h2><h4 id="1、clip-path-制作圆角"><a href="#1、clip-path-制作圆角" class="headerlink" title="1、clip-path 制作圆角"></a>1、<strong>clip-path</strong> 制作圆角</h4><p>clip-path: ellipse(130px 140px at 10% 20%);</p>
+<h4 id="2、高亮当前路由"><a href="#2、高亮当前路由" class="headerlink" title="2、高亮当前路由"></a>2、高亮当前路由</h4><p>class:<code>router-link-active router-link-exact-active</code></p>
+<h4 id="2、自制插件-支持-markdown"><a href="#2、自制插件-支持-markdown" class="headerlink" title="2、自制插件 支持 markdown"></a>2、自制插件 支持 markdown</h4><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// @ts-nocheck</span></span><br><span class="line"><span class="keyword">import</span> path <span class="keyword">from</span> <span class="string">&quot;path&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> fs <span class="keyword">from</span> <span class="string">&quot;fs&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> marked <span class="keyword">from</span> <span class="string">&quot;marked&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">const</span> mdToJs = <span class="function">(<span class="params">str</span>) =&gt;</span> &#123;</span><br><span class="line">  <span class="keyword">const</span> content = <span class="built_in">JSON</span>.stringify(marked(str));</span><br><span class="line">  <span class="keyword">return</span> <span class="string">`export default <span class="subst">$&#123;content&#125;</span>`</span>;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="function"><span class="keyword">function</span> <span class="title">md</span>(<span class="params"></span>) </span>&#123;</span><br><span class="line">  <span class="keyword">return</span> &#123;</span><br><span class="line">    configureServer: [</span><br><span class="line">      <span class="comment">// 用于开发</span></span><br><span class="line">      <span class="keyword">async</span> (&#123; app &#125;) =&gt; &#123;</span><br><span class="line">        app.use(<span class="keyword">async</span> (ctx, next) =&gt; &#123;</span><br><span class="line">          <span class="comment">// koa</span></span><br><span class="line">          <span class="keyword">if</span> (ctx.path.endsWith(<span class="string">&quot;.md&quot;</span>)) &#123;</span><br><span class="line">            ctx.type = <span class="string">&quot;js&quot;</span>;</span><br><span class="line">            <span class="keyword">const</span> filePath = path.join(process.cwd(), ctx.path);</span><br><span class="line">            ctx.body = mdToJs(fs.readFileSync(filePath).toString());</span><br><span class="line">          &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="keyword">await</span> next();</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">      &#125;,</span><br><span class="line">    ],</span><br><span class="line">    transforms: [</span><br><span class="line">      &#123;</span><br><span class="line">        <span class="comment">// 用于 rollup // 插件</span></span><br><span class="line">        test: <span class="function">(<span class="params">context</span>) =&gt;</span> context.path.endsWith(<span class="string">&quot;.md&quot;</span>),</span><br><span class="line">        transform: <span class="function">(<span class="params">&#123; code &#125;</span>) =&gt;</span> mdToJs(code),</span><br><span class="line">      &#125;,</span><br><span class="line">    ],</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id><a href="#" class="headerlink" title></a></h4><h4 id="4、demo-组件"><a href="#4、demo-组件" class="headerlink" title="4、demo 组件"></a>4、demo 组件</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br></pre></td><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class&#x3D;&quot;demo&quot;&gt;</span><br><span class="line">    &lt;h2&gt;&#123;&#123; component.__sourceCodeTitle &#125;&#125;&lt;&#x2F;h2&gt;</span><br><span class="line">    &lt;div class&#x3D;&quot;demo-component&quot;&gt;</span><br><span class="line">      &lt;component :is&#x3D;&quot;component&quot; &#x2F;&gt;</span><br><span class="line">    &lt;&#x2F;div&gt;</span><br><span class="line">    &lt;div class&#x3D;&quot;demo-actions&quot;&gt;</span><br><span class="line">      &lt;Button @click&#x3D;&quot;hideCode&quot; level&#x3D;&quot;danger&quot; v-if&#x3D;&quot;codeVisible&quot;</span><br><span class="line">        &gt;隐藏代码&lt;&#x2F;Button</span><br><span class="line">      &gt;</span><br><span class="line">      &lt;Button @click&#x3D;&quot;showCode&quot; level&#x3D;&quot;main&quot; v-else&gt;查看代码&lt;&#x2F;Button&gt;</span><br><span class="line">    &lt;&#x2F;div&gt;</span><br><span class="line">    &lt;div class&#x3D;&quot;demo-code&quot; v-if&#x3D;&quot;codeVisible&quot;&gt;</span><br><span class="line">      &lt;pre class&#x3D;&quot;language-css&quot; v-html&#x3D;&quot;html&quot; &#x2F;&gt;</span><br><span class="line">    &lt;&#x2F;div&gt;</span><br><span class="line">  &lt;&#x2F;div&gt;</span><br><span class="line">&lt;&#x2F;template&gt;</span><br><span class="line">&lt;script lang&#x3D;&quot;ts&quot;&gt;</span><br><span class="line">import Button from &quot;..&#x2F;lib&#x2F;Button.vue&quot;;</span><br><span class="line">import &quot;prismjs&quot;;</span><br><span class="line">const Prism &#x3D; (window as any).Prism;</span><br><span class="line">import &quot;..&#x2F;themes&#x2F;prism-okaidia.css&quot;;</span><br><span class="line">import &#123; computed, ref &#125; from &quot;vue&quot;;</span><br><span class="line">export default &#123;</span><br><span class="line">  components: &#123; Button &#125;,</span><br><span class="line">  props: &#123;</span><br><span class="line">    component: Object,</span><br><span class="line">  &#125;,</span><br><span class="line">  setup(props) &#123;</span><br><span class="line">    const codeVisible &#x3D; ref(false);</span><br><span class="line">    const showCode &#x3D; () &#x3D;&gt; (codeVisible.value &#x3D; true);</span><br><span class="line">    const hideCode &#x3D; () &#x3D;&gt; (codeVisible.value &#x3D; false);</span><br><span class="line">    const html &#x3D; computed(() &#x3D;&gt; &#123;</span><br><span class="line">      return Prism.highlight(</span><br><span class="line">        props.component.__sourceCode,</span><br><span class="line">        Prism.languages.html,</span><br><span class="line">        &quot;html&quot;</span><br><span class="line">      );</span><br><span class="line">    &#125;);</span><br><span class="line">    return &#123; Prism, html, codeVisible, showCode, hideCode &#125;;</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line">&lt;&#x2F;script&gt;</span><br><span class="line">&lt;style lang&#x3D;&quot;scss&quot; scoped&gt;</span><br><span class="line">$border-color: #d9d9d9;</span><br><span class="line">.demo &#123;</span><br><span class="line">  border: 1px solid $border-color;</span><br><span class="line">  margin: 16px 0 32px;</span><br><span class="line">  &gt; h2 &#123;</span><br><span class="line">    font-size: 20px;</span><br><span class="line">    padding: 8px 16px;</span><br><span class="line">    border-bottom: 1px solid $border-color;</span><br><span class="line">  &#125;</span><br><span class="line">  &amp;-component &#123;</span><br><span class="line">    padding: 16px;</span><br><span class="line">  &#125;</span><br><span class="line">  &amp;-actions &#123;</span><br><span class="line">    padding: 8px 16px;</span><br><span class="line">    border-top: 1px dashed $border-color;</span><br><span class="line">  &#125;</span><br><span class="line">  &amp;-code &#123;</span><br><span class="line">    padding: 8px 16px;</span><br><span class="line">    border-top: 1px dashed $border-color;</span><br><span class="line">    &gt; pre &#123;</span><br><span class="line">      line-height: 1.1;</span><br><span class="line">      font-family: Consolas, &quot;Courier New&quot;, Courier, monospace;</span><br><span class="line">      margin: 0;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">&lt;&#x2F;style&gt;</span><br></pre></td></tr></table></figure>
+<p><code>vite.config.ts</code></p>
+<figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">// @ts-nocheck</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">import</span> &#123; md &#125; <span class="keyword">from</span> <span class="string">&quot;./plugins/md&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> fs <span class="keyword">from</span> <span class="string">&quot;fs&quot;</span>;</span><br><span class="line"><span class="keyword">import</span> &#123; baseParse &#125; <span class="keyword">from</span> <span class="string">&quot;@vue/compiler-core&quot;</span>;</span><br><span class="line"></span><br><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> &#123;</span><br><span class="line">  base: <span class="string">&quot;./&quot;</span>,</span><br><span class="line">  assetsDir: <span class="string">&quot;assets&quot;</span>,</span><br><span class="line">  plugins: [md()],</span><br><span class="line">  vueCustomBlockTransforms: &#123;</span><br><span class="line">    demo: <span class="function">(<span class="params">options</span>) =&gt;</span> &#123;</span><br><span class="line">      <span class="keyword">const</span> &#123; code, path &#125; = options;</span><br><span class="line">      <span class="keyword">const</span> file = fs.readFileSync(path).toString();</span><br><span class="line">      <span class="keyword">const</span> parsed = baseParse(file).children.find(<span class="function">(<span class="params">n</span>) =&gt;</span> n.tag === <span class="string">&quot;demo&quot;</span>);</span><br><span class="line">      <span class="keyword">const</span> title = parsed.children[<span class="number">0</span>].content;</span><br><span class="line">      <span class="keyword">const</span> main = file.split(parsed.loc.source).join(<span class="string">&quot;&quot;</span>).trim();</span><br><span class="line">      <span class="keyword">return</span> <span class="string">`export default function (Component) &#123;</span></span><br><span class="line"><span class="string">        Component.__sourceCode = <span class="subst">$&#123;<span class="built_in">JSON</span>.stringify(main)&#125;</span></span></span><br><span class="line"><span class="string">        Component.__sourceCodeTitle = <span class="subst">$&#123;<span class="built_in">JSON</span>.stringify(title)&#125;</span></span></span><br><span class="line"><span class="string">      &#125;`</span>.trim();</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E5%8D%9A%E5%AE%A2/" rel="tag"># 博客</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/02/19/jirengu/" rel="prev" title="笔记汇总">
+                  <i class="fa fa-chevron-left"></i> 笔记汇总
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/02/19/%E8%AE%B0%E8%B4%A6/" rel="next" title="极简记账">
+                  极简记账 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">GENGZHI</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/muse/" class="theme-link" rel="noopener" target="_blank">NexT.Muse</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
