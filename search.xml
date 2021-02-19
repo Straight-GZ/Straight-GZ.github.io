@@ -127,6 +127,214 @@
 ]]></content>
   </entry>
   <entry>
+    <title>一、 Git</title>
+    <url>/2021/02/19/1%E3%80%81git/</url>
+    <content><![CDATA[<h2 id="1、git-入门："><a href="#1、git-入门：" class="headerlink" title="1、git 入门："></a>1、git 入门：</h2><h3 id="英语小课堂"><a href="#英语小课堂" class="headerlink" title="英语小课堂"></a>英语小课堂</h3><p>list 列表（ls) remove 删除(rm) recursive 递归的 echo 回声 touch 触摸 directory 目录/文件夹 force 强制</p>
+<p>list remove recursive echoecho echo directory forceforce force</p>
+<p>救命快捷键：Ctrl+c 中断</p>
+<h3 id="增删改查"><a href="#增删改查" class="headerlink" title="增删改查"></a>增删改查</h3><h4 id="查："><a href="#查：" class="headerlink" title="查："></a>查：</h4><p>查看目录绝对路径：pwd</p>
+<p>查看当前目录内容：ls</p>
+<p>查看指定目录内容：ls+路径</p>
+<p>查看文件内容：</p>
+<p>cat 路径：全部内容</p>
+<p>head 路径：前面 10 行，head 路径 -n 14（行数）</p>
+<p>tail 路径：后面 10 行，tail 路径 -n 14（行数）</p>
+<p>less 路径：分页查看 j、k</p>
+<h4 id="增："><a href="#增：" class="headerlink" title="增："></a>增：</h4><p>创建文件：</p>
+<ul>
+<li>touch： a 创建一个空文件 多个文件空格隔开</li>
+<li>echo： echo ‘hi’ &gt; 1.txt （覆盖） “&gt;&gt;”表示添加内容 echo -e ‘1/n2’ &gt;&gt;1.txt 添加多行</li>
+</ul>
+<p>创建目录：</p>
+<ul>
+<li><p>mkdir a/</p>
+</li>
+<li><p>mkdir -p a/b/c/d/e(多层目录) 多个目录 空格隔开</p>
+</li>
+<li><p>复制文件：cp 1.txt 2.txt 将 1.txt 的内容复制给 2.txt</p>
+</li>
+<li><p>复制目录：cp -r a b 将 a 目录里的内容复制给 b 目录 -r：递归、重现</p>
+</li>
+</ul>
+<h4 id="删："><a href="#删：" class="headerlink" title="删："></a>删：</h4><p>rm 1.txt 删除文件</p>
+<p>rm -r a 删除目录</p>
+<h4 id="改："><a href="#改：" class="headerlink" title="改："></a>改：</h4><p>追加、修改内容：echo ‘1’&gt;&gt;1.txt</p>
+<p>打开文件修改：code 1.txt start 1.txt</p>
+<p>清空内容：echo “”&gt;1.txt 空内容代替文档内容 打开文件删除</p>
+<p>修改文件名/目录：mv 1.txt 2.txt mv：移动</p>
+<p>重命名文件名/目录：同上</p>
+<p>修改文件最后更新时间：touch 1.txt</p>
+<h3 id="命令的组合："><a href="#命令的组合：" class="headerlink" title="命令的组合："></a>命令的组合：</h3><p>命令成功：没有提示，返回 0</p>
+<p>命令失败：提示 error，返回非 0</p>
+<p>&amp;&amp;命令：当第一条命令成功之后执行下一条命令</p>
+<p>;命令：不管第一条命令是否成功，都执行下一条</p>
+<h4 id="脚本文件："><a href="#脚本文件：" class="headerlink" title="脚本文件："></a>脚本文件：</h4><ol>
+<li>创建文件，后缀无所谓</li>
+<li>添加可执行性权限：chmod +x ./文件名 （./ ：当前目录）</li>
+<li>文件里写命令</li>
+<li>运行 [sh 路径]执行</li>
+<li>shebang #!/usr/bin/env sh</li>
+<li>必须用正常的路径 ./文件名</li>
+<li>添加 path 可以不写目录，直接执行</li>
+</ol>
+<h2 id="2、git-本地仓库"><a href="#2、git-本地仓库" class="headerlink" title="2、git 本地仓库"></a>2、git 本地仓库</h2><p>git 就是一条命令</p>
+<p>六行配置</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global user.name 你的英文名</span><br><span class="line">git config --global user.email 你的邮箱</span><br><span class="line">git config --global push.default simple</span><br><span class="line">git config --global core.quotepath <span class="literal">false</span></span><br><span class="line">git config --global core.editor <span class="string">&quot;code --wait&quot;</span></span><br><span class="line">git config --global core.autocrlf input</span><br></pre></td></tr></table></figure>
+<h3 id="1-让你代码有版本："><a href="#1-让你代码有版本：" class="headerlink" title="1.让你代码有版本："></a>1.让你代码有版本：</h3><p>git init :初始化（指定目录），创建 .git 目录</p>
+<p><strong>git add</strong> 路径:选择哪些变动是需要提交的</p>
+<p>.gitignore：描述哪些文件是不需要提交的</p>
+<p>git commit -m ：字符串：提交，说明理由 （字符串有空格，用引号）</p>
+<p><strong>git commit -v</strong>：回顾修改的内容，添加详细提交理由<strong>（推荐）</strong></p>
+<p>git reset –hard 提交号前六位：回到指定提交版本</p>
+<p>git log： 查看历史 git reflog：查看所有的历史</p>
+<h3 id="2-分支："><a href="#2-分支：" class="headerlink" title="2.分支："></a>2.分支：</h3><p>git branch ：基于当前 commit 创建分支，在哪个分支提交，就创建在哪个分支</p>
+<p>git checkout：切换分支</p>
+<p>git merge:合并分支</p>
+<p><strong>步骤</strong>：</p>
+<ol>
+<li><p>选择需要保留的分支 master</p>
+</li>
+<li><p>运行 git merge x（合并的分支）</p>
+</li>
+<li><p>冲突</p>
+<ul>
+<li><p>发现冲突：</p>
+<p>合并分支的时候<strong>conflict</strong>提示</p>
+<p>使用 git status -sb 查看冲突文件</p>
+</li>
+<li><p>解决冲突：</p>
+<p>依次打开文件</p>
+<p>搜素‘====’四个等于号</p>
+<p>选择要保留的代码，删除不用的代码</p>
+<p>删除’====‘’&lt;&lt;&lt;&lt;’’&gt;&gt;&gt;&gt;’标记</p>
+<p><strong>git add 对应文件</strong></p>
+<p>再次使用 git status -sb 解决下一个冲突文件</p>
+<p>直到没有冲突，运行<strong>git commit （不需要加选项）</strong></p>
+</li>
+</ul>
+</li>
+<li><p>合并完删除无用的分支 git branch -d x</p>
+</li>
+</ol>
+<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><ul>
+<li>git 目录就是本地仓库</li>
+<li>git add 处理的是文件变化，而不是文件，删除文件后，依然需要 git add 添加到提交区</li>
+<li>常用的命令：<strong>git add</strong> 和<strong>git commit -v</strong></li>
+</ul>
+<h2 id="3、git-远程仓库"><a href="#3、git-远程仓库" class="headerlink" title="3、git 远程仓库"></a>3、git 远程仓库</h2><h3 id="生成-ssh-key（帮助文档）："><a href="#生成-ssh-key（帮助文档）：" class="headerlink" title="生成 ssh key（帮助文档）："></a>生成 ssh key（<a href="https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent#">帮助文档</a>）：</h3><ul>
+<li>运行 ssh-keygen -t rsa -b 4096 -C +邮箱地址</li>
+<li>一直回车键到没有提示</li>
+<li>cat ~/.ssh/id_rsa.pub 得到公钥内容，复制内容</li>
+<li>打开 Github，在设置页面粘贴公钥内容</li>
+</ul>
+<h3 id="测试："><a href="#测试：" class="headerlink" title="测试："></a>测试：</h3><ul>
+<li>运行 ssh -T <a href="mailto:&#103;&#105;&#116;&#64;&#x67;&#x69;&#116;&#x68;&#117;&#x62;&#x2e;&#99;&#111;&#109;">&#103;&#105;&#116;&#64;&#x67;&#x69;&#116;&#x68;&#117;&#x62;&#x2e;&#99;&#111;&#109;</a></li>
+<li>询问 yes/no,回答 yes</li>
+</ul>
+<h3 id="上传代码："><a href="#上传代码：" class="headerlink" title="上传代码："></a>上传代码：</h3><ol>
+<li><p>新建 Github Repo，复制 ssh 地址</p>
+</li>
+<li><p>运行 git remote add origin git@xxxxx</p>
+<p>（在本地添加远程仓库地址，origin 为远程仓库默认名字）</p>
+</li>
+<li><p>git push -u origin master</p>
+</li>
+</ol>
+<ul>
+<li>推送本地 master 分支到远程 originmaster 分支</li>
+<li>提示应该 git pull…，就运行 git pull<img src="/Straight-GZ/2021/02/19/1%E3%80%81git/Users\Crystal\AppData\Roaming\Typora\typora-user-images\image-20200929212241934.png" alt="image-20200929212241934"></li>
+<li>-u origin master 意思为设置上游分支，之后不用再设置，直接 git pull，git push</li>
+</ul>
+<p><strong>上传其它分支：</strong></p>
+<p>一：git push x:x</p>
+<p>二：git checkout x</p>
+<pre><code>git push -u origin x</code></pre>
+<p><strong>上传到两个本地仓库</strong></p>
+<ul>
+<li>git remote add origin2 git@xxxxx</li>
+<li>git push -u origin master</li>
+</ul>
+<p><strong>git pull 冲突</strong>：查看合并分支冲突</p>
+<h3 id="下载代码："><a href="#下载代码：" class="headerlink" title="下载代码："></a>下载代码：</h3><ol>
+<li>git clone git@xxx</li>
+<li>不同机器需要先上传新的 ssh key(一机一 key)</li>
+<li><strong>cd 目标路径</strong></li>
+<li>运行 git add/git commit/[git pull]/git push</li>
+</ol>
+<p>下载某个分支：先下载整个仓库，再切换分支</p>
+<p><strong>git clone</strong>：</p>
+<ul>
+<li><p>git clone git@?/xxx.git:会在当前目录下创建一个 xxx 目录，xxx/.git 是本地仓库，一般需要接 cd xxx 进入目录</p>
+</li>
+<li><p>git clone git@?/xxx.git yyy：会在本地新建一个 yyy 目录，cd yyy 进入目录</p>
+</li>
+<li><p>git clone git@?/xxx.git .:最后一个字符是点，使用当前目录容纳代码和.git，需要先新建一个目录，cd 进入目录</p>
+</li>
+</ul>
+<h3 id="总结：-1"><a href="#总结：-1" class="headerlink" title="总结："></a>总结：</h3><p>常用命令：git alone/git pull/git push</p>
+<p>远程仓库：本地仓库的备份，要先 commit 到本地仓库，然后 push 到远程仓库</p>
+<pre><code>    无法下载部分代码，只能先clone整个仓库生成ssh key（[帮助文档](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent#)）：</code></pre>
+<ul>
+<li>运行 ssh-keygen -t rsa -b 4096 -C +邮箱地址</li>
+<li>一直回车键到没有提示</li>
+<li>cat ~/.ssh/id_rsa.pub 得到公钥内容，复制内容</li>
+<li>打开 Github，在设置页面粘贴公钥内容</li>
+</ul>
+<h3 id="测试：-1"><a href="#测试：-1" class="headerlink" title="测试："></a>测试：</h3><ul>
+<li>运行 ssh -T <a href="mailto:&#103;&#105;&#116;&#x40;&#103;&#x69;&#x74;&#104;&#117;&#98;&#46;&#99;&#x6f;&#x6d;">&#103;&#105;&#116;&#x40;&#103;&#x69;&#x74;&#104;&#117;&#98;&#46;&#99;&#x6f;&#x6d;</a></li>
+<li>询问 yes/no,回答 yes</li>
+</ul>
+<h3 id="上传代码：-1"><a href="#上传代码：-1" class="headerlink" title="上传代码："></a>上传代码：</h3><ol>
+<li><p>新建 Github Repo，复制 ssh 地址</p>
+</li>
+<li><p>运行 git remote add origin git@xxxxx</p>
+<p>（在本地添加远程仓库地址，origin 为远程仓库默认名字）</p>
+</li>
+<li><p>git push -u origin master</p>
+</li>
+</ol>
+<ul>
+<li>推送本地 master 分支到远程 originmaster 分支</li>
+<li>提示应该 git pull…，就运行 git pull<img src="/Straight-GZ/2021/02/19/1%E3%80%81git/Users\Crystal\AppData\Roaming\Typora\typora-user-images\image-20200929212241934.png" alt="image-20200929212241934"></li>
+<li>-u origin master 意思为设置上游分支，之后不用再设置，直接 git pull，git push</li>
+</ul>
+<p><strong>上传其它分支：</strong></p>
+<p>一：git push x:x</p>
+<p>二：git checkout x</p>
+<pre><code>git push -u origin x</code></pre>
+<p><strong>上传到两个本地仓库</strong></p>
+<ul>
+<li>git remote add origin2 git@xxxxx</li>
+<li>git push -u origin master</li>
+</ul>
+<p><strong>git pull 冲突</strong>：查看合并分支冲突</p>
+<h3 id="下载代码：-1"><a href="#下载代码：-1" class="headerlink" title="下载代码："></a>下载代码：</h3><ol>
+<li>git clone git@xxx</li>
+<li>不同机器需要先上传新的 ssh key(一机一 key)</li>
+<li><strong>cd 目标路径</strong></li>
+<li>运行 git add/git commit/[git pull]/git push</li>
+</ol>
+<p>下载某个分支：先下载整个仓库，再切换分支</p>
+<p><strong>git clone</strong>：</p>
+<ul>
+<li><p>git clone git@?/xxx.git:会在当前目录下创建一个 xxx 目录，xxx/.git 是本地仓库，一般需要接 cd xxx 进入目录</p>
+</li>
+<li><p>git clone git@?/xxx.git yyy：会在本地新建一个 yyy 目录，cd yyy 进入目录</p>
+</li>
+<li><p>git clone git@?/xxx.git .:最后一个字符是点，使用当前目录容纳代码和.git，需要先新建一个目录，cd 进入目录</p>
+</li>
+</ul>
+<h3 id="总结：-2"><a href="#总结：-2" class="headerlink" title="总结："></a>总结：</h3><p>常用命令：git alone/git pull/git push</p>
+<p>远程仓库：本地仓库的备份，要先 commit 到本地仓库，然后 push 到远程仓库</p>
+<pre><code>    无法下载部分代码，只能先clone整个仓库</code></pre>
+<h2 id="4、git-高级操作"><a href="#4、git-高级操作" class="headerlink" title="4、git 高级操作"></a>4、git 高级操作</h2><p>bash alias 简化命令： ga=”git add” gc=”git commit -v” gl=”git pull” gp=”git push” gco=”git checkout” gst=”git status -sb”</p>
+<p>美化历史命令：git rebase -i xxx</p>
+]]></content>
+      <tags>
+        <tag>git</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>二、HTML</title>
     <url>/2021/02/19/2%E3%80%81HTML/</url>
     <content><![CDATA[<h2 id="1、概述："><a href="#1、概述：" class="headerlink" title="1、概述："></a>1、概述：</h2><h3 id="万维网："><a href="#万维网：" class="headerlink" title="万维网："></a>万维网：</h3><p>WWW（world wide web）：1990 年诞生，李爵士发明 WWW，同时发明了 HTML HTTP 和 url</p>
@@ -428,214 +636,6 @@
 ]]></content>
   </entry>
   <entry>
-    <title>一、 Git</title>
-    <url>/2021/02/19/1%E3%80%81git/</url>
-    <content><![CDATA[<h2 id="1、git-入门："><a href="#1、git-入门：" class="headerlink" title="1、git 入门："></a>1、git 入门：</h2><h3 id="英语小课堂"><a href="#英语小课堂" class="headerlink" title="英语小课堂"></a>英语小课堂</h3><p>list 列表（ls) remove 删除(rm) recursive 递归的 echo 回声 touch 触摸 directory 目录/文件夹 force 强制</p>
-<p>list remove recursive echoecho echo directory forceforce force</p>
-<p>救命快捷键：Ctrl+c 中断</p>
-<h3 id="增删改查"><a href="#增删改查" class="headerlink" title="增删改查"></a>增删改查</h3><h4 id="查："><a href="#查：" class="headerlink" title="查："></a>查：</h4><p>查看目录绝对路径：pwd</p>
-<p>查看当前目录内容：ls</p>
-<p>查看指定目录内容：ls+路径</p>
-<p>查看文件内容：</p>
-<p>cat 路径：全部内容</p>
-<p>head 路径：前面 10 行，head 路径 -n 14（行数）</p>
-<p>tail 路径：后面 10 行，tail 路径 -n 14（行数）</p>
-<p>less 路径：分页查看 j、k</p>
-<h4 id="增："><a href="#增：" class="headerlink" title="增："></a>增：</h4><p>创建文件：</p>
-<ul>
-<li>touch： a 创建一个空文件 多个文件空格隔开</li>
-<li>echo： echo ‘hi’ &gt; 1.txt （覆盖） “&gt;&gt;”表示添加内容 echo -e ‘1/n2’ &gt;&gt;1.txt 添加多行</li>
-</ul>
-<p>创建目录：</p>
-<ul>
-<li><p>mkdir a/</p>
-</li>
-<li><p>mkdir -p a/b/c/d/e(多层目录) 多个目录 空格隔开</p>
-</li>
-<li><p>复制文件：cp 1.txt 2.txt 将 1.txt 的内容复制给 2.txt</p>
-</li>
-<li><p>复制目录：cp -r a b 将 a 目录里的内容复制给 b 目录 -r：递归、重现</p>
-</li>
-</ul>
-<h4 id="删："><a href="#删：" class="headerlink" title="删："></a>删：</h4><p>rm 1.txt 删除文件</p>
-<p>rm -r a 删除目录</p>
-<h4 id="改："><a href="#改：" class="headerlink" title="改："></a>改：</h4><p>追加、修改内容：echo ‘1’&gt;&gt;1.txt</p>
-<p>打开文件修改：code 1.txt start 1.txt</p>
-<p>清空内容：echo “”&gt;1.txt 空内容代替文档内容 打开文件删除</p>
-<p>修改文件名/目录：mv 1.txt 2.txt mv：移动</p>
-<p>重命名文件名/目录：同上</p>
-<p>修改文件最后更新时间：touch 1.txt</p>
-<h3 id="命令的组合："><a href="#命令的组合：" class="headerlink" title="命令的组合："></a>命令的组合：</h3><p>命令成功：没有提示，返回 0</p>
-<p>命令失败：提示 error，返回非 0</p>
-<p>&amp;&amp;命令：当第一条命令成功之后执行下一条命令</p>
-<p>;命令：不管第一条命令是否成功，都执行下一条</p>
-<h4 id="脚本文件："><a href="#脚本文件：" class="headerlink" title="脚本文件："></a>脚本文件：</h4><ol>
-<li>创建文件，后缀无所谓</li>
-<li>添加可执行性权限：chmod +x ./文件名 （./ ：当前目录）</li>
-<li>文件里写命令</li>
-<li>运行 [sh 路径]执行</li>
-<li>shebang #!/usr/bin/env sh</li>
-<li>必须用正常的路径 ./文件名</li>
-<li>添加 path 可以不写目录，直接执行</li>
-</ol>
-<h2 id="2、git-本地仓库"><a href="#2、git-本地仓库" class="headerlink" title="2、git 本地仓库"></a>2、git 本地仓库</h2><p>git 就是一条命令</p>
-<p>六行配置</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global user.name 你的英文名</span><br><span class="line">git config --global user.email 你的邮箱</span><br><span class="line">git config --global push.default simple</span><br><span class="line">git config --global core.quotepath <span class="literal">false</span></span><br><span class="line">git config --global core.editor <span class="string">&quot;code --wait&quot;</span></span><br><span class="line">git config --global core.autocrlf input</span><br></pre></td></tr></table></figure>
-<h3 id="1-让你代码有版本："><a href="#1-让你代码有版本：" class="headerlink" title="1.让你代码有版本："></a>1.让你代码有版本：</h3><p>git init :初始化（指定目录），创建 .git 目录</p>
-<p><strong>git add</strong> 路径:选择哪些变动是需要提交的</p>
-<p>.gitignore：描述哪些文件是不需要提交的</p>
-<p>git commit -m ：字符串：提交，说明理由 （字符串有空格，用引号）</p>
-<p><strong>git commit -v</strong>：回顾修改的内容，添加详细提交理由<strong>（推荐）</strong></p>
-<p>git reset –hard 提交号前六位：回到指定提交版本</p>
-<p>git log： 查看历史 git reflog：查看所有的历史</p>
-<h3 id="2-分支："><a href="#2-分支：" class="headerlink" title="2.分支："></a>2.分支：</h3><p>git branch ：基于当前 commit 创建分支，在哪个分支提交，就创建在哪个分支</p>
-<p>git checkout：切换分支</p>
-<p>git merge:合并分支</p>
-<p><strong>步骤</strong>：</p>
-<ol>
-<li><p>选择需要保留的分支 master</p>
-</li>
-<li><p>运行 git merge x（合并的分支）</p>
-</li>
-<li><p>冲突</p>
-<ul>
-<li><p>发现冲突：</p>
-<p>合并分支的时候<strong>conflict</strong>提示</p>
-<p>使用 git status -sb 查看冲突文件</p>
-</li>
-<li><p>解决冲突：</p>
-<p>依次打开文件</p>
-<p>搜素‘====’四个等于号</p>
-<p>选择要保留的代码，删除不用的代码</p>
-<p>删除’====‘’&lt;&lt;&lt;&lt;’’&gt;&gt;&gt;&gt;’标记</p>
-<p><strong>git add 对应文件</strong></p>
-<p>再次使用 git status -sb 解决下一个冲突文件</p>
-<p>直到没有冲突，运行<strong>git commit （不需要加选项）</strong></p>
-</li>
-</ul>
-</li>
-<li><p>合并完删除无用的分支 git branch -d x</p>
-</li>
-</ol>
-<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><ul>
-<li>git 目录就是本地仓库</li>
-<li>git add 处理的是文件变化，而不是文件，删除文件后，依然需要 git add 添加到提交区</li>
-<li>常用的命令：<strong>git add</strong> 和<strong>git commit -v</strong></li>
-</ul>
-<h2 id="3、git-远程仓库"><a href="#3、git-远程仓库" class="headerlink" title="3、git 远程仓库"></a>3、git 远程仓库</h2><h3 id="生成-ssh-key（帮助文档）："><a href="#生成-ssh-key（帮助文档）：" class="headerlink" title="生成 ssh key（帮助文档）："></a>生成 ssh key（<a href="https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent#">帮助文档</a>）：</h3><ul>
-<li>运行 ssh-keygen -t rsa -b 4096 -C +邮箱地址</li>
-<li>一直回车键到没有提示</li>
-<li>cat ~/.ssh/id_rsa.pub 得到公钥内容，复制内容</li>
-<li>打开 Github，在设置页面粘贴公钥内容</li>
-</ul>
-<h3 id="测试："><a href="#测试：" class="headerlink" title="测试："></a>测试：</h3><ul>
-<li>运行 ssh -T <a href="mailto:&#103;&#x69;&#x74;&#x40;&#103;&#x69;&#116;&#104;&#117;&#98;&#x2e;&#99;&#111;&#x6d;">&#103;&#x69;&#x74;&#x40;&#103;&#x69;&#116;&#104;&#117;&#98;&#x2e;&#99;&#111;&#x6d;</a></li>
-<li>询问 yes/no,回答 yes</li>
-</ul>
-<h3 id="上传代码："><a href="#上传代码：" class="headerlink" title="上传代码："></a>上传代码：</h3><ol>
-<li><p>新建 Github Repo，复制 ssh 地址</p>
-</li>
-<li><p>运行 git remote add origin git@xxxxx</p>
-<p>（在本地添加远程仓库地址，origin 为远程仓库默认名字）</p>
-</li>
-<li><p>git push -u origin master</p>
-</li>
-</ol>
-<ul>
-<li>推送本地 master 分支到远程 originmaster 分支</li>
-<li>提示应该 git pull…，就运行 git pull<img src="/Straight-GZ/2021/02/19/1%E3%80%81git/Users\Crystal\AppData\Roaming\Typora\typora-user-images\image-20200929212241934.png" alt="image-20200929212241934"></li>
-<li>-u origin master 意思为设置上游分支，之后不用再设置，直接 git pull，git push</li>
-</ul>
-<p><strong>上传其它分支：</strong></p>
-<p>一：git push x:x</p>
-<p>二：git checkout x</p>
-<pre><code>git push -u origin x</code></pre>
-<p><strong>上传到两个本地仓库</strong></p>
-<ul>
-<li>git remote add origin2 git@xxxxx</li>
-<li>git push -u origin master</li>
-</ul>
-<p><strong>git pull 冲突</strong>：查看合并分支冲突</p>
-<h3 id="下载代码："><a href="#下载代码：" class="headerlink" title="下载代码："></a>下载代码：</h3><ol>
-<li>git clone git@xxx</li>
-<li>不同机器需要先上传新的 ssh key(一机一 key)</li>
-<li><strong>cd 目标路径</strong></li>
-<li>运行 git add/git commit/[git pull]/git push</li>
-</ol>
-<p>下载某个分支：先下载整个仓库，再切换分支</p>
-<p><strong>git clone</strong>：</p>
-<ul>
-<li><p>git clone git@?/xxx.git:会在当前目录下创建一个 xxx 目录，xxx/.git 是本地仓库，一般需要接 cd xxx 进入目录</p>
-</li>
-<li><p>git clone git@?/xxx.git yyy：会在本地新建一个 yyy 目录，cd yyy 进入目录</p>
-</li>
-<li><p>git clone git@?/xxx.git .:最后一个字符是点，使用当前目录容纳代码和.git，需要先新建一个目录，cd 进入目录</p>
-</li>
-</ul>
-<h3 id="总结：-1"><a href="#总结：-1" class="headerlink" title="总结："></a>总结：</h3><p>常用命令：git alone/git pull/git push</p>
-<p>远程仓库：本地仓库的备份，要先 commit 到本地仓库，然后 push 到远程仓库</p>
-<pre><code>    无法下载部分代码，只能先clone整个仓库生成ssh key（[帮助文档](https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent#)）：</code></pre>
-<ul>
-<li>运行 ssh-keygen -t rsa -b 4096 -C +邮箱地址</li>
-<li>一直回车键到没有提示</li>
-<li>cat ~/.ssh/id_rsa.pub 得到公钥内容，复制内容</li>
-<li>打开 Github，在设置页面粘贴公钥内容</li>
-</ul>
-<h3 id="测试：-1"><a href="#测试：-1" class="headerlink" title="测试："></a>测试：</h3><ul>
-<li>运行 ssh -T <a href="mailto:&#x67;&#x69;&#116;&#x40;&#103;&#x69;&#x74;&#x68;&#x75;&#98;&#46;&#99;&#111;&#x6d;">&#x67;&#x69;&#116;&#x40;&#103;&#x69;&#x74;&#x68;&#x75;&#98;&#46;&#99;&#111;&#x6d;</a></li>
-<li>询问 yes/no,回答 yes</li>
-</ul>
-<h3 id="上传代码：-1"><a href="#上传代码：-1" class="headerlink" title="上传代码："></a>上传代码：</h3><ol>
-<li><p>新建 Github Repo，复制 ssh 地址</p>
-</li>
-<li><p>运行 git remote add origin git@xxxxx</p>
-<p>（在本地添加远程仓库地址，origin 为远程仓库默认名字）</p>
-</li>
-<li><p>git push -u origin master</p>
-</li>
-</ol>
-<ul>
-<li>推送本地 master 分支到远程 originmaster 分支</li>
-<li>提示应该 git pull…，就运行 git pull<img src="/Straight-GZ/2021/02/19/1%E3%80%81git/Users\Crystal\AppData\Roaming\Typora\typora-user-images\image-20200929212241934.png" alt="image-20200929212241934"></li>
-<li>-u origin master 意思为设置上游分支，之后不用再设置，直接 git pull，git push</li>
-</ul>
-<p><strong>上传其它分支：</strong></p>
-<p>一：git push x:x</p>
-<p>二：git checkout x</p>
-<pre><code>git push -u origin x</code></pre>
-<p><strong>上传到两个本地仓库</strong></p>
-<ul>
-<li>git remote add origin2 git@xxxxx</li>
-<li>git push -u origin master</li>
-</ul>
-<p><strong>git pull 冲突</strong>：查看合并分支冲突</p>
-<h3 id="下载代码：-1"><a href="#下载代码：-1" class="headerlink" title="下载代码："></a>下载代码：</h3><ol>
-<li>git clone git@xxx</li>
-<li>不同机器需要先上传新的 ssh key(一机一 key)</li>
-<li><strong>cd 目标路径</strong></li>
-<li>运行 git add/git commit/[git pull]/git push</li>
-</ol>
-<p>下载某个分支：先下载整个仓库，再切换分支</p>
-<p><strong>git clone</strong>：</p>
-<ul>
-<li><p>git clone git@?/xxx.git:会在当前目录下创建一个 xxx 目录，xxx/.git 是本地仓库，一般需要接 cd xxx 进入目录</p>
-</li>
-<li><p>git clone git@?/xxx.git yyy：会在本地新建一个 yyy 目录，cd yyy 进入目录</p>
-</li>
-<li><p>git clone git@?/xxx.git .:最后一个字符是点，使用当前目录容纳代码和.git，需要先新建一个目录，cd 进入目录</p>
-</li>
-</ul>
-<h3 id="总结：-2"><a href="#总结：-2" class="headerlink" title="总结："></a>总结：</h3><p>常用命令：git alone/git pull/git push</p>
-<p>远程仓库：本地仓库的备份，要先 commit 到本地仓库，然后 push 到远程仓库</p>
-<pre><code>    无法下载部分代码，只能先clone整个仓库</code></pre>
-<h2 id="4、git-高级操作"><a href="#4、git-高级操作" class="headerlink" title="4、git 高级操作"></a>4、git 高级操作</h2><p>bash alias 简化命令： ga=”git add” gc=”git commit -v” gl=”git pull” gp=”git push” gco=”git checkout” gst=”git status -sb”</p>
-<p>美化历史命令：git rebase -i xxx</p>
-]]></content>
-      <tags>
-        <tag>git</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>四、HTTP</title>
     <url>/2021/02/19/4%E3%80%81HTTP/</url>
     <content><![CDATA[<h3 id="1、IP-Internet-Protocol-网际互联协议"><a href="#1、IP-Internet-Protocol-网际互联协议" class="headerlink" title="1、IP(Internet Protocol)网际互联协议"></a>1、IP(Internet Protocol)网际互联协议</h3><p>IP 主要约定两件事：</p>
@@ -830,6 +830,90 @@
 </li>
 </ul>
 ]]></content>
+  </entry>
+  <entry>
+    <title>六、算法与数据结构</title>
+    <url>/2021/02/19/6%E3%80%81%E7%AE%97%E6%B3%95%E4%B8%8E%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</url>
+    <content><![CDATA[<h2 id="一、三种语句搞定所有逻辑"><a href="#一、三种语句搞定所有逻辑" class="headerlink" title="一、三种语句搞定所有逻辑"></a>一、三种语句搞定所有逻辑</h2><ol>
+<li><p>顺序执行语句</p>
+</li>
+<li><ol>
+<li>语句 1</li>
+<li>语句 2</li>
+</ol>
+</li>
+<li><p>条件判断语句</p>
+</li>
+<li><ol>
+<li>if…then…else</li>
+<li>if…else if…else</li>
+</ol>
+</li>
+<li><p>循环语句</p>
+</li>
+<li><ol>
+<li>while…do…</li>
+<li>for I from 1 to n</li>
+</ol>
+</li>
+</ol>
+<h2 id="二、流程图"><a href="#二、流程图" class="headerlink" title="二、流程图"></a>二、流程图</h2><p><img src="/Straight-GZ/2021/02/19/6%E3%80%81%E7%AE%97%E6%B3%95%E4%B8%8E%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/桌面\images\流程图.png" alt="img"></p>
+<h2 id="三、数据结构"><a href="#三、数据结构" class="headerlink" title="三、数据结构"></a>三、数据结构</h2><ol>
+<li><p>如何让表示两个数据</p>
+</li>
+<li><ol>
+<li><p>如果顺序有意义</p>
+</li>
+<li><ol>
+<li>[x,y]表示第一个是 x，第二个是 y</li>
+<li>[y,x]表示第一个是 y，第二个是 x</li>
+<li>例如坐标，需要提供 first、last 操作</li>
+</ol>
+</li>
+<li><p>如果顺序无意义</p>
+</li>
+<li><ol>
+<li>[x,y]和[y,x]没有区别</li>
+<li>例如血压值[80,100]和[100，80]</li>
+<li>不需要提供 first、last 操作</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>如何表示 n 个数据</p>
+</li>
+<li><ol>
+<li><p>如果顺序有意义</p>
+</li>
+<li><ol>
+<li>数组[a,b,c,d…]</li>
+<li>提供索引操作，get(i)</li>
+<li>提供 add/indexOf/delete 操作</li>
+</ol>
+</li>
+<li><p>如果顺序没意义</p>
+</li>
+<li><ol>
+<li>集合{a,b,c,d…}</li>
+<li>提供 add/delete/has 操作</li>
+</ol>
+</li>
+</ol>
+</li>
+<li><p>表示 N 对 N 数据</p>
+</li>
+<li><ol>
+<li><p>比如学号</p>
+</li>
+<li><ol>
+<li>用哈希表</li>
+<li>hash={1001=&gt;’小黑’，1002=&gt;’小明’}</li>
+</ol>
+</li>
+</ol>
+</li>
+</ol>
+<h2 id="数据结构-数据形式-操作"><a href="#数据结构-数据形式-操作" class="headerlink" title="数据结构=数据形式+操作"></a>数据结构=数据形式+操作</h2>]]></content>
   </entry>
   <entry>
     <title>七、JS编程接口</title>
@@ -1157,88 +1241,10 @@
 ]]></content>
   </entry>
   <entry>
-    <title>六、算法与数据结构</title>
-    <url>/2021/02/19/6%E3%80%81%E7%AE%97%E6%B3%95%E4%B8%8E%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</url>
-    <content><![CDATA[<h2 id="一、三种语句搞定所有逻辑"><a href="#一、三种语句搞定所有逻辑" class="headerlink" title="一、三种语句搞定所有逻辑"></a>一、三种语句搞定所有逻辑</h2><ol>
-<li><p>顺序执行语句</p>
-</li>
-<li><ol>
-<li>语句 1</li>
-<li>语句 2</li>
-</ol>
-</li>
-<li><p>条件判断语句</p>
-</li>
-<li><ol>
-<li>if…then…else</li>
-<li>if…else if…else</li>
-</ol>
-</li>
-<li><p>循环语句</p>
-</li>
-<li><ol>
-<li>while…do…</li>
-<li>for I from 1 to n</li>
-</ol>
-</li>
-</ol>
-<h2 id="二、流程图"><a href="#二、流程图" class="headerlink" title="二、流程图"></a>二、流程图</h2><p><img src="/Straight-GZ/2021/02/19/6%E3%80%81%E7%AE%97%E6%B3%95%E4%B8%8E%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/桌面\images\流程图.png" alt="img"></p>
-<h2 id="三、数据结构"><a href="#三、数据结构" class="headerlink" title="三、数据结构"></a>三、数据结构</h2><ol>
-<li><p>如何让表示两个数据</p>
-</li>
-<li><ol>
-<li><p>如果顺序有意义</p>
-</li>
-<li><ol>
-<li>[x,y]表示第一个是 x，第二个是 y</li>
-<li>[y,x]表示第一个是 y，第二个是 x</li>
-<li>例如坐标，需要提供 first、last 操作</li>
-</ol>
-</li>
-<li><p>如果顺序无意义</p>
-</li>
-<li><ol>
-<li>[x,y]和[y,x]没有区别</li>
-<li>例如血压值[80,100]和[100，80]</li>
-<li>不需要提供 first、last 操作</li>
-</ol>
-</li>
-</ol>
-</li>
-<li><p>如何表示 n 个数据</p>
-</li>
-<li><ol>
-<li><p>如果顺序有意义</p>
-</li>
-<li><ol>
-<li>数组[a,b,c,d…]</li>
-<li>提供索引操作，get(i)</li>
-<li>提供 add/indexOf/delete 操作</li>
-</ol>
-</li>
-<li><p>如果顺序没意义</p>
-</li>
-<li><ol>
-<li>集合{a,b,c,d…}</li>
-<li>提供 add/delete/has 操作</li>
-</ol>
-</li>
-</ol>
-</li>
-<li><p>表示 N 对 N 数据</p>
-</li>
-<li><ol>
-<li><p>比如学号</p>
-</li>
-<li><ol>
-<li>用哈希表</li>
-<li>hash={1001=&gt;’小黑’，1002=&gt;’小明’}</li>
-</ol>
-</li>
-</ol>
-</li>
-</ol>
-<h2 id="数据结构-数据形式-操作"><a href="#数据结构-数据形式-操作" class="headerlink" title="数据结构=数据形式+操作"></a>数据结构=数据形式+操作</h2>]]></content>
+    <title>九、MVC</title>
+    <url>/2021/02/19/9%E3%80%81MVC/</url>
+    <content><![CDATA[<p>博客：<a href="https://juejin.cn/post/6894231078177865741">浅析 mvc</a></p>
+]]></content>
   </entry>
   <entry>
     <title>Vue3轮子</title>
@@ -1376,12 +1382,6 @@
       <tags>
         <tag>博客</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>九、MVC</title>
-    <url>/2021/02/19/9%E3%80%81MVC/</url>
-    <content><![CDATA[<p>博客：<a href="https://juejin.cn/post/6894231078177865741">浅析 mvc</a></p>
-]]></content>
   </entry>
   <entry>
     <title>Hello World</title>
@@ -3805,7 +3805,7 @@ for (i = 0; i &lt; 6; i++) &#123;
 <li>打开 Github，在设置页面粘贴公钥内容</li>
 </ul>
 <h3 id="测试："><a href="#测试：" class="headerlink" title="测试："></a>测试：</h3><ul>
-<li>运行 ssh -T <a href="mailto:&#x67;&#x69;&#116;&#x40;&#x67;&#x69;&#116;&#x68;&#x75;&#98;&#46;&#x63;&#111;&#x6d;">&#x67;&#x69;&#116;&#x40;&#x67;&#x69;&#116;&#x68;&#x75;&#98;&#46;&#x63;&#111;&#x6d;</a></li>
+<li>运行 ssh -T <a href="mailto:&#x67;&#x69;&#x74;&#x40;&#103;&#105;&#x74;&#x68;&#x75;&#x62;&#46;&#99;&#x6f;&#x6d;">&#x67;&#x69;&#x74;&#x40;&#103;&#105;&#x74;&#x68;&#x75;&#x62;&#46;&#99;&#x6f;&#x6d;</a></li>
 <li>询问 yes/no,回答 yes</li>
 </ul>
 <h3 id="上传代码："><a href="#上传代码：" class="headerlink" title="上传代码："></a>上传代码：</h3><ol>
@@ -3858,7 +3858,7 @@ for (i = 0; i &lt; 6; i++) &#123;
 <li>打开 Github，在设置页面粘贴公钥内容</li>
 </ul>
 <h3 id="测试：-1"><a href="#测试：-1" class="headerlink" title="测试："></a>测试：</h3><ul>
-<li>运行 ssh -T <a href="mailto:&#103;&#x69;&#x74;&#64;&#103;&#x69;&#116;&#104;&#x75;&#x62;&#46;&#x63;&#x6f;&#109;">&#103;&#x69;&#x74;&#64;&#103;&#x69;&#116;&#104;&#x75;&#x62;&#46;&#x63;&#x6f;&#109;</a></li>
+<li>运行 ssh -T <a href="mailto:&#103;&#x69;&#116;&#x40;&#103;&#x69;&#116;&#104;&#x75;&#98;&#x2e;&#x63;&#111;&#x6d;">&#103;&#x69;&#116;&#x40;&#103;&#x69;&#116;&#104;&#x75;&#98;&#x2e;&#x63;&#111;&#x6d;</a></li>
 <li>询问 yes/no,回答 yes</li>
 </ul>
 <h3 id="上传代码：-1"><a href="#上传代码：-1" class="headerlink" title="上传代码："></a>上传代码：</h3><ol>
