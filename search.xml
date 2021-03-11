@@ -122,6 +122,355 @@
       </tags>
   </entry>
   <entry>
+    <title>Cookie和Session</title>
+    <url>/2021/03/09/Cookie%E5%92%8CSession/</url>
+    <content><![CDATA[<h3 id="1、Cookie"><a href="#1、Cookie" class="headerlink" title="1、Cookie"></a>1、Cookie</h3><ul>
+<li><p>概述：</p>
+<p>HTTP Cookie（也叫 Web Cookie 或浏览器 Cookie）是服务器发送到用户浏览器并保存在本地的一小块数据，它会在浏览器下次向同一服务器再发起请求时被携带并发送到服务器上。通常，它用于告知服务端两个请求是否来自同一浏览器，如保持用户的登录状态。<br>通俗的说，Cookie 是服务器下发给浏览器的一段字符串<br>浏览器必须保存这个 Cookie(除非用户删除)<br>之后发起相同二级域名请求，浏览器必须附上 Cookie<a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Cookies">MDN</a></p>
+<a id="more"></a>
+</li>
+</ul>
+<ul>
+<li>创建 Cookie<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Set-Cookie: &lt;cookie 名&gt;&#x3D;&lt;cookie 值&gt;</span><br><span class="line">&#x2F;&#x2F;例</span><br><span class="line">response.setHeader(&quot;Set-Cookie&quot;, &#96;session_id&#x3D;$&#123;random&#125;;HttpOnly&#96;);</span><br></pre></td></tr></table></figure>
+<h3 id="2、Session"><a href="#2、Session" class="headerlink" title="2、Session"></a>2、Session</h3></li>
+</ul>
+<p>session 数据放在服务器上,一般由 cookie 保存 session 的 id，保存在 Cookie 里的 session id 是独一无二的随机生成的，服务器通过 Cookie 保存的 session id 获取数据</p>
+<h3 id="3、两者区别"><a href="#3、两者区别" class="headerlink" title="3、两者区别"></a>3、两者区别</h3><ol>
+<li><p>存储位置：cookie 数据存放在客户的浏览器上，session 数据放在服务器上。</p>
+</li>
+<li><p>安全性：cookie 不是很安全，别人可以分析存放在本地的 COOKIE 并进行篡改</p>
+</li>
+<li><p>限制：单个 cookie 保存的数据不能超过 4K，很多浏览器都限制一个站点最多保存 20 个 cookie。</p>
+</li>
+</ol>
+<p>简单实现</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">if (path &#x3D;&#x3D;&#x3D; &quot;&#x2F;sign_in&quot; &amp;&amp; method &#x3D;&#x3D;&#x3D; &quot;POST&quot;) &#123;</span><br><span class="line">  const array &#x3D; [];</span><br><span class="line">  const users &#x3D; JSON.parse(fs.readFileSync(&quot;.&#x2F;db&#x2F;users.json&quot;).toString());</span><br><span class="line">  response.setHeader(&quot;Content-Type&quot;, &quot;text&#x2F;html,charset&#x3D;UTF-8&quot;);</span><br><span class="line">  request.on(&quot;data&quot;, (chunk) &#x3D;&gt; &#123;</span><br><span class="line">    array.push(chunk);</span><br><span class="line">  &#125;);</span><br><span class="line">  request.on(&quot;end&quot;, () &#x3D;&gt; &#123;</span><br><span class="line">    const string &#x3D; Buffer.concat(array).toString();</span><br><span class="line">    const obj &#x3D; JSON.parse(string);</span><br><span class="line">    const user &#x3D; users.find(</span><br><span class="line">      (user) &#x3D;&gt; user.name &#x3D;&#x3D;&#x3D; obj.name &amp;&amp; user.password &#x3D;&#x3D;&#x3D; obj.password</span><br><span class="line">    );</span><br><span class="line">    if (user &#x3D;&#x3D;&#x3D; undefined) &#123;</span><br><span class="line">      response.statusCode &#x3D; 400;</span><br><span class="line">      response.setHeader(&quot;Content-Type&quot;, &quot;text&#x2F;json;charset&#x3D;utf-8&quot;);</span><br><span class="line">      response.end();</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      response.statusCode &#x3D; 200;</span><br><span class="line">      const random &#x3D; Math.random();</span><br><span class="line">      session[random] &#x3D; &#123; user_id: user.id &#125;;</span><br><span class="line">      fs.writeFileSync(&quot;.&#x2F;session.json&quot;, JSON.stringify(session));</span><br><span class="line">      response.setHeader(&quot;Set-Cookie&quot;, &#96;session_id&#x3D;$&#123;random&#125;;HttpOnly&#96;);</span><br><span class="line">      response.end();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125; else if (path &#x3D;&#x3D;&#x3D; &quot;&#x2F;home.html&quot;) &#123;</span><br><span class="line">  const cookie &#x3D; request.headers[&quot;cookie&quot;];</span><br><span class="line">  let sessionId;</span><br><span class="line"></span><br><span class="line">  try &#123;</span><br><span class="line">    sessionId &#x3D; cookie</span><br><span class="line">      .split(&quot;;&quot;)</span><br><span class="line">      .filter((s) &#x3D;&gt; s.indexOf(&quot;session_id&#x3D;&quot;) &gt;&#x3D; 0)[0]</span><br><span class="line">      .split(&quot;&#x3D;&quot;)[1];</span><br><span class="line">    console.log(sessionId);</span><br><span class="line">  &#125; catch (error) &#123;&#125;</span><br><span class="line">  if (sessionId &amp;&amp; session[sessionId]) &#123;</span><br><span class="line">    const userId &#x3D; session[sessionId].user_id;</span><br><span class="line">    console.log(userId);</span><br><span class="line">    const homeHtml &#x3D; fs.readFileSync(&quot;.&#x2F;public&#x2F;home.html&quot;).toString();</span><br><span class="line">    const users &#x3D; JSON.parse(fs.readFileSync(&quot;.&#x2F;db&#x2F;users.json&quot;).toString());</span><br><span class="line">    const user &#x3D; users.find((user) &#x3D;&gt; user.id &#x3D;&#x3D;&#x3D; userId);</span><br><span class="line">    let string;</span><br><span class="line">    if (user) &#123;</span><br><span class="line">      string &#x3D; homeHtml</span><br><span class="line">        .replace(&quot;&#123;&#123;loginStatus&#125;&#125;&quot;, &quot;已登录&quot;)</span><br><span class="line">        .replace(&quot;&#123;&#123;userName&#125;&#125;&quot;, user.name);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      string &#x3D; homeHtml</span><br><span class="line">        .replace(&quot;&#123;&#123;loginStatus&#125;&#125;&quot;, &quot;未登录&quot;)</span><br><span class="line">        .replace(&quot;&#123;&#123;userName&#125;&#125;&quot;, &quot;&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    response.write(string);</span><br><span class="line">    response.end();</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    const homeHtml &#x3D; fs.readFileSync(&quot;.&#x2F;public&#x2F;home.html&quot;).toString();</span><br><span class="line">    const string &#x3D; homeHtml</span><br><span class="line">      .replace(&quot;&#123;&#123;loginStatus&#125;&#125;&quot;, &quot;未登录&quot;)</span><br><span class="line">      .replace(&quot;&#123;&#123;userName&#125;&#125;&quot;, &quot;&quot;);</span><br><span class="line">    response.write(string);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Cookie-V-S-LocalStorage-V-S-SessionStorage-V-S-Session"><a href="#Cookie-V-S-LocalStorage-V-S-SessionStorage-V-S-Session" class="headerlink" title="Cookie V.S. LocalStorage V.S. SessionStorage V.S. Session"></a>Cookie V.S. LocalStorage V.S. SessionStorage V.S. Session</h4><ul>
+<li><p>Cookie V.S. LocalStorage</p>
+<p>主要区别是 Cookie 会被发送到服务器，而 LocalStorage 不会<br>Cookie 一般最大 4k，LocalStorage 可以用 5Mb 甚至 10Mb（各浏览器不同）</p>
+</li>
+</ul>
+<ul>
+<li><p>LocalStorage V.S. SessionStorage</p>
+<p>LocalStorage 一般不会自动过期（除非用户手动清除），而 SessionStorage 在回话结束时过期（如关闭浏览器）</p>
+</li>
+<li><p>Cookie V.S. Session</p>
+<p>Cookie 存在浏览器的文件里，Session 存在服务器的文件里<br>Session 是基于 Cookie 实现的，具体做法就是把 SessionID 存在 Cookie 里</p>
+</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>HTTP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Git</title>
+    <url>/2021/03/09/Git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
+    <content><![CDATA[<h2 id="1、git-本地仓库"><a href="#1、git-本地仓库" class="headerlink" title="1、git 本地仓库"></a>1、git 本地仓库</h2><p>git 就是一条命令</p>
+<p>六行配置</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global user.name 你的英文名</span><br><span class="line">git config --global user.email 你的邮箱</span><br><span class="line">git config --global push.default simple</span><br><span class="line">git config --global core.quotepath <span class="literal">false</span></span><br><span class="line">git config --global core.editor <span class="string">&quot;code --wait&quot;</span></span><br><span class="line">git config --global core.autocrlf input</span><br></pre></td></tr></table></figure>
+ <a id="more"></a>
+
+<h3 id="1-让你代码有版本："><a href="#1-让你代码有版本：" class="headerlink" title="1.让你代码有版本："></a>1.让你代码有版本：</h3><p>git init :初始化（指定目录），创建 .git 目录</p>
+<p><strong>git add</strong> 路径:选择哪些变动是需要提交的</p>
+<p>.gitignore：描述哪些文件是不需要提交的</p>
+<p>git commit -m ：字符串：提交，说明理由 （字符串有空格，用引号）</p>
+<p><strong>git commit -v</strong>：回顾修改的内容，添加详细提交理由<strong>（推荐）</strong></p>
+<p>git reset –hard 提交号前六位：回到指定提交版本</p>
+<p>git log： 查看历史 git reflog：查看所有的历史</p>
+<h3 id="2-分支："><a href="#2-分支：" class="headerlink" title="2.分支："></a>2.分支：</h3><p>git branch ：基于当前 commit 创建分支，在哪个分支提交，就创建在哪个分支</p>
+<p>git checkout：切换分支</p>
+<p>git merge:合并分支</p>
+<p><strong>步骤</strong>：</p>
+<ol>
+<li><p>选择需要保留的分支 master</p>
+</li>
+<li><p>运行 git merge x（合并的分支）</p>
+</li>
+<li><p>冲突</p>
+<ul>
+<li><p>发现冲突：</p>
+<p>合并分支的时候<strong>conflict</strong>提示</p>
+<p>使用 git status -sb 查看冲突文件</p>
+</li>
+<li><p>解决冲突：</p>
+<p>依次打开文件</p>
+<p>搜素‘====’四个等于号</p>
+<p>选择要保留的代码，删除不用的代码</p>
+<p>删除’====‘’&lt;&lt;&lt;&lt;’’&gt;&gt;&gt;&gt;’标记</p>
+<p><strong>git add 对应文件</strong></p>
+<p>再次使用 git status -sb 解决下一个冲突文件</p>
+<p>直到没有冲突，运行<strong>git commit （不需要加选项）</strong></p>
+</li>
+</ul>
+</li>
+<li><p>合并完删除无用的分支 git branch -d x</p>
+</li>
+</ol>
+<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><ul>
+<li>git 目录就是本地仓库</li>
+<li>git add 处理的是文件变化，而不是文件，删除文件后，依然需要 git add 添加到提交区</li>
+<li>常用的命令：<strong>git add</strong> 和<strong>git commit -v</strong></li>
+</ul>
+<h2 id="2、git-远程仓库"><a href="#2、git-远程仓库" class="headerlink" title="2、git 远程仓库"></a>2、git 远程仓库</h2><h3 id="生成-ssh-key（帮助文档）："><a href="#生成-ssh-key（帮助文档）：" class="headerlink" title="生成 ssh key（帮助文档）："></a>生成 ssh key（<a href="https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent" title="https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent#">帮助文档</a>）：</h3><ul>
+<li>运行 ssh-keygen -t rsa -b 4096 -C +邮箱地址</li>
+<li>一直回车键到没有提示</li>
+<li>cat ~/.ssh/id_rsa.pub 得到公钥内容，复制内容</li>
+<li>打开 Github，在设置页面粘贴公钥内容</li>
+</ul>
+<h3 id="测试："><a href="#测试：" class="headerlink" title="测试："></a>测试：</h3><ul>
+<li>运行 ssh -T <a href="mailto:&#x67;&#105;&#116;&#x40;&#x67;&#105;&#116;&#104;&#x75;&#x62;&#46;&#99;&#111;&#x6d;">&#x67;&#105;&#116;&#x40;&#x67;&#105;&#116;&#104;&#x75;&#x62;&#46;&#99;&#111;&#x6d;</a></li>
+<li>询问 yes/no,回答 yes</li>
+</ul>
+<h3 id="上传代码："><a href="#上传代码：" class="headerlink" title="上传代码："></a>上传代码：</h3><ol>
+<li><p>新建 Github Repo，复制 ssh 地址</p>
+</li>
+<li><p>运行 git remote add origin git@xxxxx</p>
+<p>（在本地添加远程仓库地址，origin 为远程仓库默认名字）</p>
+</li>
+<li><p>git push -u origin master</p>
+</li>
+</ol>
+<ul>
+<li>推送本地 master 分支到远程 originmaster 分支</li>
+<li>提示应该 git pull…</li>
+<li>-u origin master 意思为设置上游分支，之后不用再设置，直接 git pull，git push</li>
+</ul>
+<p><strong>上传其它分支：</strong></p>
+<p>一：git push x:x</p>
+<p>二：git checkout x</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git push -u origin x</span><br></pre></td></tr></table></figure>
+<p><strong>上传到两个本地仓库</strong></p>
+<ul>
+<li>git remote add origin2 git@xxxxx</li>
+<li>git push -u origin master</li>
+</ul>
+<p><strong>git pull 冲突</strong>：查看合并分支冲突</p>
+<h3 id="下载代码："><a href="#下载代码：" class="headerlink" title="下载代码："></a>下载代码：</h3><ol>
+<li> git clone git@xxx</li>
+<li> 不同机器需要先上传新的 ssh key(一机一 key)</li>
+<li> <strong>cd 目标路径</strong></li>
+<li> 运行 git add/git commit/[git pull]/git push</li>
+</ol>
+<p>下载某个分支：先下载整个仓库，再切换分支</p>
+<p><strong>git clone</strong>：</p>
+<ul>
+<li><p>git clone git@?/xxx.git:会在当前目录下创建一个 xxx 目录，xxx/.git 是本地仓库，一般需要接 cd xxx 进入目录</p>
+</li>
+<li><p>git clone git@?/xxx.git yyy：会在本地新建一个 yyy 目录，cd yyy 进入目录</p>
+</li>
+<li><p>git clone git@?/xxx.git .:最后一个字符是点，使用当前目录容纳代码和.git，需要先新建一个目录，cd 进入目录</p>
+</li>
+</ul>
+<h3 id="总结：-1"><a href="#总结：-1" class="headerlink" title="总结："></a>总结：</h3><p>常用命令：git alone/git pull/git push</p>
+<p>远程仓库：本地仓库的备份，要先 commit 到本地仓库，然后 push 到远程仓库</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">无法下载部分代码，只能先clone整个仓库生成ssh key（[帮助文档](https:&#x2F;&#x2F;docs.github.com&#x2F;en&#x2F;free-pro-team@latest&#x2F;github&#x2F;authenticating-to-github&#x2F;generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent#)）：</span><br></pre></td></tr></table></figure>
+<ul>
+<li>运行 ssh-keygen -t rsa -b 4096 -C +邮箱地址</li>
+<li>一直回车键到没有提示</li>
+<li>cat ~/.ssh/id_rsa.pub 得到公钥内容，复制内容</li>
+<li>打开 Github，在设置页面粘贴公钥内容</li>
+</ul>
+<h3 id="测试：-1"><a href="#测试：-1" class="headerlink" title="测试："></a>测试：</h3><ul>
+<li>运行 ssh -T <a href="mailto:&#x67;&#x69;&#x74;&#x40;&#103;&#x69;&#x74;&#x68;&#117;&#x62;&#x2e;&#99;&#111;&#x6d;">&#x67;&#x69;&#x74;&#x40;&#103;&#x69;&#x74;&#x68;&#117;&#x62;&#x2e;&#99;&#111;&#x6d;</a></li>
+<li>询问 yes/no,回答 yes</li>
+</ul>
+<h3 id="上传代码：-1"><a href="#上传代码：-1" class="headerlink" title="上传代码："></a>上传代码：</h3><ol>
+<li><p>新建 Github Repo，复制 ssh 地址</p>
+</li>
+<li><p>运行 git remote add origin git@xxxxx</p>
+<p>（在本地添加远程仓库地址，origin 为远程仓库默认名字）</p>
+</li>
+<li><p>git push -u origin master</p>
+</li>
+</ol>
+<ul>
+<li>推送本地 master 分支到远程 originmaster 分支</li>
+<li>提示应该 git pull…，就运行 git pull!</li>
+<li>-u origin master 意思为设置上游分支，之后不用再设置，直接 git pull，git push</li>
+</ul>
+<p><strong>上传其它分支：</strong></p>
+<p>一：git push x:x</p>
+<p>二：git checkout x</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git push -u origin x</span><br></pre></td></tr></table></figure>
+<p><strong>上传到两个本地仓库</strong></p>
+<ul>
+<li>git remote add origin2 git@xxxxx</li>
+<li>git push -u origin master</li>
+</ul>
+<p><strong>git pull 冲突</strong>：查看合并分支冲突</p>
+<h3 id="下载代码：-1"><a href="#下载代码：-1" class="headerlink" title="下载代码："></a>下载代码：</h3><ol>
+<li> git clone git@xxx</li>
+<li> 不同机器需要先上传新的 ssh key(一机一 key)</li>
+<li> <strong>cd 目标路径</strong></li>
+<li> 运行 git add/git commit/[git pull]/git push</li>
+</ol>
+<p>下载某个分支：先下载整个仓库，再切换分支</p>
+<p><strong>git clone</strong>：</p>
+<ul>
+<li><p>git clone git@?/xxx.git:会在当前目录下创建一个 xxx 目录，xxx/.git 是本地仓库，一般需要接 cd xxx 进入目录</p>
+</li>
+<li><p>git clone git@?/xxx.git yyy：会在本地新建一个 yyy 目录，cd yyy 进入目录</p>
+</li>
+<li><p>git clone git@?/xxx.git .:最后一个字符是点，使用当前目录容纳代码和.git，需要先新建一个目录，cd 进入目录</p>
+</li>
+</ul>
+<h3 id="总结：-2"><a href="#总结：-2" class="headerlink" title="总结："></a>总结：</h3><p>常用命令：git alone/git pull/git push</p>
+<p>远程仓库：本地仓库的备份，要先 commit 到本地仓库，然后 push 到远程仓库</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">无法下载部分代码，只能先clone整个仓库</span><br></pre></td></tr></table></figure>
+<h2 id="3、git-高级操作"><a href="#3、git-高级操作" class="headerlink" title="3、git 高级操作"></a>3、git 高级操作</h2><p>bash alias 简化命令： ga=”git add” gc=”git commit -v” gl=”git pull” gp=”git push” gco=”git checkout” gst=”git status -sb”</p>
+<p>美化历史命令：git rebase -i xxx</p>
+]]></content>
+      <tags>
+        <tag>Git</tag>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>简述CSS三种布局</title>
+    <url>/2021/03/09/CSS%E5%B8%83%E5%B1%80/</url>
+    <content><![CDATA[<h3 id="一、布局概述"><a href="#一、布局概述" class="headerlink" title="一、布局概述"></a>一、布局概述</h3><p>布局就是把页面分成一块一块，按左中右、上中下等排列。</p>
+<p>1、布局分类：</p>
+<ul>
+<li><strong>固定宽度布局</strong>，一般为 960/1000/1024px</li>
+<li><strong>不固定布局</strong>，主要靠文档流的原理来布局（文档流是自适应，不需要加额外样式）</li>
+<li><strong>响应式布局</strong>，PC 上固定宽度，手机不固定宽度，混合布局<a id="more"></a>
+
+</li>
+</ul>
+<p>2、布局思路</p>
+<p>从大到小：先定下大局，然后完善每个部分的小布局</p>
+<p>从小到大：先完成小布局，然后组合成大布局</p>
+<p><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/d5cd5a0716644d2285941d447eb0c92d~tplv-k3u1fbpfcp-watermark.webp"></p>
+<h3 id="二、float-布局"><a href="#二、float-布局" class="headerlink" title="二、float 布局"></a>二、float 布局</h3><p>步骤：</p>
+<ul>
+<li><p>在子元素上加 float:left 和 width</p>
+</li>
+<li><p>在父元素上加.clearfix（不要忘了加）</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.clearfix</span><span class="selector-pseudo">:after</span> &#123;</span><br><span class="line">  <span class="attribute">content</span>: <span class="string">&quot;&quot;</span>;</span><br><span class="line">  <span class="attribute">display</span>: block;</span><br><span class="line">  <span class="attribute">clear</span>: both;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>经验：</p>
+</li>
+<li><p>留一些空间或者最后一个不设 width，或者设置一个最大宽度</p>
+</li>
+<li><p>IE6/7 存在双倍 margin bug</p>
+</li>
+</ul>
+<p>实践：</p>
+<ul>
+<li>float 两栏布局（顶部条）：<code>float:left; </code> <code>clearfix</code></li>
+<li>float 三栏布局（内容区）</li>
+<li>float 四栏布局（导航栏）</li>
+<li>float 平均布局（产品展示）需要在内容外再加一层，使用负 margin</li>
+</ul>
+<h3 id="三、flex-布局"><a href="#三、flex-布局" class="headerlink" title="三、flex 布局"></a>三、flex 布局</h3><p>Flexible Box 模型，通常被称为 flexbox，是一种一维的布局模型。</p>
+<h4 id="flex-的两个轴"><a href="#flex-的两个轴" class="headerlink" title="flex 的两个轴"></a>flex 的两个轴</h4><ol>
+<li>主轴</li>
+</ol>
+<ul>
+<li>由<code>flex-direction</code>定义</li>
+<li>取值：row(水平方向)/row-reserve/column(垂直方向)/column-reserve</li>
+</ul>
+<ol start="2">
+<li>交叉轴</li>
+</ol>
+<ul>
+<li>交叉轴垂直于主轴</li>
+<li><code>flex-direction</code> 为 <code>row</code> 或者 <code>row-reverse</code> ，交叉轴的方向就是垂直方向。</li>
+<li>相反亦然</li>
+</ul>
+<h4 id="flex-容器"><a href="#flex-容器" class="headerlink" title="flex 容器"></a>flex 容器</h4><ol>
+<li><p>实现 flex</p>
+<p>需要将指定一个容器，将容器的<code>display</code>属性值改为 <code>flex</code> 或者 <code>inline-flex</code>，容器中的直系子元素就会变为 <strong>flex 元素</strong>。</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.container &#123;</span><br><span class="line">    display: flex | inline-flex;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>当时设置 flex 布局之后，子元素的 float、clear、vertical-align 的属性将会失效。</strong></p>
+<ol start="2">
+<li>容器的属性</li>
+</ol>
+<ul>
+<li><p>flex-direction:<strong>决定主轴的方向(项目的排列方向)</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.container &#123;</span><br><span class="line">    flex-direction: row | row-reverse | column | column-reverse;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>默认值：row，主轴为水平方向，起点在左端，row-reverse：主轴为水平方向，起点在右端；</p>
+<p>​ column：主轴为垂直方向，起点在上沿，column-reverse：主轴为垂直方向，起点在下沿</p>
+</li>
+<li><p><strong>flex-wrap: 决定容器内项目是否可换行</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.container &#123;</span><br><span class="line">    flex-wrap: nowrap | wrap | wrap-reverse;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>默认值：<strong>nowrap</strong> 不换行,当空间不足时，子元素会缩小。</p>
+<p>​ wrap：项目太大而无法全部显示在一行中，则会换行显示，第一行在上方</p>
+<p>​ wrap-reverse：换行，第一行在下方</p>
+</li>
+<li><p><strong>justify-content：定义了项目在主轴的对齐方式。</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.container &#123;</span><br><span class="line">    justify-content: flex-start | flex-end | center | space-between | space-around;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>默认值: flex-start 左对齐,flex-end：右对齐,center：居中</p>
+<p>​ space-between：两端对齐，剩余空间等分成间隙。</p>
+<p>​ space-around：每个项目两侧的间隔相等，所以项目之间的间隔比项目与边缘的间隔大一倍。</p>
+</li>
+<li><p>align-items: 可以使元素在交叉轴方向对齐。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.container &#123;</span><br><span class="line">    align-items: flex-start | flex-end | center | baseline | stretch;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>默认值为 <code>stretch</code> 即如果项目未设置高度或者设为 auto，将占满整个容器的高度。</p>
+<p><code>flex-start</code>，使 flex 元素按 flex 容器的顶部对齐, <code>flex-end</code> 使它们按 flex 容器的下部对齐, 或者<code>center</code>使它们居中对齐.</p>
+</li>
+</ul>
+<p>三、Flex 项目属性：</p>
+<ol>
+<li><p>order</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.item</span> &#123;</span><br><span class="line">  <span class="attribute">order</span>: &lt;integer&gt;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><strong>定义项目在容器中的排列顺序，数值越小，排列越靠前，默认值为 0</strong></p>
+</li>
+<li><p>flex-grow: <strong>定义项目的放大比例</strong></p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.item</span> &#123;</span><br><span class="line">  <span class="attribute">flex-grow</span>: &lt;number&gt;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>默认值为 0，即如果存在剩余空间，也不放大</p>
+<p>如果所有项目的 flex-grow 属性都为 1，则它们将等分剩余空间。(如果有的话)</p>
+<p>如果一个项目的 flex-grow 属性为 2，其他项目都为 1，则前者占据的剩余空间将比其他项多一倍。</p>
+</li>
+<li><p>flex-shrink:<strong>定义了项目的缩小比例</strong></p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.item</span> &#123;</span><br><span class="line">  <span class="attribute">flex-shrink</span>: &lt;number&gt;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>flex: <strong>flex-grow, flex-shrink 和 flex-basis 的简写</strong></p>
+<p>当 flex 取值为一个非负数字，则该数字为 flex-grow 值，flex-shrink 取 1，flex-basis 取 0%</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.item &#123;flex: 1;&#125;   &#x2F;&#x2F;等价的</span><br><span class="line">.item &#123;</span><br><span class="line">    flex-grow: 1;</span><br><span class="line">    flex-shrink: 1;</span><br><span class="line">    flex-basis: 0%;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>当 flex 取值为 0 时，对应的三个值分别为 0 1 0%</li>
+<li>当 flex 取值为一个长度或百分比，则视为 flex-basis 值，flex-grow 取 1，flex-shrink 取 1，有如下等同情况（注意 0% 是一个百分比而不是一个非负数字）</li>
+<li>当 flex 取值为两个非负数字，则分别视为 flex-grow 和 flex-shrink 的值，flex-basis 取 0%</li>
+<li>当 flex 取值为一个非负数字和一个长度或百分比，则分别视为 flex-grow 和 flex-basis 的值，flex-shrink 取 1</li>
+</ul>
+</li>
+<li><p>align-self：<strong>允许单个项目有与其他项目不一样的对齐方式</strong></p>
+<p>单个项目覆盖 align-items 定义的属性</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.item</span> &#123;</span><br><span class="line">  <span class="attribute">align-self</span>: auto | flex-start | flex-end | center | baseline | stretch;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="四、Grid-布局"><a href="#四、Grid-布局" class="headerlink" title="四、Grid 布局"></a>四、Grid 布局</h3></li>
+<li><p>成为 container</p>
+</li>
+</ol>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">  <span class="attribute">display</span>: grid;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li> 行和列</li>
+</ol>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">  <span class="attribute">grid-template-columns</span>: <span class="number">40px</span> <span class="number">50px</span> auto <span class="number">50px</span> <span class="number">40px</span>;</span><br><span class="line">  <span class="attribute">grid-template-rows</span>: <span class="number">25%</span> <span class="number">100px</span> auto;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/0f8b97e7942049fea47f4bb92abc0f8b~tplv-k3u1fbpfcp-watermark.webp"></p>
+<ol start="3">
+<li>给每条线取名字：</li>
+</ol>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">  <span class="attribute">grid-template-columns</span>:</span><br><span class="line">    [first] <span class="number">40px</span> [line2] <span class="number">50px</span> [line3] auto</span><br><span class="line">    [col4-start] <span class="number">50px</span> [five] <span class="number">40px</span> [end];</span><br><span class="line">  <span class="attribute">grid-template-rows</span>:</span><br><span class="line">    [row1-start] <span class="number">25%</span> [row1-end] <span class="number">100px</span> [third-line]</span><br><span class="line">    auto [last-line];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="4">
+<li>items 可以设置范围</li>
+</ol>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.item-a</span> &#123;</span><br><span class="line">  <span class="attribute">grid-column-start</span>: <span class="number">2</span>;</span><br><span class="line">  <span class="attribute">grid-column-end</span>: five;</span><br><span class="line">  <span class="attribute">grid-row-start</span>: row1-start;</span><br><span class="line">  <span class="attribute">grid-row-end</span>: <span class="number">3</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="5">
+<li>fr（free space） 份 可以和像素混用</li>
+</ol>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">  <span class="attribute">grid-template-columns</span>: <span class="number">1</span>fr <span class="number">50px</span> <span class="number">1</span>fr <span class="number">1</span>fr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>分区 grid-template-areas</li>
+</ul>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">grid-template-areas</span>:</span><br><span class="line">  &quot;<span class="selector-tag">head</span> <span class="selector-tag">head</span>&quot;</span><br><span class="line">  &quot;<span class="selector-tag">nav</span>  <span class="selector-tag">main</span>&quot;</span><br><span class="line">  &quot;<span class="selector-tag">nav</span>  <span class="selector-tag">foot</span>&quot;; <span class="comment">/* 区域划分 当前为 三行 两列 */</span></span><br><span class="line"></span><br><span class="line"><span class="selector-id">#page</span> &gt; <span class="selector-tag">header</span> &#123;</span><br><span class="line">  <span class="attribute">grid-area</span>: head; <span class="comment">/*  指定当前元素所在的区域位置, 从grid-template-areas选取值 */</span></span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#8ca0ff</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <tags>
+        <tag>CSS</tag>
+        <tag>布局</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>HTML常用标签</title>
     <url>/2021/03/09/HTML5%E4%B9%8B%E5%B8%B8%E7%94%A8%E6%A0%87%E7%AD%BE/</url>
     <content><![CDATA[<h4 id="一、a-标签"><a href="#一、a-标签" class="headerlink" title="一、a 标签"></a>一、a 标签</h4><ol>
@@ -315,192 +664,6 @@
       </tags>
   </entry>
   <entry>
-    <title>简述CSS三种布局</title>
-    <url>/2021/03/09/CSS%E5%B8%83%E5%B1%80/</url>
-    <content><![CDATA[<h3 id="一、布局概述"><a href="#一、布局概述" class="headerlink" title="一、布局概述"></a>一、布局概述</h3><p>布局就是把页面分成一块一块，按左中右、上中下等排列。</p>
-<p>1、布局分类：</p>
-<ul>
-<li><strong>固定宽度布局</strong>，一般为 960/1000/1024px</li>
-<li><strong>不固定布局</strong>，主要靠文档流的原理来布局（文档流是自适应，不需要加额外样式）</li>
-<li><strong>响应式布局</strong>，PC 上固定宽度，手机不固定宽度，混合布局<a id="more"></a>
-
-</li>
-</ul>
-<p>2、布局思路</p>
-<p>从大到小：先定下大局，然后完善每个部分的小布局</p>
-<p>从小到大：先完成小布局，然后组合成大布局</p>
-<p><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/d5cd5a0716644d2285941d447eb0c92d~tplv-k3u1fbpfcp-watermark.webp"></p>
-<h3 id="二、float-布局"><a href="#二、float-布局" class="headerlink" title="二、float 布局"></a>二、float 布局</h3><p>步骤：</p>
-<ul>
-<li><p>在子元素上加 float:left 和 width</p>
-</li>
-<li><p>在父元素上加.clearfix（不要忘了加）</p>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.clearfix</span><span class="selector-pseudo">:after</span> &#123;</span><br><span class="line">  <span class="attribute">content</span>: <span class="string">&quot;&quot;</span>;</span><br><span class="line">  <span class="attribute">display</span>: block;</span><br><span class="line">  <span class="attribute">clear</span>: both;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>经验：</p>
-</li>
-<li><p>留一些空间或者最后一个不设 width，或者设置一个最大宽度</p>
-</li>
-<li><p>IE6/7 存在双倍 margin bug</p>
-</li>
-</ul>
-<p>实践：</p>
-<ul>
-<li>float 两栏布局（顶部条）：<code>float:left; </code> <code>clearfix</code></li>
-<li>float 三栏布局（内容区）</li>
-<li>float 四栏布局（导航栏）</li>
-<li>float 平均布局（产品展示）需要在内容外再加一层，使用负 margin</li>
-</ul>
-<h3 id="三、flex-布局"><a href="#三、flex-布局" class="headerlink" title="三、flex 布局"></a>三、flex 布局</h3><p>Flexible Box 模型，通常被称为 flexbox，是一种一维的布局模型。</p>
-<h4 id="flex-的两个轴"><a href="#flex-的两个轴" class="headerlink" title="flex 的两个轴"></a>flex 的两个轴</h4><ol>
-<li>主轴</li>
-</ol>
-<ul>
-<li>由<code>flex-direction</code>定义</li>
-<li>取值：row(水平方向)/row-reserve/column(垂直方向)/column-reserve</li>
-</ul>
-<ol start="2">
-<li>交叉轴</li>
-</ol>
-<ul>
-<li>交叉轴垂直于主轴</li>
-<li><code>flex-direction</code> 为 <code>row</code> 或者 <code>row-reverse</code> ，交叉轴的方向就是垂直方向。</li>
-<li>相反亦然</li>
-</ul>
-<h4 id="flex-容器"><a href="#flex-容器" class="headerlink" title="flex 容器"></a>flex 容器</h4><ol>
-<li><p>实现 flex</p>
-<p>需要将指定一个容器，将容器的<code>display</code>属性值改为 <code>flex</code> 或者 <code>inline-flex</code>，容器中的直系子元素就会变为 <strong>flex 元素</strong>。</p>
-</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.container &#123;</span><br><span class="line">    display: flex | inline-flex;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>当时设置 flex 布局之后，子元素的 float、clear、vertical-align 的属性将会失效。</strong></p>
-<ol start="2">
-<li>容器的属性</li>
-</ol>
-<ul>
-<li><p>flex-direction:<strong>决定主轴的方向(项目的排列方向)</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.container &#123;</span><br><span class="line">    flex-direction: row | row-reverse | column | column-reverse;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>默认值：row，主轴为水平方向，起点在左端，row-reverse：主轴为水平方向，起点在右端；</p>
-<p>​ column：主轴为垂直方向，起点在上沿，column-reverse：主轴为垂直方向，起点在下沿</p>
-</li>
-<li><p><strong>flex-wrap: 决定容器内项目是否可换行</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.container &#123;</span><br><span class="line">    flex-wrap: nowrap | wrap | wrap-reverse;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>默认值：<strong>nowrap</strong> 不换行,当空间不足时，子元素会缩小。</p>
-<p>​ wrap：项目太大而无法全部显示在一行中，则会换行显示，第一行在上方</p>
-<p>​ wrap-reverse：换行，第一行在下方</p>
-</li>
-<li><p><strong>justify-content：定义了项目在主轴的对齐方式。</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.container &#123;</span><br><span class="line">    justify-content: flex-start | flex-end | center | space-between | space-around;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>默认值: flex-start 左对齐,flex-end：右对齐,center：居中</p>
-<p>​ space-between：两端对齐，剩余空间等分成间隙。</p>
-<p>​ space-around：每个项目两侧的间隔相等，所以项目之间的间隔比项目与边缘的间隔大一倍。</p>
-</li>
-<li><p>align-items: 可以使元素在交叉轴方向对齐。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.container &#123;</span><br><span class="line">    align-items: flex-start | flex-end | center | baseline | stretch;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>默认值为 <code>stretch</code> 即如果项目未设置高度或者设为 auto，将占满整个容器的高度。</p>
-<p><code>flex-start</code>，使 flex 元素按 flex 容器的顶部对齐, <code>flex-end</code> 使它们按 flex 容器的下部对齐, 或者<code>center</code>使它们居中对齐.</p>
-</li>
-</ul>
-<p>三、Flex 项目属性：</p>
-<ol>
-<li><p>order</p>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.item</span> &#123;</span><br><span class="line">  <span class="attribute">order</span>: &lt;integer&gt;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><strong>定义项目在容器中的排列顺序，数值越小，排列越靠前，默认值为 0</strong></p>
-</li>
-<li><p>flex-grow: <strong>定义项目的放大比例</strong></p>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.item</span> &#123;</span><br><span class="line">  <span class="attribute">flex-grow</span>: &lt;number&gt;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>默认值为 0，即如果存在剩余空间，也不放大</p>
-<p>如果所有项目的 flex-grow 属性都为 1，则它们将等分剩余空间。(如果有的话)</p>
-<p>如果一个项目的 flex-grow 属性为 2，其他项目都为 1，则前者占据的剩余空间将比其他项多一倍。</p>
-</li>
-<li><p>flex-shrink:<strong>定义了项目的缩小比例</strong></p>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.item</span> &#123;</span><br><span class="line">  <span class="attribute">flex-shrink</span>: &lt;number&gt;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>flex: <strong>flex-grow, flex-shrink 和 flex-basis 的简写</strong></p>
-<p>当 flex 取值为一个非负数字，则该数字为 flex-grow 值，flex-shrink 取 1，flex-basis 取 0%</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">.item &#123;flex: 1;&#125;   &#x2F;&#x2F;等价的</span><br><span class="line">.item &#123;</span><br><span class="line">    flex-grow: 1;</span><br><span class="line">    flex-shrink: 1;</span><br><span class="line">    flex-basis: 0%;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>当 flex 取值为 0 时，对应的三个值分别为 0 1 0%</li>
-<li>当 flex 取值为一个长度或百分比，则视为 flex-basis 值，flex-grow 取 1，flex-shrink 取 1，有如下等同情况（注意 0% 是一个百分比而不是一个非负数字）</li>
-<li>当 flex 取值为两个非负数字，则分别视为 flex-grow 和 flex-shrink 的值，flex-basis 取 0%</li>
-<li>当 flex 取值为一个非负数字和一个长度或百分比，则分别视为 flex-grow 和 flex-basis 的值，flex-shrink 取 1</li>
-</ul>
-</li>
-<li><p>align-self：<strong>允许单个项目有与其他项目不一样的对齐方式</strong></p>
-<p>单个项目覆盖 align-items 定义的属性</p>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.item</span> &#123;</span><br><span class="line">  <span class="attribute">align-self</span>: auto | flex-start | flex-end | center | baseline | stretch;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h3 id="四、Grid-布局"><a href="#四、Grid-布局" class="headerlink" title="四、Grid 布局"></a>四、Grid 布局</h3></li>
-<li><p>成为 container</p>
-</li>
-</ol>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">  <span class="attribute">display</span>: grid;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ol start="2">
-<li> 行和列</li>
-</ol>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">  <span class="attribute">grid-template-columns</span>: <span class="number">40px</span> <span class="number">50px</span> auto <span class="number">50px</span> <span class="number">40px</span>;</span><br><span class="line">  <span class="attribute">grid-template-rows</span>: <span class="number">25%</span> <span class="number">100px</span> auto;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/0f8b97e7942049fea47f4bb92abc0f8b~tplv-k3u1fbpfcp-watermark.webp"></p>
-<ol start="3">
-<li>给每条线取名字：</li>
-</ol>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">  <span class="attribute">grid-template-columns</span>:</span><br><span class="line">    [first] <span class="number">40px</span> [line2] <span class="number">50px</span> [line3] auto</span><br><span class="line">    [col4-start] <span class="number">50px</span> [five] <span class="number">40px</span> [end];</span><br><span class="line">  <span class="attribute">grid-template-rows</span>:</span><br><span class="line">    [row1-start] <span class="number">25%</span> [row1-end] <span class="number">100px</span> [third-line]</span><br><span class="line">    auto [last-line];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ol start="4">
-<li>items 可以设置范围</li>
-</ol>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.item-a</span> &#123;</span><br><span class="line">  <span class="attribute">grid-column-start</span>: <span class="number">2</span>;</span><br><span class="line">  <span class="attribute">grid-column-end</span>: five;</span><br><span class="line">  <span class="attribute">grid-row-start</span>: row1-start;</span><br><span class="line">  <span class="attribute">grid-row-end</span>: <span class="number">3</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ol start="5">
-<li>fr（free space） 份 可以和像素混用</li>
-</ol>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-class">.container</span> &#123;</span><br><span class="line">  <span class="attribute">grid-template-columns</span>: <span class="number">1</span>fr <span class="number">50px</span> <span class="number">1</span>fr <span class="number">1</span>fr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>分区 grid-template-areas</li>
-</ul>
-<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="selector-tag">grid-template-areas</span>:</span><br><span class="line">  &quot;<span class="selector-tag">head</span> <span class="selector-tag">head</span>&quot;</span><br><span class="line">  &quot;<span class="selector-tag">nav</span>  <span class="selector-tag">main</span>&quot;</span><br><span class="line">  &quot;<span class="selector-tag">nav</span>  <span class="selector-tag">foot</span>&quot;; <span class="comment">/* 区域划分 当前为 三行 两列 */</span></span><br><span class="line"></span><br><span class="line"><span class="selector-id">#page</span> &gt; <span class="selector-tag">header</span> &#123;</span><br><span class="line">  <span class="attribute">grid-area</span>: head; <span class="comment">/*  指定当前元素所在的区域位置, 从grid-template-areas选取值 */</span></span><br><span class="line">  <span class="attribute">background-color</span>: <span class="number">#8ca0ff</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <tags>
-        <tag>CSS</tag>
-        <tag>布局</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Cookie和Session</title>
-    <url>/2021/03/09/Cookie%E5%92%8CSession/</url>
-    <content><![CDATA[<h3 id="1、Cookie"><a href="#1、Cookie" class="headerlink" title="1、Cookie"></a>1、Cookie</h3><ul>
-<li><p>概述：</p>
-<p>HTTP Cookie（也叫 Web Cookie 或浏览器 Cookie）是服务器发送到用户浏览器并保存在本地的一小块数据，它会在浏览器下次向同一服务器再发起请求时被携带并发送到服务器上。通常，它用于告知服务端两个请求是否来自同一浏览器，如保持用户的登录状态。<br>通俗的说，Cookie 是服务器下发给浏览器的一段字符串<br>浏览器必须保存这个 Cookie(除非用户删除)<br>之后发起相同二级域名请求，浏览器必须附上 Cookie<a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Cookies">MDN</a></p>
-<a id="more"></a>
-</li>
-</ul>
-<ul>
-<li>创建 Cookie<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Set-Cookie: &lt;cookie 名&gt;&#x3D;&lt;cookie 值&gt;</span><br><span class="line">&#x2F;&#x2F;例</span><br><span class="line">response.setHeader(&quot;Set-Cookie&quot;, &#96;session_id&#x3D;$&#123;random&#125;;HttpOnly&#96;);</span><br></pre></td></tr></table></figure>
-<h3 id="2、Session"><a href="#2、Session" class="headerlink" title="2、Session"></a>2、Session</h3></li>
-</ul>
-<p>session 数据放在服务器上,一般由 cookie 保存 session 的 id，保存在 Cookie 里的 session id 是独一无二的随机生成的，服务器通过 Cookie 保存的 session id 获取数据</p>
-<h3 id="3、两者区别"><a href="#3、两者区别" class="headerlink" title="3、两者区别"></a>3、两者区别</h3><ol>
-<li><p>存储位置：cookie 数据存放在客户的浏览器上，session 数据放在服务器上。</p>
-</li>
-<li><p>安全性：cookie 不是很安全，别人可以分析存放在本地的 COOKIE 并进行篡改</p>
-</li>
-<li><p>限制：单个 cookie 保存的数据不能超过 4K，很多浏览器都限制一个站点最多保存 20 个 cookie。</p>
-</li>
-</ol>
-<p>简单实现</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">if (path &#x3D;&#x3D;&#x3D; &quot;&#x2F;sign_in&quot; &amp;&amp; method &#x3D;&#x3D;&#x3D; &quot;POST&quot;) &#123;</span><br><span class="line">  const array &#x3D; [];</span><br><span class="line">  const users &#x3D; JSON.parse(fs.readFileSync(&quot;.&#x2F;db&#x2F;users.json&quot;).toString());</span><br><span class="line">  response.setHeader(&quot;Content-Type&quot;, &quot;text&#x2F;html,charset&#x3D;UTF-8&quot;);</span><br><span class="line">  request.on(&quot;data&quot;, (chunk) &#x3D;&gt; &#123;</span><br><span class="line">    array.push(chunk);</span><br><span class="line">  &#125;);</span><br><span class="line">  request.on(&quot;end&quot;, () &#x3D;&gt; &#123;</span><br><span class="line">    const string &#x3D; Buffer.concat(array).toString();</span><br><span class="line">    const obj &#x3D; JSON.parse(string);</span><br><span class="line">    const user &#x3D; users.find(</span><br><span class="line">      (user) &#x3D;&gt; user.name &#x3D;&#x3D;&#x3D; obj.name &amp;&amp; user.password &#x3D;&#x3D;&#x3D; obj.password</span><br><span class="line">    );</span><br><span class="line">    if (user &#x3D;&#x3D;&#x3D; undefined) &#123;</span><br><span class="line">      response.statusCode &#x3D; 400;</span><br><span class="line">      response.setHeader(&quot;Content-Type&quot;, &quot;text&#x2F;json;charset&#x3D;utf-8&quot;);</span><br><span class="line">      response.end();</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      response.statusCode &#x3D; 200;</span><br><span class="line">      const random &#x3D; Math.random();</span><br><span class="line">      session[random] &#x3D; &#123; user_id: user.id &#125;;</span><br><span class="line">      fs.writeFileSync(&quot;.&#x2F;session.json&quot;, JSON.stringify(session));</span><br><span class="line">      response.setHeader(&quot;Set-Cookie&quot;, &#96;session_id&#x3D;$&#123;random&#125;;HttpOnly&#96;);</span><br><span class="line">      response.end();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125; else if (path &#x3D;&#x3D;&#x3D; &quot;&#x2F;home.html&quot;) &#123;</span><br><span class="line">  const cookie &#x3D; request.headers[&quot;cookie&quot;];</span><br><span class="line">  let sessionId;</span><br><span class="line"></span><br><span class="line">  try &#123;</span><br><span class="line">    sessionId &#x3D; cookie</span><br><span class="line">      .split(&quot;;&quot;)</span><br><span class="line">      .filter((s) &#x3D;&gt; s.indexOf(&quot;session_id&#x3D;&quot;) &gt;&#x3D; 0)[0]</span><br><span class="line">      .split(&quot;&#x3D;&quot;)[1];</span><br><span class="line">    console.log(sessionId);</span><br><span class="line">  &#125; catch (error) &#123;&#125;</span><br><span class="line">  if (sessionId &amp;&amp; session[sessionId]) &#123;</span><br><span class="line">    const userId &#x3D; session[sessionId].user_id;</span><br><span class="line">    console.log(userId);</span><br><span class="line">    const homeHtml &#x3D; fs.readFileSync(&quot;.&#x2F;public&#x2F;home.html&quot;).toString();</span><br><span class="line">    const users &#x3D; JSON.parse(fs.readFileSync(&quot;.&#x2F;db&#x2F;users.json&quot;).toString());</span><br><span class="line">    const user &#x3D; users.find((user) &#x3D;&gt; user.id &#x3D;&#x3D;&#x3D; userId);</span><br><span class="line">    let string;</span><br><span class="line">    if (user) &#123;</span><br><span class="line">      string &#x3D; homeHtml</span><br><span class="line">        .replace(&quot;&#123;&#123;loginStatus&#125;&#125;&quot;, &quot;已登录&quot;)</span><br><span class="line">        .replace(&quot;&#123;&#123;userName&#125;&#125;&quot;, user.name);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      string &#x3D; homeHtml</span><br><span class="line">        .replace(&quot;&#123;&#123;loginStatus&#125;&#125;&quot;, &quot;未登录&quot;)</span><br><span class="line">        .replace(&quot;&#123;&#123;userName&#125;&#125;&quot;, &quot;&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    response.write(string);</span><br><span class="line">    response.end();</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    const homeHtml &#x3D; fs.readFileSync(&quot;.&#x2F;public&#x2F;home.html&quot;).toString();</span><br><span class="line">    const string &#x3D; homeHtml</span><br><span class="line">      .replace(&quot;&#123;&#123;loginStatus&#125;&#125;&quot;, &quot;未登录&quot;)</span><br><span class="line">      .replace(&quot;&#123;&#123;userName&#125;&#125;&quot;, &quot;&quot;);</span><br><span class="line">    response.write(string);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="Cookie-V-S-LocalStorage-V-S-SessionStorage-V-S-Session"><a href="#Cookie-V-S-LocalStorage-V-S-SessionStorage-V-S-Session" class="headerlink" title="Cookie V.S. LocalStorage V.S. SessionStorage V.S. Session"></a>Cookie V.S. LocalStorage V.S. SessionStorage V.S. Session</h4><ul>
-<li><p>Cookie V.S. LocalStorage</p>
-<p>主要区别是 Cookie 会被发送到服务器，而 LocalStorage 不会<br>Cookie 一般最大 4k，LocalStorage 可以用 5Mb 甚至 10Mb（各浏览器不同）</p>
-</li>
-</ul>
-<ul>
-<li><p>LocalStorage V.S. SessionStorage</p>
-<p>LocalStorage 一般不会自动过期（除非用户手动清除），而 SessionStorage 在回话结束时过期（如关闭浏览器）</p>
-</li>
-<li><p>Cookie V.S. Session</p>
-<p>Cookie 存在浏览器的文件里，Session 存在服务器的文件里<br>Session 是基于 Cookie 实现的，具体做法就是把 SessionID 存在 Cookie 里</p>
-</li>
-</ul>
-]]></content>
-      <tags>
-        <tag>HTTP</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>JS 对象</title>
     <url>/2021/03/09/JS%E5%AF%B9%E8%B1%A1/</url>
     <content><![CDATA[<h3 id="一、常见用法"><a href="#一、常见用法" class="headerlink" title="一、常见用法"></a>一、常见用法</h3><p>变量做属性名</p>
@@ -545,169 +708,6 @@
 ]]></content>
       <tags>
         <tag>JavaScript</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Git</title>
-    <url>/2021/03/09/Git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
-    <content><![CDATA[<h2 id="1、git-本地仓库"><a href="#1、git-本地仓库" class="headerlink" title="1、git 本地仓库"></a>1、git 本地仓库</h2><p>git 就是一条命令</p>
-<p>六行配置</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global user.name 你的英文名</span><br><span class="line">git config --global user.email 你的邮箱</span><br><span class="line">git config --global push.default simple</span><br><span class="line">git config --global core.quotepath <span class="literal">false</span></span><br><span class="line">git config --global core.editor <span class="string">&quot;code --wait&quot;</span></span><br><span class="line">git config --global core.autocrlf input</span><br></pre></td></tr></table></figure>
- <a id="more"></a>
-
-<h3 id="1-让你代码有版本："><a href="#1-让你代码有版本：" class="headerlink" title="1.让你代码有版本："></a>1.让你代码有版本：</h3><p>git init :初始化（指定目录），创建 .git 目录</p>
-<p><strong>git add</strong> 路径:选择哪些变动是需要提交的</p>
-<p>.gitignore：描述哪些文件是不需要提交的</p>
-<p>git commit -m ：字符串：提交，说明理由 （字符串有空格，用引号）</p>
-<p><strong>git commit -v</strong>：回顾修改的内容，添加详细提交理由<strong>（推荐）</strong></p>
-<p>git reset –hard 提交号前六位：回到指定提交版本</p>
-<p>git log： 查看历史 git reflog：查看所有的历史</p>
-<h3 id="2-分支："><a href="#2-分支：" class="headerlink" title="2.分支："></a>2.分支：</h3><p>git branch ：基于当前 commit 创建分支，在哪个分支提交，就创建在哪个分支</p>
-<p>git checkout：切换分支</p>
-<p>git merge:合并分支</p>
-<p><strong>步骤</strong>：</p>
-<ol>
-<li><p>选择需要保留的分支 master</p>
-</li>
-<li><p>运行 git merge x（合并的分支）</p>
-</li>
-<li><p>冲突</p>
-<ul>
-<li><p>发现冲突：</p>
-<p>合并分支的时候<strong>conflict</strong>提示</p>
-<p>使用 git status -sb 查看冲突文件</p>
-</li>
-<li><p>解决冲突：</p>
-<p>依次打开文件</p>
-<p>搜素‘====’四个等于号</p>
-<p>选择要保留的代码，删除不用的代码</p>
-<p>删除’====‘’&lt;&lt;&lt;&lt;’’&gt;&gt;&gt;&gt;’标记</p>
-<p><strong>git add 对应文件</strong></p>
-<p>再次使用 git status -sb 解决下一个冲突文件</p>
-<p>直到没有冲突，运行<strong>git commit （不需要加选项）</strong></p>
-</li>
-</ul>
-</li>
-<li><p>合并完删除无用的分支 git branch -d x</p>
-</li>
-</ol>
-<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><ul>
-<li>git 目录就是本地仓库</li>
-<li>git add 处理的是文件变化，而不是文件，删除文件后，依然需要 git add 添加到提交区</li>
-<li>常用的命令：<strong>git add</strong> 和<strong>git commit -v</strong></li>
-</ul>
-<h2 id="2、git-远程仓库"><a href="#2、git-远程仓库" class="headerlink" title="2、git 远程仓库"></a>2、git 远程仓库</h2><h3 id="生成-ssh-key（帮助文档）："><a href="#生成-ssh-key（帮助文档）：" class="headerlink" title="生成 ssh key（帮助文档）："></a>生成 ssh key（<a href="https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent" title="https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent#">帮助文档</a>）：</h3><ul>
-<li>运行 ssh-keygen -t rsa -b 4096 -C +邮箱地址</li>
-<li>一直回车键到没有提示</li>
-<li>cat ~/.ssh/id_rsa.pub 得到公钥内容，复制内容</li>
-<li>打开 Github，在设置页面粘贴公钥内容</li>
-</ul>
-<h3 id="测试："><a href="#测试：" class="headerlink" title="测试："></a>测试：</h3><ul>
-<li>运行 ssh -T <a href="mailto:&#x67;&#105;&#x74;&#x40;&#103;&#x69;&#116;&#104;&#117;&#98;&#46;&#99;&#111;&#x6d;">&#x67;&#105;&#x74;&#x40;&#103;&#x69;&#116;&#104;&#117;&#98;&#46;&#99;&#111;&#x6d;</a></li>
-<li>询问 yes/no,回答 yes</li>
-</ul>
-<h3 id="上传代码："><a href="#上传代码：" class="headerlink" title="上传代码："></a>上传代码：</h3><ol>
-<li><p>新建 Github Repo，复制 ssh 地址</p>
-</li>
-<li><p>运行 git remote add origin git@xxxxx</p>
-<p>（在本地添加远程仓库地址，origin 为远程仓库默认名字）</p>
-</li>
-<li><p>git push -u origin master</p>
-</li>
-</ol>
-<ul>
-<li>推送本地 master 分支到远程 originmaster 分支</li>
-<li>提示应该 git pull…</li>
-<li>-u origin master 意思为设置上游分支，之后不用再设置，直接 git pull，git push</li>
-</ul>
-<p><strong>上传其它分支：</strong></p>
-<p>一：git push x:x</p>
-<p>二：git checkout x</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git push -u origin x</span><br></pre></td></tr></table></figure>
-<p><strong>上传到两个本地仓库</strong></p>
-<ul>
-<li>git remote add origin2 git@xxxxx</li>
-<li>git push -u origin master</li>
-</ul>
-<p><strong>git pull 冲突</strong>：查看合并分支冲突</p>
-<h3 id="下载代码："><a href="#下载代码：" class="headerlink" title="下载代码："></a>下载代码：</h3><ol>
-<li> git clone git@xxx</li>
-<li> 不同机器需要先上传新的 ssh key(一机一 key)</li>
-<li> <strong>cd 目标路径</strong></li>
-<li> 运行 git add/git commit/[git pull]/git push</li>
-</ol>
-<p>下载某个分支：先下载整个仓库，再切换分支</p>
-<p><strong>git clone</strong>：</p>
-<ul>
-<li><p>git clone git@?/xxx.git:会在当前目录下创建一个 xxx 目录，xxx/.git 是本地仓库，一般需要接 cd xxx 进入目录</p>
-</li>
-<li><p>git clone git@?/xxx.git yyy：会在本地新建一个 yyy 目录，cd yyy 进入目录</p>
-</li>
-<li><p>git clone git@?/xxx.git .:最后一个字符是点，使用当前目录容纳代码和.git，需要先新建一个目录，cd 进入目录</p>
-</li>
-</ul>
-<h3 id="总结：-1"><a href="#总结：-1" class="headerlink" title="总结："></a>总结：</h3><p>常用命令：git alone/git pull/git push</p>
-<p>远程仓库：本地仓库的备份，要先 commit 到本地仓库，然后 push 到远程仓库</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">无法下载部分代码，只能先clone整个仓库生成ssh key（[帮助文档](https:&#x2F;&#x2F;docs.github.com&#x2F;en&#x2F;free-pro-team@latest&#x2F;github&#x2F;authenticating-to-github&#x2F;generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent#)）：</span><br></pre></td></tr></table></figure>
-<ul>
-<li>运行 ssh-keygen -t rsa -b 4096 -C +邮箱地址</li>
-<li>一直回车键到没有提示</li>
-<li>cat ~/.ssh/id_rsa.pub 得到公钥内容，复制内容</li>
-<li>打开 Github，在设置页面粘贴公钥内容</li>
-</ul>
-<h3 id="测试：-1"><a href="#测试：-1" class="headerlink" title="测试："></a>测试：</h3><ul>
-<li>运行 ssh -T <a href="mailto:&#x67;&#x69;&#116;&#x40;&#x67;&#x69;&#116;&#104;&#x75;&#98;&#46;&#99;&#111;&#x6d;">&#x67;&#x69;&#116;&#x40;&#x67;&#x69;&#116;&#104;&#x75;&#98;&#46;&#99;&#111;&#x6d;</a></li>
-<li>询问 yes/no,回答 yes</li>
-</ul>
-<h3 id="上传代码：-1"><a href="#上传代码：-1" class="headerlink" title="上传代码："></a>上传代码：</h3><ol>
-<li><p>新建 Github Repo，复制 ssh 地址</p>
-</li>
-<li><p>运行 git remote add origin git@xxxxx</p>
-<p>（在本地添加远程仓库地址，origin 为远程仓库默认名字）</p>
-</li>
-<li><p>git push -u origin master</p>
-</li>
-</ol>
-<ul>
-<li>推送本地 master 分支到远程 originmaster 分支</li>
-<li>提示应该 git pull…，就运行 git pull!</li>
-<li>-u origin master 意思为设置上游分支，之后不用再设置，直接 git pull，git push</li>
-</ul>
-<p><strong>上传其它分支：</strong></p>
-<p>一：git push x:x</p>
-<p>二：git checkout x</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git push -u origin x</span><br></pre></td></tr></table></figure>
-<p><strong>上传到两个本地仓库</strong></p>
-<ul>
-<li>git remote add origin2 git@xxxxx</li>
-<li>git push -u origin master</li>
-</ul>
-<p><strong>git pull 冲突</strong>：查看合并分支冲突</p>
-<h3 id="下载代码：-1"><a href="#下载代码：-1" class="headerlink" title="下载代码："></a>下载代码：</h3><ol>
-<li> git clone git@xxx</li>
-<li> 不同机器需要先上传新的 ssh key(一机一 key)</li>
-<li> <strong>cd 目标路径</strong></li>
-<li> 运行 git add/git commit/[git pull]/git push</li>
-</ol>
-<p>下载某个分支：先下载整个仓库，再切换分支</p>
-<p><strong>git clone</strong>：</p>
-<ul>
-<li><p>git clone git@?/xxx.git:会在当前目录下创建一个 xxx 目录，xxx/.git 是本地仓库，一般需要接 cd xxx 进入目录</p>
-</li>
-<li><p>git clone git@?/xxx.git yyy：会在本地新建一个 yyy 目录，cd yyy 进入目录</p>
-</li>
-<li><p>git clone git@?/xxx.git .:最后一个字符是点，使用当前目录容纳代码和.git，需要先新建一个目录，cd 进入目录</p>
-</li>
-</ul>
-<h3 id="总结：-2"><a href="#总结：-2" class="headerlink" title="总结："></a>总结：</h3><p>常用命令：git alone/git pull/git push</p>
-<p>远程仓库：本地仓库的备份，要先 commit 到本地仓库，然后 push 到远程仓库</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">无法下载部分代码，只能先clone整个仓库</span><br></pre></td></tr></table></figure>
-<h2 id="3、git-高级操作"><a href="#3、git-高级操作" class="headerlink" title="3、git 高级操作"></a>3、git 高级操作</h2><p>bash alias 简化命令： ga=”git add” gc=”git commit -v” gl=”git pull” gp=”git push” gco=”git checkout” gst=”git status -sb”</p>
-<p>美化历史命令：git rebase -i xxx</p>
-]]></content>
-      <tags>
-        <tag>Git</tag>
-        <tag>笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -1315,6 +1315,43 @@
       </tags>
   </entry>
   <entry>
+    <title>跨域 CORS和JSON</title>
+    <url>/2021/03/09/%E8%B7%A8%E5%9F%9F%20CORS%E5%92%8CJSONP/</url>
+    <content><![CDATA[<h4 id="一、同源策略"><a href="#一、同源策略" class="headerlink" title="一、同源策略"></a>一、同源策略</h4><ol>
+<li>同源定义：</li>
+</ol>
+<ul>
+<li>源： window.Origin 或 location.origin 可以得到当前源</li>
+<li>源=协议+域名+端口号</li>
+<li>如果两个 url 协议、域名、端口号完全一致，那么这两个 url 就是同源的<a id="more"></a>
+</li>
+</ul>
+<ol start="2">
+<li>同源策略：</li>
+</ol>
+<ul>
+<li>浏览器规定：如果 JS 运行在源 A，那么就只能获取源 A 的数据，不允许获取源 B 的数据，即不允许跨源</li>
+<li>目的：保护隐私</li>
+<li>主要原因：无法区分发送者，如果没有同源策略，任何网站都可以访问别的网站数据(检查 referer)</li>
+<li>同源策略：不同源的页面中间，不允许互相访问数据</li>
+</ul>
+<ul>
+<li>同源策略限制访问数据，引用 css、JS 和图片的时候，其实并不知道其内容，只是在引用</li>
+</ul>
+<h4 id="二、跨域"><a href="#二、跨域" class="headerlink" title="二、跨域"></a>二、跨域</h4><p>浏览器有同源策略限制，不允许一个源里的文档访问另一个源里资源。而跨域就是为了解决同源策略限制。</p>
+<ul>
+<li><p>CORS：<br>跨源资源共享，使用附加的 HTTP 头来告诉浏览器，准许运行在一个源上的 Web 应用访问位于另一不同源选定的资源。使用<strong>Access-Control-Allow-Origin</strong>响应头可以指定一个可以访问资源的 URI</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">if (path &#x3D;&#x3D;&#x3D; &quot;&#x2F;friends.json&quot;) &#123;</span><br><span class="line">    response.statusCode &#x3D; 200</span><br><span class="line">    response.setHeader(&quot;Content-Type&quot;, &quot;text&#x2F;json;charset&#x3D;utf-8&quot;)</span><br><span class="line">    response.setHeader(&quot;Access-Control-Allow-Origin&quot;, &quot;http:&#x2F;&#x2F;crystal.com:9999&quot;)</span><br><span class="line">    response.write(fs.readFileSync(&quot;public&#x2F;friends.json&quot;))</span><br><span class="line">    response.end()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>JSONP ：在无法使用 CORS 跨域的情况下，请求 JS 文件，这个 JS 文件会执行一个回调，回调里面包含数据。可以兼容 IE 浏览器实现跨域，但只能发 get 请求，并且无法读取精确的状态码。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">function jsonp(url) &#123;</span><br><span class="line">  return new Promise((resolve, reject) &#x3D;&gt; &#123;</span><br><span class="line">     const random &#x3D; &quot;crystalJSONPCallbackName&quot; + Math.random()</span><br><span class="line">     window[random] &#x3D; (data) &#x3D;&gt; &#123;</span><br><span class="line">       resolve(data)</span><br><span class="line">     &#125;</span><br><span class="line">     const script &#x3D; document.createElement(&quot;script&quot;)</span><br><span class="line">     script.src &#x3D; &#96;$&#123;url&#125;?callback&#x3D;$&#123;random&#125;&#96;</span><br><span class="line">     script.onload &#x3D; () &#x3D;&gt; &#123;  &#x2F;&#x2F;无法获取状态码，只能知道成功或者失败</span><br><span class="line">       script.remove()</span><br><span class="line">     &#125;</span><br><span class="line">     script.onerror &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">       reject()</span><br><span class="line">     &#125;</span><br><span class="line">     document.body.appendChild(script)</span><br><span class="line">   &#125;)</span><br><span class="line"> &#125;</span><br><span class="line"> jsonp(&quot;http:&#x2F;&#x2F;qq.com:8888&#x2F;friends.js&quot;).then((data) &#x3D;&gt; &#123;</span><br><span class="line">   console.log(data)</span><br><span class="line"> &#125;)</span><br><span class="line"> script.onload &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">   console.log(window.xxx)</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">if (path &#x3D;&#x3D;&#x3D; &quot;&#x2F;friends.js&quot;) &#123;</span><br><span class="line">  if (request.headers[&quot;referer&quot;].indexOf(&quot;http:&#x2F;&#x2F;crystal.com:9999&quot;) &#x3D;&#x3D;&#x3D; 0) &#123;</span><br><span class="line">    response.statusCode &#x3D; 200</span><br><span class="line">    response.setHeader(&quot;Content-Type&quot;, &quot;text&#x2F;javascript;charset&#x3D;utf-8&quot;)</span><br><span class="line">    const string &#x3D; &#96;window[&quot;&#123;&#123;xxx&#125;&#125;&quot;](&#123;&#123;data&#125;&#125;)&#96;</span><br><span class="line">    const data &#x3D; fs.readFileSync(&quot;public&#x2F;friends.json&quot;).toString()</span><br><span class="line">    const string2 &#x3D; string</span><br><span class="line">      .replace(&quot;&#123;&#123;data&#125;&#125;&quot;, data)</span><br><span class="line">      .replace(&quot;&#123;&#123;xxx&#125;&#125;&quot;, query.callback)     &#x2F;&#x2F;上面的random</span><br><span class="line">    response.write(string2)</span><br><span class="line">    response.end()</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+]]></content>
+      <tags>
+        <tag>AJAX</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>虚拟DOM</title>
     <url>/2021/03/11/%E8%99%9A%E6%8B%9Fdom/</url>
     <content><![CDATA[<h2 id="一、虚拟-DOM"><a href="#一、虚拟-DOM" class="headerlink" title="一、虚拟 DOM"></a>一、虚拟 DOM</h2><h4 id="1、虚拟-DOM-是什么？"><a href="#1、虚拟-DOM-是什么？" class="headerlink" title="1、虚拟 DOM 是什么？"></a>1、虚拟 DOM 是什么？</h4><p>一个能代表 DOM 树的对象，通常含有标签名、标签上的属性，事件监听以及其他属性</p>
@@ -1366,43 +1403,6 @@
       <tags>
         <tag>框架</tag>
         <tag>React</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>跨域 CORS和JSON</title>
-    <url>/2021/03/09/%E8%B7%A8%E5%9F%9F%20CORS%E5%92%8CJSONP/</url>
-    <content><![CDATA[<h4 id="一、同源策略"><a href="#一、同源策略" class="headerlink" title="一、同源策略"></a>一、同源策略</h4><ol>
-<li>同源定义：</li>
-</ol>
-<ul>
-<li>源： window.Origin 或 location.origin 可以得到当前源</li>
-<li>源=协议+域名+端口号</li>
-<li>如果两个 url 协议、域名、端口号完全一致，那么这两个 url 就是同源的<a id="more"></a>
-</li>
-</ul>
-<ol start="2">
-<li>同源策略：</li>
-</ol>
-<ul>
-<li>浏览器规定：如果 JS 运行在源 A，那么就只能获取源 A 的数据，不允许获取源 B 的数据，即不允许跨源</li>
-<li>目的：保护隐私</li>
-<li>主要原因：无法区分发送者，如果没有同源策略，任何网站都可以访问别的网站数据(检查 referer)</li>
-<li>同源策略：不同源的页面中间，不允许互相访问数据</li>
-</ul>
-<ul>
-<li>同源策略限制访问数据，引用 css、JS 和图片的时候，其实并不知道其内容，只是在引用</li>
-</ul>
-<h4 id="二、跨域"><a href="#二、跨域" class="headerlink" title="二、跨域"></a>二、跨域</h4><p>浏览器有同源策略限制，不允许一个源里的文档访问另一个源里资源。而跨域就是为了解决同源策略限制。</p>
-<ul>
-<li><p>CORS：<br>跨源资源共享，使用附加的 HTTP 头来告诉浏览器，准许运行在一个源上的 Web 应用访问位于另一不同源选定的资源。使用<strong>Access-Control-Allow-Origin</strong>响应头可以指定一个可以访问资源的 URI</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">if (path &#x3D;&#x3D;&#x3D; &quot;&#x2F;friends.json&quot;) &#123;</span><br><span class="line">    response.statusCode &#x3D; 200</span><br><span class="line">    response.setHeader(&quot;Content-Type&quot;, &quot;text&#x2F;json;charset&#x3D;utf-8&quot;)</span><br><span class="line">    response.setHeader(&quot;Access-Control-Allow-Origin&quot;, &quot;http:&#x2F;&#x2F;crystal.com:9999&quot;)</span><br><span class="line">    response.write(fs.readFileSync(&quot;public&#x2F;friends.json&quot;))</span><br><span class="line">    response.end()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>JSONP ：在无法使用 CORS 跨域的情况下，请求 JS 文件，这个 JS 文件会执行一个回调，回调里面包含数据。可以兼容 IE 浏览器实现跨域，但只能发 get 请求，并且无法读取精确的状态码。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">function jsonp(url) &#123;</span><br><span class="line">  return new Promise((resolve, reject) &#x3D;&gt; &#123;</span><br><span class="line">     const random &#x3D; &quot;crystalJSONPCallbackName&quot; + Math.random()</span><br><span class="line">     window[random] &#x3D; (data) &#x3D;&gt; &#123;</span><br><span class="line">       resolve(data)</span><br><span class="line">     &#125;</span><br><span class="line">     const script &#x3D; document.createElement(&quot;script&quot;)</span><br><span class="line">     script.src &#x3D; &#96;$&#123;url&#125;?callback&#x3D;$&#123;random&#125;&#96;</span><br><span class="line">     script.onload &#x3D; () &#x3D;&gt; &#123;  &#x2F;&#x2F;无法获取状态码，只能知道成功或者失败</span><br><span class="line">       script.remove()</span><br><span class="line">     &#125;</span><br><span class="line">     script.onerror &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">       reject()</span><br><span class="line">     &#125;</span><br><span class="line">     document.body.appendChild(script)</span><br><span class="line">   &#125;)</span><br><span class="line"> &#125;</span><br><span class="line"> jsonp(&quot;http:&#x2F;&#x2F;qq.com:8888&#x2F;friends.js&quot;).then((data) &#x3D;&gt; &#123;</span><br><span class="line">   console.log(data)</span><br><span class="line"> &#125;)</span><br><span class="line"> script.onload &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">   console.log(window.xxx)</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">if (path &#x3D;&#x3D;&#x3D; &quot;&#x2F;friends.js&quot;) &#123;</span><br><span class="line">  if (request.headers[&quot;referer&quot;].indexOf(&quot;http:&#x2F;&#x2F;crystal.com:9999&quot;) &#x3D;&#x3D;&#x3D; 0) &#123;</span><br><span class="line">    response.statusCode &#x3D; 200</span><br><span class="line">    response.setHeader(&quot;Content-Type&quot;, &quot;text&#x2F;javascript;charset&#x3D;utf-8&quot;)</span><br><span class="line">    const string &#x3D; &#96;window[&quot;&#123;&#123;xxx&#125;&#125;&quot;](&#123;&#123;data&#125;&#125;)&#96;</span><br><span class="line">    const data &#x3D; fs.readFileSync(&quot;public&#x2F;friends.json&quot;).toString()</span><br><span class="line">    const string2 &#x3D; string</span><br><span class="line">      .replace(&quot;&#123;&#123;data&#125;&#125;&quot;, data)</span><br><span class="line">      .replace(&quot;&#123;&#123;xxx&#125;&#125;&quot;, query.callback)     &#x2F;&#x2F;上面的random</span><br><span class="line">    response.write(string2)</span><br><span class="line">    response.end()</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-]]></content>
-      <tags>
-        <tag>AJAX</tag>
       </tags>
   </entry>
   <entry>
