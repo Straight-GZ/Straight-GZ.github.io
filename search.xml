@@ -4,6 +4,10 @@
     <title>React</title>
     <url>/2021/02/19/11%E3%80%81React%E5%85%A8%E8%A7%A3/</url>
     <content><![CDATA[]]></content>
+      <tags>
+        <tag>React</tag>
+        <tag>note</tag>
+      </tags>
   </entry>
   <entry>
     <title>十二、虚拟DOM和DOM diff</title>
@@ -228,7 +232,7 @@
 <li>打开 Github，在设置页面粘贴公钥内容</li>
 </ul>
 <h3 id="测试："><a href="#测试：" class="headerlink" title="测试："></a>测试：</h3><ul>
-<li>运行 ssh -T <a href="mailto:&#103;&#x69;&#116;&#64;&#103;&#105;&#116;&#104;&#117;&#x62;&#46;&#x63;&#111;&#109;">&#103;&#x69;&#116;&#64;&#103;&#105;&#116;&#104;&#117;&#x62;&#46;&#x63;&#111;&#109;</a></li>
+<li>运行 ssh -T <a href="mailto:&#x67;&#x69;&#x74;&#64;&#x67;&#105;&#x74;&#x68;&#x75;&#98;&#x2e;&#99;&#111;&#109;">&#x67;&#x69;&#x74;&#64;&#x67;&#105;&#x74;&#x68;&#x75;&#98;&#x2e;&#99;&#111;&#109;</a></li>
 <li>询问 yes/no,回答 yes</li>
 </ul>
 <h3 id="上传代码："><a href="#上传代码：" class="headerlink" title="上传代码："></a>上传代码：</h3><ol>
@@ -281,7 +285,7 @@
 <li>打开 Github，在设置页面粘贴公钥内容</li>
 </ul>
 <h3 id="测试：-1"><a href="#测试：-1" class="headerlink" title="测试："></a>测试：</h3><ul>
-<li>运行 ssh -T <a href="mailto:&#103;&#105;&#116;&#64;&#103;&#105;&#116;&#x68;&#x75;&#x62;&#x2e;&#99;&#x6f;&#x6d;">&#103;&#105;&#116;&#64;&#103;&#105;&#116;&#x68;&#x75;&#x62;&#x2e;&#99;&#x6f;&#x6d;</a></li>
+<li>运行 ssh -T <a href="mailto:&#103;&#x69;&#116;&#x40;&#x67;&#105;&#x74;&#x68;&#x75;&#98;&#46;&#99;&#111;&#x6d;">&#103;&#x69;&#116;&#x40;&#x67;&#105;&#x74;&#x68;&#x75;&#98;&#46;&#99;&#111;&#x6d;</a></li>
 <li>询问 yes/no,回答 yes</li>
 </ul>
 <h3 id="上传代码：-1"><a href="#上传代码：-1" class="headerlink" title="上传代码："></a>上传代码：</h3><ol>
@@ -331,6 +335,7 @@
 <p>美化历史命令：git rebase -i xxx</p>
 ]]></content>
       <tags>
+        <tag>note</tag>
         <tag>git</tag>
       </tags>
   </entry>
@@ -634,6 +639,10 @@
 <p>canvas：画布</p>
 <p>svg：矢量图</p>
 ]]></content>
+      <tags>
+        <tag>note</tag>
+        <tag>HTML</tag>
+      </tags>
   </entry>
   <entry>
     <title>四、HTTP</title>
@@ -830,6 +839,10 @@
 </li>
 </ul>
 ]]></content>
+      <tags>
+        <tag>note</tag>
+        <tag>HTTP</tag>
+      </tags>
   </entry>
   <entry>
     <title>六、算法与数据结构</title>
@@ -914,6 +927,11 @@
 </li>
 </ol>
 <h2 id="数据结构-数据形式-操作"><a href="#数据结构-数据形式-操作" class="headerlink" title="数据结构=数据形式+操作"></a>数据结构=数据形式+操作</h2>]]></content>
+      <tags>
+        <tag>note</tag>
+        <tag>算法</tag>
+        <tag>数据结构</tag>
+      </tags>
   </entry>
   <entry>
     <title>七、JS编程接口</title>
@@ -1241,6 +1259,12 @@
 ]]></content>
   </entry>
   <entry>
+    <title>九、MVC</title>
+    <url>/2021/02/19/9%E3%80%81MVC/</url>
+    <content><![CDATA[<p>博客：<a href="https://juejin.cn/post/6894231078177865741">浅析 mvc</a></p>
+]]></content>
+  </entry>
+  <entry>
     <title>Vue3轮子</title>
     <url>/2021/02/19/Vue3%E9%80%A0%E8%BD%AE%E5%AD%90/</url>
     <content><![CDATA[<h2 id="一、使用-Vite-搭建官网"><a href="#一、使用-Vite-搭建官网" class="headerlink" title="一、使用 Vite 搭建官网"></a>一、使用 Vite 搭建官网</h2><h4 id="1、安装、创建项目命令"><a href="#1、安装、创建项目命令" class="headerlink" title="1、安装、创建项目命令"></a>1、安装、创建项目命令</h4><ol>
@@ -1376,12 +1400,6 @@
       <tags>
         <tag>博客</tag>
       </tags>
-  </entry>
-  <entry>
-    <title>九、MVC</title>
-    <url>/2021/02/19/9%E3%80%81MVC/</url>
-    <content><![CDATA[<p>博客：<a href="https://juejin.cn/post/6894231078177865741">浅析 mvc</a></p>
-]]></content>
   </entry>
   <entry>
     <title>Hello World</title>
@@ -1779,6 +1797,10 @@
 <h5 id="5、v-model-的本质"><a href="#5、v-model-的本质" class="headerlink" title="5、v-model 的本质"></a>5、v-model 的本质</h5><p>v-model 实际上是 <code>v-bind:value</code>和<code>v-on:input</code>的语法糖</p>
 <figure class="highlight js"><table><tr><td class="code"><pre><span class="line">&lt;input</span><br><span class="line">      type=<span class="string">&quot;text&quot;</span></span><br><span class="line">      :value=<span class="string">&quot;user.username&quot;</span></span><br><span class="line">		<span class="comment">//vue提供的 需要使用 $event.target.value获取新值</span></span><br><span class="line">      @input=<span class="string">&quot;user.username = $event.target.value&quot;</span></span><br><span class="line">    /&gt;</span><br><span class="line"></span><br><span class="line">&lt;MyInput</span><br><span class="line">	  type=<span class="string">&#x27;text&#x27;</span></span><br><span class="line">      :value=<span class="string">&quot;user.username&quot;</span></span><br><span class="line">		<span class="comment">//自己封装的$event就可以获取新值</span></span><br><span class="line">	  @input=<span class="string">&quot;user.username = $event&quot;</span></span><br><span class="line">/&gt;</span><br></pre></td></tr></table></figure>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;MyInput</span><br><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div class&#x3D;&quot;red&quot;&gt;</span><br><span class="line">    &lt;input :value&#x3D;&quot;value&quot; @input&#x3D;&quot;onInput&quot; &#x2F;&gt;</span><br><span class="line">  &lt;&#x2F;div&gt;</span><br><span class="line">&lt;&#x2F;template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">export default &#123;</span><br><span class="line">  props: &#123;</span><br><span class="line">    value: String,</span><br><span class="line">  &#125;,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    onInput(e) &#123;</span><br><span class="line">      const event &#x3D; e.target.value;</span><br><span class="line">      &#x2F;&#x2F;通过input事件拿到当前输入，再次触发input事件，将数据传递出去</span><br><span class="line">      this.$emit(&quot;input&quot;, event);</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;;</span><br><span class="line">&lt;&#x2F;script&gt;</span><br></pre></td></tr></table></figure>]]></content>
+      <tags>
+        <tag>note</tag>
+        <tag>Vue</tag>
+      </tags>
   </entry>
   <entry>
     <title>三、CSS</title>
@@ -2193,6 +2215,10 @@
 </li>
 </ul>
 <h5 id="例子：跳动的心-1"><a href="#例子：跳动的心-1" class="headerlink" title="例子：跳动的心"></a>例子：<a href="http://js.jirengu.com/fuzib/7/edit?html,css,output">跳动的心</a></h5>]]></content>
+      <tags>
+        <tag>note</tag>
+        <tag>CSS</tag>
+      </tags>
   </entry>
   <entry>
     <title>八、前后分离</title>
@@ -3702,6 +3728,10 @@ for (i = 0; i &lt; 6; i++) &#123;
 </ul>
 <p>只要在匿名函数前面加个运算符即可让函数立即执行，!、~、()、+、- 都可以，但有些运算符会往上做运算，推荐！</p>
 ]]></content>
+      <tags>
+        <tag>note</tag>
+        <tag>Javascript</tag>
+      </tags>
   </entry>
   <entry>
     <title>笔记汇总</title>
@@ -3805,7 +3835,7 @@ for (i = 0; i &lt; 6; i++) &#123;
 <li>打开 Github，在设置页面粘贴公钥内容</li>
 </ul>
 <h3 id="测试："><a href="#测试：" class="headerlink" title="测试："></a>测试：</h3><ul>
-<li>运行 ssh -T <a href="mailto:&#x67;&#x69;&#116;&#x40;&#103;&#105;&#116;&#x68;&#117;&#x62;&#46;&#99;&#x6f;&#x6d;">&#x67;&#x69;&#116;&#x40;&#103;&#105;&#116;&#x68;&#117;&#x62;&#46;&#99;&#x6f;&#x6d;</a></li>
+<li>运行 ssh -T <a href="mailto:&#x67;&#105;&#116;&#64;&#103;&#105;&#x74;&#104;&#x75;&#x62;&#46;&#x63;&#x6f;&#x6d;">&#x67;&#105;&#116;&#64;&#103;&#105;&#x74;&#104;&#x75;&#x62;&#46;&#x63;&#x6f;&#x6d;</a></li>
 <li>询问 yes/no,回答 yes</li>
 </ul>
 <h3 id="上传代码："><a href="#上传代码：" class="headerlink" title="上传代码："></a>上传代码：</h3><ol>
@@ -3858,7 +3888,7 @@ for (i = 0; i &lt; 6; i++) &#123;
 <li>打开 Github，在设置页面粘贴公钥内容</li>
 </ul>
 <h3 id="测试：-1"><a href="#测试：-1" class="headerlink" title="测试："></a>测试：</h3><ul>
-<li>运行 ssh -T <a href="mailto:&#x67;&#x69;&#x74;&#64;&#103;&#105;&#x74;&#x68;&#117;&#98;&#46;&#99;&#x6f;&#x6d;">&#x67;&#x69;&#x74;&#64;&#103;&#105;&#x74;&#x68;&#117;&#98;&#46;&#99;&#x6f;&#x6d;</a></li>
+<li>运行 ssh -T <a href="mailto:&#103;&#x69;&#116;&#64;&#103;&#x69;&#x74;&#x68;&#117;&#x62;&#46;&#99;&#111;&#x6d;">&#103;&#x69;&#116;&#64;&#103;&#x69;&#x74;&#x68;&#117;&#x62;&#46;&#99;&#111;&#x6d;</a></li>
 <li>询问 yes/no,回答 yes</li>
 </ul>
 <h3 id="上传代码：-1"><a href="#上传代码：-1" class="headerlink" title="上传代码："></a>上传代码：</h3><ol>
