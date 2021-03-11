@@ -23,12 +23,12 @@
     var NexT = window.NexT || {};
     var CONFIG = {"hostname":"github.com","root":"/","images":"/images","scheme":"Mist","version":"8.2.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
   </script>
-<meta name="description" content="1、Vuex 是什么？一个专为 Vue.js 应用程序开发的状态管理工具 2、作用 解耦：将所有数据相关的逻辑放入 store（也就是 MVC 中的 Model，换了个名字而已） 数据读写更方便：任何组件不管在哪里，都可以直接读写数据 控制力更强：组件对数据的读写只能使用 store 提供的 API 进行  3、核心概念Vuex 的核心就是仓库 store，这个 store 实例会被注入到所有子组">
+<meta name="description" content="1、Vuex 是什么？一个专为 Vue.js 应用程序开发的状态管理工具 2、作用 解耦：将所有数据相关的逻辑放入 store（也就是 MVC 中的 Model，换了个名字而已） 数据读写更方便：任何组件不管在哪里，都可以直接读写数据 控制力更强：组件对数据的读写只能使用 store 提供的 API 进行">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Vuex的基本用法">
 <meta property="og:url" content="https://github.com/Straight-GZ/2021/03/11/Vuex/index.html">
 <meta property="og:site_name">
-<meta property="og:description" content="1、Vuex 是什么？一个专为 Vue.js 应用程序开发的状态管理工具 2、作用 解耦：将所有数据相关的逻辑放入 store（也就是 MVC 中的 Model，换了个名字而已） 数据读写更方便：任何组件不管在哪里，都可以直接读写数据 控制力更强：组件对数据的读写只能使用 store 提供的 API 进行  3、核心概念Vuex 的核心就是仓库 store，这个 store 实例会被注入到所有子组">
+<meta property="og:description" content="1、Vuex 是什么？一个专为 Vue.js 应用程序开发的状态管理工具 2、作用 解耦：将所有数据相关的逻辑放入 store（也就是 MVC 中的 Model，换了个名字而已） 数据读写更方便：任何组件不管在哪里，都可以直接读写数据 控制力更强：组件对数据的读写只能使用 store 提供的 API 进行">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-03-11T06:54:09.780Z">
 <meta property="article:modified_time" content="2021-03-11T06:54:09.780Z">
@@ -263,7 +263,9 @@
 <h5 id="2、作用"><a href="#2、作用" class="headerlink" title="2、作用"></a>2、作用</h5><ul>
 <li>解耦：将所有数据相关的逻辑放入 store（也就是 MVC 中的 Model，换了个名字而已）</li>
 <li>数据读写更方便：任何组件不管在哪里，都可以直接读写数据</li>
-<li>控制力更强：组件对数据的读写只能使用 store 提供的 API 进行</li>
+<li>控制力更强：组件对数据的读写只能使用 store 提供的 API 进行<a id="more"></a>
+
+</li>
 </ul>
 <h5 id="3、核心概念"><a href="#3、核心概念" class="headerlink" title="3、核心概念"></a>3、核心概念</h5><p>Vuex 的核心就是仓库 store，这个 store 实例会被注入到所有子组件里面,子组件通过<code>this.$store</code>获取</p>
 <p>主要架构</p>

@@ -23,12 +23,12 @@
     var NexT = window.NexT || {};
     var CONFIG = {"hostname":"github.com","root":"/","images":"/images","scheme":"Mist","version":"8.2.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
   </script>
-<meta name="description" content="1、Vue RouterVue.js 官方的路由管理器。路由就是 SPA（single page application 单页应用）的路径管理器，单页面应用的思路是一个 index.html 里面有一个容器，在用户进行交互的时候，并不会重新加载某个界面，而是只选择把某个视图更新到容器中去显示。 2、路由模式 hash 模式 vue-router 默认 hash 模式 —— 使用 URL 的 has">
+<meta name="description" content="1、Vue RouterVue.js 官方的路由管理器。路由就是 SPA（single page application 单页应用）的路径管理器，单页面应用的思路是一个 index.html 里面有一个容器，在用户进行交互的时候，并不会重新加载某个界面，而是只选择把某个视图更新到容器中去显示。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Vue Router">
 <meta property="og:url" content="https://github.com/Straight-GZ/2021/03/11/Vue%20router/index.html">
 <meta property="og:site_name">
-<meta property="og:description" content="1、Vue RouterVue.js 官方的路由管理器。路由就是 SPA（single page application 单页应用）的路径管理器，单页面应用的思路是一个 index.html 里面有一个容器，在用户进行交互的时候，并不会重新加载某个界面，而是只选择把某个视图更新到容器中去显示。 2、路由模式 hash 模式 vue-router 默认 hash 模式 —— 使用 URL 的 has">
+<meta property="og:description" content="1、Vue RouterVue.js 官方的路由管理器。路由就是 SPA（single page application 单页应用）的路径管理器，单页面应用的思路是一个 index.html 里面有一个容器，在用户进行交互的时候，并不会重新加载某个界面，而是只选择把某个视图更新到容器中去显示。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-03-11T08:06:54.161Z">
 <meta property="article:modified_time" content="2021-03-11T08:06:54.161Z">
@@ -260,6 +260,8 @@
     
     <div class="post-body" itemprop="articleBody">
         <h5 id="1、Vue-Router"><a href="#1、Vue-Router" class="headerlink" title="1、Vue Router"></a>1、Vue Router</h5><p>Vue.js 官方的路由管理器。路由就是 SPA（single page application 单页应用）的路径管理器，单页面应用的思路是一个 index.html 里面有一个容器，在用户进行交互的时候，并不会重新加载某个界面，而是只选择把某个视图更新到容器中去显示。</p>
+ <a id="more"></a>
+
 <h5 id="2、路由模式"><a href="#2、路由模式" class="headerlink" title="2、路由模式"></a>2、路由模式</h5><ul>
 <li><p>hash 模式</p>
 <p>vue-router 默认 hash 模式 —— 使用 URL 的 hash 来模拟一个完整的 URL，当 URL 改变时，页面不会重新加载。# 是 url 的一个锚点，记载了网页中的位置，Hash 模式通过锚点值的改变，根据不同的值，渲染指定 DOM 位置的不同数据。<br>hash 模式的原理是 onhashchange 事件(监测 hash 值变化)，可以在 window 对象上监听这个事件。</p>

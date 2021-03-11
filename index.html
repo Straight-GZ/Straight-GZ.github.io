@@ -252,85 +252,14 @@
     
     <div class="post-body" itemprop="articleBody">
           <h5 id="1、Vue-Router"><a href="#1、Vue-Router" class="headerlink" title="1、Vue Router"></a>1、Vue Router</h5><p>Vue.js 官方的路由管理器。路由就是 SPA（single page application 单页应用）的路径管理器，单页面应用的思路是一个 index.html 里面有一个容器，在用户进行交互的时候，并不会重新加载某个界面，而是只选择把某个视图更新到容器中去显示。</p>
-<h5 id="2、路由模式"><a href="#2、路由模式" class="headerlink" title="2、路由模式"></a>2、路由模式</h5><ul>
-<li><p>hash 模式</p>
-<p>vue-router 默认 hash 模式 —— 使用 URL 的 hash 来模拟一个完整的 URL，当 URL 改变时，页面不会重新加载。# 是 url 的一个锚点，记载了网页中的位置，Hash 模式通过锚点值的改变，根据不同的值，渲染指定 DOM 位置的不同数据。<br>hash 模式的原理是 onhashchange 事件(监测 hash 值变化)，可以在 window 对象上监听这个事件。</p>
-</li>
-</ul>
-<ul>
-<li><p>history 模式</p>
-<p>当你使用 history 模式时，URL 就像正常的 url，需要后台配置支持</p>
-</li>
-</ul>
-<h5 id="3、页面跳转"><a href="#3、页面跳转" class="headerlink" title="3、页面跳转"></a>3、页面跳转</h5><ul>
-<li><p>声明式：以标签的形式声明为一个跳转的标签</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;简单用法</span><br><span class="line">&lt;router-link to&#x3D;&quot;&#x2F;&quot;&gt;Home&lt;&#x2F;router-link&gt;</span><br><span class="line">&#x2F;&#x2F;传递参数</span><br><span class="line">&lt;router-link :to&#x3D;&quot;&#123;name:xxx,params:&#123;key:value&#125;&#125;&quot;&gt;&lt;&#x2F;router-link&gt;</span><br><span class="line">&#x2F;&#x2F;url 传值（index.js设置路由）</span><br><span class="line">&#123;</span><br><span class="line">  path:&#39;&#x2F;user&#x2F;:id&#x2F;&#39;, &#x2F;&#x2F;id就是传递的参数</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F;获取参数</span><br><span class="line">$route.params.key</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;使用name匹配路由，使用query来传递参数</span><br><span class="line">&lt;router-link :to&#x3D;&quot;&#123; name:&#39;xxx&#39;,query: &#123; key:value&#125;&#125;&quot; &gt;跳转Query&lt;&#x2F;router-link&gt;</span><br><span class="line">&#x2F;&#x2F;获取参数</span><br><span class="line">this.$route.query.queryId</span><br></pre></td></tr></table></figure>
-<p><strong>param 和 query 的区别</strong></p>
-<ul>
-<li>使用 params 传参只能用 name 来引入路由，即 push 里面只能是 name:’xxx’,不能是 path:’/xxx’,因为 params 只能用 name 来引入路由，如果这里写成了 path，接收参数页面会是 undefined。</li>
-<li>query name 和 path 都支持。query，url 会加上参数信息，而 param url 并不会携带参数信息。</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li><p>编程式</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 不带参数</span><br><span class="line">this.$router.push(&#123;name:&#39;xxx&#39;&#125;)</span><br><span class="line">&#x2F;&#x2F; 带参数 params</span><br><span class="line">this.$router.push(&#123;name:&#39;xxx&#39;,params:&#123;key:value&#125;&#125;)</span><br><span class="line">&#x2F;&#x2F;query</span><br><span class="line">this.$router.push(&#123;name:&#39;xxx&#39;,query:&#123;key:value&#125;&#125;)</span><br><span class="line"></span><br><span class="line">this.$router.go(-1)&#x2F;&#x2F;跳转到上一次浏览的页面</span><br><span class="line">this.$router.replace(&#39;&#x2F;menu&#39;)&#x2F;&#x2F;指定跳转的地址</span><br><span class="line">this.$router.replace(&#123;name:&#39;menuLink&#39;&#125;)&#x2F;&#x2F;指定跳转路由的名字下</span><br></pre></td></tr></table></figure>
-<p><strong>push 和 replace 的区别：</strong></p>
-<ul>
-<li>使用 push 方法的跳转会向 history 栈添加一个新的记录，当我们点击浏览器的返回按钮时可以看到之前的页面。也就是说是支持后退的。</li>
-</ul>
-<ul>
-<li>使用 replace 方法不会向 history 添加新记录，而是替换掉当前的 history 记录，即当 replace 跳转到的网页后，’后退’ 按钮不能查看之前的页面。</li>
-</ul>
-</li>
-</ul>
-<h5 id="4、导航守卫"><a href="#4、导航守卫" class="headerlink" title="4、导航守卫"></a>4、导航守卫</h5><ol>
-<li><p>全局前置守卫</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">const router &#x3D; new VueRouter(&#123; ... &#125;)</span><br><span class="line">router.beforeEach((to, from, next) &#x3D;&gt; &#123;</span><br><span class="line">...</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<p>参数</p>
-</li>
-</ol>
-<ul>
-<li><p>to 即将要进入的目标 路由对象</p>
-</li>
-<li><p>from 当前导航正要离开的路由</p>
-</li>
-<li><p>next 要执行的操作</p>
-<ul>
-<li>next(): 进行管道中的下一个钩子（放行）。</li>
-<li>next(false): 中断当前的导航。</li>
-<li>next(‘/‘) 或者 next({ path: ‘/‘ }):跳转到一个不同的地址。</li>
-<li>next(error): 如果传入 next 的参数是一个 Error 实例，则导航会被终止且该错误会被传递给 router.onError() 注册过的回调。</li>
-</ul>
-</li>
-</ul>
-<ol start="2">
-<li><p>全局解析守卫</p>
-<p> router.beforeEach 类似，区别是在导航被确认之前，同时在所有组件内守卫和异步路由组件被解析之后，解析守卫就被调用</p>
-</li>
-<li><p>全局后置钩子</p>
-<p> 你也可以注册全局后置钩子，然而和守卫不同的是，这些钩子不会接受 next 函数也不会改变导航本身：</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">router.afterEach((to, from) &#x3D;&gt; &#123;</span><br><span class="line">&#x2F;&#x2F; ...</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></li>
-<li><p>路由独享的守卫<br> 在路由配置上直接定义 beforeEnter 守卫：<br> 与全局前置守卫的方法参数是一样的。</p>
- <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">const router &#x3D; new VueRouter(&#123;</span><br><span class="line">  routes: [</span><br><span class="line">    &#123;</span><br><span class="line">      path: &#39;&#x2F;foo&#39;,</span><br><span class="line">      component: Foo,</span><br><span class="line">      beforeEnter: (to, from, next) &#x3D;&gt; &#123;</span><br><span class="line">        &#x2F;&#x2F; ...</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></li>
-</ol>
-<ul>
-<li><p>组件内的守卫</p>
-<ul>
-<li>beforeRouteEnter</li>
-</ul>
-<ul>
-<li>beforeRouteUpdate</li>
-<li>beforeRouteLeave</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">  const Foo &#x3D; &#123;</span><br><span class="line">  template: &#96;...&#96;,</span><br><span class="line">  beforeRouteEnter (to, from, next) &#123;</span><br><span class="line">    &#x2F;&#x2F; 在渲染该组件的对应路由被 confirm 前调用</span><br><span class="line">    &#x2F;&#x2F; 不！能！获取组件实例 &#96;this&#96;</span><br><span class="line">    &#x2F;&#x2F; 因为当守卫执行前，组件实例还没被创建</span><br><span class="line">  &#125;,</span><br><span class="line">  beforeRouteUpdate (to, from, next) &#123;</span><br><span class="line">    &#x2F;&#x2F; 在当前路由改变，但是该组件被复用时调用</span><br><span class="line">    &#x2F;&#x2F; 举例来说，对于一个带有动态参数的路径 &#x2F;foo&#x2F;:id，在 &#x2F;foo&#x2F;1 和 &#x2F;foo&#x2F;2 之间跳转的时候，</span><br><span class="line">    &#x2F;&#x2F; 由于会渲染同样的 Foo 组件，因此组件实例会被复用。而这个钩子就会在这个情况下被调用。</span><br><span class="line">    &#x2F;&#x2F; 可以访问组件实例 &#96;this&#96;</span><br><span class="line">  &#125;,</span><br><span class="line">  beforeRouteLeave (to, from, next) &#123;</span><br><span class="line">    &#x2F;&#x2F; 导航离开该组件的对应路由时调用</span><br><span class="line">    &#x2F;&#x2F; 可以访问组件实例 &#96;this&#96;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>beforeRouteEnter 守卫 不能 访问 this,可以通过传一个回调给 next 来访问组件实例。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">beforeRouteEnter (to, from, next) &#123;</span><br><span class="line">  next(vm &#x3D;&gt; &#123;</span><br><span class="line">  &#x2F;&#x2F; 通过 &#96;vm&#96; 访问组件实例</span><br><span class="line">&#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>完整的导航解析流程</p>
-<p><a target="_blank" rel="noopener" href="https://router.vuejs.org/zh/guide/advanced/navigation-guards.html#%E7%BB%84%E4%BB%B6%E5%86%85%E7%9A%84%E5%AE%88%E5%8D%AB">官方文档</a></p>
-</li>
-</ul>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/03/11/Vue%20router/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -397,53 +326,15 @@
 <h5 id="2、作用"><a href="#2、作用" class="headerlink" title="2、作用"></a>2、作用</h5><ul>
 <li>解耦：将所有数据相关的逻辑放入 store（也就是 MVC 中的 Model，换了个名字而已）</li>
 <li>数据读写更方便：任何组件不管在哪里，都可以直接读写数据</li>
-<li>控制力更强：组件对数据的读写只能使用 store 提供的 API 进行</li>
-</ul>
-<h5 id="3、核心概念"><a href="#3、核心概念" class="headerlink" title="3、核心概念"></a>3、核心概念</h5><p>Vuex 的核心就是仓库 store，这个 store 实例会被注入到所有子组件里面,子组件通过<code>this.$store</code>获取</p>
-<p>主要架构</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">import Vue from &#39;vue&#39;</span><br><span class="line">import Vuex from &#39;vuex&#39;</span><br><span class="line"></span><br><span class="line">Vue.use(Vuex)</span><br><span class="line"></span><br><span class="line">export default new Vuex.Store(&#123;</span><br><span class="line">  state: &#123;</span><br><span class="line"></span><br><span class="line">  &#125;,</span><br><span class="line">  mutations: &#123;</span><br><span class="line"></span><br><span class="line">  &#125;,</span><br><span class="line">  actions: &#123;</span><br><span class="line"></span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>state</p>
-<p>state 属性保存着全局的状态</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">state: &#123;</span><br><span class="line">  count: 10   &#x2F;&#x2F;定义状态</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;子组件通过计算属性获取</span><br><span class="line">computed: &#123;</span><br><span class="line">  count() &#123;</span><br><span class="line">    return this.$store.state.count;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>mapState：辅助函数</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">import &#123; mapState &#125; from &#39;vuex&#39;</span><br><span class="line">export default &#123;</span><br><span class="line">&#x2F;&#x2F; ...</span><br><span class="line">computed: mapState(&#123;</span><br><span class="line">    count: state &#x3D;&gt; state.count,</span><br><span class="line">    &#x2F;&#x2F; 传字符串参数 &#39;count&#39; 等同于 &#96;state &#x3D;&gt; state.count&#96;</span><br><span class="line">    countAlias: &#39;count&#39;,</span><br><span class="line">    &#x2F;&#x2F; 为了能够使用 &#96;this&#96; 获取局部状态，必须使用常规函数</span><br><span class="line">    countPlusLocalState (state) &#123;</span><br><span class="line">      return state.count + this.localCount</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>对象三点操作符</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">  computed: &#123;</span><br><span class="line">    msg() &#123;</span><br><span class="line">      return this.$store.state.msg;</span><br><span class="line">    &#125;,</span><br><span class="line">  ...mapState([&#39;count&#39;, &#39;firstName&#39;, &#39;lastName&#39;])</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure></li>
-<li><p>Getter</p>
-<p>对状态进行处理的提取出来的公共部分,可以理解为 state 的计算属性，结果会缓存，且只有当它的依赖值发生了改变才会被重新计算</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">export default new Vuex.Store(&#123;</span><br><span class="line">state: &#123;</span><br><span class="line">  list: [1, 2, 3, 4, 5]</span><br><span class="line">&#125;,</span><br><span class="line">getters: &#123;</span><br><span class="line">  modifyArr(state) &#123;</span><br><span class="line">    return state.list.filter((item, index, arr) &#x3D;&gt; &#123;</span><br><span class="line">      return item % 2 &#x3D;&#x3D; 0;</span><br><span class="line">    &#125;)</span><br><span class="line">  &#125;,</span><br><span class="line">  getLength(state, getter) &#123; &#x2F;&#x2F; 方法里面传getter，调用modifyArr来计算长度</span><br><span class="line">    return getter.modifyArr.length;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>mapGetters:辅助函数,将 store 中的 getter 映射到局部计算属性</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">computed: &#123;</span><br><span class="line">&#x2F;&#x2F; 使用对象展开运算符将 getter 混入 computed 对象中</span><br><span class="line">  ...mapGetters([</span><br><span class="line">    &#39;modifyArr&#39;,</span><br><span class="line">    &#39;getLength&#39;,</span><br><span class="line">  ])</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F;改名</span><br><span class="line">  computed: &#123;</span><br><span class="line">  ...mapGetters([</span><br><span class="line">    x:&#39;modifyArr&#39;,</span><br><span class="line">    y:&#39;getLength&#39;,</span><br><span class="line">  ])</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>Mutation</p>
-<ul>
-<li><p>更改 Vuex 的 store 中的状态的唯一方法是提交 mutation</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">mutations: &#123;</span><br><span class="line">  increment (state) &#123;</span><br><span class="line">    &#x2F;&#x2F; 变更状态</span><br><span class="line">    state.count++</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">store.commit(&#39;increment&#39;)</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;提交额外参数</span><br><span class="line">mutations: &#123;</span><br><span class="line">  increment (state,n) &#123;</span><br><span class="line">    &#x2F;&#x2F; 变更状态</span><br><span class="line">    state.count+&#x3D; n</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">store.commit(&#39;increment&#39;,1)</span><br></pre></td></tr></table></figure></li>
-</ul>
-<ul>
-<li><p>对象风格的提交</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">store.commit(&#123;</span><br><span class="line">  type: &#39;increment&#39;,</span><br><span class="line">  n: 10</span><br><span class="line">  &#125;)</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">mutations: &#123;</span><br><span class="line">  increment (state, obj) &#123;</span><br><span class="line">    state.count +&#x3D; obj.n</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>mapMutations:辅助函数</p>
-<p>官方代码</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">import &#123;mapMutations&#125; from &#39;vuex&#39;;</span><br><span class="line">export default &#123;</span><br><span class="line">&#x2F;&#x2F; ...</span><br><span class="line">methods: &#123;</span><br><span class="line">  ...mapMutations([</span><br><span class="line">    &#39;increment&#39;, &#x2F;&#x2F; 将 &#96;this.increment()&#96; 映射为 &#96;this.$store.commit(&#39;increment&#39;)&#96;</span><br><span class="line"></span><br><span class="line">    &#x2F;&#x2F; &#96;mapMutations&#96; 也支持载荷：</span><br><span class="line">    &#39;incrementBy&#39; &#x2F;&#x2F; 将 &#96;this.incrementBy(amount)&#96; 映射为 &#96;this.$store.commit(&#39;incrementBy&#39;, amount)&#96;</span><br><span class="line">  ]),</span><br><span class="line">  ...mapMutations(&#123;</span><br><span class="line">    add: &#39;increment&#39; &#x2F;&#x2F; 将 &#96;this.add()&#96; 映射为 &#96;this.$store.commit(&#39;increment&#39;)&#96;</span><br><span class="line">  &#125;)</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-</li>
-<li><p>Action</p>
-<p>Action 类似于 mutation，不同在于：</p>
-<p>Action 提交的是 mutation，而不是直接变更状态；Action 可以包含任意异步操作。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">   actions: &#123;</span><br><span class="line">  increment (context) &#123; &#x2F;&#x2F;context是和store 实例具有相同方法和属性的对象</span><br><span class="line">    context.commit(&#39;increment&#39;)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>你在组件中使用 this.$store.dispatch(‘xxx’) 分发 action，或者使用 mapActions 辅助函数将组件的 methods 映射为 store.dispatch 调用（需要先在根节点注入 store）</p>
-<p><a target="_blank" rel="noopener" href="https://vuex.vuejs.org/zh/guide/actions.html">文档</a></p>
-</li>
-<li><p>Module</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line">const moduleA &#x3D; &#123;</span><br><span class="line">  state: () &#x3D;&gt; (&#123; ... &#125;),</span><br><span class="line">  mutations: &#123; ... &#125;,</span><br><span class="line">  actions: &#123; ... &#125;,</span><br><span class="line">  getters: &#123; ... &#125;</span><br><span class="line">&#125;</span><br><span class="line">const moduleB &#x3D; &#123;</span><br><span class="line">  state: () &#x3D;&gt; (&#123; ... &#125;),</span><br><span class="line">  mutations: &#123; ... &#125;,</span><br><span class="line">  actions: &#123; ... &#125;</span><br><span class="line">&#125;</span><br><span class="line">const store &#x3D; new Vuex.Store(&#123;</span><br><span class="line">  modules: &#123;</span><br><span class="line">    a: moduleA,</span><br><span class="line">    b: moduleB</span><br><span class="line">  &#125;</span><br><span class="line">&#125;)</span><br><span class="line">store.state.a &#x2F;&#x2F; -&gt; moduleA 的状态</span><br><span class="line">store.state.b &#x2F;&#x2F; -&gt; moduleB 的状态</span><br></pre></td></tr></table></figure>
-<p><a target="_blank" rel="noopener" href="https://vuex.vuejs.org/zh/guide/modules.html">官方文档</a></p>
-</li>
-</ul>
-
+<li>控制力更强：组件对数据的读写只能使用 store 提供的 API 进行</li></ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/03/11/Vuex/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -615,18 +506,14 @@
     
     <div class="post-body" itemprop="articleBody">
           <h4 id="一、原理"><a href="#一、原理" class="headerlink" title="一、原理"></a>一、原理</h4><p><strong><code>Vue</code>会遍历<code>data</code>对象的所有<code>property</code>，并使用<code>Object.defineProperty</code>把这些<code>property</code>全部转为<code>getter/setter</code>。通过<code>getter/setter</code>让 Vue 能够追踪依赖，在<code>property</code>被访问和修改时通知变更。</strong></p>
-<h4 id="二、Object-defineProperty-和-getter、setter"><a href="#二、Object-defineProperty-和-getter、setter" class="headerlink" title="二、Object.defineProperty 和 getter、setter"></a>二、Object.defineProperty 和 getter、setter</h4><p><code>Object.defineProperty</code>方法会直接在一个对象上定义一个新属性，或者修改一个对象的现有属性，并返回此对象。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> let data1 &#x3D; &#123;&#125;;</span><br><span class="line">Object.defineProperty(data1, &quot;n&quot;, &#123;</span><br><span class="line">  value: 0</span><br><span class="line">&#125;);</span><br><span class="line">console.log(data1.n);  &#x2F;&#x2F;0</span><br></pre></td></tr></table></figure>
-<br>
-
-<p><code>getter/setter</code>用于对属性的读写进行监控</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">let myData2 &#x3D; &#123; n: 0 &#125;;</span><br><span class="line">let data2 &#x3D; proxy(&#123; data: myData2 &#125;); &#x2F;&#x2F; 括号里是匿名对象，无法访问</span><br><span class="line"></span><br><span class="line">function proxy(&#123; data &#125;) &#123;</span><br><span class="line">  let value &#x3D; data.n;</span><br><span class="line">  Object.defineProperty(data, &quot;n&quot;, &#123;</span><br><span class="line">    get() &#123;</span><br><span class="line">      return value;</span><br><span class="line">    &#125;,</span><br><span class="line">    set(newValue) &#123;</span><br><span class="line">      if (newValue &lt; 0) return;</span><br><span class="line">      value &#x3D; newValue;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">  &#x2F;&#x2F;监听 data</span><br><span class="line"></span><br><span class="line">  const obj &#x3D; &#123;&#125;;</span><br><span class="line">  Object.defineProperty(obj, &quot;n&quot;, &#123;</span><br><span class="line">    get() &#123;</span><br><span class="line">      return data.n;</span><br><span class="line">    &#125;,</span><br><span class="line">    set(value) &#123;</span><br><span class="line">     if (newValue &lt; 0) return;</span><br><span class="line">      data.n &#x3D; value;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">  return obj; &#x2F;&#x2F; obj 就是代理</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">console.log(data2.n);	&#x2F;&#x2F;0</span><br><span class="line">myData2.n &#x3D; -1;</span><br><span class="line">console.log(data2.n);	&#x2F;&#x2F;0</span><br><span class="line">myData2.n &#x3D; 1;</span><br><span class="line">console.log(data2.n);	&#x2F;&#x2F;1</span><br></pre></td></tr></table></figure>
-<br>
-
-<p><strong>当<code>let vm=new Vue(&#123;data:myData&#125;)</code>时，会让 vm 成为 Vue 的代理，对 myData 的所有属性进行监控，使得 myData 的属性变化的时候渲染页面。</strong></p>
-<h4 id="三、总结"><a href="#三、总结" class="headerlink" title="三、总结"></a>三、总结</h4><p><strong>Vue 的数据响应式，是通过<code>Object.defineProperty</code>将对象所有的属性转化为<code>getter/setter</code>来监控数据变化，即时渲染页面。</strong></p>
-<p><strong>注意</strong>：Vue 不能检测到对象属性的添加或删除，解决方法是手动调用 Vue.set 或者 this.$set<br><a target="_blank" rel="noopener" href="https://cn.vuejs.org/v2/guide/reactivity.html#%E5%AF%B9%E4%BA%8E%E5%AF%B9%E8%B1%A1">文档</a></p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/03/11/Vue%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 

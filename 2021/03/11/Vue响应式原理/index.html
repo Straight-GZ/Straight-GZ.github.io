@@ -23,12 +23,12 @@
     var NexT = window.NexT || {};
     var CONFIG = {"hostname":"github.com","root":"/","images":"/images","scheme":"Mist","version":"8.2.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
   </script>
-<meta name="description" content="一、原理Vue会遍历data对象的所有property，并使用Object.defineProperty把这些property全部转为getter&#x2F;setter。通过getter&#x2F;setter让 Vue 能够追踪依赖，在property被访问和修改时通知变更。 二、Object.defineProperty 和 getter、setterObject.defineProperty方法会直接在一个对">
+<meta name="description" content="一、原理Vue会遍历data对象的所有property，并使用Object.defineProperty把这些property全部转为getter&#x2F;setter。通过getter&#x2F;setter让 Vue 能够追踪依赖，在property被访问和修改时通知变更。">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Vue响应式原理">
 <meta property="og:url" content="https://github.com/Straight-GZ/2021/03/11/Vue%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86/index.html">
 <meta property="og:site_name">
-<meta property="og:description" content="一、原理Vue会遍历data对象的所有property，并使用Object.defineProperty把这些property全部转为getter&#x2F;setter。通过getter&#x2F;setter让 Vue 能够追踪依赖，在property被访问和修改时通知变更。 二、Object.defineProperty 和 getter、setterObject.defineProperty方法会直接在一个对">
+<meta property="og:description" content="一、原理Vue会遍历data对象的所有property，并使用Object.defineProperty把这些property全部转为getter&#x2F;setter。通过getter&#x2F;setter让 Vue 能够追踪依赖，在property被访问和修改时通知变更。">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:published_time" content="2021-03-11T06:42:50.233Z">
 <meta property="article:modified_time" content="2021-03-11T06:42:50.233Z">
@@ -260,6 +260,8 @@
     
     <div class="post-body" itemprop="articleBody">
         <h4 id="一、原理"><a href="#一、原理" class="headerlink" title="一、原理"></a>一、原理</h4><p><strong><code>Vue</code>会遍历<code>data</code>对象的所有<code>property</code>，并使用<code>Object.defineProperty</code>把这些<code>property</code>全部转为<code>getter/setter</code>。通过<code>getter/setter</code>让 Vue 能够追踪依赖，在<code>property</code>被访问和修改时通知变更。</strong></p>
+ <a id="more"></a>
+
 <h4 id="二、Object-defineProperty-和-getter、setter"><a href="#二、Object-defineProperty-和-getter、setter" class="headerlink" title="二、Object.defineProperty 和 getter、setter"></a>二、Object.defineProperty 和 getter、setter</h4><p><code>Object.defineProperty</code>方法会直接在一个对象上定义一个新属性，或者修改一个对象的现有属性，并返回此对象。</p>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"> let data1 &#x3D; &#123;&#125;;</span><br><span class="line">Object.defineProperty(data1, &quot;n&quot;, &#123;</span><br><span class="line">  value: 0</span><br><span class="line">&#125;);</span><br><span class="line">console.log(data1.n);  &#x2F;&#x2F;0</span><br></pre></td></tr></table></figure>
 <br>
