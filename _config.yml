@@ -112,6 +112,6 @@ theme: next
 deploy:
   type: git
   # repo: git@github.com:Straight-GZ/Straight-GZ.github.io.git
-  repo: git@gitee.com:gengzhii/gengzhii.git
+  repo: git@github.com:Straight-GZ/Straight-GZ.github.io.git
   # example, https://github.com/hexojs/hexojs.github.io
   branch: gh-pages
