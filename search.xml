@@ -122,211 +122,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Cookie和Session</title>
-    <url>/2021/03/09/Cookie%E5%92%8CSession/</url>
-    <content><![CDATA[<h3 id="1、Cookie"><a href="#1、Cookie" class="headerlink" title="1、Cookie"></a>1、Cookie</h3><ul>
-<li><p>概述：</p>
-<p>HTTP Cookie（也叫 Web Cookie 或浏览器 Cookie）是服务器发送到用户浏览器并保存在本地的一小块数据，它会在浏览器下次向同一服务器再发起请求时被携带并发送到服务器上。通常，它用于告知服务端两个请求是否来自同一浏览器，如保持用户的登录状态。<br>通俗的说，Cookie 是服务器下发给浏览器的一段字符串<br>浏览器必须保存这个 Cookie(除非用户删除)<br>之后发起相同二级域名请求，浏览器必须附上 Cookie<a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Cookies">MDN</a></p>
-<a id="more"></a>
-</li>
-</ul>
-<ul>
-<li>创建 Cookie<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Set-Cookie: &lt;cookie 名&gt;&#x3D;&lt;cookie 值&gt;</span><br><span class="line">&#x2F;&#x2F;例</span><br><span class="line">response.setHeader(&quot;Set-Cookie&quot;, &#96;session_id&#x3D;$&#123;random&#125;;HttpOnly&#96;);</span><br></pre></td></tr></table></figure>
-<h3 id="2、Session"><a href="#2、Session" class="headerlink" title="2、Session"></a>2、Session</h3></li>
-</ul>
-<p>session 数据放在服务器上,一般由 cookie 保存 session 的 id，保存在 Cookie 里的 session id 是独一无二的随机生成的，服务器通过 Cookie 保存的 session id 获取数据</p>
-<h3 id="3、两者区别"><a href="#3、两者区别" class="headerlink" title="3、两者区别"></a>3、两者区别</h3><ol>
-<li><p>存储位置：cookie 数据存放在客户的浏览器上，session 数据放在服务器上。</p>
-</li>
-<li><p>安全性：cookie 不是很安全，别人可以分析存放在本地的 COOKIE 并进行篡改</p>
-</li>
-<li><p>限制：单个 cookie 保存的数据不能超过 4K，很多浏览器都限制一个站点最多保存 20 个 cookie。</p>
-</li>
-</ol>
-<p>简单实现</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">if (path &#x3D;&#x3D;&#x3D; &quot;&#x2F;sign_in&quot; &amp;&amp; method &#x3D;&#x3D;&#x3D; &quot;POST&quot;) &#123;</span><br><span class="line">  const array &#x3D; [];</span><br><span class="line">  const users &#x3D; JSON.parse(fs.readFileSync(&quot;.&#x2F;db&#x2F;users.json&quot;).toString());</span><br><span class="line">  response.setHeader(&quot;Content-Type&quot;, &quot;text&#x2F;html,charset&#x3D;UTF-8&quot;);</span><br><span class="line">  request.on(&quot;data&quot;, (chunk) &#x3D;&gt; &#123;</span><br><span class="line">    array.push(chunk);</span><br><span class="line">  &#125;);</span><br><span class="line">  request.on(&quot;end&quot;, () &#x3D;&gt; &#123;</span><br><span class="line">    const string &#x3D; Buffer.concat(array).toString();</span><br><span class="line">    const obj &#x3D; JSON.parse(string);</span><br><span class="line">    const user &#x3D; users.find(</span><br><span class="line">      (user) &#x3D;&gt; user.name &#x3D;&#x3D;&#x3D; obj.name &amp;&amp; user.password &#x3D;&#x3D;&#x3D; obj.password</span><br><span class="line">    );</span><br><span class="line">    if (user &#x3D;&#x3D;&#x3D; undefined) &#123;</span><br><span class="line">      response.statusCode &#x3D; 400;</span><br><span class="line">      response.setHeader(&quot;Content-Type&quot;, &quot;text&#x2F;json;charset&#x3D;utf-8&quot;);</span><br><span class="line">      response.end();</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      response.statusCode &#x3D; 200;</span><br><span class="line">      const random &#x3D; Math.random();</span><br><span class="line">      session[random] &#x3D; &#123; user_id: user.id &#125;;</span><br><span class="line">      fs.writeFileSync(&quot;.&#x2F;session.json&quot;, JSON.stringify(session));</span><br><span class="line">      response.setHeader(&quot;Set-Cookie&quot;, &#96;session_id&#x3D;$&#123;random&#125;;HttpOnly&#96;);</span><br><span class="line">      response.end();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125; else if (path &#x3D;&#x3D;&#x3D; &quot;&#x2F;home.html&quot;) &#123;</span><br><span class="line">  const cookie &#x3D; request.headers[&quot;cookie&quot;];</span><br><span class="line">  let sessionId;</span><br><span class="line"></span><br><span class="line">  try &#123;</span><br><span class="line">    sessionId &#x3D; cookie</span><br><span class="line">      .split(&quot;;&quot;)</span><br><span class="line">      .filter((s) &#x3D;&gt; s.indexOf(&quot;session_id&#x3D;&quot;) &gt;&#x3D; 0)[0]</span><br><span class="line">      .split(&quot;&#x3D;&quot;)[1];</span><br><span class="line">    console.log(sessionId);</span><br><span class="line">  &#125; catch (error) &#123;&#125;</span><br><span class="line">  if (sessionId &amp;&amp; session[sessionId]) &#123;</span><br><span class="line">    const userId &#x3D; session[sessionId].user_id;</span><br><span class="line">    console.log(userId);</span><br><span class="line">    const homeHtml &#x3D; fs.readFileSync(&quot;.&#x2F;public&#x2F;home.html&quot;).toString();</span><br><span class="line">    const users &#x3D; JSON.parse(fs.readFileSync(&quot;.&#x2F;db&#x2F;users.json&quot;).toString());</span><br><span class="line">    const user &#x3D; users.find((user) &#x3D;&gt; user.id &#x3D;&#x3D;&#x3D; userId);</span><br><span class="line">    let string;</span><br><span class="line">    if (user) &#123;</span><br><span class="line">      string &#x3D; homeHtml</span><br><span class="line">        .replace(&quot;&#123;&#123;loginStatus&#125;&#125;&quot;, &quot;已登录&quot;)</span><br><span class="line">        .replace(&quot;&#123;&#123;userName&#125;&#125;&quot;, user.name);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      string &#x3D; homeHtml</span><br><span class="line">        .replace(&quot;&#123;&#123;loginStatus&#125;&#125;&quot;, &quot;未登录&quot;)</span><br><span class="line">        .replace(&quot;&#123;&#123;userName&#125;&#125;&quot;, &quot;&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    response.write(string);</span><br><span class="line">    response.end();</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    const homeHtml &#x3D; fs.readFileSync(&quot;.&#x2F;public&#x2F;home.html&quot;).toString();</span><br><span class="line">    const string &#x3D; homeHtml</span><br><span class="line">      .replace(&quot;&#123;&#123;loginStatus&#125;&#125;&quot;, &quot;未登录&quot;)</span><br><span class="line">      .replace(&quot;&#123;&#123;userName&#125;&#125;&quot;, &quot;&quot;);</span><br><span class="line">    response.write(string);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="Cookie-V-S-LocalStorage-V-S-SessionStorage-V-S-Session"><a href="#Cookie-V-S-LocalStorage-V-S-SessionStorage-V-S-Session" class="headerlink" title="Cookie V.S. LocalStorage V.S. SessionStorage V.S. Session"></a>Cookie V.S. LocalStorage V.S. SessionStorage V.S. Session</h4><ul>
-<li><p>Cookie V.S. LocalStorage</p>
-<p>主要区别是 Cookie 会被发送到服务器，而 LocalStorage 不会<br>Cookie 一般最大 4k，LocalStorage 可以用 5Mb 甚至 10Mb（各浏览器不同）</p>
-</li>
-</ul>
-<ul>
-<li><p>LocalStorage V.S. SessionStorage</p>
-<p>LocalStorage 一般不会自动过期（除非用户手动清除），而 SessionStorage 在回话结束时过期（如关闭浏览器）</p>
-</li>
-<li><p>Cookie V.S. Session</p>
-<p>Cookie 存在浏览器的文件里，Session 存在服务器的文件里<br>Session 是基于 Cookie 实现的，具体做法就是把 SessionID 存在 Cookie 里</p>
-</li>
-</ul>
-]]></content>
-      <tags>
-        <tag>HTTP</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Git</title>
-    <url>/2021/03/09/Git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
-    <content><![CDATA[<h2 id="1、git-本地仓库"><a href="#1、git-本地仓库" class="headerlink" title="1、git 本地仓库"></a>1、git 本地仓库</h2><p>git 就是一条命令</p>
-<p>六行配置</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global user.name 你的英文名</span><br><span class="line">git config --global user.email 你的邮箱</span><br><span class="line">git config --global push.default simple</span><br><span class="line">git config --global core.quotepath <span class="literal">false</span></span><br><span class="line">git config --global core.editor <span class="string">&quot;code --wait&quot;</span></span><br><span class="line">git config --global core.autocrlf input</span><br></pre></td></tr></table></figure>
- <a id="more"></a>
-
-<h3 id="1-让你代码有版本："><a href="#1-让你代码有版本：" class="headerlink" title="1.让你代码有版本："></a>1.让你代码有版本：</h3><p>git init :初始化（指定目录），创建 .git 目录</p>
-<p><strong>git add</strong> 路径:选择哪些变动是需要提交的</p>
-<p>.gitignore：描述哪些文件是不需要提交的</p>
-<p>git commit -m ：字符串：提交，说明理由 （字符串有空格，用引号）</p>
-<p><strong>git commit -v</strong>：回顾修改的内容，添加详细提交理由<strong>（推荐）</strong></p>
-<p>git reset –hard 提交号前六位：回到指定提交版本</p>
-<p>git log： 查看历史 git reflog：查看所有的历史</p>
-<h3 id="2-分支："><a href="#2-分支：" class="headerlink" title="2.分支："></a>2.分支：</h3><p>git branch ：基于当前 commit 创建分支，在哪个分支提交，就创建在哪个分支</p>
-<p>git checkout：切换分支</p>
-<p>git merge:合并分支</p>
-<p><strong>步骤</strong>：</p>
-<ol>
-<li><p>选择需要保留的分支 master</p>
-</li>
-<li><p>运行 git merge x（合并的分支）</p>
-</li>
-<li><p>冲突</p>
-<ul>
-<li><p>发现冲突：</p>
-<p>合并分支的时候<strong>conflict</strong>提示</p>
-<p>使用 git status -sb 查看冲突文件</p>
-</li>
-<li><p>解决冲突：</p>
-<p>依次打开文件</p>
-<p>搜素‘====’四个等于号</p>
-<p>选择要保留的代码，删除不用的代码</p>
-<p>删除’====‘’&lt;&lt;&lt;&lt;’’&gt;&gt;&gt;&gt;’标记</p>
-<p><strong>git add 对应文件</strong></p>
-<p>再次使用 git status -sb 解决下一个冲突文件</p>
-<p>直到没有冲突，运行<strong>git commit （不需要加选项）</strong></p>
-</li>
-</ul>
-</li>
-<li><p>合并完删除无用的分支 git branch -d x</p>
-</li>
-</ol>
-<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><ul>
-<li>git 目录就是本地仓库</li>
-<li>git add 处理的是文件变化，而不是文件，删除文件后，依然需要 git add 添加到提交区</li>
-<li>常用的命令：<strong>git add</strong> 和<strong>git commit -v</strong></li>
-</ul>
-<h2 id="2、git-远程仓库"><a href="#2、git-远程仓库" class="headerlink" title="2、git 远程仓库"></a>2、git 远程仓库</h2><h3 id="生成-ssh-key（帮助文档）："><a href="#生成-ssh-key（帮助文档）：" class="headerlink" title="生成 ssh key（帮助文档）："></a>生成 ssh key（<a href="https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent" title="https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent#">帮助文档</a>）：</h3><ul>
-<li>运行 ssh-keygen -t rsa -b 4096 -C +邮箱地址</li>
-<li>一直回车键到没有提示</li>
-<li>cat ~/.ssh/id_rsa.pub 得到公钥内容，复制内容</li>
-<li>打开 Github，在设置页面粘贴公钥内容</li>
-</ul>
-<h3 id="测试："><a href="#测试：" class="headerlink" title="测试："></a>测试：</h3><ul>
-<li>运行 ssh -T <a href="mailto:&#x67;&#105;&#116;&#x40;&#x67;&#105;&#116;&#104;&#x75;&#x62;&#46;&#99;&#111;&#x6d;">&#x67;&#105;&#116;&#x40;&#x67;&#105;&#116;&#104;&#x75;&#x62;&#46;&#99;&#111;&#x6d;</a></li>
-<li>询问 yes/no,回答 yes</li>
-</ul>
-<h3 id="上传代码："><a href="#上传代码：" class="headerlink" title="上传代码："></a>上传代码：</h3><ol>
-<li><p>新建 Github Repo，复制 ssh 地址</p>
-</li>
-<li><p>运行 git remote add origin git@xxxxx</p>
-<p>（在本地添加远程仓库地址，origin 为远程仓库默认名字）</p>
-</li>
-<li><p>git push -u origin master</p>
-</li>
-</ol>
-<ul>
-<li>推送本地 master 分支到远程 originmaster 分支</li>
-<li>提示应该 git pull…</li>
-<li>-u origin master 意思为设置上游分支，之后不用再设置，直接 git pull，git push</li>
-</ul>
-<p><strong>上传其它分支：</strong></p>
-<p>一：git push x:x</p>
-<p>二：git checkout x</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git push -u origin x</span><br></pre></td></tr></table></figure>
-<p><strong>上传到两个本地仓库</strong></p>
-<ul>
-<li>git remote add origin2 git@xxxxx</li>
-<li>git push -u origin master</li>
-</ul>
-<p><strong>git pull 冲突</strong>：查看合并分支冲突</p>
-<h3 id="下载代码："><a href="#下载代码：" class="headerlink" title="下载代码："></a>下载代码：</h3><ol>
-<li> git clone git@xxx</li>
-<li> 不同机器需要先上传新的 ssh key(一机一 key)</li>
-<li> <strong>cd 目标路径</strong></li>
-<li> 运行 git add/git commit/[git pull]/git push</li>
-</ol>
-<p>下载某个分支：先下载整个仓库，再切换分支</p>
-<p><strong>git clone</strong>：</p>
-<ul>
-<li><p>git clone git@?/xxx.git:会在当前目录下创建一个 xxx 目录，xxx/.git 是本地仓库，一般需要接 cd xxx 进入目录</p>
-</li>
-<li><p>git clone git@?/xxx.git yyy：会在本地新建一个 yyy 目录，cd yyy 进入目录</p>
-</li>
-<li><p>git clone git@?/xxx.git .:最后一个字符是点，使用当前目录容纳代码和.git，需要先新建一个目录，cd 进入目录</p>
-</li>
-</ul>
-<h3 id="总结：-1"><a href="#总结：-1" class="headerlink" title="总结："></a>总结：</h3><p>常用命令：git alone/git pull/git push</p>
-<p>远程仓库：本地仓库的备份，要先 commit 到本地仓库，然后 push 到远程仓库</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">无法下载部分代码，只能先clone整个仓库生成ssh key（[帮助文档](https:&#x2F;&#x2F;docs.github.com&#x2F;en&#x2F;free-pro-team@latest&#x2F;github&#x2F;authenticating-to-github&#x2F;generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent#)）：</span><br></pre></td></tr></table></figure>
-<ul>
-<li>运行 ssh-keygen -t rsa -b 4096 -C +邮箱地址</li>
-<li>一直回车键到没有提示</li>
-<li>cat ~/.ssh/id_rsa.pub 得到公钥内容，复制内容</li>
-<li>打开 Github，在设置页面粘贴公钥内容</li>
-</ul>
-<h3 id="测试：-1"><a href="#测试：-1" class="headerlink" title="测试："></a>测试：</h3><ul>
-<li>运行 ssh -T <a href="mailto:&#x67;&#x69;&#x74;&#x40;&#103;&#x69;&#x74;&#x68;&#117;&#x62;&#x2e;&#99;&#111;&#x6d;">&#x67;&#x69;&#x74;&#x40;&#103;&#x69;&#x74;&#x68;&#117;&#x62;&#x2e;&#99;&#111;&#x6d;</a></li>
-<li>询问 yes/no,回答 yes</li>
-</ul>
-<h3 id="上传代码：-1"><a href="#上传代码：-1" class="headerlink" title="上传代码："></a>上传代码：</h3><ol>
-<li><p>新建 Github Repo，复制 ssh 地址</p>
-</li>
-<li><p>运行 git remote add origin git@xxxxx</p>
-<p>（在本地添加远程仓库地址，origin 为远程仓库默认名字）</p>
-</li>
-<li><p>git push -u origin master</p>
-</li>
-</ol>
-<ul>
-<li>推送本地 master 分支到远程 originmaster 分支</li>
-<li>提示应该 git pull…，就运行 git pull!</li>
-<li>-u origin master 意思为设置上游分支，之后不用再设置，直接 git pull，git push</li>
-</ul>
-<p><strong>上传其它分支：</strong></p>
-<p>一：git push x:x</p>
-<p>二：git checkout x</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git push -u origin x</span><br></pre></td></tr></table></figure>
-<p><strong>上传到两个本地仓库</strong></p>
-<ul>
-<li>git remote add origin2 git@xxxxx</li>
-<li>git push -u origin master</li>
-</ul>
-<p><strong>git pull 冲突</strong>：查看合并分支冲突</p>
-<h3 id="下载代码：-1"><a href="#下载代码：-1" class="headerlink" title="下载代码："></a>下载代码：</h3><ol>
-<li> git clone git@xxx</li>
-<li> 不同机器需要先上传新的 ssh key(一机一 key)</li>
-<li> <strong>cd 目标路径</strong></li>
-<li> 运行 git add/git commit/[git pull]/git push</li>
-</ol>
-<p>下载某个分支：先下载整个仓库，再切换分支</p>
-<p><strong>git clone</strong>：</p>
-<ul>
-<li><p>git clone git@?/xxx.git:会在当前目录下创建一个 xxx 目录，xxx/.git 是本地仓库，一般需要接 cd xxx 进入目录</p>
-</li>
-<li><p>git clone git@?/xxx.git yyy：会在本地新建一个 yyy 目录，cd yyy 进入目录</p>
-</li>
-<li><p>git clone git@?/xxx.git .:最后一个字符是点，使用当前目录容纳代码和.git，需要先新建一个目录，cd 进入目录</p>
-</li>
-</ul>
-<h3 id="总结：-2"><a href="#总结：-2" class="headerlink" title="总结："></a>总结：</h3><p>常用命令：git alone/git pull/git push</p>
-<p>远程仓库：本地仓库的备份，要先 commit 到本地仓库，然后 push 到远程仓库</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">无法下载部分代码，只能先clone整个仓库</span><br></pre></td></tr></table></figure>
-<h2 id="3、git-高级操作"><a href="#3、git-高级操作" class="headerlink" title="3、git 高级操作"></a>3、git 高级操作</h2><p>bash alias 简化命令： ga=”git add” gc=”git commit -v” gl=”git pull” gp=”git push” gco=”git checkout” gst=”git status -sb”</p>
-<p>美化历史命令：git rebase -i xxx</p>
-]]></content>
-      <tags>
-        <tag>Git</tag>
-        <tag>笔记</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>简述CSS三种布局</title>
     <url>/2021/03/09/CSS%E5%B8%83%E5%B1%80/</url>
     <content><![CDATA[<h3 id="一、布局概述"><a href="#一、布局概述" class="headerlink" title="一、布局概述"></a>一、布局概述</h3><p>布局就是把页面分成一块一块，按左中右、上中下等排列。</p>
@@ -468,6 +263,258 @@
       <tags>
         <tag>CSS</tag>
         <tag>布局</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Cookie和Session</title>
+    <url>/2021/03/09/Cookie%E5%92%8CSession/</url>
+    <content><![CDATA[<h3 id="1、Cookie"><a href="#1、Cookie" class="headerlink" title="1、Cookie"></a>1、Cookie</h3><ul>
+<li><p>概述：</p>
+<p>HTTP Cookie（也叫 Web Cookie 或浏览器 Cookie）是服务器发送到用户浏览器并保存在本地的一小块数据，它会在浏览器下次向同一服务器再发起请求时被携带并发送到服务器上。通常，它用于告知服务端两个请求是否来自同一浏览器，如保持用户的登录状态。<br>通俗的说，Cookie 是服务器下发给浏览器的一段字符串<br>浏览器必须保存这个 Cookie(除非用户删除)<br>之后发起相同二级域名请求，浏览器必须附上 Cookie<a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Cookies">MDN</a></p>
+<a id="more"></a>
+</li>
+</ul>
+<ul>
+<li>创建 Cookie<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Set-Cookie: &lt;cookie 名&gt;&#x3D;&lt;cookie 值&gt;</span><br><span class="line">&#x2F;&#x2F;例</span><br><span class="line">response.setHeader(&quot;Set-Cookie&quot;, &#96;session_id&#x3D;$&#123;random&#125;;HttpOnly&#96;);</span><br></pre></td></tr></table></figure>
+<h3 id="2、Session"><a href="#2、Session" class="headerlink" title="2、Session"></a>2、Session</h3></li>
+</ul>
+<p>session 数据放在服务器上,一般由 cookie 保存 session 的 id，保存在 Cookie 里的 session id 是独一无二的随机生成的，服务器通过 Cookie 保存的 session id 获取数据</p>
+<h3 id="3、两者区别"><a href="#3、两者区别" class="headerlink" title="3、两者区别"></a>3、两者区别</h3><ol>
+<li><p>存储位置：cookie 数据存放在客户的浏览器上，session 数据放在服务器上。</p>
+</li>
+<li><p>安全性：cookie 不是很安全，别人可以分析存放在本地的 COOKIE 并进行篡改</p>
+</li>
+<li><p>限制：单个 cookie 保存的数据不能超过 4K，很多浏览器都限制一个站点最多保存 20 个 cookie。</p>
+</li>
+</ol>
+<p>简单实现</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">if (path &#x3D;&#x3D;&#x3D; &quot;&#x2F;sign_in&quot; &amp;&amp; method &#x3D;&#x3D;&#x3D; &quot;POST&quot;) &#123;</span><br><span class="line">  const array &#x3D; [];</span><br><span class="line">  const users &#x3D; JSON.parse(fs.readFileSync(&quot;.&#x2F;db&#x2F;users.json&quot;).toString());</span><br><span class="line">  response.setHeader(&quot;Content-Type&quot;, &quot;text&#x2F;html,charset&#x3D;UTF-8&quot;);</span><br><span class="line">  request.on(&quot;data&quot;, (chunk) &#x3D;&gt; &#123;</span><br><span class="line">    array.push(chunk);</span><br><span class="line">  &#125;);</span><br><span class="line">  request.on(&quot;end&quot;, () &#x3D;&gt; &#123;</span><br><span class="line">    const string &#x3D; Buffer.concat(array).toString();</span><br><span class="line">    const obj &#x3D; JSON.parse(string);</span><br><span class="line">    const user &#x3D; users.find(</span><br><span class="line">      (user) &#x3D;&gt; user.name &#x3D;&#x3D;&#x3D; obj.name &amp;&amp; user.password &#x3D;&#x3D;&#x3D; obj.password</span><br><span class="line">    );</span><br><span class="line">    if (user &#x3D;&#x3D;&#x3D; undefined) &#123;</span><br><span class="line">      response.statusCode &#x3D; 400;</span><br><span class="line">      response.setHeader(&quot;Content-Type&quot;, &quot;text&#x2F;json;charset&#x3D;utf-8&quot;);</span><br><span class="line">      response.end();</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      response.statusCode &#x3D; 200;</span><br><span class="line">      const random &#x3D; Math.random();</span><br><span class="line">      session[random] &#x3D; &#123; user_id: user.id &#125;;</span><br><span class="line">      fs.writeFileSync(&quot;.&#x2F;session.json&quot;, JSON.stringify(session));</span><br><span class="line">      response.setHeader(&quot;Set-Cookie&quot;, &#96;session_id&#x3D;$&#123;random&#125;;HttpOnly&#96;);</span><br><span class="line">      response.end();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125; else if (path &#x3D;&#x3D;&#x3D; &quot;&#x2F;home.html&quot;) &#123;</span><br><span class="line">  const cookie &#x3D; request.headers[&quot;cookie&quot;];</span><br><span class="line">  let sessionId;</span><br><span class="line"></span><br><span class="line">  try &#123;</span><br><span class="line">    sessionId &#x3D; cookie</span><br><span class="line">      .split(&quot;;&quot;)</span><br><span class="line">      .filter((s) &#x3D;&gt; s.indexOf(&quot;session_id&#x3D;&quot;) &gt;&#x3D; 0)[0]</span><br><span class="line">      .split(&quot;&#x3D;&quot;)[1];</span><br><span class="line">    console.log(sessionId);</span><br><span class="line">  &#125; catch (error) &#123;&#125;</span><br><span class="line">  if (sessionId &amp;&amp; session[sessionId]) &#123;</span><br><span class="line">    const userId &#x3D; session[sessionId].user_id;</span><br><span class="line">    console.log(userId);</span><br><span class="line">    const homeHtml &#x3D; fs.readFileSync(&quot;.&#x2F;public&#x2F;home.html&quot;).toString();</span><br><span class="line">    const users &#x3D; JSON.parse(fs.readFileSync(&quot;.&#x2F;db&#x2F;users.json&quot;).toString());</span><br><span class="line">    const user &#x3D; users.find((user) &#x3D;&gt; user.id &#x3D;&#x3D;&#x3D; userId);</span><br><span class="line">    let string;</span><br><span class="line">    if (user) &#123;</span><br><span class="line">      string &#x3D; homeHtml</span><br><span class="line">        .replace(&quot;&#123;&#123;loginStatus&#125;&#125;&quot;, &quot;已登录&quot;)</span><br><span class="line">        .replace(&quot;&#123;&#123;userName&#125;&#125;&quot;, user.name);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      string &#x3D; homeHtml</span><br><span class="line">        .replace(&quot;&#123;&#123;loginStatus&#125;&#125;&quot;, &quot;未登录&quot;)</span><br><span class="line">        .replace(&quot;&#123;&#123;userName&#125;&#125;&quot;, &quot;&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    response.write(string);</span><br><span class="line">    response.end();</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    const homeHtml &#x3D; fs.readFileSync(&quot;.&#x2F;public&#x2F;home.html&quot;).toString();</span><br><span class="line">    const string &#x3D; homeHtml</span><br><span class="line">      .replace(&quot;&#123;&#123;loginStatus&#125;&#125;&quot;, &quot;未登录&quot;)</span><br><span class="line">      .replace(&quot;&#123;&#123;userName&#125;&#125;&quot;, &quot;&quot;);</span><br><span class="line">    response.write(string);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Cookie-V-S-LocalStorage-V-S-SessionStorage-V-S-Session"><a href="#Cookie-V-S-LocalStorage-V-S-SessionStorage-V-S-Session" class="headerlink" title="Cookie V.S. LocalStorage V.S. SessionStorage V.S. Session"></a>Cookie V.S. LocalStorage V.S. SessionStorage V.S. Session</h4><ul>
+<li><p>Cookie V.S. LocalStorage</p>
+<p>主要区别是 Cookie 会被发送到服务器，而 LocalStorage 不会<br>Cookie 一般最大 4k，LocalStorage 可以用 5Mb 甚至 10Mb（各浏览器不同）</p>
+</li>
+</ul>
+<ul>
+<li><p>LocalStorage V.S. SessionStorage</p>
+<p>LocalStorage 一般不会自动过期（除非用户手动清除），而 SessionStorage 在回话结束时过期（如关闭浏览器）</p>
+</li>
+<li><p>Cookie V.S. Session</p>
+<p>Cookie 存在浏览器的文件里，Session 存在服务器的文件里<br>Session 是基于 Cookie 实现的，具体做法就是把 SessionID 存在 Cookie 里</p>
+</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>HTTP</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Git</title>
+    <url>/2021/03/09/Git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
+    <content><![CDATA[<h2 id="1、git-本地仓库"><a href="#1、git-本地仓库" class="headerlink" title="1、git 本地仓库"></a>1、git 本地仓库</h2><p>git 就是一条命令</p>
+<p>六行配置</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global user.name 你的英文名</span><br><span class="line">git config --global user.email 你的邮箱</span><br><span class="line">git config --global push.default simple</span><br><span class="line">git config --global core.quotepath <span class="literal">false</span></span><br><span class="line">git config --global core.editor <span class="string">&quot;code --wait&quot;</span></span><br><span class="line">git config --global core.autocrlf input</span><br></pre></td></tr></table></figure>
+ <a id="more"></a>
+
+<h3 id="1-让你代码有版本："><a href="#1-让你代码有版本：" class="headerlink" title="1.让你代码有版本："></a>1.让你代码有版本：</h3><p>git init :初始化（指定目录），创建 .git 目录</p>
+<p><strong>git add</strong> 路径:选择哪些变动是需要提交的</p>
+<p>.gitignore：描述哪些文件是不需要提交的</p>
+<p>git commit -m ：字符串：提交，说明理由 （字符串有空格，用引号）</p>
+<p><strong>git commit -v</strong>：回顾修改的内容，添加详细提交理由<strong>（推荐）</strong></p>
+<p>git reset –hard 提交号前六位：回到指定提交版本</p>
+<p>git log： 查看历史 git reflog：查看所有的历史</p>
+<h3 id="2-分支："><a href="#2-分支：" class="headerlink" title="2.分支："></a>2.分支：</h3><p>git branch ：基于当前 commit 创建分支，在哪个分支提交，就创建在哪个分支</p>
+<p>git checkout：切换分支</p>
+<p>git merge:合并分支</p>
+<p><strong>步骤</strong>：</p>
+<ol>
+<li><p>选择需要保留的分支 master</p>
+</li>
+<li><p>运行 git merge x（合并的分支）</p>
+</li>
+<li><p>冲突</p>
+<ul>
+<li><p>发现冲突：</p>
+<p>合并分支的时候<strong>conflict</strong>提示</p>
+<p>使用 git status -sb 查看冲突文件</p>
+</li>
+<li><p>解决冲突：</p>
+<p>依次打开文件</p>
+<p>搜素‘====’四个等于号</p>
+<p>选择要保留的代码，删除不用的代码</p>
+<p>删除’====‘’&lt;&lt;&lt;&lt;’’&gt;&gt;&gt;&gt;’标记</p>
+<p><strong>git add 对应文件</strong></p>
+<p>再次使用 git status -sb 解决下一个冲突文件</p>
+<p>直到没有冲突，运行<strong>git commit （不需要加选项）</strong></p>
+</li>
+</ul>
+</li>
+<li><p>合并完删除无用的分支 git branch -d x</p>
+</li>
+</ol>
+<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><ul>
+<li>git 目录就是本地仓库</li>
+<li>git add 处理的是文件变化，而不是文件，删除文件后，依然需要 git add 添加到提交区</li>
+<li>常用的命令：<strong>git add</strong> 和<strong>git commit -v</strong></li>
+</ul>
+<h2 id="2、git-远程仓库"><a href="#2、git-远程仓库" class="headerlink" title="2、git 远程仓库"></a>2、git 远程仓库</h2><h3 id="生成-ssh-key（帮助文档）："><a href="#生成-ssh-key（帮助文档）：" class="headerlink" title="生成 ssh key（帮助文档）："></a>生成 ssh key（<a href="https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent" title="https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent#">帮助文档</a>）：</h3><ul>
+<li>运行 ssh-keygen -t rsa -b 4096 -C +邮箱地址</li>
+<li>一直回车键到没有提示</li>
+<li>cat ~/.ssh/id_rsa.pub 得到公钥内容，复制内容</li>
+<li>打开 Github，在设置页面粘贴公钥内容</li>
+</ul>
+<h3 id="测试："><a href="#测试：" class="headerlink" title="测试："></a>测试：</h3><ul>
+<li>运行 ssh -T <a href="mailto:&#x67;&#x69;&#x74;&#64;&#103;&#105;&#x74;&#104;&#117;&#x62;&#46;&#99;&#x6f;&#109;">&#x67;&#x69;&#x74;&#64;&#103;&#105;&#x74;&#104;&#117;&#x62;&#46;&#99;&#x6f;&#109;</a></li>
+<li>询问 yes/no,回答 yes</li>
+</ul>
+<h3 id="上传代码："><a href="#上传代码：" class="headerlink" title="上传代码："></a>上传代码：</h3><ol>
+<li><p>新建 Github Repo，复制 ssh 地址</p>
+</li>
+<li><p>运行 git remote add origin git@xxxxx</p>
+<p>（在本地添加远程仓库地址，origin 为远程仓库默认名字）</p>
+</li>
+<li><p>git push -u origin master</p>
+</li>
+</ol>
+<ul>
+<li>推送本地 master 分支到远程 originmaster 分支</li>
+<li>提示应该 git pull…</li>
+<li>-u origin master 意思为设置上游分支，之后不用再设置，直接 git pull，git push</li>
+</ul>
+<p><strong>上传其它分支：</strong></p>
+<p>一：git push x:x</p>
+<p>二：git checkout x</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git push -u origin x</span><br></pre></td></tr></table></figure>
+<p><strong>上传到两个本地仓库</strong></p>
+<ul>
+<li>git remote add origin2 git@xxxxx</li>
+<li>git push -u origin master</li>
+</ul>
+<p><strong>git pull 冲突</strong>：查看合并分支冲突</p>
+<h3 id="下载代码："><a href="#下载代码：" class="headerlink" title="下载代码："></a>下载代码：</h3><ol>
+<li> git clone git@xxx</li>
+<li> 不同机器需要先上传新的 ssh key(一机一 key)</li>
+<li> <strong>cd 目标路径</strong></li>
+<li> 运行 git add/git commit/[git pull]/git push</li>
+</ol>
+<p>下载某个分支：先下载整个仓库，再切换分支</p>
+<p><strong>git clone</strong>：</p>
+<ul>
+<li><p>git clone git@?/xxx.git:会在当前目录下创建一个 xxx 目录，xxx/.git 是本地仓库，一般需要接 cd xxx 进入目录</p>
+</li>
+<li><p>git clone git@?/xxx.git yyy：会在本地新建一个 yyy 目录，cd yyy 进入目录</p>
+</li>
+<li><p>git clone git@?/xxx.git .:最后一个字符是点，使用当前目录容纳代码和.git，需要先新建一个目录，cd 进入目录</p>
+</li>
+</ul>
+<h3 id="总结：-1"><a href="#总结：-1" class="headerlink" title="总结："></a>总结：</h3><p>常用命令：git alone/git pull/git push</p>
+<p>远程仓库：本地仓库的备份，要先 commit 到本地仓库，然后 push 到远程仓库</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">无法下载部分代码，只能先clone整个仓库生成ssh key（[帮助文档](https:&#x2F;&#x2F;docs.github.com&#x2F;en&#x2F;free-pro-team@latest&#x2F;github&#x2F;authenticating-to-github&#x2F;generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent#)）：</span><br></pre></td></tr></table></figure>
+<ul>
+<li>运行 ssh-keygen -t rsa -b 4096 -C +邮箱地址</li>
+<li>一直回车键到没有提示</li>
+<li>cat ~/.ssh/id_rsa.pub 得到公钥内容，复制内容</li>
+<li>打开 Github，在设置页面粘贴公钥内容</li>
+</ul>
+<h3 id="测试：-1"><a href="#测试：-1" class="headerlink" title="测试："></a>测试：</h3><ul>
+<li>运行 ssh -T <a href="mailto:&#x67;&#105;&#116;&#x40;&#x67;&#x69;&#116;&#104;&#117;&#x62;&#x2e;&#99;&#111;&#x6d;">&#x67;&#105;&#116;&#x40;&#x67;&#x69;&#116;&#104;&#117;&#x62;&#x2e;&#99;&#111;&#x6d;</a></li>
+<li>询问 yes/no,回答 yes</li>
+</ul>
+<h3 id="上传代码：-1"><a href="#上传代码：-1" class="headerlink" title="上传代码："></a>上传代码：</h3><ol>
+<li><p>新建 Github Repo，复制 ssh 地址</p>
+</li>
+<li><p>运行 git remote add origin git@xxxxx</p>
+<p>（在本地添加远程仓库地址，origin 为远程仓库默认名字）</p>
+</li>
+<li><p>git push -u origin master</p>
+</li>
+</ol>
+<ul>
+<li>推送本地 master 分支到远程 originmaster 分支</li>
+<li>提示应该 git pull…，就运行 git pull!</li>
+<li>-u origin master 意思为设置上游分支，之后不用再设置，直接 git pull，git push</li>
+</ul>
+<p><strong>上传其它分支：</strong></p>
+<p>一：git push x:x</p>
+<p>二：git checkout x</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git push -u origin x</span><br></pre></td></tr></table></figure>
+<p><strong>上传到两个本地仓库</strong></p>
+<ul>
+<li>git remote add origin2 git@xxxxx</li>
+<li>git push -u origin master</li>
+</ul>
+<p><strong>git pull 冲突</strong>：查看合并分支冲突</p>
+<h3 id="下载代码：-1"><a href="#下载代码：-1" class="headerlink" title="下载代码："></a>下载代码：</h3><ol>
+<li> git clone git@xxx</li>
+<li> 不同机器需要先上传新的 ssh key(一机一 key)</li>
+<li> <strong>cd 目标路径</strong></li>
+<li> 运行 git add/git commit/[git pull]/git push</li>
+</ol>
+<p>下载某个分支：先下载整个仓库，再切换分支</p>
+<p><strong>git clone</strong>：</p>
+<ul>
+<li><p>git clone git@?/xxx.git:会在当前目录下创建一个 xxx 目录，xxx/.git 是本地仓库，一般需要接 cd xxx 进入目录</p>
+</li>
+<li><p>git clone git@?/xxx.git yyy：会在本地新建一个 yyy 目录，cd yyy 进入目录</p>
+</li>
+<li><p>git clone git@?/xxx.git .:最后一个字符是点，使用当前目录容纳代码和.git，需要先新建一个目录，cd 进入目录</p>
+</li>
+</ul>
+<h3 id="总结：-2"><a href="#总结：-2" class="headerlink" title="总结："></a>总结：</h3><p>常用命令：git alone/git pull/git push</p>
+<p>远程仓库：本地仓库的备份，要先 commit 到本地仓库，然后 push 到远程仓库</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">无法下载部分代码，只能先clone整个仓库</span><br></pre></td></tr></table></figure>
+<h2 id="3、git-高级操作"><a href="#3、git-高级操作" class="headerlink" title="3、git 高级操作"></a>3、git 高级操作</h2><p>bash alias 简化命令： ga=”git add” gc=”git commit -v” gl=”git pull” gp=”git push” gco=”git checkout” gst=”git status -sb”</p>
+<p>美化历史命令：git rebase -i xxx</p>
+]]></content>
+      <tags>
+        <tag>Git</tag>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>JS 对象</title>
+    <url>/2021/03/09/JS%E5%AF%B9%E8%B1%A1/</url>
+    <content><![CDATA[<h3 id="一、常见用法"><a href="#一、常见用法" class="headerlink" title="一、常见用法"></a>一、常见用法</h3><p>变量做属性名</p>
+<p>除了字符串之外，变量也可以做属性名</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">let p1 &#x3D; &#39;name&#39;</span><br><span class="line">let obj &#x3D; &#123; p1 : &#39;ss&#39;&#125; 这样写，属性名为 &#39;p1&#39;</span><br><span class="line">let obj &#x3D; &#123; [p1] : &#39;ss&#39; &#125; 这样写，属性名为 &#39;name&#39;</span><br></pre></td></tr></table></figure>
+ <a id="more"></a>
+
+<p>查看属性值</p>
+<ul>
+<li><p>中括号：<code>obj[&#39;key&#39;]</code></p>
+</li>
+<li><p>点语法：<code>obj.key</code></p>
+</li>
+</ul>
+<h3 id="二、常用方法"><a href="#二、常用方法" class="headerlink" title="二、常用方法"></a>二、常用方法</h3><ol>
+<li><p>Object.assign()</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const returnedTarget &#x3D; Object.assign(target, source);</span><br></pre></td></tr></table></figure>
+<p>将所有可枚举属性的值从一个或多个源对象分配到目标对象,回目标对象,目标对象中的属性具有相同的键，则属性将被源对象中的属性覆盖。</p>
+</li>
+<li><p>Object.entries()</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const object1 &#x3D; &#123;</span><br><span class="line"> a: &#39;somestring&#39;,</span><br><span class="line"> b: 42</span><br><span class="line">&#125;;</span><br><span class="line">Object.entries(object1)</span><br><span class="line">&#x2F;&#x2F;[[&quot;a&quot;, &quot;somestring&quot;],[&quot;b&quot;, 42]]</span><br></pre></td></tr></table></figure>
+<p>法返回一个给定对象自身可枚举属性的键值对数组</p>
+</li>
+<li><p>Object.freeze()<br>冻结一个对象。一个被冻结的对象再也不能被修改</p>
+</li>
+<li><p>Object.is()<br>判断两个值是否为同一个值。<br><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/is">MDN</a></p>
+</li>
+<li><p>Object.keys()<br>返回一个由一个给定对象的自身可枚举属性组成的数组</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Object.keys([&#39;a&#39;, &#39;b&#39;, &#39;c&#39;])</span><br><span class="line">&#x2F;&#x2F;[&#39;0&#39;, &#39;1&#39;, &#39;2&#39;]</span><br><span class="line">Object.keys(&#123; 0: &#39;a&#39;, 1: &#39;b&#39;, 2: &#39;c&#39; &#125;)</span><br><span class="line">&#x2F;&#x2F;[&#39;0&#39;, &#39;1&#39;, &#39;2&#39;]</span><br></pre></td></tr></table></figure></li>
+<li><p>Object.values()</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Object.values(&#123; foo: &#39;bar&#39;, baz: 42 &#125;)</span><br><span class="line">&#x2F;&#x2F;[&#39;bar&#39;, 42]</span><br></pre></td></tr></table></figure></li>
+<li><p>Object.create()</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Object.create(&#123;a:1,b:2&#125;);</span><br><span class="line">&#x2F;&#x2F;__proto__:</span><br><span class="line">    a: 1</span><br><span class="line">    b: 2</span><br></pre></td></tr></table></figure>
+<p>创建一个新对象，使用现有的对象来提供新创建的对象的<strong>proto</strong></p>
+</li>
+<li><p>Object.defineProperty()</p>
+<p>直接在一个对象上定义一个新属性，或者修改一个对象的现有属性，并返回此对象。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Object.defineProperty(&#123;&#125;, &#39;a&#39;,&#123;value:1&#125;);  &#x2F;&#x2F;&#123;a:1&#125;</span><br><span class="line">Object.defineProperty(&#123;&#125;, &#39;property1&#39;, &#123;</span><br><span class="line">value: 42,</span><br><span class="line">writable: false   &#x2F;&#x2F;描述符</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>拥有布尔值的键 configurable、enumerable 和 writable 的默认值都是 false。<br>属性值和函数的键 value、get 和 set 字段的默认值为 undefined。</p>
+</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>JavaScript</tag>
       </tags>
   </entry>
   <entry>
@@ -664,53 +711,6 @@
       </tags>
   </entry>
   <entry>
-    <title>JS 对象</title>
-    <url>/2021/03/09/JS%E5%AF%B9%E8%B1%A1/</url>
-    <content><![CDATA[<h3 id="一、常见用法"><a href="#一、常见用法" class="headerlink" title="一、常见用法"></a>一、常见用法</h3><p>变量做属性名</p>
-<p>除了字符串之外，变量也可以做属性名</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">let p1 &#x3D; &#39;name&#39;</span><br><span class="line">let obj &#x3D; &#123; p1 : &#39;ss&#39;&#125; 这样写，属性名为 &#39;p1&#39;</span><br><span class="line">let obj &#x3D; &#123; [p1] : &#39;ss&#39; &#125; 这样写，属性名为 &#39;name&#39;</span><br></pre></td></tr></table></figure>
- <a id="more"></a>
-
-<p>查看属性值</p>
-<ul>
-<li><p>中括号：<code>obj[&#39;key&#39;]</code></p>
-</li>
-<li><p>点语法：<code>obj.key</code></p>
-</li>
-</ul>
-<h3 id="二、常用方法"><a href="#二、常用方法" class="headerlink" title="二、常用方法"></a>二、常用方法</h3><ol>
-<li><p>Object.assign()</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const returnedTarget &#x3D; Object.assign(target, source);</span><br></pre></td></tr></table></figure>
-<p>将所有可枚举属性的值从一个或多个源对象分配到目标对象,回目标对象,目标对象中的属性具有相同的键，则属性将被源对象中的属性覆盖。</p>
-</li>
-<li><p>Object.entries()</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const object1 &#x3D; &#123;</span><br><span class="line"> a: &#39;somestring&#39;,</span><br><span class="line"> b: 42</span><br><span class="line">&#125;;</span><br><span class="line">Object.entries(object1)</span><br><span class="line">&#x2F;&#x2F;[[&quot;a&quot;, &quot;somestring&quot;],[&quot;b&quot;, 42]]</span><br></pre></td></tr></table></figure>
-<p>法返回一个给定对象自身可枚举属性的键值对数组</p>
-</li>
-<li><p>Object.freeze()<br>冻结一个对象。一个被冻结的对象再也不能被修改</p>
-</li>
-<li><p>Object.is()<br>判断两个值是否为同一个值。<br><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/is">MDN</a></p>
-</li>
-<li><p>Object.keys()<br>返回一个由一个给定对象的自身可枚举属性组成的数组</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Object.keys([&#39;a&#39;, &#39;b&#39;, &#39;c&#39;])</span><br><span class="line">&#x2F;&#x2F;[&#39;0&#39;, &#39;1&#39;, &#39;2&#39;]</span><br><span class="line">Object.keys(&#123; 0: &#39;a&#39;, 1: &#39;b&#39;, 2: &#39;c&#39; &#125;)</span><br><span class="line">&#x2F;&#x2F;[&#39;0&#39;, &#39;1&#39;, &#39;2&#39;]</span><br></pre></td></tr></table></figure></li>
-<li><p>Object.values()</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Object.values(&#123; foo: &#39;bar&#39;, baz: 42 &#125;)</span><br><span class="line">&#x2F;&#x2F;[&#39;bar&#39;, 42]</span><br></pre></td></tr></table></figure></li>
-<li><p>Object.create()</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Object.create(&#123;a:1,b:2&#125;);</span><br><span class="line">&#x2F;&#x2F;__proto__:</span><br><span class="line">    a: 1</span><br><span class="line">    b: 2</span><br></pre></td></tr></table></figure>
-<p>创建一个新对象，使用现有的对象来提供新创建的对象的<strong>proto</strong></p>
-</li>
-<li><p>Object.defineProperty()</p>
-<p>直接在一个对象上定义一个新属性，或者修改一个对象的现有属性，并返回此对象。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Object.defineProperty(&#123;&#125;, &#39;a&#39;,&#123;value:1&#125;);  &#x2F;&#x2F;&#123;a:1&#125;</span><br><span class="line">Object.defineProperty(&#123;&#125;, &#39;property1&#39;, &#123;</span><br><span class="line">value: 42,</span><br><span class="line">writable: false   &#x2F;&#x2F;描述符</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>拥有布尔值的键 configurable、enumerable 和 writable 的默认值都是 false。<br>属性值和函数的键 value、get 和 set 字段的默认值为 undefined。</p>
-</li>
-</ol>
-]]></content>
-      <tags>
-        <tag>JavaScript</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>JS 数组</title>
     <url>/2021/03/09/JS%E6%95%B0%E7%BB%84/</url>
     <content><![CDATA[<h4 id="1、数组对象"><a href="#1、数组对象" class="headerlink" title="1、数组对象:"></a>1、数组对象:</h4><ul>
@@ -900,6 +900,84 @@
       </tags>
   </entry>
   <entry>
+    <title>Vue响应式原理</title>
+    <url>/2021/03/11/Vue%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86/</url>
+    <content><![CDATA[<h4 id="一、原理"><a href="#一、原理" class="headerlink" title="一、原理"></a>一、原理</h4><p><strong><code>Vue</code>会遍历<code>data</code>对象的所有<code>property</code>，并使用<code>Object.defineProperty</code>把这些<code>property</code>全部转为<code>getter/setter</code>。通过<code>getter/setter</code>让 Vue 能够追踪依赖，在<code>property</code>被访问和修改时通知变更。</strong></p>
+<h4 id="二、Object-defineProperty-和-getter、setter"><a href="#二、Object-defineProperty-和-getter、setter" class="headerlink" title="二、Object.defineProperty 和 getter、setter"></a>二、Object.defineProperty 和 getter、setter</h4><p><code>Object.defineProperty</code>方法会直接在一个对象上定义一个新属性，或者修改一个对象的现有属性，并返回此对象。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"> let data1 &#x3D; &#123;&#125;;</span><br><span class="line">Object.defineProperty(data1, &quot;n&quot;, &#123;</span><br><span class="line">  value: 0</span><br><span class="line">&#125;);</span><br><span class="line">console.log(data1.n);  &#x2F;&#x2F;0</span><br></pre></td></tr></table></figure>
+<br>
+
+<p><code>getter/setter</code>用于对属性的读写进行监控</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">let myData2 &#x3D; &#123; n: 0 &#125;;</span><br><span class="line">let data2 &#x3D; proxy(&#123; data: myData2 &#125;); &#x2F;&#x2F; 括号里是匿名对象，无法访问</span><br><span class="line"></span><br><span class="line">function proxy(&#123; data &#125;) &#123;</span><br><span class="line">  let value &#x3D; data.n;</span><br><span class="line">  Object.defineProperty(data, &quot;n&quot;, &#123;</span><br><span class="line">    get() &#123;</span><br><span class="line">      return value;</span><br><span class="line">    &#125;,</span><br><span class="line">    set(newValue) &#123;</span><br><span class="line">      if (newValue &lt; 0) return;</span><br><span class="line">      value &#x3D; newValue;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">  &#x2F;&#x2F;监听 data</span><br><span class="line"></span><br><span class="line">  const obj &#x3D; &#123;&#125;;</span><br><span class="line">  Object.defineProperty(obj, &quot;n&quot;, &#123;</span><br><span class="line">    get() &#123;</span><br><span class="line">      return data.n;</span><br><span class="line">    &#125;,</span><br><span class="line">    set(value) &#123;</span><br><span class="line">     if (newValue &lt; 0) return;</span><br><span class="line">      data.n &#x3D; value;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">  return obj; &#x2F;&#x2F; obj 就是代理</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">console.log(data2.n);	&#x2F;&#x2F;0</span><br><span class="line">myData2.n &#x3D; -1;</span><br><span class="line">console.log(data2.n);	&#x2F;&#x2F;0</span><br><span class="line">myData2.n &#x3D; 1;</span><br><span class="line">console.log(data2.n);	&#x2F;&#x2F;1</span><br></pre></td></tr></table></figure>
+<br>
+
+<p><strong>当<code>let vm=new Vue(&#123;data:myData&#125;)</code>时，会让 vm 成为 Vue 的代理，对 myData 的所有属性进行监控，使得 myData 的属性变化的时候渲染页面。</strong></p>
+<h4 id="三、总结"><a href="#三、总结" class="headerlink" title="三、总结"></a>三、总结</h4><p><strong>Vue 的数据响应式，是通过<code>Object.defineProperty</code>将对象所有的属性转化为<code>getter/setter</code>来监控数据变化，即时渲染页面。</strong></p>
+<p><strong>注意</strong>：Vue 不能检测到对象属性的添加或删除，解决方法是手动调用 Vue.set 或者 this.$set<br><a href="https://cn.vuejs.org/v2/guide/reactivity.html#%E5%AF%B9%E4%BA%8E%E5%AF%B9%E8%B1%A1">文档</a></p>
+]]></content>
+      <tags>
+        <tag>框架</tag>
+        <tag>Vue</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>canvas</title>
+    <url>/2021/03/09/canvas/</url>
+    <content><![CDATA[<h2 id="canvas"><a href="#canvas" class="headerlink" title="canvas"></a>canvas</h2><p><code>&lt;canvas&gt;</code>元素可被用来通过 JS 绘制图形动画</p>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><ol>
+<li><p>canvas 标签 （自带宽高属性）</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;canvas id&#x3D;&#39;canvas&#39; width:&quot;100&quot; height:&quot;100&quot;&gt;&lt;&#x2F;canvas&gt;</span><br></pre></td></tr></table></figure></li>
+<li><p>JS</p>
+<p>创建 canvas 画布</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">let canvas &#x3D; document.getElementById(&#39;canvas&#39;);</span><br><span class="line">let ctx &#x3D; canvas.getContext(&#39;2d&#39;);</span><br></pre></td></tr></table></figure></li>
+<li><p>常用属性</p>
+</li>
+</ol>
+<ul>
+<li><p>绘制矩形:</p>
+<ul>
+<li>填充：fillRect(x,y,width,height)</li>
+<li>边框：strokeRect</li>
+<li>清除指定矩形区域 <code>clearRect(x, y, width, height)</code></li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>HTML</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>跨域 CORS和JSON</title>
+    <url>/2021/03/09/ajax/</url>
+    <content><![CDATA[<ol>
+<li>概述</li>
+</ol>
+<p>AJAX：Asynchronous JavaScript + XML（）</p>
+<ul>
+<li>AJAX 是浏览器上的功能，浏览器可以发请求，收响应</li>
+<li>浏览器在 window 上加了一个 XMLHttpRequest 函数</li>
+</ul>
+<ul>
+<li>用这个构造函数（类）可以构造出一个对象<br>JS 通过它实现发请求，收响应<a id="more"></a>
+</li>
+</ul>
+<ol start="2">
+<li>使用</li>
+</ol>
+<ul>
+<li>JS 代码<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const request &#x3D; new XMLHttpRequest()</span><br><span class="line">request.open(&quot;GET&quot;, &quot;&#x2F;style.css&quot;)</span><br><span class="line">request.onreadystatechange &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">    console.log(request.readyState)</span><br><span class="line">    if (request.readyState &#x3D;&#x3D;&#x3D; 4) &#123;</span><br><span class="line">        if (request.status &gt;&#x3D; 200 &amp;&amp; request.status &lt; 300) &#123;</span><br><span class="line">             console.log(&quot;下载完成了&quot;)</span><br><span class="line">            const style &#x3D; document.createElement(&quot;style&quot;)</span><br><span class="line">            style.innerHTML &#x3D; request.response</span><br><span class="line">             document.head.appendChild(style)</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        alert(&quot;加载 css 失败&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">request.send()</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ul>
+<li><p>服务端：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;server.js</span><br><span class="line">var http &#x3D; require(&quot;http&quot;)</span><br><span class="line">var fs &#x3D; require(&quot;fs&quot;)</span><br><span class="line">var url &#x3D; require(&quot;url&quot;)</span><br><span class="line">var port &#x3D; process.argv[2]</span><br><span class="line"></span><br><span class="line">if (!port) &#123;</span><br><span class="line">console.log(&quot;请指定端口号好不啦？\nnode server.js 8888 这样不会吗？&quot;)</span><br><span class="line">process.exit(1)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var server &#x3D; http.createServer(function (request, response) &#123;</span><br><span class="line">var parsedUrl &#x3D; url.parse(request.url, true)</span><br><span class="line">var pathWithQuery &#x3D; request.url</span><br><span class="line">var queryString &#x3D; &quot;&quot;</span><br><span class="line">if (pathWithQuery.indexOf(&quot;?&quot;) &gt;&#x3D; 0) &#123;</span><br><span class="line">    queryString &#x3D; pathWithQuery.substring(pathWithQuery.indexOf(&quot;?&quot;))</span><br><span class="line">&#125;</span><br><span class="line">var path &#x3D; parsedUrl.pathname</span><br><span class="line">var query &#x3D; parsedUrl.query</span><br><span class="line">var method &#x3D; request.method</span><br><span class="line"></span><br><span class="line">console.log(&quot;有个傻子发请求过来啦！路径（带查询参数）为：&quot; + pathWithQuery)</span><br><span class="line"></span><br><span class="line">if (path &#x3D;&#x3D;&#x3D; &quot;&#x2F;index.html&quot;) &#123;</span><br><span class="line">    response.statusCode &#x3D; 200</span><br><span class="line">    response.setHeader(&quot;Content-Type&quot;, &quot;text&#x2F;html;charset&#x3D;utf-8&quot;)</span><br><span class="line">    let string &#x3D; fs.readFileSync(&quot;public&#x2F;index.html&quot;).toString()</span><br><span class="line">    const page1 &#x3D; fs.readFileSync(&quot;db&#x2F;page1.json&quot;).toString()</span><br><span class="line">    const array &#x3D; JSON.parse(page1)</span><br><span class="line">    const result &#x3D; array.map((item) &#x3D;&gt; &#96;&lt;li&gt;$&#123;item.id&#125;&lt;&#x2F;li&gt;&#96;).join(&quot;&quot;)</span><br><span class="line">    string &#x3D; string.replace(&quot;&#123;&#123;page1&#125;&#125;&quot;, &#96;&lt;ul id&#x3D;&quot;aa&quot;&gt;$&#123;result&#125;&lt;&#x2F;ul&gt;&#96;)</span><br><span class="line">    response.write(string)</span><br><span class="line">    response.end()</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    response.statusCode &#x3D; 404</span><br><span class="line">    response.setHeader(&quot;Content-Type&quot;, &quot;text&#x2F;css;charset&#x3D;utf-8&quot;)</span><br><span class="line">    response.write(&#96;你访问的页面不存在&#96;)</span><br><span class="line">    response.end()</span><br><span class="line">&#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">server.listen(port)</span><br><span class="line">console.log(</span><br><span class="line">&quot;监听 &quot; +</span><br><span class="line">    port +</span><br><span class="line">    &quot; 成功\n请用在空中转体720度然后用电饭煲打开 http:&#x2F;&#x2F;localhost:&quot; +</span><br><span class="line">    port</span><br><span class="line">)</span><br></pre></td></tr></table></figure></li>
+</ul>
+]]></content>
+      <tags>
+        <tag>AJAX</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>Vuex的基本用法</title>
     <url>/2021/03/11/Vuex/</url>
     <content><![CDATA[<h5 id="1、Vuex-是什么？"><a href="#1、Vuex-是什么？" class="headerlink" title="1、Vuex 是什么？"></a>1、Vuex 是什么？</h5><p>一个专为 Vue.js 应用程序开发的状态管理工具</p>
@@ -959,88 +1037,10 @@
       </tags>
   </entry>
   <entry>
-    <title>Vue响应式原理</title>
-    <url>/2021/03/11/Vue%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86/</url>
-    <content><![CDATA[<h4 id="一、原理"><a href="#一、原理" class="headerlink" title="一、原理"></a>一、原理</h4><p><strong><code>Vue</code>会遍历<code>data</code>对象的所有<code>property</code>，并使用<code>Object.defineProperty</code>把这些<code>property</code>全部转为<code>getter/setter</code>。通过<code>getter/setter</code>让 Vue 能够追踪依赖，在<code>property</code>被访问和修改时通知变更。</strong></p>
-<h4 id="二、Object-defineProperty-和-getter、setter"><a href="#二、Object-defineProperty-和-getter、setter" class="headerlink" title="二、Object.defineProperty 和 getter、setter"></a>二、Object.defineProperty 和 getter、setter</h4><p><code>Object.defineProperty</code>方法会直接在一个对象上定义一个新属性，或者修改一个对象的现有属性，并返回此对象。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"> let data1 &#x3D; &#123;&#125;;</span><br><span class="line">Object.defineProperty(data1, &quot;n&quot;, &#123;</span><br><span class="line">  value: 0</span><br><span class="line">&#125;);</span><br><span class="line">console.log(data1.n);  &#x2F;&#x2F;0</span><br></pre></td></tr></table></figure>
-<br>
-
-<p><code>getter/setter</code>用于对属性的读写进行监控</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">let myData2 &#x3D; &#123; n: 0 &#125;;</span><br><span class="line">let data2 &#x3D; proxy(&#123; data: myData2 &#125;); &#x2F;&#x2F; 括号里是匿名对象，无法访问</span><br><span class="line"></span><br><span class="line">function proxy(&#123; data &#125;) &#123;</span><br><span class="line">  let value &#x3D; data.n;</span><br><span class="line">  Object.defineProperty(data, &quot;n&quot;, &#123;</span><br><span class="line">    get() &#123;</span><br><span class="line">      return value;</span><br><span class="line">    &#125;,</span><br><span class="line">    set(newValue) &#123;</span><br><span class="line">      if (newValue &lt; 0) return;</span><br><span class="line">      value &#x3D; newValue;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">  &#x2F;&#x2F;监听 data</span><br><span class="line"></span><br><span class="line">  const obj &#x3D; &#123;&#125;;</span><br><span class="line">  Object.defineProperty(obj, &quot;n&quot;, &#123;</span><br><span class="line">    get() &#123;</span><br><span class="line">      return data.n;</span><br><span class="line">    &#125;,</span><br><span class="line">    set(value) &#123;</span><br><span class="line">     if (newValue &lt; 0) return;</span><br><span class="line">      data.n &#x3D; value;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">  return obj; &#x2F;&#x2F; obj 就是代理</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">console.log(data2.n);	&#x2F;&#x2F;0</span><br><span class="line">myData2.n &#x3D; -1;</span><br><span class="line">console.log(data2.n);	&#x2F;&#x2F;0</span><br><span class="line">myData2.n &#x3D; 1;</span><br><span class="line">console.log(data2.n);	&#x2F;&#x2F;1</span><br></pre></td></tr></table></figure>
-<br>
-
-<p><strong>当<code>let vm=new Vue(&#123;data:myData&#125;)</code>时，会让 vm 成为 Vue 的代理，对 myData 的所有属性进行监控，使得 myData 的属性变化的时候渲染页面。</strong></p>
-<h4 id="三、总结"><a href="#三、总结" class="headerlink" title="三、总结"></a>三、总结</h4><p><strong>Vue 的数据响应式，是通过<code>Object.defineProperty</code>将对象所有的属性转化为<code>getter/setter</code>来监控数据变化，即时渲染页面。</strong></p>
-<p><strong>注意</strong>：Vue 不能检测到对象属性的添加或删除，解决方法是手动调用 Vue.set 或者 this.$set<br><a href="https://cn.vuejs.org/v2/guide/reactivity.html#%E5%AF%B9%E4%BA%8E%E5%AF%B9%E8%B1%A1">文档</a></p>
-]]></content>
-      <tags>
-        <tag>框架</tag>
-        <tag>Vue</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>跨域 CORS和JSON</title>
-    <url>/2021/03/09/ajax/</url>
-    <content><![CDATA[<ol>
-<li>概述</li>
-</ol>
-<p>AJAX：Asynchronous JavaScript + XML（）</p>
-<ul>
-<li>AJAX 是浏览器上的功能，浏览器可以发请求，收响应</li>
-<li>浏览器在 window 上加了一个 XMLHttpRequest 函数</li>
-</ul>
-<ul>
-<li>用这个构造函数（类）可以构造出一个对象<br>JS 通过它实现发请求，收响应<a id="more"></a>
-</li>
-</ul>
-<ol start="2">
-<li>使用</li>
-</ol>
-<ul>
-<li>JS 代码<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const request &#x3D; new XMLHttpRequest()</span><br><span class="line">request.open(&quot;GET&quot;, &quot;&#x2F;style.css&quot;)</span><br><span class="line">request.onreadystatechange &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">    console.log(request.readyState)</span><br><span class="line">    if (request.readyState &#x3D;&#x3D;&#x3D; 4) &#123;</span><br><span class="line">        if (request.status &gt;&#x3D; 200 &amp;&amp; request.status &lt; 300) &#123;</span><br><span class="line">             console.log(&quot;下载完成了&quot;)</span><br><span class="line">            const style &#x3D; document.createElement(&quot;style&quot;)</span><br><span class="line">            style.innerHTML &#x3D; request.response</span><br><span class="line">             document.head.appendChild(style)</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        alert(&quot;加载 css 失败&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">request.send()</span><br></pre></td></tr></table></figure></li>
-</ul>
-<ul>
-<li><p>服务端：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;server.js</span><br><span class="line">var http &#x3D; require(&quot;http&quot;)</span><br><span class="line">var fs &#x3D; require(&quot;fs&quot;)</span><br><span class="line">var url &#x3D; require(&quot;url&quot;)</span><br><span class="line">var port &#x3D; process.argv[2]</span><br><span class="line"></span><br><span class="line">if (!port) &#123;</span><br><span class="line">console.log(&quot;请指定端口号好不啦？\nnode server.js 8888 这样不会吗？&quot;)</span><br><span class="line">process.exit(1)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var server &#x3D; http.createServer(function (request, response) &#123;</span><br><span class="line">var parsedUrl &#x3D; url.parse(request.url, true)</span><br><span class="line">var pathWithQuery &#x3D; request.url</span><br><span class="line">var queryString &#x3D; &quot;&quot;</span><br><span class="line">if (pathWithQuery.indexOf(&quot;?&quot;) &gt;&#x3D; 0) &#123;</span><br><span class="line">    queryString &#x3D; pathWithQuery.substring(pathWithQuery.indexOf(&quot;?&quot;))</span><br><span class="line">&#125;</span><br><span class="line">var path &#x3D; parsedUrl.pathname</span><br><span class="line">var query &#x3D; parsedUrl.query</span><br><span class="line">var method &#x3D; request.method</span><br><span class="line"></span><br><span class="line">console.log(&quot;有个傻子发请求过来啦！路径（带查询参数）为：&quot; + pathWithQuery)</span><br><span class="line"></span><br><span class="line">if (path &#x3D;&#x3D;&#x3D; &quot;&#x2F;index.html&quot;) &#123;</span><br><span class="line">    response.statusCode &#x3D; 200</span><br><span class="line">    response.setHeader(&quot;Content-Type&quot;, &quot;text&#x2F;html;charset&#x3D;utf-8&quot;)</span><br><span class="line">    let string &#x3D; fs.readFileSync(&quot;public&#x2F;index.html&quot;).toString()</span><br><span class="line">    const page1 &#x3D; fs.readFileSync(&quot;db&#x2F;page1.json&quot;).toString()</span><br><span class="line">    const array &#x3D; JSON.parse(page1)</span><br><span class="line">    const result &#x3D; array.map((item) &#x3D;&gt; &#96;&lt;li&gt;$&#123;item.id&#125;&lt;&#x2F;li&gt;&#96;).join(&quot;&quot;)</span><br><span class="line">    string &#x3D; string.replace(&quot;&#123;&#123;page1&#125;&#125;&quot;, &#96;&lt;ul id&#x3D;&quot;aa&quot;&gt;$&#123;result&#125;&lt;&#x2F;ul&gt;&#96;)</span><br><span class="line">    response.write(string)</span><br><span class="line">    response.end()</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    response.statusCode &#x3D; 404</span><br><span class="line">    response.setHeader(&quot;Content-Type&quot;, &quot;text&#x2F;css;charset&#x3D;utf-8&quot;)</span><br><span class="line">    response.write(&#96;你访问的页面不存在&#96;)</span><br><span class="line">    response.end()</span><br><span class="line">&#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">server.listen(port)</span><br><span class="line">console.log(</span><br><span class="line">&quot;监听 &quot; +</span><br><span class="line">    port +</span><br><span class="line">    &quot; 成功\n请用在空中转体720度然后用电饭煲打开 http:&#x2F;&#x2F;localhost:&quot; +</span><br><span class="line">    port</span><br><span class="line">)</span><br></pre></td></tr></table></figure></li>
-</ul>
-]]></content>
-      <tags>
-        <tag>AJAX</tag>
-      </tags>
-  </entry>
-  <entry>
     <title></title>
     <url>/2021/03/10/ceshi/</url>
     <content><![CDATA[<p>1111</p>
 ]]></content>
-  </entry>
-  <entry>
-    <title>canvas</title>
-    <url>/2021/03/09/canvas/</url>
-    <content><![CDATA[<h2 id="canvas"><a href="#canvas" class="headerlink" title="canvas"></a>canvas</h2><p><code>&lt;canvas&gt;</code>元素可被用来通过 JS 绘制图形动画</p>
-<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><ol>
-<li><p>canvas 标签 （自带宽高属性）</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;canvas id&#x3D;&#39;canvas&#39; width:&quot;100&quot; height:&quot;100&quot;&gt;&lt;&#x2F;canvas&gt;</span><br></pre></td></tr></table></figure></li>
-<li><p>JS</p>
-<p>创建 canvas 画布</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">let canvas &#x3D; document.getElementById(&#39;canvas&#39;);</span><br><span class="line">let ctx &#x3D; canvas.getContext(&#39;2d&#39;);</span><br></pre></td></tr></table></figure></li>
-<li><p>常用属性</p>
-</li>
-</ol>
-<ul>
-<li><p>绘制矩形:</p>
-<ul>
-<li>填充：fillRect(x,y,width,height)</li>
-<li>边框：strokeRect</li>
-<li>清除指定矩形区域 <code>clearRect(x, y, width, height)</code></li>
-</ul>
-</li>
-</ul>
-]]></content>
-      <tags>
-        <tag>HTML</tag>
-      </tags>
   </entry>
   <entry>
     <title>jQuery</title>
@@ -1315,43 +1315,6 @@
       </tags>
   </entry>
   <entry>
-    <title>跨域 CORS和JSON</title>
-    <url>/2021/03/09/%E8%B7%A8%E5%9F%9F%20CORS%E5%92%8CJSONP/</url>
-    <content><![CDATA[<h4 id="一、同源策略"><a href="#一、同源策略" class="headerlink" title="一、同源策略"></a>一、同源策略</h4><ol>
-<li>同源定义：</li>
-</ol>
-<ul>
-<li>源： window.Origin 或 location.origin 可以得到当前源</li>
-<li>源=协议+域名+端口号</li>
-<li>如果两个 url 协议、域名、端口号完全一致，那么这两个 url 就是同源的<a id="more"></a>
-</li>
-</ul>
-<ol start="2">
-<li>同源策略：</li>
-</ol>
-<ul>
-<li>浏览器规定：如果 JS 运行在源 A，那么就只能获取源 A 的数据，不允许获取源 B 的数据，即不允许跨源</li>
-<li>目的：保护隐私</li>
-<li>主要原因：无法区分发送者，如果没有同源策略，任何网站都可以访问别的网站数据(检查 referer)</li>
-<li>同源策略：不同源的页面中间，不允许互相访问数据</li>
-</ul>
-<ul>
-<li>同源策略限制访问数据，引用 css、JS 和图片的时候，其实并不知道其内容，只是在引用</li>
-</ul>
-<h4 id="二、跨域"><a href="#二、跨域" class="headerlink" title="二、跨域"></a>二、跨域</h4><p>浏览器有同源策略限制，不允许一个源里的文档访问另一个源里资源。而跨域就是为了解决同源策略限制。</p>
-<ul>
-<li><p>CORS：<br>跨源资源共享，使用附加的 HTTP 头来告诉浏览器，准许运行在一个源上的 Web 应用访问位于另一不同源选定的资源。使用<strong>Access-Control-Allow-Origin</strong>响应头可以指定一个可以访问资源的 URI</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">if (path &#x3D;&#x3D;&#x3D; &quot;&#x2F;friends.json&quot;) &#123;</span><br><span class="line">    response.statusCode &#x3D; 200</span><br><span class="line">    response.setHeader(&quot;Content-Type&quot;, &quot;text&#x2F;json;charset&#x3D;utf-8&quot;)</span><br><span class="line">    response.setHeader(&quot;Access-Control-Allow-Origin&quot;, &quot;http:&#x2F;&#x2F;crystal.com:9999&quot;)</span><br><span class="line">    response.write(fs.readFileSync(&quot;public&#x2F;friends.json&quot;))</span><br><span class="line">    response.end()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>JSONP ：在无法使用 CORS 跨域的情况下，请求 JS 文件，这个 JS 文件会执行一个回调，回调里面包含数据。可以兼容 IE 浏览器实现跨域，但只能发 get 请求，并且无法读取精确的状态码。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">function jsonp(url) &#123;</span><br><span class="line">  return new Promise((resolve, reject) &#x3D;&gt; &#123;</span><br><span class="line">     const random &#x3D; &quot;crystalJSONPCallbackName&quot; + Math.random()</span><br><span class="line">     window[random] &#x3D; (data) &#x3D;&gt; &#123;</span><br><span class="line">       resolve(data)</span><br><span class="line">     &#125;</span><br><span class="line">     const script &#x3D; document.createElement(&quot;script&quot;)</span><br><span class="line">     script.src &#x3D; &#96;$&#123;url&#125;?callback&#x3D;$&#123;random&#125;&#96;</span><br><span class="line">     script.onload &#x3D; () &#x3D;&gt; &#123;  &#x2F;&#x2F;无法获取状态码，只能知道成功或者失败</span><br><span class="line">       script.remove()</span><br><span class="line">     &#125;</span><br><span class="line">     script.onerror &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">       reject()</span><br><span class="line">     &#125;</span><br><span class="line">     document.body.appendChild(script)</span><br><span class="line">   &#125;)</span><br><span class="line"> &#125;</span><br><span class="line"> jsonp(&quot;http:&#x2F;&#x2F;qq.com:8888&#x2F;friends.js&quot;).then((data) &#x3D;&gt; &#123;</span><br><span class="line">   console.log(data)</span><br><span class="line"> &#125;)</span><br><span class="line"> script.onload &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">   console.log(window.xxx)</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">if (path &#x3D;&#x3D;&#x3D; &quot;&#x2F;friends.js&quot;) &#123;</span><br><span class="line">  if (request.headers[&quot;referer&quot;].indexOf(&quot;http:&#x2F;&#x2F;crystal.com:9999&quot;) &#x3D;&#x3D;&#x3D; 0) &#123;</span><br><span class="line">    response.statusCode &#x3D; 200</span><br><span class="line">    response.setHeader(&quot;Content-Type&quot;, &quot;text&#x2F;javascript;charset&#x3D;utf-8&quot;)</span><br><span class="line">    const string &#x3D; &#96;window[&quot;&#123;&#123;xxx&#125;&#125;&quot;](&#123;&#123;data&#125;&#125;)&#96;</span><br><span class="line">    const data &#x3D; fs.readFileSync(&quot;public&#x2F;friends.json&quot;).toString()</span><br><span class="line">    const string2 &#x3D; string</span><br><span class="line">      .replace(&quot;&#123;&#123;data&#125;&#125;&quot;, data)</span><br><span class="line">      .replace(&quot;&#123;&#123;xxx&#125;&#125;&quot;, query.callback)     &#x2F;&#x2F;上面的random</span><br><span class="line">    response.write(string2)</span><br><span class="line">    response.end()</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-]]></content>
-      <tags>
-        <tag>AJAX</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>虚拟DOM</title>
     <url>/2021/03/11/%E8%99%9A%E6%8B%9Fdom/</url>
     <content><![CDATA[<h2 id="一、虚拟-DOM"><a href="#一、虚拟-DOM" class="headerlink" title="一、虚拟 DOM"></a>一、虚拟 DOM</h2><h4 id="1、虚拟-DOM-是什么？"><a href="#1、虚拟-DOM-是什么？" class="headerlink" title="1、虚拟 DOM 是什么？"></a>1、虚拟 DOM 是什么？</h4><p>一个能代表 DOM 树的对象，通常含有标签名、标签上的属性，事件监听以及其他属性</p>
@@ -1403,6 +1366,43 @@
       <tags>
         <tag>框架</tag>
         <tag>React</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>跨域 CORS和JSON</title>
+    <url>/2021/03/09/%E8%B7%A8%E5%9F%9F%20CORS%E5%92%8CJSONP/</url>
+    <content><![CDATA[<h4 id="一、同源策略"><a href="#一、同源策略" class="headerlink" title="一、同源策略"></a>一、同源策略</h4><ol>
+<li>同源定义：</li>
+</ol>
+<ul>
+<li>源： window.Origin 或 location.origin 可以得到当前源</li>
+<li>源=协议+域名+端口号</li>
+<li>如果两个 url 协议、域名、端口号完全一致，那么这两个 url 就是同源的<a id="more"></a>
+</li>
+</ul>
+<ol start="2">
+<li>同源策略：</li>
+</ol>
+<ul>
+<li>浏览器规定：如果 JS 运行在源 A，那么就只能获取源 A 的数据，不允许获取源 B 的数据，即不允许跨源</li>
+<li>目的：保护隐私</li>
+<li>主要原因：无法区分发送者，如果没有同源策略，任何网站都可以访问别的网站数据(检查 referer)</li>
+<li>同源策略：不同源的页面中间，不允许互相访问数据</li>
+</ul>
+<ul>
+<li>同源策略限制访问数据，引用 css、JS 和图片的时候，其实并不知道其内容，只是在引用</li>
+</ul>
+<h4 id="二、跨域"><a href="#二、跨域" class="headerlink" title="二、跨域"></a>二、跨域</h4><p>浏览器有同源策略限制，不允许一个源里的文档访问另一个源里资源。而跨域就是为了解决同源策略限制。</p>
+<ul>
+<li><p>CORS：<br>跨源资源共享，使用附加的 HTTP 头来告诉浏览器，准许运行在一个源上的 Web 应用访问位于另一不同源选定的资源。使用<strong>Access-Control-Allow-Origin</strong>响应头可以指定一个可以访问资源的 URI</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">if (path &#x3D;&#x3D;&#x3D; &quot;&#x2F;friends.json&quot;) &#123;</span><br><span class="line">    response.statusCode &#x3D; 200</span><br><span class="line">    response.setHeader(&quot;Content-Type&quot;, &quot;text&#x2F;json;charset&#x3D;utf-8&quot;)</span><br><span class="line">    response.setHeader(&quot;Access-Control-Allow-Origin&quot;, &quot;http:&#x2F;&#x2F;crystal.com:9999&quot;)</span><br><span class="line">    response.write(fs.readFileSync(&quot;public&#x2F;friends.json&quot;))</span><br><span class="line">    response.end()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>JSONP ：在无法使用 CORS 跨域的情况下，请求 JS 文件，这个 JS 文件会执行一个回调，回调里面包含数据。可以兼容 IE 浏览器实现跨域，但只能发 get 请求，并且无法读取精确的状态码。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">function jsonp(url) &#123;</span><br><span class="line">  return new Promise((resolve, reject) &#x3D;&gt; &#123;</span><br><span class="line">     const random &#x3D; &quot;crystalJSONPCallbackName&quot; + Math.random()</span><br><span class="line">     window[random] &#x3D; (data) &#x3D;&gt; &#123;</span><br><span class="line">       resolve(data)</span><br><span class="line">     &#125;</span><br><span class="line">     const script &#x3D; document.createElement(&quot;script&quot;)</span><br><span class="line">     script.src &#x3D; &#96;$&#123;url&#125;?callback&#x3D;$&#123;random&#125;&#96;</span><br><span class="line">     script.onload &#x3D; () &#x3D;&gt; &#123;  &#x2F;&#x2F;无法获取状态码，只能知道成功或者失败</span><br><span class="line">       script.remove()</span><br><span class="line">     &#125;</span><br><span class="line">     script.onerror &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">       reject()</span><br><span class="line">     &#125;</span><br><span class="line">     document.body.appendChild(script)</span><br><span class="line">   &#125;)</span><br><span class="line"> &#125;</span><br><span class="line"> jsonp(&quot;http:&#x2F;&#x2F;qq.com:8888&#x2F;friends.js&quot;).then((data) &#x3D;&gt; &#123;</span><br><span class="line">   console.log(data)</span><br><span class="line"> &#125;)</span><br><span class="line"> script.onload &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">   console.log(window.xxx)</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">if (path &#x3D;&#x3D;&#x3D; &quot;&#x2F;friends.js&quot;) &#123;</span><br><span class="line">  if (request.headers[&quot;referer&quot;].indexOf(&quot;http:&#x2F;&#x2F;crystal.com:9999&quot;) &#x3D;&#x3D;&#x3D; 0) &#123;</span><br><span class="line">    response.statusCode &#x3D; 200</span><br><span class="line">    response.setHeader(&quot;Content-Type&quot;, &quot;text&#x2F;javascript;charset&#x3D;utf-8&quot;)</span><br><span class="line">    const string &#x3D; &#96;window[&quot;&#123;&#123;xxx&#125;&#125;&quot;](&#123;&#123;data&#125;&#125;)&#96;</span><br><span class="line">    const data &#x3D; fs.readFileSync(&quot;public&#x2F;friends.json&quot;).toString()</span><br><span class="line">    const string2 &#x3D; string</span><br><span class="line">      .replace(&quot;&#123;&#123;data&#125;&#125;&quot;, data)</span><br><span class="line">      .replace(&quot;&#123;&#123;xxx&#125;&#125;&quot;, query.callback)     &#x2F;&#x2F;上面的random</span><br><span class="line">    response.write(string2)</span><br><span class="line">    response.end()</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+]]></content>
+      <tags>
+        <tag>AJAX</tag>
       </tags>
   </entry>
   <entry>
