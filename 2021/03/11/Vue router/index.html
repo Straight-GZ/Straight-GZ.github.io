@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/1.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/1.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/1.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"github.com","root":"/","images":"/images","scheme":"Mist","version":"8.2.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+<meta name="description" content="1、Vue RouterVue.js 官方的路由管理器。路由就是 SPA（single page application 单页应用）的路径管理器，单页面应用的思路是一个 index.html 里面有一个容器，在用户进行交互的时候，并不会重新加载某个界面，而是只选择把某个视图更新到容器中去显示。 2、路由模式 hash 模式 vue-router 默认 hash 模式 —— 使用 URL 的 has">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Vue Router">
+<meta property="og:url" content="https://github.com/Straight-GZ/2021/03/11/Vue%20router/index.html">
+<meta property="og:site_name">
+<meta property="og:description" content="1、Vue RouterVue.js 官方的路由管理器。路由就是 SPA（single page application 单页应用）的路径管理器，单页面应用的思路是一个 index.html 里面有一个容器，在用户进行交互的时候，并不会重新加载某个界面，而是只选择把某个视图更新到容器中去显示。 2、路由模式 hash 模式 vue-router 默认 hash 模式 —— 使用 URL 的 has">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-03-11T08:06:54.161Z">
+<meta property="article:modified_time" content="2021-03-11T08:06:54.161Z">
+<meta property="article:author" content="GENGZHI">
+<meta property="article:tag" content="框架">
+<meta property="article:tag" content="Vue">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://github.com/Straight-GZ/2021/03/11/Vue%20router/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>Vue Router | </title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="null" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title"></h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags" rel="section">标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives" rel="section">归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-5"><a class="nav-link" href="#1%E3%80%81Vue-Router"><span class="nav-text">1、Vue Router</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2%E3%80%81%E8%B7%AF%E7%94%B1%E6%A8%A1%E5%BC%8F"><span class="nav-text">2、路由模式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3%E3%80%81%E9%A1%B5%E9%9D%A2%E8%B7%B3%E8%BD%AC"><span class="nav-text">3、页面跳转</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4%E3%80%81%E5%AF%BC%E8%88%AA%E5%AE%88%E5%8D%AB"><span class="nav-text">4、导航守卫</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="GENGZHI"
+      src="https://sf3-ttcdn-tos.pstatp.com/img/user-avatar/2a6595de8f44b1a5709798149c05b86c~300x300.image">
+  <p class="site-author-name" itemprop="name">GENGZHI</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+        
+          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Straight-GZ/2021/03/11/Vue%20router/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://sf3-ttcdn-tos.pstatp.com/img/user-avatar/2a6595de8f44b1a5709798149c05b86c~300x300.image">
+      <meta itemprop="name" content="GENGZHI">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Vue Router
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-03-11 16:06:54" itemprop="dateCreated datePublished" datetime="2021-03-11T16:06:54+08:00">2021-03-11</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h5 id="1、Vue-Router"><a href="#1、Vue-Router" class="headerlink" title="1、Vue Router"></a>1、Vue Router</h5><p>Vue.js 官方的路由管理器。路由就是 SPA（single page application 单页应用）的路径管理器，单页面应用的思路是一个 index.html 里面有一个容器，在用户进行交互的时候，并不会重新加载某个界面，而是只选择把某个视图更新到容器中去显示。</p>
+<h5 id="2、路由模式"><a href="#2、路由模式" class="headerlink" title="2、路由模式"></a>2、路由模式</h5><ul>
+<li><p>hash 模式</p>
+<p>vue-router 默认 hash 模式 —— 使用 URL 的 hash 来模拟一个完整的 URL，当 URL 改变时，页面不会重新加载。# 是 url 的一个锚点，记载了网页中的位置，Hash 模式通过锚点值的改变，根据不同的值，渲染指定 DOM 位置的不同数据。<br>hash 模式的原理是 onhashchange 事件(监测 hash 值变化)，可以在 window 对象上监听这个事件。</p>
+</li>
+</ul>
+<ul>
+<li><p>history 模式</p>
+<p>当你使用 history 模式时，URL 就像正常的 url，需要后台配置支持</p>
+</li>
+</ul>
+<h5 id="3、页面跳转"><a href="#3、页面跳转" class="headerlink" title="3、页面跳转"></a>3、页面跳转</h5><ul>
+<li><p>声明式：以标签的形式声明为一个跳转的标签</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;简单用法</span><br><span class="line">&lt;router-link to&#x3D;&quot;&#x2F;&quot;&gt;Home&lt;&#x2F;router-link&gt;</span><br><span class="line">&#x2F;&#x2F;传递参数</span><br><span class="line">&lt;router-link :to&#x3D;&quot;&#123;name:xxx,params:&#123;key:value&#125;&#125;&quot;&gt;&lt;&#x2F;router-link&gt;</span><br><span class="line">&#x2F;&#x2F;url 传值（index.js设置路由）</span><br><span class="line">&#123;</span><br><span class="line">  path:&#39;&#x2F;user&#x2F;:id&#x2F;&#39;, &#x2F;&#x2F;id就是传递的参数</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F;获取参数</span><br><span class="line">$route.params.key</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;使用name匹配路由，使用query来传递参数</span><br><span class="line">&lt;router-link :to&#x3D;&quot;&#123; name:&#39;xxx&#39;,query: &#123; key:value&#125;&#125;&quot; &gt;跳转Query&lt;&#x2F;router-link&gt;</span><br><span class="line">&#x2F;&#x2F;获取参数</span><br><span class="line">this.$route.query.queryId</span><br></pre></td></tr></table></figure>
+<p><strong>param 和 query 的区别</strong></p>
+<ul>
+<li>使用 params 传参只能用 name 来引入路由，即 push 里面只能是 name:’xxx’,不能是 path:’/xxx’,因为 params 只能用 name 来引入路由，如果这里写成了 path，接收参数页面会是 undefined。</li>
+<li>query name 和 path 都支持。query，url 会加上参数信息，而 param url 并不会携带参数信息。</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>编程式</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; 不带参数</span><br><span class="line">this.$router.push(&#123;name:&#39;xxx&#39;&#125;)</span><br><span class="line">&#x2F;&#x2F; 带参数 params</span><br><span class="line">this.$router.push(&#123;name:&#39;xxx&#39;,params:&#123;key:value&#125;&#125;)</span><br><span class="line">&#x2F;&#x2F;query</span><br><span class="line">this.$router.push(&#123;name:&#39;xxx&#39;,query:&#123;key:value&#125;&#125;)</span><br><span class="line"></span><br><span class="line">this.$router.go(-1)&#x2F;&#x2F;跳转到上一次浏览的页面</span><br><span class="line">this.$router.replace(&#39;&#x2F;menu&#39;)&#x2F;&#x2F;指定跳转的地址</span><br><span class="line">this.$router.replace(&#123;name:&#39;menuLink&#39;&#125;)&#x2F;&#x2F;指定跳转路由的名字下</span><br></pre></td></tr></table></figure>
+<p><strong>push 和 replace 的区别：</strong></p>
+<ul>
+<li>使用 push 方法的跳转会向 history 栈添加一个新的记录，当我们点击浏览器的返回按钮时可以看到之前的页面。也就是说是支持后退的。</li>
+</ul>
+<ul>
+<li>使用 replace 方法不会向 history 添加新记录，而是替换掉当前的 history 记录，即当 replace 跳转到的网页后，’后退’ 按钮不能查看之前的页面。</li>
+</ul>
+</li>
+</ul>
+<h5 id="4、导航守卫"><a href="#4、导航守卫" class="headerlink" title="4、导航守卫"></a>4、导航守卫</h5><ol>
+<li><p>全局前置守卫</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">const router &#x3D; new VueRouter(&#123; ... &#125;)</span><br><span class="line">router.beforeEach((to, from, next) &#x3D;&gt; &#123;</span><br><span class="line">...</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>参数</p>
+</li>
+</ol>
+<ul>
+<li><p>to 即将要进入的目标 路由对象</p>
+</li>
+<li><p>from 当前导航正要离开的路由</p>
+</li>
+<li><p>next 要执行的操作</p>
+<ul>
+<li>next(): 进行管道中的下一个钩子（放行）。</li>
+<li>next(false): 中断当前的导航。</li>
+<li>next(‘/‘) 或者 next({ path: ‘/‘ }):跳转到一个不同的地址。</li>
+<li>next(error): 如果传入 next 的参数是一个 Error 实例，则导航会被终止且该错误会被传递给 router.onError() 注册过的回调。</li>
+</ul>
+</li>
+</ul>
+<ol start="2">
+<li><p>全局解析守卫</p>
+<p> router.beforeEach 类似，区别是在导航被确认之前，同时在所有组件内守卫和异步路由组件被解析之后，解析守卫就被调用</p>
+</li>
+<li><p>全局后置钩子</p>
+<p> 你也可以注册全局后置钩子，然而和守卫不同的是，这些钩子不会接受 next 函数也不会改变导航本身：</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">router.afterEach((to, from) &#x3D;&gt; &#123;</span><br><span class="line">&#x2F;&#x2F; ...</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></li>
+<li><p>路由独享的守卫<br> 在路由配置上直接定义 beforeEnter 守卫：<br> 与全局前置守卫的方法参数是一样的。</p>
+ <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">const router &#x3D; new VueRouter(&#123;</span><br><span class="line">  routes: [</span><br><span class="line">    &#123;</span><br><span class="line">      path: &#39;&#x2F;foo&#39;,</span><br><span class="line">      component: Foo,</span><br><span class="line">      beforeEnter: (to, from, next) &#x3D;&gt; &#123;</span><br><span class="line">        &#x2F;&#x2F; ...</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></li>
+</ol>
+<ul>
+<li><p>组件内的守卫</p>
+<ul>
+<li>beforeRouteEnter</li>
+</ul>
+<ul>
+<li>beforeRouteUpdate</li>
+<li>beforeRouteLeave</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">  const Foo &#x3D; &#123;</span><br><span class="line">  template: &#96;...&#96;,</span><br><span class="line">  beforeRouteEnter (to, from, next) &#123;</span><br><span class="line">    &#x2F;&#x2F; 在渲染该组件的对应路由被 confirm 前调用</span><br><span class="line">    &#x2F;&#x2F; 不！能！获取组件实例 &#96;this&#96;</span><br><span class="line">    &#x2F;&#x2F; 因为当守卫执行前，组件实例还没被创建</span><br><span class="line">  &#125;,</span><br><span class="line">  beforeRouteUpdate (to, from, next) &#123;</span><br><span class="line">    &#x2F;&#x2F; 在当前路由改变，但是该组件被复用时调用</span><br><span class="line">    &#x2F;&#x2F; 举例来说，对于一个带有动态参数的路径 &#x2F;foo&#x2F;:id，在 &#x2F;foo&#x2F;1 和 &#x2F;foo&#x2F;2 之间跳转的时候，</span><br><span class="line">    &#x2F;&#x2F; 由于会渲染同样的 Foo 组件，因此组件实例会被复用。而这个钩子就会在这个情况下被调用。</span><br><span class="line">    &#x2F;&#x2F; 可以访问组件实例 &#96;this&#96;</span><br><span class="line">  &#125;,</span><br><span class="line">  beforeRouteLeave (to, from, next) &#123;</span><br><span class="line">    &#x2F;&#x2F; 导航离开该组件的对应路由时调用</span><br><span class="line">    &#x2F;&#x2F; 可以访问组件实例 &#96;this&#96;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>beforeRouteEnter 守卫 不能 访问 this,可以通过传一个回调给 next 来访问组件实例。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">beforeRouteEnter (to, from, next) &#123;</span><br><span class="line">  next(vm &#x3D;&gt; &#123;</span><br><span class="line">  &#x2F;&#x2F; 通过 &#96;vm&#96; 访问组件实例</span><br><span class="line">&#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>完整的导航解析流程</p>
+<p><a target="_blank" rel="noopener" href="https://router.vuejs.org/zh/guide/advanced/navigation-guards.html#%E7%BB%84%E4%BB%B6%E5%86%85%E7%9A%84%E5%AE%88%E5%8D%AB">官方文档</a></p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E6%A1%86%E6%9E%B6/" rel="tag"># 框架</a>
+              <a href="/tags/Vue/" rel="tag"># Vue</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/03/11/Vuex/" rel="prev" title="Vuex的基本用法">
+                  <i class="fa fa-chevron-left"></i> Vuex的基本用法
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">GENGZHI</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

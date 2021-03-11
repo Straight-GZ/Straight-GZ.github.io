@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/1.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/1.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/1.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"github.com","root":"/","images":"/images","scheme":"Mist","version":"8.2.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+<meta name="description" content="1、Cookie 概述： HTTP Cookie（也叫 Web Cookie 或浏览器 Cookie）是服务器发送到用户浏览器并保存在本地的一小块数据，它会在浏览器下次向同一服务器再发起请求时被携带并发送到服务器上。通常，它用于告知服务端两个请求是否来自同一浏览器，如保持用户的登录状态。通俗的说，Cookie 是服务器下发给浏览器的一段字符串浏览器必须保存这个 Cookie(除非用户删除)之后发起">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Cookie和Session">
+<meta property="og:url" content="https://github.com/Straight-GZ/2021/03/09/Cookie%E5%92%8CSession/index.html">
+<meta property="og:site_name">
+<meta property="og:description" content="1、Cookie 概述： HTTP Cookie（也叫 Web Cookie 或浏览器 Cookie）是服务器发送到用户浏览器并保存在本地的一小块数据，它会在浏览器下次向同一服务器再发起请求时被携带并发送到服务器上。通常，它用于告知服务端两个请求是否来自同一浏览器，如保持用户的登录状态。通俗的说，Cookie 是服务器下发给浏览器的一段字符串浏览器必须保存这个 Cookie(除非用户删除)之后发起">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-03-09T02:48:53.843Z">
+<meta property="article:modified_time" content="2021-03-09T02:48:53.843Z">
+<meta property="article:author" content="GENGZHI">
+<meta property="article:tag" content="HTTP">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://github.com/Straight-GZ/2021/03/09/Cookie%E5%92%8CSession/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>Cookie和Session | </title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="null" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title"></h1>
+      <i class="logo-line"></i>
+    </a>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tags"><a href="/tags" rel="section">标签</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives" rel="section">归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1%E3%80%81Cookie"><span class="nav-text">1、Cookie</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2%E3%80%81Session"><span class="nav-text">2、Session</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#3%E3%80%81%E4%B8%A4%E8%80%85%E5%8C%BA%E5%88%AB"><span class="nav-text">3、两者区别</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Cookie-V-S-LocalStorage-V-S-SessionStorage-V-S-Session"><span class="nav-text">Cookie V.S. LocalStorage V.S. SessionStorage V.S. Session</span></a></li></ol></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="GENGZHI"
+      src="https://sf3-ttcdn-tos.pstatp.com/img/user-avatar/2a6595de8f44b1a5709798149c05b86c~300x300.image">
+  <p class="site-author-name" itemprop="name">GENGZHI</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+        
+          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags">
+          
+        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Straight-GZ/2021/03/09/Cookie%E5%92%8CSession/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://sf3-ttcdn-tos.pstatp.com/img/user-avatar/2a6595de8f44b1a5709798149c05b86c~300x300.image">
+      <meta itemprop="name" content="GENGZHI">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          Cookie和Session
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-03-09 10:48:53" itemprop="dateCreated datePublished" datetime="2021-03-09T10:48:53+08:00">2021-03-09</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h3 id="1、Cookie"><a href="#1、Cookie" class="headerlink" title="1、Cookie"></a>1、Cookie</h3><ul>
+<li><p>概述：</p>
+<p>HTTP Cookie（也叫 Web Cookie 或浏览器 Cookie）是服务器发送到用户浏览器并保存在本地的一小块数据，它会在浏览器下次向同一服务器再发起请求时被携带并发送到服务器上。通常，它用于告知服务端两个请求是否来自同一浏览器，如保持用户的登录状态。<br>通俗的说，Cookie 是服务器下发给浏览器的一段字符串<br>浏览器必须保存这个 Cookie(除非用户删除)<br>之后发起相同二级域名请求，浏览器必须附上 Cookie<a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Cookies">MDN</a></p>
+<a id="more"></a>
+</li>
+</ul>
+<ul>
+<li>创建 Cookie<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">Set-Cookie: &lt;cookie 名&gt;&#x3D;&lt;cookie 值&gt;</span><br><span class="line">&#x2F;&#x2F;例</span><br><span class="line">response.setHeader(&quot;Set-Cookie&quot;, &#96;session_id&#x3D;$&#123;random&#125;;HttpOnly&#96;);</span><br></pre></td></tr></table></figure>
+<h3 id="2、Session"><a href="#2、Session" class="headerlink" title="2、Session"></a>2、Session</h3></li>
+</ul>
+<p>session 数据放在服务器上,一般由 cookie 保存 session 的 id，保存在 Cookie 里的 session id 是独一无二的随机生成的，服务器通过 Cookie 保存的 session id 获取数据</p>
+<h3 id="3、两者区别"><a href="#3、两者区别" class="headerlink" title="3、两者区别"></a>3、两者区别</h3><ol>
+<li><p>存储位置：cookie 数据存放在客户的浏览器上，session 数据放在服务器上。</p>
+</li>
+<li><p>安全性：cookie 不是很安全，别人可以分析存放在本地的 COOKIE 并进行篡改</p>
+</li>
+<li><p>限制：单个 cookie 保存的数据不能超过 4K，很多浏览器都限制一个站点最多保存 20 个 cookie。</p>
+</li>
+</ol>
+<p>简单实现</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">if (path &#x3D;&#x3D;&#x3D; &quot;&#x2F;sign_in&quot; &amp;&amp; method &#x3D;&#x3D;&#x3D; &quot;POST&quot;) &#123;</span><br><span class="line">  const array &#x3D; [];</span><br><span class="line">  const users &#x3D; JSON.parse(fs.readFileSync(&quot;.&#x2F;db&#x2F;users.json&quot;).toString());</span><br><span class="line">  response.setHeader(&quot;Content-Type&quot;, &quot;text&#x2F;html,charset&#x3D;UTF-8&quot;);</span><br><span class="line">  request.on(&quot;data&quot;, (chunk) &#x3D;&gt; &#123;</span><br><span class="line">    array.push(chunk);</span><br><span class="line">  &#125;);</span><br><span class="line">  request.on(&quot;end&quot;, () &#x3D;&gt; &#123;</span><br><span class="line">    const string &#x3D; Buffer.concat(array).toString();</span><br><span class="line">    const obj &#x3D; JSON.parse(string);</span><br><span class="line">    const user &#x3D; users.find(</span><br><span class="line">      (user) &#x3D;&gt; user.name &#x3D;&#x3D;&#x3D; obj.name &amp;&amp; user.password &#x3D;&#x3D;&#x3D; obj.password</span><br><span class="line">    );</span><br><span class="line">    if (user &#x3D;&#x3D;&#x3D; undefined) &#123;</span><br><span class="line">      response.statusCode &#x3D; 400;</span><br><span class="line">      response.setHeader(&quot;Content-Type&quot;, &quot;text&#x2F;json;charset&#x3D;utf-8&quot;);</span><br><span class="line">      response.end();</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      response.statusCode &#x3D; 200;</span><br><span class="line">      const random &#x3D; Math.random();</span><br><span class="line">      session[random] &#x3D; &#123; user_id: user.id &#125;;</span><br><span class="line">      fs.writeFileSync(&quot;.&#x2F;session.json&quot;, JSON.stringify(session));</span><br><span class="line">      response.setHeader(&quot;Set-Cookie&quot;, &#96;session_id&#x3D;$&#123;random&#125;;HttpOnly&#96;);</span><br><span class="line">      response.end();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125; else if (path &#x3D;&#x3D;&#x3D; &quot;&#x2F;home.html&quot;) &#123;</span><br><span class="line">  const cookie &#x3D; request.headers[&quot;cookie&quot;];</span><br><span class="line">  let sessionId;</span><br><span class="line"></span><br><span class="line">  try &#123;</span><br><span class="line">    sessionId &#x3D; cookie</span><br><span class="line">      .split(&quot;;&quot;)</span><br><span class="line">      .filter((s) &#x3D;&gt; s.indexOf(&quot;session_id&#x3D;&quot;) &gt;&#x3D; 0)[0]</span><br><span class="line">      .split(&quot;&#x3D;&quot;)[1];</span><br><span class="line">    console.log(sessionId);</span><br><span class="line">  &#125; catch (error) &#123;&#125;</span><br><span class="line">  if (sessionId &amp;&amp; session[sessionId]) &#123;</span><br><span class="line">    const userId &#x3D; session[sessionId].user_id;</span><br><span class="line">    console.log(userId);</span><br><span class="line">    const homeHtml &#x3D; fs.readFileSync(&quot;.&#x2F;public&#x2F;home.html&quot;).toString();</span><br><span class="line">    const users &#x3D; JSON.parse(fs.readFileSync(&quot;.&#x2F;db&#x2F;users.json&quot;).toString());</span><br><span class="line">    const user &#x3D; users.find((user) &#x3D;&gt; user.id &#x3D;&#x3D;&#x3D; userId);</span><br><span class="line">    let string;</span><br><span class="line">    if (user) &#123;</span><br><span class="line">      string &#x3D; homeHtml</span><br><span class="line">        .replace(&quot;&#123;&#123;loginStatus&#125;&#125;&quot;, &quot;已登录&quot;)</span><br><span class="line">        .replace(&quot;&#123;&#123;userName&#125;&#125;&quot;, user.name);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      string &#x3D; homeHtml</span><br><span class="line">        .replace(&quot;&#123;&#123;loginStatus&#125;&#125;&quot;, &quot;未登录&quot;)</span><br><span class="line">        .replace(&quot;&#123;&#123;userName&#125;&#125;&quot;, &quot;&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    response.write(string);</span><br><span class="line">    response.end();</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    const homeHtml &#x3D; fs.readFileSync(&quot;.&#x2F;public&#x2F;home.html&quot;).toString();</span><br><span class="line">    const string &#x3D; homeHtml</span><br><span class="line">      .replace(&quot;&#123;&#123;loginStatus&#125;&#125;&quot;, &quot;未登录&quot;)</span><br><span class="line">      .replace(&quot;&#123;&#123;userName&#125;&#125;&quot;, &quot;&quot;);</span><br><span class="line">    response.write(string);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Cookie-V-S-LocalStorage-V-S-SessionStorage-V-S-Session"><a href="#Cookie-V-S-LocalStorage-V-S-SessionStorage-V-S-Session" class="headerlink" title="Cookie V.S. LocalStorage V.S. SessionStorage V.S. Session"></a>Cookie V.S. LocalStorage V.S. SessionStorage V.S. Session</h4><ul>
+<li><p>Cookie V.S. LocalStorage</p>
+<p>主要区别是 Cookie 会被发送到服务器，而 LocalStorage 不会<br>Cookie 一般最大 4k，LocalStorage 可以用 5Mb 甚至 10Mb（各浏览器不同）</p>
+</li>
+</ul>
+<ul>
+<li><p>LocalStorage V.S. SessionStorage</p>
+<p>LocalStorage 一般不会自动过期（除非用户手动清除），而 SessionStorage 在回话结束时过期（如关闭浏览器）</p>
+</li>
+<li><p>Cookie V.S. Session</p>
+<p>Cookie 存在浏览器的文件里，Session 存在服务器的文件里<br>Session 是基于 Cookie 实现的，具体做法就是把 SessionID 存在 Cookie 里</p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/HTTP/" rel="tag"># HTTP</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/03/09/%E5%B0%81%E8%A3%85DOM/" rel="prev" title="封装DOM">
+                  <i class="fa fa-chevron-left"></i> 封装DOM
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/03/09/ajax/" rel="next" title="跨域 CORS和JSON">
+                  跨域 CORS和JSON <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">GENGZHI</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
+  </div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
