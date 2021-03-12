@@ -24,9 +24,9 @@
     var CONFIG = {"hostname":"github.com","root":"/","images":"/images","scheme":"Mist","version":"8.2.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
   </script>
 <meta property="og:type" content="website">
-<meta property="og:title">
+<meta property="og:title" content="耿直">
 <meta property="og:url" content="https://github.com/Straight-GZ/index.html">
-<meta property="og:site_name">
+<meta property="og:site_name" content="耿直">
 <meta property="og:locale" content="zh_CN">
 <meta property="article:author" content="GENGZHI">
 <meta name="twitter:card" content="summary">
@@ -44,7 +44,7 @@
     lang   : 'zh-CN'
   };
 </script>
-<title></title>
+<title>耿直</title>
   
 
 
@@ -85,7 +85,7 @@
   </style>
 </noscript>
 
-<link rel="alternate" href="/atom.xml" title="null" type="application/atom+xml">
+<link rel="alternate" href="/atom.xml" title="耿直" type="application/atom+xml">
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
@@ -106,9 +106,10 @@
 
     <a href="/" class="brand" rel="start">
       <i class="logo-line"></i>
-      <h1 class="site-title"></h1>
+      <h1 class="site-title">耿直</h1>
       <i class="logo-line"></i>
     </a>
+      <p class="site-subtitle" itemprop="description">111</p>
   </div>
 
   <div class="site-nav-right">
@@ -122,8 +123,9 @@
 <nav class="site-nav">
   <ul class="main-menu menu">
         <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
-        <li class="menu-item menu-item-tags"><a href="/tags" rel="section">标签</a></li>
-        <li class="menu-item menu-item-archives"><a href="/archives" rel="section">归档</a></li>
+        <li class="menu-item menu-item-tag"><a href="/tags" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-project"><a href="/projects" rel="section"><i class="fa fa-th fa-fw"></i>项目</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives" rel="section"><i class="fas fa-archive fa-fw"></i>归档</a></li>
   </ul>
 </nav>
 
@@ -169,13 +171,12 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives">
         
-          <span class="site-state-item-count">23</span>
+          <span class="site-state-item-count">25</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
-            <a href="/tags">
-          
+            <a href="/tags/">
         <span class="site-state-item-count">17</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
@@ -214,6 +215,229 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Straight-GZ/2021/03/12/class/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://sf3-ttcdn-tos.pstatp.com/img/user-avatar/2a6595de8f44b1a5709798149c05b86c~300x300.image">
+      <meta itemprop="name" content="GENGZHI">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="耿直">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/03/12/class/" class="post-title-link" itemprop="url">React 基本用法</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-03-12 19:19:40" itemprop="dateCreated datePublished" datetime="2021-03-12T19:19:40+08:00">2021-03-12</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">class Person&#123;</span><br><span class="line">  constructor()&#123;</span><br><span class="line">    this.n&#x3D;()&#123;&#125;   &#x2F;&#x2F;方法在对象上</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">class Person&#123;</span><br><span class="line">  n&#x3D;()&#x3D;&gt;&#123;&#125;  &#x2F;&#x2F;new的时候也会出现在对象上</span><br><span class="line">  n()&#123;&#125; &#x2F;&#x2F;new的时候会出现在原型上</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Straight-GZ/2021/03/12/%E9%97%AD%E5%8C%85%E5%92%8C%E7%AB%8B%E5%8D%B3%E6%89%A7%E8%A1%8C%E5%87%BD%E6%95%B0%20copy/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://sf3-ttcdn-tos.pstatp.com/img/user-avatar/2a6595de8f44b1a5709798149c05b86c~300x300.image">
+      <meta itemprop="name" content="GENGZHI">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="耿直">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/03/12/%E9%97%AD%E5%8C%85%E5%92%8C%E7%AB%8B%E5%8D%B3%E6%89%A7%E8%A1%8C%E5%87%BD%E6%95%B0%20copy/" class="post-title-link" itemprop="url">React 基本用法</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-03-12 15:30:23" itemprop="dateCreated datePublished" datetime="2021-03-12T15:30:23+08:00">2021-03-12</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="一、createElement-和-JSX"><a href="#一、createElement-和-JSX" class="headerlink" title="一、createElement 和 JSX"></a>一、createElement 和 JSX</h3><ol>
+<li>createElement</li>
+</ol>
+<p>创建并返回指定类型的新 React 元素。其中的类型参数既可以是标签名字符串（如 ‘div’ 或 ‘span’），也可以是 React 组件 类型 （class 组件或函数组件）,代码编写复杂</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">const element &#x3D; React.createElement(</span><br><span class="line">  &#39;h1&#39;,</span><br><span class="line">  &#123;className: &#39;greeting&#39;&#125;,</span><br><span class="line">  &#39;Hello, world!&#39;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li><p>JSX<br>下面代码会被编译为和上面相同的代码，完全等价</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">const element &#x3D; (</span><br><span class="line">&lt;h1 className&#x3D;&quot;greeting&quot;&gt;</span><br><span class="line">    Hello, world!</span><br><span class="line">&lt;&#x2F;h1&gt;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>注意：</p>
+<ul>
+<li>在 JSX 中给元素添加类, 需要使用 className 代替 class</li>
+<li>JSX 中可以直接使用 {} 中间写 JS 代码</li></ul></li></ol>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/03/12/%E9%97%AD%E5%8C%85%E5%92%8C%E7%AB%8B%E5%8D%B3%E6%89%A7%E8%A1%8C%E5%87%BD%E6%95%B0%20copy/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Straight-GZ/2021/03/11/Vue3/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://sf3-ttcdn-tos.pstatp.com/img/user-avatar/2a6595de8f44b1a5709798149c05b86c~300x300.image">
+      <meta itemprop="name" content="GENGZHI">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="耿直">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/03/11/Vue3/" class="post-title-link" itemprop="url">Vue3的一些新特性和一些问题</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-03-11 23:18:15" itemprop="dateCreated datePublished" datetime="2021-03-11T23:18:15+08:00">2021-03-11</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <p>1、Vue3 和 Vue2 的一些区别</p>
+<ul>
+<li>创建实例</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; Vue3 新方法 createApp 其作用是构建实例</span><br><span class="line">import &#123; createApp &#125; from &#39;vue&#39;</span><br><span class="line">const app &#x3D; createApp(&#123;&#125;)</span><br><span class="line">&#x2F;&#x2F; Vue2 使用的是 new Vue() 构建实例</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Vue3 支持碎片(Fragments)，就是说在组件可以拥有多个根节点</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/03/11/Vue3/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
     <link itemprop="mainEntityOfPage" href="https://github.com/Straight-GZ/2021/03/11/Vue%20router/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -223,7 +447,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="">
+      <meta itemprop="name" content="耿直">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -294,7 +518,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="">
+      <meta itemprop="name" content="耿直">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -369,7 +593,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="">
+      <meta itemprop="name" content="耿直">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -477,7 +701,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="">
+      <meta itemprop="name" content="耿直">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -548,7 +772,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="">
+      <meta itemprop="name" content="耿直">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -619,7 +843,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="">
+      <meta itemprop="name" content="耿直">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -648,57 +872,14 @@
     
     <div class="post-body" itemprop="articleBody">
           <h3 id="一、异步与同步"><a href="#一、异步与同步" class="headerlink" title="一、异步与同步"></a>一、异步与同步</h3><p>同步:一定要当前任务执行完，才会执行下一个任务。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">const fn1&#x3D;()&#x3D;&gt;&#123;</span><br><span class="line">  return &#39;结果&#39;</span><br><span class="line">&#125;</span><br><span class="line">const fn2&#x3D;()&#x3D;&gt;&#123;&#125;</span><br><span class="line">let x&#x3D;fn1()  &#x2F;&#x2F;拿到fn1的返回值之后才会执行下一句</span><br><span class="line">fn2()</span><br></pre></td></tr></table></figure>
-<p>异步：不等任务执行完，就执行下一个任务</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">function fn1 &#x3D; function(callback)&#123;</span><br><span class="line">  const result &#x3D; setTimeout(function()&#123;</span><br><span class="line">    callback(&#39;结果&#39;)</span><br><span class="line">  &#125;, 0)</span><br><span class="line">  return result</span><br><span class="line">&#125;</span><br><span class="line">fn1(function callback(x)&#123;</span><br><span class="line">  console.log(x)  &#x2F;&#x2F;别的代码执行完，再回来执行</span><br><span class="line">&#125;)</span><br><span class="line">fn2() &#x2F;&#x2F;先执行这一句</span><br></pre></td></tr></table></figure>
-<h3 id="二、Promise"><a href="#二、Promise" class="headerlink" title="二、Promise"></a>二、Promise</h3><p>Promise 是异步编程的一种方案。从语法上讲，Promise 是一个对象，它可以获取异步操作的消息。</p>
-<h4 id="1、-创建-Promise"><a href="#1、-创建-Promise" class="headerlink" title="1、 创建 Promise"></a>1、 创建 Promise</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">const promise &#x3D; new Promise((resolve, reject) &#x3D;&gt; &#123;</span><br><span class="line">  if()&#123;</span><br><span class="line">    resolve(someValue)</span><br><span class="line">    &#x2F;&#x2F; fulfilled 已兑现: 意味着操作成功完成。</span><br><span class="line">  &#125; else&#123;</span><br><span class="line">    rejected()</span><br><span class="line">    &#x2F;&#x2F;reject(&quot;failure reason&quot;) 已拒绝: 意味着操作失败</span><br><span class="line">  &#125;</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<ul>
-<li>构造函数接受一个函数作为参数</li>
-</ul>
-<ul>
-<li>调用构造函数得到实例 promise 的同时，作为参数的函数会立即执行</li>
-<li>参数函数接受两个回调函数参数 resolve 和 reject</li>
-</ul>
-<ul>
-<li>在参数函数被执行的过程中，如果在其内部调用 resolve，会将 promise 的状态变成 fulfilled，或者调用 reject，会将 promise 的状态变成 rejected</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">promise.then(()&#x3D;&gt;&#123;</span><br><span class="line">  &#x2F;&#x2F;  resolve，执行这里</span><br><span class="line">&#125;,()&#x3D;&gt;&#123;</span><br><span class="line">  &#x2F;&#x2F; reject 执行这里</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<p>待定状态（pending）的 Promise 对象要么会通过一个值被兑现（fulfilled），要么会通过一个原因（错误）被拒绝（rejected）。当这些情况之一发生时，我们用 promise 的 then 方法排列起来的相关处理程序就会被调用。</p>
-<h4 id="2、Promise-的作用"><a href="#2、Promise-的作用" class="headerlink" title="2、Promise 的作用"></a>2、Promise 的作用</h4><ul>
-<li>解决回调地狱的问题（避免了层层嵌套的回调函数）</li>
-<li>语法非常简洁。Promise 对象提供了简洁的 API，使得控制异步操作更加容易</li>
-</ul>
-<h4 id="3、Promise-的使用"><a href="#3、Promise-的使用" class="headerlink" title="3、Promise 的使用"></a>3、Promise 的使用</h4><ul>
-<li>new Promise：创建 Promise 实例</li>
-<li>.then 和 .catch 和 .finally<ul>
-<li><code>.then</code>:返回一个 Promise。它最多需要有两个参数：Promise 的成功和失败情况的回调函数。</li>
-<li>返回一个 Promise，并且处理拒绝的情况。(相当于只有一个参数的.then)</li>
-<li>finally() 方法返回一个 Promise。在 promise 结束时，无论结果是 fulfilled 或者是 rejected，都会执行指定的回调函数。这为在 Promise 是否成功完成后都需要执行的代码提供了一种方式。<br>这避免了同样的语句需要在 then()和 catch()中各写一次的情况。</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li><p>Promise.all/Promise.race/Promise.reject/Promise.resolve</p>
-<ul>
-<li><p>Promise.all() 方法接收一个 promise 的数组，并且只返回一个 Promise 实例，它的 resolve 回调会在所有的 Promise 的 resolve 都执行结束之后，才会调用，它的 reject 回调只要有任何一个 Promise 的 reject 被执行，就会被调用</p>
-</li>
-<li><p>Promise.race(),接受 Promise 数组，返回一个 promise，一旦某个 promise 解决或拒绝，返回的 promise 就会解决或拒绝。</p>
-</li>
-<li><p>Promise.reject(reason)返回一个带有拒绝原因的 Promise 对象。</p>
-</li>
-<li><p>Promise.resolve(value) 方法返回一个以给定值解析后的 Promise 对象,value 可以是带有.then 方法的对象，也可以是 Promise(将直接返回这个 Promise)</p>
-<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">const promise1&#x3D;Promise.resolve(1)</span><br><span class="line">const promise2&#x3D;Promise.resolve(promise1)</span><br><span class="line">promise1&#x3D;&#x3D;&#x3D;promise2 &#x2F;&#x2F;true</span><br><span class="line"></span><br></pre></td></tr></table></figure></code></pre>
-<p>接受带有.then 方法的对象</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;抛出错误之后resolve</span><br><span class="line">let x &#x3D; &#123; then: function(resolve) &#123;</span><br><span class="line">  throw new Error(&quot;错误&quot;);</span><br><span class="line">  resolve(&quot;Resolving&quot;);</span><br><span class="line">&#125;&#125;;</span><br><span class="line">let y &#x3D; Promise.resolve(x);</span><br><span class="line">y.then(function(v) &#123;</span><br><span class="line">    &#x2F;&#x2F;不会执行</span><br><span class="line">&#125;, function(e) &#123;</span><br><span class="line">  console.log(e);   &#x2F;&#x2F;打出错误</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;抛出错误之前 resolve</span><br><span class="line">let m &#x3D; &#123; then: function(resolve) &#123;</span><br><span class="line">  resolve(&quot;完成&quot;);</span><br><span class="line">  throw new Error(&quot;错误&quot;);</span><br><span class="line">&#125;&#125;;</span><br><span class="line"></span><br><span class="line">var n &#x3D; Promise.resolve(m);</span><br><span class="line">n.then(function(v) &#123;</span><br><span class="line">  console.log(v); &#x2F;&#x2F; 输出&quot;完成&quot;</span><br><span class="line">&#125;, function(e) &#123;</span><br><span class="line">  &#x2F;&#x2F; 不会被调用</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<h4 id="参考链接"><a href="#参考链接" class="headerlink" title="参考链接"></a>参考链接</h4></li>
-</ul>
-</li>
-</ul>
-<p><a target="_blank" rel="noopener" href="https://es6.ruanyifeng.com/#docs/promise">阮一峰 ECMAScript 6 入门</a></p>
-<p><a target="_blank" rel="noopener" href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Promise">MDN</a></p>
-
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/03/10/%E5%BC%82%E6%AD%A5%E5%92%8CPromise/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
       
     </div>
 
@@ -733,7 +914,7 @@
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="">
+      <meta itemprop="name" content="耿直">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
@@ -762,217 +943,6 @@
     
     <div class="post-body" itemprop="articleBody">
           
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://github.com/Straight-GZ/2021/03/10/jQuery/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://sf3-ttcdn-tos.pstatp.com/img/user-avatar/2a6595de8f44b1a5709798149c05b86c~300x300.image">
-      <meta itemprop="name" content="GENGZHI">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/03/10/jQuery/" class="post-title-link" itemprop="url">jQuery</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-03-10 15:19:19" itemprop="dateCreated datePublished" datetime="2021-03-10T15:19:19+08:00">2021-03-10</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>jQuery 是一个轻量级的 JavaScript 函数库。<br>它的基本设计思想和主要用法，就是”<strong>选择某个网页元素，然后对其进行某种操作</strong>“。<br><br></p>
-<h3 id="jQuery-如何获取元素"><a href="#jQuery-如何获取元素" class="headerlink" title="jQuery 如何获取元素"></a>jQuery 如何获取元素</h3><p>使用 jQuery 的第一步，往往就是将一个选择表达式，放进构造函数 jQuery()（简写为$），然后得到被选中的元素<br><br><br><strong>选择表达式</strong>：</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">$(document) &#x2F;&#x2F;选择整个文档对象</span><br><span class="line">$(&#39;#myId&#39;) &#x2F;&#x2F;选择ID为myId的网页元素</span><br><span class="line">$(&#39;div.myClass&#39;) &#x2F;&#x2F; 选择class为myClass的div元素</span><br><span class="line">$(&#39;a:first&#39;) &#x2F;&#x2F;选择网页中第一个a元素</span><br><span class="line">$(&#39;tr:odd&#39;) &#x2F;&#x2F;选择表格的奇数行</span><br><span class="line">$(&#39;#myForm :input&#39;) &#x2F;&#x2F; 选择表单中的input元素</span><br></pre></td></tr></table></figure>
-<p>对结果进行筛选</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$(&#39;div&#39;).has(&#39;p&#39;); &#x2F;&#x2F; 选择包含p元素的div元素</span><br><span class="line">$(&#39;div&#39;).not(&#39;.myClass&#39;); &#x2F;&#x2F;选择class不等于myClass的div元素</span><br><span class="line">$(&#39;div&#39;).filter(&#39;.myClass&#39;); &#x2F;&#x2F;选择class等于myClass的div元素</span><br></pre></td></tr></table></figure>
-<h3 id="jQuery-的链式操作"><a href="#jQuery-的链式操作" class="headerlink" title="jQuery 的链式操作"></a>jQuery 的链式操作</h3><p>选中网页元素以后，可以对它进行一系列操作，并且所有操作可以连接在一起，以链条的形式写出来</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$(&#39;div&#39;).find(&#39;h3&#39;).eq(2).html(&#39;Hello&#39;)</span><br></pre></td></tr></table></figure>
-<p>原理就是，每一步的 jQuery 操作，返回的都是一个 jQuery 对象<br><br><br>jQuery 提供 end()方法,返回上一次操作的结果</p>
-<h3 id="jQuery-如何创建元素"><a href="#jQuery-如何创建元素" class="headerlink" title="jQuery 如何创建元素"></a>jQuery 如何创建元素</h3><p>创建新元素只需要把新元素直接传入 jQuery 的构造函数</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">$(&#39;&lt;p&gt;Hello&lt;&#x2F;p&gt;&#39;);</span><br><span class="line">$(&#39;&lt;li class&#x3D;&quot;new&quot;&gt;new list item&lt;&#x2F;li&gt;&#39;);</span><br><span class="line">$(&#39;ul&#39;).append(&#39;&lt;li&gt;list item&lt;&#x2F;li&gt;&#39;);</span><br></pre></td></tr></table></figure>
-<h3 id="jQuery-移动元素"><a href="#jQuery-移动元素" class="headerlink" title="jQuery 移动元素"></a>jQuery 移动元素</h3><p>一个方法是直接移动该元素，另一个方法是移动其他元素，使得目标元素达到我们想要的位置。</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">$(&#39;div&#39;).insertAfter($(&#39;p&#39;));  &#x2F;&#x2F;把div元素移动p元素后面,返回div元素</span><br><span class="line">$(&#39;p&#39;).after($(&#39;div&#39;));  &#x2F;&#x2F;把p元素加到div元素前面，返回p元素</span><br></pre></td></tr></table></figure>
-<h3 id="jQuery-修改元素属性"><a href="#jQuery-修改元素属性" class="headerlink" title="jQuery 修改元素属性"></a>jQuery 修改元素属性</h3><p>jQuery attr() 方法用于获取或修改元素属性值</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$(&quot;#id&quot;).attr(&quot;href&quot;,&quot;http:&#x2F;&#x2F;www.xxx.com&quot;);</span><br><span class="line">$(&quot;#runoob&quot;).attr(&#123;</span><br><span class="line">     &quot;href&quot; : &quot;www.xxx.com&quot;,</span><br><span class="line">     &quot;title&quot; : &quot;jQuery&quot;</span><br><span class="line">&#125;); &#x2F;&#x2F;同时设置多个属性</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://github.com/Straight-GZ/2021/03/10/ceshi/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://sf3-ttcdn-tos.pstatp.com/img/user-avatar/2a6595de8f44b1a5709798149c05b86c~300x300.image">
-      <meta itemprop="name" content="GENGZHI">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/03/10/ceshi/" class="post-title-link" itemprop="url">未命名</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-03-10 13:39:08" itemprop="dateCreated datePublished" datetime="2021-03-10T13:39:08+08:00">2021-03-10</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>1111</p>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://github.com/Straight-GZ/2021/03/09/%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://sf3-ttcdn-tos.pstatp.com/img/user-avatar/2a6595de8f44b1a5709798149c05b86c~300x300.image">
-      <meta itemprop="name" content="GENGZHI">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/03/09/%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/" class="post-title-link" itemprop="url">常用命令行</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-03-09 10:48:54" itemprop="dateCreated datePublished" datetime="2021-03-09T10:48:54+08:00">2021-03-09</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p><img src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwww.linuxeden.com%2Fwp-content%2Fuploads%2F2017%2F07%2Fbgnu6ymb2jmqy5o01200.jpg&refer=http%3A%2F%2Fwww.linuxeden.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1617944609&t=0f849011a818a10c06e11636a6d92a48"></p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/03/09/%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
       
     </div>
 
@@ -1024,15 +994,9 @@
 
 
 <div class="copyright">
-  &copy; 
-  <span itemprop="copyrightYear">2021</span>
-  <span class="with-love">
-    <i class="fa fa-heart"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">GENGZHI</span>
+
+ 
 </div>
-  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.js.org/mist/" class="theme-link" rel="noopener" target="_blank">NexT.Mist</a> 强力驱动
-  </div>
 
     </div>
   </footer>

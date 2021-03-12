@@ -122,6 +122,169 @@
       </tags>
   </entry>
   <entry>
+    <title>Git</title>
+    <url>/2021/03/09/Git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
+    <content><![CDATA[<h2 id="1、git-本地仓库"><a href="#1、git-本地仓库" class="headerlink" title="1、git 本地仓库"></a>1、git 本地仓库</h2><p>git 就是一条命令</p>
+<p>六行配置</p>
+<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global user.name 你的英文名</span><br><span class="line">git config --global user.email 你的邮箱</span><br><span class="line">git config --global push.default simple</span><br><span class="line">git config --global core.quotepath <span class="literal">false</span></span><br><span class="line">git config --global core.editor <span class="string">&quot;code --wait&quot;</span></span><br><span class="line">git config --global core.autocrlf input</span><br></pre></td></tr></table></figure>
+ <a id="more"></a>
+
+<h3 id="1-让你代码有版本："><a href="#1-让你代码有版本：" class="headerlink" title="1.让你代码有版本："></a>1.让你代码有版本：</h3><p>git init :初始化（指定目录），创建 .git 目录</p>
+<p><strong>git add</strong> 路径:选择哪些变动是需要提交的</p>
+<p>.gitignore：描述哪些文件是不需要提交的</p>
+<p>git commit -m ：字符串：提交，说明理由 （字符串有空格，用引号）</p>
+<p><strong>git commit -v</strong>：回顾修改的内容，添加详细提交理由<strong>（推荐）</strong></p>
+<p>git reset –hard 提交号前六位：回到指定提交版本</p>
+<p>git log： 查看历史 git reflog：查看所有的历史</p>
+<h3 id="2-分支："><a href="#2-分支：" class="headerlink" title="2.分支："></a>2.分支：</h3><p>git branch ：基于当前 commit 创建分支，在哪个分支提交，就创建在哪个分支</p>
+<p>git checkout：切换分支</p>
+<p>git merge:合并分支</p>
+<p><strong>步骤</strong>：</p>
+<ol>
+<li><p>选择需要保留的分支 master</p>
+</li>
+<li><p>运行 git merge x（合并的分支）</p>
+</li>
+<li><p>冲突</p>
+<ul>
+<li><p>发现冲突：</p>
+<p>合并分支的时候<strong>conflict</strong>提示</p>
+<p>使用 git status -sb 查看冲突文件</p>
+</li>
+<li><p>解决冲突：</p>
+<p>依次打开文件</p>
+<p>搜素‘====’四个等于号</p>
+<p>选择要保留的代码，删除不用的代码</p>
+<p>删除’====‘’&lt;&lt;&lt;&lt;’’&gt;&gt;&gt;&gt;’标记</p>
+<p><strong>git add 对应文件</strong></p>
+<p>再次使用 git status -sb 解决下一个冲突文件</p>
+<p>直到没有冲突，运行<strong>git commit （不需要加选项）</strong></p>
+</li>
+</ul>
+</li>
+<li><p>合并完删除无用的分支 git branch -d x</p>
+</li>
+</ol>
+<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><ul>
+<li>git 目录就是本地仓库</li>
+<li>git add 处理的是文件变化，而不是文件，删除文件后，依然需要 git add 添加到提交区</li>
+<li>常用的命令：<strong>git add</strong> 和<strong>git commit -v</strong></li>
+</ul>
+<h2 id="2、git-远程仓库"><a href="#2、git-远程仓库" class="headerlink" title="2、git 远程仓库"></a>2、git 远程仓库</h2><h3 id="生成-ssh-key（帮助文档）："><a href="#生成-ssh-key（帮助文档）：" class="headerlink" title="生成 ssh key（帮助文档）："></a>生成 ssh key（<a href="https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent" title="https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent#">帮助文档</a>）：</h3><ul>
+<li>运行 ssh-keygen -t rsa -b 4096 -C +邮箱地址</li>
+<li>一直回车键到没有提示</li>
+<li>cat ~/.ssh/id_rsa.pub 得到公钥内容，复制内容</li>
+<li>打开 Github，在设置页面粘贴公钥内容</li>
+</ul>
+<h3 id="测试："><a href="#测试：" class="headerlink" title="测试："></a>测试：</h3><ul>
+<li>运行 ssh -T <a href="mailto:&#103;&#105;&#x74;&#x40;&#x67;&#x69;&#x74;&#104;&#117;&#98;&#46;&#x63;&#x6f;&#109;">&#103;&#105;&#x74;&#x40;&#x67;&#x69;&#x74;&#104;&#117;&#98;&#46;&#x63;&#x6f;&#109;</a></li>
+<li>询问 yes/no,回答 yes</li>
+</ul>
+<h3 id="上传代码："><a href="#上传代码：" class="headerlink" title="上传代码："></a>上传代码：</h3><ol>
+<li><p>新建 Github Repo，复制 ssh 地址</p>
+</li>
+<li><p>运行 git remote add origin git@xxxxx</p>
+<p>（在本地添加远程仓库地址，origin 为远程仓库默认名字）</p>
+</li>
+<li><p>git push -u origin master</p>
+</li>
+</ol>
+<ul>
+<li>推送本地 master 分支到远程 originmaster 分支</li>
+<li>提示应该 git pull…</li>
+<li>-u origin master 意思为设置上游分支，之后不用再设置，直接 git pull，git push</li>
+</ul>
+<p><strong>上传其它分支：</strong></p>
+<p>一：git push x:x</p>
+<p>二：git checkout x</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git push -u origin x</span><br></pre></td></tr></table></figure>
+<p><strong>上传到两个本地仓库</strong></p>
+<ul>
+<li>git remote add origin2 git@xxxxx</li>
+<li>git push -u origin master</li>
+</ul>
+<p><strong>git pull 冲突</strong>：查看合并分支冲突</p>
+<h3 id="下载代码："><a href="#下载代码：" class="headerlink" title="下载代码："></a>下载代码：</h3><ol>
+<li> git clone git@xxx</li>
+<li> 不同机器需要先上传新的 ssh key(一机一 key)</li>
+<li> <strong>cd 目标路径</strong></li>
+<li> 运行 git add/git commit/[git pull]/git push</li>
+</ol>
+<p>下载某个分支：先下载整个仓库，再切换分支</p>
+<p><strong>git clone</strong>：</p>
+<ul>
+<li><p>git clone git@?/xxx.git:会在当前目录下创建一个 xxx 目录，xxx/.git 是本地仓库，一般需要接 cd xxx 进入目录</p>
+</li>
+<li><p>git clone git@?/xxx.git yyy：会在本地新建一个 yyy 目录，cd yyy 进入目录</p>
+</li>
+<li><p>git clone git@?/xxx.git .:最后一个字符是点，使用当前目录容纳代码和.git，需要先新建一个目录，cd 进入目录</p>
+</li>
+</ul>
+<h3 id="总结：-1"><a href="#总结：-1" class="headerlink" title="总结："></a>总结：</h3><p>常用命令：git alone/git pull/git push</p>
+<p>远程仓库：本地仓库的备份，要先 commit 到本地仓库，然后 push 到远程仓库</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">无法下载部分代码，只能先clone整个仓库生成ssh key（[帮助文档](https:&#x2F;&#x2F;docs.github.com&#x2F;en&#x2F;free-pro-team@latest&#x2F;github&#x2F;authenticating-to-github&#x2F;generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent#)）：</span><br></pre></td></tr></table></figure>
+<ul>
+<li>运行 ssh-keygen -t rsa -b 4096 -C +邮箱地址</li>
+<li>一直回车键到没有提示</li>
+<li>cat ~/.ssh/id_rsa.pub 得到公钥内容，复制内容</li>
+<li>打开 Github，在设置页面粘贴公钥内容</li>
+</ul>
+<h3 id="测试：-1"><a href="#测试：-1" class="headerlink" title="测试："></a>测试：</h3><ul>
+<li>运行 ssh -T <a href="mailto:&#x67;&#x69;&#x74;&#64;&#103;&#x69;&#x74;&#x68;&#117;&#98;&#x2e;&#99;&#x6f;&#x6d;">&#x67;&#x69;&#x74;&#64;&#103;&#x69;&#x74;&#x68;&#117;&#98;&#x2e;&#99;&#x6f;&#x6d;</a></li>
+<li>询问 yes/no,回答 yes</li>
+</ul>
+<h3 id="上传代码：-1"><a href="#上传代码：-1" class="headerlink" title="上传代码："></a>上传代码：</h3><ol>
+<li><p>新建 Github Repo，复制 ssh 地址</p>
+</li>
+<li><p>运行 git remote add origin git@xxxxx</p>
+<p>（在本地添加远程仓库地址，origin 为远程仓库默认名字）</p>
+</li>
+<li><p>git push -u origin master</p>
+</li>
+</ol>
+<ul>
+<li>推送本地 master 分支到远程 originmaster 分支</li>
+<li>提示应该 git pull…，就运行 git pull!</li>
+<li>-u origin master 意思为设置上游分支，之后不用再设置，直接 git pull，git push</li>
+</ul>
+<p><strong>上传其它分支：</strong></p>
+<p>一：git push x:x</p>
+<p>二：git checkout x</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git push -u origin x</span><br></pre></td></tr></table></figure>
+<p><strong>上传到两个本地仓库</strong></p>
+<ul>
+<li>git remote add origin2 git@xxxxx</li>
+<li>git push -u origin master</li>
+</ul>
+<p><strong>git pull 冲突</strong>：查看合并分支冲突</p>
+<h3 id="下载代码：-1"><a href="#下载代码：-1" class="headerlink" title="下载代码："></a>下载代码：</h3><ol>
+<li> git clone git@xxx</li>
+<li> 不同机器需要先上传新的 ssh key(一机一 key)</li>
+<li> <strong>cd 目标路径</strong></li>
+<li> 运行 git add/git commit/[git pull]/git push</li>
+</ol>
+<p>下载某个分支：先下载整个仓库，再切换分支</p>
+<p><strong>git clone</strong>：</p>
+<ul>
+<li><p>git clone git@?/xxx.git:会在当前目录下创建一个 xxx 目录，xxx/.git 是本地仓库，一般需要接 cd xxx 进入目录</p>
+</li>
+<li><p>git clone git@?/xxx.git yyy：会在本地新建一个 yyy 目录，cd yyy 进入目录</p>
+</li>
+<li><p>git clone git@?/xxx.git .:最后一个字符是点，使用当前目录容纳代码和.git，需要先新建一个目录，cd 进入目录</p>
+</li>
+</ul>
+<h3 id="总结：-2"><a href="#总结：-2" class="headerlink" title="总结："></a>总结：</h3><p>常用命令：git alone/git pull/git push</p>
+<p>远程仓库：本地仓库的备份，要先 commit 到本地仓库，然后 push 到远程仓库</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">无法下载部分代码，只能先clone整个仓库</span><br></pre></td></tr></table></figure>
+<h2 id="3、git-高级操作"><a href="#3、git-高级操作" class="headerlink" title="3、git 高级操作"></a>3、git 高级操作</h2><p>bash alias 简化命令： ga=”git add” gc=”git commit -v” gl=”git pull” gp=”git push” gco=”git checkout” gst=”git status -sb”</p>
+<p>美化历史命令：git rebase -i xxx</p>
+]]></content>
+      <tags>
+        <tag>Git</tag>
+        <tag>笔记</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>简述CSS三种布局</title>
     <url>/2021/03/09/CSS%E5%B8%83%E5%B1%80/</url>
     <content><![CDATA[<h3 id="一、布局概述"><a href="#一、布局概述" class="headerlink" title="一、布局概述"></a>一、布局概述</h3><p>布局就是把页面分成一块一块，按左中右、上中下等排列。</p>
@@ -305,216 +468,6 @@
 ]]></content>
       <tags>
         <tag>HTTP</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Git</title>
-    <url>/2021/03/09/Git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
-    <content><![CDATA[<h2 id="1、git-本地仓库"><a href="#1、git-本地仓库" class="headerlink" title="1、git 本地仓库"></a>1、git 本地仓库</h2><p>git 就是一条命令</p>
-<p>六行配置</p>
-<figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global user.name 你的英文名</span><br><span class="line">git config --global user.email 你的邮箱</span><br><span class="line">git config --global push.default simple</span><br><span class="line">git config --global core.quotepath <span class="literal">false</span></span><br><span class="line">git config --global core.editor <span class="string">&quot;code --wait&quot;</span></span><br><span class="line">git config --global core.autocrlf input</span><br></pre></td></tr></table></figure>
- <a id="more"></a>
-
-<h3 id="1-让你代码有版本："><a href="#1-让你代码有版本：" class="headerlink" title="1.让你代码有版本："></a>1.让你代码有版本：</h3><p>git init :初始化（指定目录），创建 .git 目录</p>
-<p><strong>git add</strong> 路径:选择哪些变动是需要提交的</p>
-<p>.gitignore：描述哪些文件是不需要提交的</p>
-<p>git commit -m ：字符串：提交，说明理由 （字符串有空格，用引号）</p>
-<p><strong>git commit -v</strong>：回顾修改的内容，添加详细提交理由<strong>（推荐）</strong></p>
-<p>git reset –hard 提交号前六位：回到指定提交版本</p>
-<p>git log： 查看历史 git reflog：查看所有的历史</p>
-<h3 id="2-分支："><a href="#2-分支：" class="headerlink" title="2.分支："></a>2.分支：</h3><p>git branch ：基于当前 commit 创建分支，在哪个分支提交，就创建在哪个分支</p>
-<p>git checkout：切换分支</p>
-<p>git merge:合并分支</p>
-<p><strong>步骤</strong>：</p>
-<ol>
-<li><p>选择需要保留的分支 master</p>
-</li>
-<li><p>运行 git merge x（合并的分支）</p>
-</li>
-<li><p>冲突</p>
-<ul>
-<li><p>发现冲突：</p>
-<p>合并分支的时候<strong>conflict</strong>提示</p>
-<p>使用 git status -sb 查看冲突文件</p>
-</li>
-<li><p>解决冲突：</p>
-<p>依次打开文件</p>
-<p>搜素‘====’四个等于号</p>
-<p>选择要保留的代码，删除不用的代码</p>
-<p>删除’====‘’&lt;&lt;&lt;&lt;’’&gt;&gt;&gt;&gt;’标记</p>
-<p><strong>git add 对应文件</strong></p>
-<p>再次使用 git status -sb 解决下一个冲突文件</p>
-<p>直到没有冲突，运行<strong>git commit （不需要加选项）</strong></p>
-</li>
-</ul>
-</li>
-<li><p>合并完删除无用的分支 git branch -d x</p>
-</li>
-</ol>
-<h3 id="总结："><a href="#总结：" class="headerlink" title="总结："></a>总结：</h3><ul>
-<li>git 目录就是本地仓库</li>
-<li>git add 处理的是文件变化，而不是文件，删除文件后，依然需要 git add 添加到提交区</li>
-<li>常用的命令：<strong>git add</strong> 和<strong>git commit -v</strong></li>
-</ul>
-<h2 id="2、git-远程仓库"><a href="#2、git-远程仓库" class="headerlink" title="2、git 远程仓库"></a>2、git 远程仓库</h2><h3 id="生成-ssh-key（帮助文档）："><a href="#生成-ssh-key（帮助文档）：" class="headerlink" title="生成 ssh key（帮助文档）："></a>生成 ssh key（<a href="https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent" title="https://docs.github.com/en/free-pro-team@latest/github/authenticating-to-github/generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent#">帮助文档</a>）：</h3><ul>
-<li>运行 ssh-keygen -t rsa -b 4096 -C +邮箱地址</li>
-<li>一直回车键到没有提示</li>
-<li>cat ~/.ssh/id_rsa.pub 得到公钥内容，复制内容</li>
-<li>打开 Github，在设置页面粘贴公钥内容</li>
-</ul>
-<h3 id="测试："><a href="#测试：" class="headerlink" title="测试："></a>测试：</h3><ul>
-<li>运行 ssh -T <a href="mailto:&#x67;&#x69;&#x74;&#64;&#103;&#105;&#x74;&#104;&#117;&#x62;&#46;&#99;&#x6f;&#109;">&#x67;&#x69;&#x74;&#64;&#103;&#105;&#x74;&#104;&#117;&#x62;&#46;&#99;&#x6f;&#109;</a></li>
-<li>询问 yes/no,回答 yes</li>
-</ul>
-<h3 id="上传代码："><a href="#上传代码：" class="headerlink" title="上传代码："></a>上传代码：</h3><ol>
-<li><p>新建 Github Repo，复制 ssh 地址</p>
-</li>
-<li><p>运行 git remote add origin git@xxxxx</p>
-<p>（在本地添加远程仓库地址，origin 为远程仓库默认名字）</p>
-</li>
-<li><p>git push -u origin master</p>
-</li>
-</ol>
-<ul>
-<li>推送本地 master 分支到远程 originmaster 分支</li>
-<li>提示应该 git pull…</li>
-<li>-u origin master 意思为设置上游分支，之后不用再设置，直接 git pull，git push</li>
-</ul>
-<p><strong>上传其它分支：</strong></p>
-<p>一：git push x:x</p>
-<p>二：git checkout x</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git push -u origin x</span><br></pre></td></tr></table></figure>
-<p><strong>上传到两个本地仓库</strong></p>
-<ul>
-<li>git remote add origin2 git@xxxxx</li>
-<li>git push -u origin master</li>
-</ul>
-<p><strong>git pull 冲突</strong>：查看合并分支冲突</p>
-<h3 id="下载代码："><a href="#下载代码：" class="headerlink" title="下载代码："></a>下载代码：</h3><ol>
-<li> git clone git@xxx</li>
-<li> 不同机器需要先上传新的 ssh key(一机一 key)</li>
-<li> <strong>cd 目标路径</strong></li>
-<li> 运行 git add/git commit/[git pull]/git push</li>
-</ol>
-<p>下载某个分支：先下载整个仓库，再切换分支</p>
-<p><strong>git clone</strong>：</p>
-<ul>
-<li><p>git clone git@?/xxx.git:会在当前目录下创建一个 xxx 目录，xxx/.git 是本地仓库，一般需要接 cd xxx 进入目录</p>
-</li>
-<li><p>git clone git@?/xxx.git yyy：会在本地新建一个 yyy 目录，cd yyy 进入目录</p>
-</li>
-<li><p>git clone git@?/xxx.git .:最后一个字符是点，使用当前目录容纳代码和.git，需要先新建一个目录，cd 进入目录</p>
-</li>
-</ul>
-<h3 id="总结：-1"><a href="#总结：-1" class="headerlink" title="总结："></a>总结：</h3><p>常用命令：git alone/git pull/git push</p>
-<p>远程仓库：本地仓库的备份，要先 commit 到本地仓库，然后 push 到远程仓库</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">无法下载部分代码，只能先clone整个仓库生成ssh key（[帮助文档](https:&#x2F;&#x2F;docs.github.com&#x2F;en&#x2F;free-pro-team@latest&#x2F;github&#x2F;authenticating-to-github&#x2F;generating-a-new-ssh-key-and-adding-it-to-the-ssh-agent#)）：</span><br></pre></td></tr></table></figure>
-<ul>
-<li>运行 ssh-keygen -t rsa -b 4096 -C +邮箱地址</li>
-<li>一直回车键到没有提示</li>
-<li>cat ~/.ssh/id_rsa.pub 得到公钥内容，复制内容</li>
-<li>打开 Github，在设置页面粘贴公钥内容</li>
-</ul>
-<h3 id="测试：-1"><a href="#测试：-1" class="headerlink" title="测试："></a>测试：</h3><ul>
-<li>运行 ssh -T <a href="mailto:&#x67;&#105;&#116;&#x40;&#x67;&#x69;&#116;&#104;&#117;&#x62;&#x2e;&#99;&#111;&#x6d;">&#x67;&#105;&#116;&#x40;&#x67;&#x69;&#116;&#104;&#117;&#x62;&#x2e;&#99;&#111;&#x6d;</a></li>
-<li>询问 yes/no,回答 yes</li>
-</ul>
-<h3 id="上传代码：-1"><a href="#上传代码：-1" class="headerlink" title="上传代码："></a>上传代码：</h3><ol>
-<li><p>新建 Github Repo，复制 ssh 地址</p>
-</li>
-<li><p>运行 git remote add origin git@xxxxx</p>
-<p>（在本地添加远程仓库地址，origin 为远程仓库默认名字）</p>
-</li>
-<li><p>git push -u origin master</p>
-</li>
-</ol>
-<ul>
-<li>推送本地 master 分支到远程 originmaster 分支</li>
-<li>提示应该 git pull…，就运行 git pull!</li>
-<li>-u origin master 意思为设置上游分支，之后不用再设置，直接 git pull，git push</li>
-</ul>
-<p><strong>上传其它分支：</strong></p>
-<p>一：git push x:x</p>
-<p>二：git checkout x</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">git push -u origin x</span><br></pre></td></tr></table></figure>
-<p><strong>上传到两个本地仓库</strong></p>
-<ul>
-<li>git remote add origin2 git@xxxxx</li>
-<li>git push -u origin master</li>
-</ul>
-<p><strong>git pull 冲突</strong>：查看合并分支冲突</p>
-<h3 id="下载代码：-1"><a href="#下载代码：-1" class="headerlink" title="下载代码："></a>下载代码：</h3><ol>
-<li> git clone git@xxx</li>
-<li> 不同机器需要先上传新的 ssh key(一机一 key)</li>
-<li> <strong>cd 目标路径</strong></li>
-<li> 运行 git add/git commit/[git pull]/git push</li>
-</ol>
-<p>下载某个分支：先下载整个仓库，再切换分支</p>
-<p><strong>git clone</strong>：</p>
-<ul>
-<li><p>git clone git@?/xxx.git:会在当前目录下创建一个 xxx 目录，xxx/.git 是本地仓库，一般需要接 cd xxx 进入目录</p>
-</li>
-<li><p>git clone git@?/xxx.git yyy：会在本地新建一个 yyy 目录，cd yyy 进入目录</p>
-</li>
-<li><p>git clone git@?/xxx.git .:最后一个字符是点，使用当前目录容纳代码和.git，需要先新建一个目录，cd 进入目录</p>
-</li>
-</ul>
-<h3 id="总结：-2"><a href="#总结：-2" class="headerlink" title="总结："></a>总结：</h3><p>常用命令：git alone/git pull/git push</p>
-<p>远程仓库：本地仓库的备份，要先 commit 到本地仓库，然后 push 到远程仓库</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">无法下载部分代码，只能先clone整个仓库</span><br></pre></td></tr></table></figure>
-<h2 id="3、git-高级操作"><a href="#3、git-高级操作" class="headerlink" title="3、git 高级操作"></a>3、git 高级操作</h2><p>bash alias 简化命令： ga=”git add” gc=”git commit -v” gl=”git pull” gp=”git push” gco=”git checkout” gst=”git status -sb”</p>
-<p>美化历史命令：git rebase -i xxx</p>
-]]></content>
-      <tags>
-        <tag>Git</tag>
-        <tag>笔记</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>JS 对象</title>
-    <url>/2021/03/09/JS%E5%AF%B9%E8%B1%A1/</url>
-    <content><![CDATA[<h3 id="一、常见用法"><a href="#一、常见用法" class="headerlink" title="一、常见用法"></a>一、常见用法</h3><p>变量做属性名</p>
-<p>除了字符串之外，变量也可以做属性名</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">let p1 &#x3D; &#39;name&#39;</span><br><span class="line">let obj &#x3D; &#123; p1 : &#39;ss&#39;&#125; 这样写，属性名为 &#39;p1&#39;</span><br><span class="line">let obj &#x3D; &#123; [p1] : &#39;ss&#39; &#125; 这样写，属性名为 &#39;name&#39;</span><br></pre></td></tr></table></figure>
- <a id="more"></a>
-
-<p>查看属性值</p>
-<ul>
-<li><p>中括号：<code>obj[&#39;key&#39;]</code></p>
-</li>
-<li><p>点语法：<code>obj.key</code></p>
-</li>
-</ul>
-<h3 id="二、常用方法"><a href="#二、常用方法" class="headerlink" title="二、常用方法"></a>二、常用方法</h3><ol>
-<li><p>Object.assign()</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const returnedTarget &#x3D; Object.assign(target, source);</span><br></pre></td></tr></table></figure>
-<p>将所有可枚举属性的值从一个或多个源对象分配到目标对象,回目标对象,目标对象中的属性具有相同的键，则属性将被源对象中的属性覆盖。</p>
-</li>
-<li><p>Object.entries()</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const object1 &#x3D; &#123;</span><br><span class="line"> a: &#39;somestring&#39;,</span><br><span class="line"> b: 42</span><br><span class="line">&#125;;</span><br><span class="line">Object.entries(object1)</span><br><span class="line">&#x2F;&#x2F;[[&quot;a&quot;, &quot;somestring&quot;],[&quot;b&quot;, 42]]</span><br></pre></td></tr></table></figure>
-<p>法返回一个给定对象自身可枚举属性的键值对数组</p>
-</li>
-<li><p>Object.freeze()<br>冻结一个对象。一个被冻结的对象再也不能被修改</p>
-</li>
-<li><p>Object.is()<br>判断两个值是否为同一个值。<br><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/is">MDN</a></p>
-</li>
-<li><p>Object.keys()<br>返回一个由一个给定对象的自身可枚举属性组成的数组</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Object.keys([&#39;a&#39;, &#39;b&#39;, &#39;c&#39;])</span><br><span class="line">&#x2F;&#x2F;[&#39;0&#39;, &#39;1&#39;, &#39;2&#39;]</span><br><span class="line">Object.keys(&#123; 0: &#39;a&#39;, 1: &#39;b&#39;, 2: &#39;c&#39; &#125;)</span><br><span class="line">&#x2F;&#x2F;[&#39;0&#39;, &#39;1&#39;, &#39;2&#39;]</span><br></pre></td></tr></table></figure></li>
-<li><p>Object.values()</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Object.values(&#123; foo: &#39;bar&#39;, baz: 42 &#125;)</span><br><span class="line">&#x2F;&#x2F;[&#39;bar&#39;, 42]</span><br></pre></td></tr></table></figure></li>
-<li><p>Object.create()</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Object.create(&#123;a:1,b:2&#125;);</span><br><span class="line">&#x2F;&#x2F;__proto__:</span><br><span class="line">    a: 1</span><br><span class="line">    b: 2</span><br></pre></td></tr></table></figure>
-<p>创建一个新对象，使用现有的对象来提供新创建的对象的<strong>proto</strong></p>
-</li>
-<li><p>Object.defineProperty()</p>
-<p>直接在一个对象上定义一个新属性，或者修改一个对象的现有属性，并返回此对象。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Object.defineProperty(&#123;&#125;, &#39;a&#39;,&#123;value:1&#125;);  &#x2F;&#x2F;&#123;a:1&#125;</span><br><span class="line">Object.defineProperty(&#123;&#125;, &#39;property1&#39;, &#123;</span><br><span class="line">value: 42,</span><br><span class="line">writable: false   &#x2F;&#x2F;描述符</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>拥有布尔值的键 configurable、enumerable 和 writable 的默认值都是 false。<br>属性值和函数的键 value、get 和 set 字段的默认值为 undefined。</p>
-</li>
-</ol>
-]]></content>
-      <tags>
-        <tag>JavaScript</tag>
       </tags>
   </entry>
   <entry>
@@ -711,6 +664,143 @@
       </tags>
   </entry>
   <entry>
+    <title>JS 对象</title>
+    <url>/2021/03/09/JS%E5%AF%B9%E8%B1%A1/</url>
+    <content><![CDATA[<h3 id="一、常见用法"><a href="#一、常见用法" class="headerlink" title="一、常见用法"></a>一、常见用法</h3><p>变量做属性名</p>
+<p>除了字符串之外，变量也可以做属性名</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">let p1 &#x3D; &#39;name&#39;</span><br><span class="line">let obj &#x3D; &#123; p1 : &#39;ss&#39;&#125; 这样写，属性名为 &#39;p1&#39;</span><br><span class="line">let obj &#x3D; &#123; [p1] : &#39;ss&#39; &#125; 这样写，属性名为 &#39;name&#39;</span><br></pre></td></tr></table></figure>
+ <a id="more"></a>
+
+<p>查看属性值</p>
+<ul>
+<li><p>中括号：<code>obj[&#39;key&#39;]</code></p>
+</li>
+<li><p>点语法：<code>obj.key</code></p>
+</li>
+</ul>
+<h3 id="二、常用方法"><a href="#二、常用方法" class="headerlink" title="二、常用方法"></a>二、常用方法</h3><ol>
+<li><p>Object.assign()</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const returnedTarget &#x3D; Object.assign(target, source);</span><br></pre></td></tr></table></figure>
+<p>将所有可枚举属性的值从一个或多个源对象分配到目标对象,回目标对象,目标对象中的属性具有相同的键，则属性将被源对象中的属性覆盖。</p>
+</li>
+<li><p>Object.entries()</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const object1 &#x3D; &#123;</span><br><span class="line"> a: &#39;somestring&#39;,</span><br><span class="line"> b: 42</span><br><span class="line">&#125;;</span><br><span class="line">Object.entries(object1)</span><br><span class="line">&#x2F;&#x2F;[[&quot;a&quot;, &quot;somestring&quot;],[&quot;b&quot;, 42]]</span><br></pre></td></tr></table></figure>
+<p>法返回一个给定对象自身可枚举属性的键值对数组</p>
+</li>
+<li><p>Object.freeze()<br>冻结一个对象。一个被冻结的对象再也不能被修改</p>
+</li>
+<li><p>Object.is()<br>判断两个值是否为同一个值。<br><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/is">MDN</a></p>
+</li>
+<li><p>Object.keys()<br>返回一个由一个给定对象的自身可枚举属性组成的数组</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Object.keys([&#39;a&#39;, &#39;b&#39;, &#39;c&#39;])</span><br><span class="line">&#x2F;&#x2F;[&#39;0&#39;, &#39;1&#39;, &#39;2&#39;]</span><br><span class="line">Object.keys(&#123; 0: &#39;a&#39;, 1: &#39;b&#39;, 2: &#39;c&#39; &#125;)</span><br><span class="line">&#x2F;&#x2F;[&#39;0&#39;, &#39;1&#39;, &#39;2&#39;]</span><br></pre></td></tr></table></figure></li>
+<li><p>Object.values()</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Object.values(&#123; foo: &#39;bar&#39;, baz: 42 &#125;)</span><br><span class="line">&#x2F;&#x2F;[&#39;bar&#39;, 42]</span><br></pre></td></tr></table></figure></li>
+<li><p>Object.create()</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Object.create(&#123;a:1,b:2&#125;);</span><br><span class="line">&#x2F;&#x2F;__proto__:</span><br><span class="line">    a: 1</span><br><span class="line">    b: 2</span><br></pre></td></tr></table></figure>
+<p>创建一个新对象，使用现有的对象来提供新创建的对象的<strong>proto</strong></p>
+</li>
+<li><p>Object.defineProperty()</p>
+<p>直接在一个对象上定义一个新属性，或者修改一个对象的现有属性，并返回此对象。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Object.defineProperty(&#123;&#125;, &#39;a&#39;,&#123;value:1&#125;);  &#x2F;&#x2F;&#123;a:1&#125;</span><br><span class="line">Object.defineProperty(&#123;&#125;, &#39;property1&#39;, &#123;</span><br><span class="line">value: 42,</span><br><span class="line">writable: false   &#x2F;&#x2F;描述符</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>拥有布尔值的键 configurable、enumerable 和 writable 的默认值都是 false。<br>属性值和函数的键 value、get 和 set 字段的默认值为 undefined。</p>
+</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>JavaScript</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Vue Router</title>
+    <url>/2021/03/11/Vue%20router/</url>
+    <content><![CDATA[<h5 id="1、Vue-Router"><a href="#1、Vue-Router" class="headerlink" title="1、Vue Router"></a>1、Vue Router</h5><p>Vue.js 官方的路由管理器。路由就是 SPA（single page application 单页应用）的路径管理器，单页面应用的思路是一个 index.html 里面有一个容器，在用户进行交互的时候，并不会重新加载某个界面，而是只选择把某个视图更新到容器中去显示。</p>
+ <a id="more"></a>
+
+<h5 id="2、路由模式"><a href="#2、路由模式" class="headerlink" title="2、路由模式"></a>2、路由模式</h5><ul>
+<li><p>hash 模式</p>
+<p>vue-router 默认 hash 模式 —— 使用 URL 的 hash 来模拟一个完整的 URL，当 URL 改变时，页面不会重新加载。# 是 url 的一个锚点，记载了网页中的位置，Hash 模式通过锚点值的改变，根据不同的值，渲染指定 DOM 位置的不同数据。<br>hash 模式的原理是 onhashchange 事件(监测 hash 值变化)，可以在 window 对象上监听这个事件。</p>
+</li>
+</ul>
+<ul>
+<li><p>history 模式</p>
+<p>当你使用 history 模式时，URL 就像正常的 url，需要后台配置支持</p>
+</li>
+</ul>
+<h5 id="3、页面跳转"><a href="#3、页面跳转" class="headerlink" title="3、页面跳转"></a>3、页面跳转</h5><ul>
+<li><p>声明式：以标签的形式声明为一个跳转的标签</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;简单用法</span><br><span class="line">&lt;router-link to&#x3D;&quot;&#x2F;&quot;&gt;Home&lt;&#x2F;router-link&gt;</span><br><span class="line">&#x2F;&#x2F;传递参数</span><br><span class="line">&lt;router-link :to&#x3D;&quot;&#123;name:xxx,params:&#123;key:value&#125;&#125;&quot;&gt;&lt;&#x2F;router-link&gt;</span><br><span class="line">&#x2F;&#x2F;url 传值（index.js设置路由）</span><br><span class="line">&#123;</span><br><span class="line">  path:&#39;&#x2F;user&#x2F;:id&#x2F;&#39;, &#x2F;&#x2F;id就是传递的参数</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F;获取参数</span><br><span class="line">$route.params.key</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;使用name匹配路由，使用query来传递参数</span><br><span class="line">&lt;router-link :to&#x3D;&quot;&#123; name:&#39;xxx&#39;,query: &#123; key:value&#125;&#125;&quot; &gt;跳转Query&lt;&#x2F;router-link&gt;</span><br><span class="line">&#x2F;&#x2F;获取参数</span><br><span class="line">this.$route.query.queryId</span><br></pre></td></tr></table></figure>
+<p><strong>param 和 query 的区别</strong></p>
+<ul>
+<li>使用 params 传参只能用 name 来引入路由，即 push 里面只能是 name:’xxx’,不能是 path:’/xxx’,因为 params 只能用 name 来引入路由，如果这里写成了 path，接收参数页面会是 undefined。</li>
+<li>query name 和 path 都支持。query，url 会加上参数信息，而 param url 并不会携带参数信息。</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>编程式</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; 不带参数</span><br><span class="line">this.$router.push(&#123;name:&#39;xxx&#39;&#125;)</span><br><span class="line">&#x2F;&#x2F; 带参数 params</span><br><span class="line">this.$router.push(&#123;name:&#39;xxx&#39;,params:&#123;key:value&#125;&#125;)</span><br><span class="line">&#x2F;&#x2F;query</span><br><span class="line">this.$router.push(&#123;name:&#39;xxx&#39;,query:&#123;key:value&#125;&#125;)</span><br><span class="line"></span><br><span class="line">this.$router.go(-1)&#x2F;&#x2F;跳转到上一次浏览的页面</span><br><span class="line">this.$router.replace(&#39;&#x2F;menu&#39;)&#x2F;&#x2F;指定跳转的地址</span><br><span class="line">this.$router.replace(&#123;name:&#39;menuLink&#39;&#125;)&#x2F;&#x2F;指定跳转路由的名字下</span><br></pre></td></tr></table></figure>
+<p><strong>push 和 replace 的区别：</strong></p>
+<ul>
+<li>使用 push 方法的跳转会向 history 栈添加一个新的记录，当我们点击浏览器的返回按钮时可以看到之前的页面。也就是说是支持后退的。</li>
+</ul>
+<ul>
+<li>使用 replace 方法不会向 history 添加新记录，而是替换掉当前的 history 记录，即当 replace 跳转到的网页后，’后退’ 按钮不能查看之前的页面。</li>
+</ul>
+</li>
+</ul>
+<h5 id="4、导航守卫"><a href="#4、导航守卫" class="headerlink" title="4、导航守卫"></a>4、导航守卫</h5><ol>
+<li><p>全局前置守卫</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const router &#x3D; new VueRouter(&#123; ... &#125;)</span><br><span class="line">router.beforeEach((to, from, next) &#x3D;&gt; &#123;</span><br><span class="line">...</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>参数</p>
+</li>
+</ol>
+<ul>
+<li><p>to 即将要进入的目标 路由对象</p>
+</li>
+<li><p>from 当前导航正要离开的路由</p>
+</li>
+<li><p>next 要执行的操作</p>
+<ul>
+<li>next(): 进行管道中的下一个钩子（放行）。</li>
+<li>next(false): 中断当前的导航。</li>
+<li>next(‘/‘) 或者 next({ path: ‘/‘ }):跳转到一个不同的地址。</li>
+<li>next(error): 如果传入 next 的参数是一个 Error 实例，则导航会被终止且该错误会被传递给 router.onError() 注册过的回调。</li>
+</ul>
+</li>
+</ul>
+<ol start="2">
+<li><p>全局解析守卫</p>
+<p> router.beforeEach 类似，区别是在导航被确认之前，同时在所有组件内守卫和异步路由组件被解析之后，解析守卫就被调用</p>
+</li>
+<li><p>全局后置钩子</p>
+<p> 你也可以注册全局后置钩子，然而和守卫不同的是，这些钩子不会接受 next 函数也不会改变导航本身：</p>
+ <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">router.afterEach((to, from) &#x3D;&gt; &#123;</span><br><span class="line">&#x2F;&#x2F; ...</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></li>
+<li><p>路由独享的守卫<br> 在路由配置上直接定义 beforeEnter 守卫：<br> 与全局前置守卫的方法参数是一样的。</p>
+ <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const router &#x3D; new VueRouter(&#123;</span><br><span class="line">  routes: [</span><br><span class="line">    &#123;</span><br><span class="line">      path: &#39;&#x2F;foo&#39;,</span><br><span class="line">      component: Foo,</span><br><span class="line">      beforeEnter: (to, from, next) &#x3D;&gt; &#123;</span><br><span class="line">        &#x2F;&#x2F; ...</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></li>
+</ol>
+<ul>
+<li><p>组件内的守卫</p>
+<ul>
+<li>beforeRouteEnter</li>
+</ul>
+<ul>
+<li>beforeRouteUpdate</li>
+<li>beforeRouteLeave</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">  const Foo &#x3D; &#123;</span><br><span class="line">  template: &#96;...&#96;,</span><br><span class="line">  beforeRouteEnter (to, from, next) &#123;</span><br><span class="line">    &#x2F;&#x2F; 在渲染该组件的对应路由被 confirm 前调用</span><br><span class="line">    &#x2F;&#x2F; 不！能！获取组件实例 &#96;this&#96;</span><br><span class="line">    &#x2F;&#x2F; 因为当守卫执行前，组件实例还没被创建</span><br><span class="line">  &#125;,</span><br><span class="line">  beforeRouteUpdate (to, from, next) &#123;</span><br><span class="line">    &#x2F;&#x2F; 在当前路由改变，但是该组件被复用时调用</span><br><span class="line">    &#x2F;&#x2F; 举例来说，对于一个带有动态参数的路径 &#x2F;foo&#x2F;:id，在 &#x2F;foo&#x2F;1 和 &#x2F;foo&#x2F;2 之间跳转的时候，</span><br><span class="line">    &#x2F;&#x2F; 由于会渲染同样的 Foo 组件，因此组件实例会被复用。而这个钩子就会在这个情况下被调用。</span><br><span class="line">    &#x2F;&#x2F; 可以访问组件实例 &#96;this&#96;</span><br><span class="line">  &#125;,</span><br><span class="line">  beforeRouteLeave (to, from, next) &#123;</span><br><span class="line">    &#x2F;&#x2F; 导航离开该组件的对应路由时调用</span><br><span class="line">    &#x2F;&#x2F; 可以访问组件实例 &#96;this&#96;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>beforeRouteEnter 守卫 不能 访问 this,可以通过传一个回调给 next 来访问组件实例。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">beforeRouteEnter (to, from, next) &#123;</span><br><span class="line">  next(vm &#x3D;&gt; &#123;</span><br><span class="line">  &#x2F;&#x2F; 通过 &#96;vm&#96; 访问组件实例</span><br><span class="line">&#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>完整的导航解析流程</p>
+<p><a href="https://router.vuejs.org/zh/guide/advanced/navigation-guards.html#%E7%BB%84%E4%BB%B6%E5%86%85%E7%9A%84%E5%AE%88%E5%8D%AB">官方文档</a></p>
+</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>框架</tag>
+        <tag>Vue</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>JS 数组</title>
     <url>/2021/03/09/JS%E6%95%B0%E7%BB%84/</url>
     <content><![CDATA[<h4 id="1、数组对象"><a href="#1、数组对象" class="headerlink" title="1、数组对象:"></a>1、数组对象:</h4><ul>
@@ -812,173 +902,95 @@
       </tags>
   </entry>
   <entry>
-    <title>Vue Router</title>
-    <url>/2021/03/11/Vue%20router/</url>
-    <content><![CDATA[<h5 id="1、Vue-Router"><a href="#1、Vue-Router" class="headerlink" title="1、Vue Router"></a>1、Vue Router</h5><p>Vue.js 官方的路由管理器。路由就是 SPA（single page application 单页应用）的路径管理器，单页面应用的思路是一个 index.html 里面有一个容器，在用户进行交互的时候，并不会重新加载某个界面，而是只选择把某个视图更新到容器中去显示。</p>
- <a id="more"></a>
+    <title>Vue3的一些新特性和一些问题</title>
+    <url>/2021/03/11/Vue3/</url>
+    <content><![CDATA[<p>1、Vue3 和 Vue2 的一些区别</p>
+<ul>
+<li>创建实例</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; Vue3 新方法 createApp 其作用是构建实例</span><br><span class="line">import &#123; createApp &#125; from &#39;vue&#39;</span><br><span class="line">const app &#x3D; createApp(&#123;&#125;)</span><br><span class="line">&#x2F;&#x2F; Vue2 使用的是 new Vue() 构建实例</span><br></pre></td></tr></table></figure>
+<ul>
+<li>Vue3 支持碎片(Fragments)，就是说在组件可以拥有多个根节点</li>
+</ul>
+<a id="more"></a>
 
-<h5 id="2、路由模式"><a href="#2、路由模式" class="headerlink" title="2、路由模式"></a>2、路由模式</h5><ul>
-<li><p>hash 模式</p>
-<p>vue-router 默认 hash 模式 —— 使用 URL 的 hash 来模拟一个完整的 URL，当 URL 改变时，页面不会重新加载。# 是 url 的一个锚点，记载了网页中的位置，Hash 模式通过锚点值的改变，根据不同的值，渲染指定 DOM 位置的不同数据。<br>hash 模式的原理是 onhashchange 事件(监测 hash 值变化)，可以在 window 对象上监听这个事件。</p>
+<p>3、组合式 api</p>
+<ul>
+<li><p>setup 组件选项</p>
+<ul>
+<li><p>在创建组件之前执行，一旦 props 被解析，就作为组合式 API 的入口。接受两个参数 props 和 context</p>
+</li>
+<li><p>props:响应式的，当传入新的 prop 时，它将被更新。</p>
+<p>不能使用 ES6 解构，因为它会消除 prop 的响应性，需要解构 prop，可以通过使用 setup 函数中的 toRefs</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import &#123; toRefs &#125; from &#39;vue&#39;</span><br><span class="line">setup(props) &#123;</span><br><span class="line">const &#123; title &#125; &#x3D; toRefs(props)</span><br><span class="line">    console.log(title.value)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ul>
+<li><p>Context:context 是一个普通的 JavaScript 对象，它暴露三个组件的 property</p>
+<pre><code>export default &#123;
+ setup(props, context) &#123;
+      // Attribute (非响应式对象)
+      console.log(context.attrs)
+     // 插槽 (非响应式对象)
+     console.log(context.slots)
+     // 触发事件 (方法)
+     console.log(context.emit)
+ &#125;
+&#125;
+//可以使用es6解构
+export default &#123;
+  setup(props, &#123; attrs, slots, emit &#125;) &#123;
+  ...
+  &#125;
+&#125;</code></pre>
+</li>
+<li><p>执行 setup 时，组件实例尚未被创建，将无法访问组件选项：data、computed、methods</p>
+</li>
+</ul>
 </li>
 </ul>
 <ul>
-<li><p>history 模式</p>
-<p>当你使用 history 模式时，URL 就像正常的 url，需要后台配置支持</p>
+<li><p>带 ref 的响应式变量</p>
+<p>接受参数，并将其包裹在一个带有 value property 的对象中返回</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import &#123; ref &#125; from &#39;vue&#39;</span><br><span class="line">const counter &#x3D; ref(0)</span><br><span class="line">console.log(counter) &#x2F;&#x2F; &#123; value: 0 &#125;</span><br><span class="line">console.log(counter.value) &#x2F;&#x2F; 读</span><br><span class="line">counter.value++     &#x2F;&#x2F;写</span><br></pre></td></tr></table></figure></li>
+<li><p>在 setup()中 methods、computed、watch、生命周期函数</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import &#123; computed, ref, onMounted,  watchEffect &#125; from &quot;vue&quot;;</span><br><span class="line">export default &#123;</span><br><span class="line">props: &#123;</span><br><span class="line">  title: String</span><br><span class="line">&#125;,</span><br><span class="line">setup (props, context) &#123;</span><br><span class="line">  const counter &#x3D; ref(0)</span><br><span class="line">  const &#123; user &#125; &#x3D; toRefs(props)</span><br><span class="line">  const add1&#x3D;()&#x3D;&gt;&#123;  &#x2F;&#x2F; context.emit代替this.$emit</span><br><span class="line">    context.emit(&#39;x&#39;,counter.value+1</span><br><span class="line">  &#125;</span><br><span class="line">  const add2 &#x3D; computed(() &#x3D;&gt; &#123;</span><br><span class="line">    return counter.value+2</span><br><span class="line">  &#125;)</span><br><span class="line">  onMounted(add1)</span><br><span class="line">  watch(user, add1)   &#x2F;&#x2F;return 之后才能在模板中使用</span><br><span class="line">  return &#123;counter,add1,add2&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>Teleport:允许我们控制在 DOM 中哪个父节点下呈现 HTML</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;teleport to&#x3D;&quot;body&quot;&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">  &lt;&#x2F;div&gt;</span><br><span class="line">&lt;&#x2F;teleport&gt;  &#x2F;&#x2F;将 div放在body里面</span><br></pre></td></tr></table></figure>
+<p>4、属性绑定</p>
 </li>
 </ul>
-<h5 id="3、页面跳转"><a href="#3、页面跳转" class="headerlink" title="3、页面跳转"></a>3、页面跳转</h5><ul>
-<li><p>声明式：以标签的形式声明为一个跳转的标签</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;简单用法</span><br><span class="line">&lt;router-link to&#x3D;&quot;&#x2F;&quot;&gt;Home&lt;&#x2F;router-link&gt;</span><br><span class="line">&#x2F;&#x2F;传递参数</span><br><span class="line">&lt;router-link :to&#x3D;&quot;&#123;name:xxx,params:&#123;key:value&#125;&#125;&quot;&gt;&lt;&#x2F;router-link&gt;</span><br><span class="line">&#x2F;&#x2F;url 传值（index.js设置路由）</span><br><span class="line">&#123;</span><br><span class="line">  path:&#39;&#x2F;user&#x2F;:id&#x2F;&#39;, &#x2F;&#x2F;id就是传递的参数</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F;获取参数</span><br><span class="line">$route.params.key</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;使用name匹配路由，使用query来传递参数</span><br><span class="line">&lt;router-link :to&#x3D;&quot;&#123; name:&#39;xxx&#39;,query: &#123; key:value&#125;&#125;&quot; &gt;跳转Query&lt;&#x2F;router-link&gt;</span><br><span class="line">&#x2F;&#x2F;获取参数</span><br><span class="line">this.$route.query.queryId</span><br></pre></td></tr></table></figure>
-<p><strong>param 和 query 的区别</strong></p>
+<p>默认所有属性都绑定到根元素</p>
+<p>//<strong>Button.vue</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">    &lt;button&gt;&lt;slot &#x2F;&gt;&lt;&#x2F;button&gt;</span><br><span class="line">  &lt;&#x2F;div&gt;</span><br><span class="line">&lt;&#x2F;template&gt;</span><br></pre></td></tr></table></figure>
+<p>//<strong>ButtonDemo.vue</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;button 内容&lt;&#x2F;div&gt;</span><br><span class="line">  &lt;h1&gt;示例&lt;&#x2F;h1&gt;</span><br><span class="line">  &lt;Button @click&#x3D;&quot;&quot; @focus&#x3D;&quot;&quot;&gt;按钮&lt;&#x2F;Button&gt; &#x2F;&#x2F;Button上所有时间属性</span><br><span class="line">  会绑定到Button组件跟元素上</span><br><span class="line">&lt;&#x2F;template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">import Button from &quot;..&#x2F;lib&#x2F;Button.vue&quot;;</span><br><span class="line">export default &#123;</span><br><span class="line">  components: &#123; Button &#125;,</span><br><span class="line">&#125;;</span><br><span class="line">&lt;&#x2F;script&gt;</span><br></pre></td></tr></table></figure>
 <ul>
-<li>使用 params 传参只能用 name 来引入路由，即 push 里面只能是 name:’xxx’,不能是 path:’/xxx’,因为 params 只能用 name 来引入路由，如果这里写成了 path，接收参数页面会是 undefined。</li>
-<li>query name 和 path 都支持。query，url 会加上参数信息，而 param url 并不会携带参数信息。</li>
+<li>使用<code>inheritAttrs:false</code>可以取消默认绑定</li>
+<li>使用<code>$attrs</code>或者 <code>context.attrs</code> 获取所有属性</li>
+<li>使用 <code>v-bind=&#39;$attrs&#39;</code>批量绑定属性</li>
+<li>使用<code>const &#123;size,onclick,...xxx&#125;=context.attrs</code>将属性分开</li>
 </ul>
-</li>
-</ul>
+<p>props 和 attrs 的区别</p>
 <ul>
-<li><p>编程式</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; 不带参数</span><br><span class="line">this.$router.push(&#123;name:&#39;xxx&#39;&#125;)</span><br><span class="line">&#x2F;&#x2F; 带参数 params</span><br><span class="line">this.$router.push(&#123;name:&#39;xxx&#39;,params:&#123;key:value&#125;&#125;)</span><br><span class="line">&#x2F;&#x2F;query</span><br><span class="line">this.$router.push(&#123;name:&#39;xxx&#39;,query:&#123;key:value&#125;&#125;)</span><br><span class="line"></span><br><span class="line">this.$router.go(-1)&#x2F;&#x2F;跳转到上一次浏览的页面</span><br><span class="line">this.$router.replace(&#39;&#x2F;menu&#39;)&#x2F;&#x2F;指定跳转的地址</span><br><span class="line">this.$router.replace(&#123;name:&#39;menuLink&#39;&#125;)&#x2F;&#x2F;指定跳转路由的名字下</span><br></pre></td></tr></table></figure>
-<p><strong>push 和 replace 的区别：</strong></p>
-<ul>
-<li>使用 push 方法的跳转会向 history 栈添加一个新的记录，当我们点击浏览器的返回按钮时可以看到之前的页面。也就是说是支持后退的。</li>
+<li>props 要先声明才能取值，attrs 不需要</li>
+<li>props 不包含事件，attrs 包含</li>
+<li>props 没有声明的属性，会跑到 attrs 里</li>
+<li>props 支持 String 之外的类型，attrs 只支持 String 类型</li>
 </ul>
-<ul>
-<li>使用 replace 方法不会向 history 添加新记录，而是替换掉当前的 history 记录，即当 replace 跳转到的网页后，’后退’ 按钮不能查看之前的页面。</li>
-</ul>
-</li>
-</ul>
-<h5 id="4、导航守卫"><a href="#4、导航守卫" class="headerlink" title="4、导航守卫"></a>4、导航守卫</h5><ol>
-<li><p>全局前置守卫</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const router &#x3D; new VueRouter(&#123; ... &#125;)</span><br><span class="line">router.beforeEach((to, from, next) &#x3D;&gt; &#123;</span><br><span class="line">...</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<p>参数</p>
-</li>
-</ol>
-<ul>
-<li><p>to 即将要进入的目标 路由对象</p>
-</li>
-<li><p>from 当前导航正要离开的路由</p>
-</li>
-<li><p>next 要执行的操作</p>
-<ul>
-<li>next(): 进行管道中的下一个钩子（放行）。</li>
-<li>next(false): 中断当前的导航。</li>
-<li>next(‘/‘) 或者 next({ path: ‘/‘ }):跳转到一个不同的地址。</li>
-<li>next(error): 如果传入 next 的参数是一个 Error 实例，则导航会被终止且该错误会被传递给 router.onError() 注册过的回调。</li>
-</ul>
-</li>
-</ul>
-<ol start="2">
-<li><p>全局解析守卫</p>
-<p> router.beforeEach 类似，区别是在导航被确认之前，同时在所有组件内守卫和异步路由组件被解析之后，解析守卫就被调用</p>
-</li>
-<li><p>全局后置钩子</p>
-<p> 你也可以注册全局后置钩子，然而和守卫不同的是，这些钩子不会接受 next 函数也不会改变导航本身：</p>
- <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">router.afterEach((to, from) &#x3D;&gt; &#123;</span><br><span class="line">&#x2F;&#x2F; ...</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></li>
-<li><p>路由独享的守卫<br> 在路由配置上直接定义 beforeEnter 守卫：<br> 与全局前置守卫的方法参数是一样的。</p>
- <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const router &#x3D; new VueRouter(&#123;</span><br><span class="line">  routes: [</span><br><span class="line">    &#123;</span><br><span class="line">      path: &#39;&#x2F;foo&#39;,</span><br><span class="line">      component: Foo,</span><br><span class="line">      beforeEnter: (to, from, next) &#x3D;&gt; &#123;</span><br><span class="line">        &#x2F;&#x2F; ...</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></li>
-</ol>
-<ul>
-<li><p>组件内的守卫</p>
-<ul>
-<li>beforeRouteEnter</li>
-</ul>
-<ul>
-<li>beforeRouteUpdate</li>
-<li>beforeRouteLeave</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">  const Foo &#x3D; &#123;</span><br><span class="line">  template: &#96;...&#96;,</span><br><span class="line">  beforeRouteEnter (to, from, next) &#123;</span><br><span class="line">    &#x2F;&#x2F; 在渲染该组件的对应路由被 confirm 前调用</span><br><span class="line">    &#x2F;&#x2F; 不！能！获取组件实例 &#96;this&#96;</span><br><span class="line">    &#x2F;&#x2F; 因为当守卫执行前，组件实例还没被创建</span><br><span class="line">  &#125;,</span><br><span class="line">  beforeRouteUpdate (to, from, next) &#123;</span><br><span class="line">    &#x2F;&#x2F; 在当前路由改变，但是该组件被复用时调用</span><br><span class="line">    &#x2F;&#x2F; 举例来说，对于一个带有动态参数的路径 &#x2F;foo&#x2F;:id，在 &#x2F;foo&#x2F;1 和 &#x2F;foo&#x2F;2 之间跳转的时候，</span><br><span class="line">    &#x2F;&#x2F; 由于会渲染同样的 Foo 组件，因此组件实例会被复用。而这个钩子就会在这个情况下被调用。</span><br><span class="line">    &#x2F;&#x2F; 可以访问组件实例 &#96;this&#96;</span><br><span class="line">  &#125;,</span><br><span class="line">  beforeRouteLeave (to, from, next) &#123;</span><br><span class="line">    &#x2F;&#x2F; 导航离开该组件的对应路由时调用</span><br><span class="line">    &#x2F;&#x2F; 可以访问组件实例 &#96;this&#96;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>beforeRouteEnter 守卫 不能 访问 this,可以通过传一个回调给 next 来访问组件实例。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">beforeRouteEnter (to, from, next) &#123;</span><br><span class="line">  next(vm &#x3D;&gt; &#123;</span><br><span class="line">  &#x2F;&#x2F; 通过 &#96;vm&#96; 访问组件实例</span><br><span class="line">&#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>完整的导航解析流程</p>
-<p><a href="https://router.vuejs.org/zh/guide/advanced/navigation-guards.html#%E7%BB%84%E4%BB%B6%E5%86%85%E7%9A%84%E5%AE%88%E5%8D%AB">官方文档</a></p>
-</li>
-</ul>
-]]></content>
+<p>5、context.slots.default()</p>
+<p><strong>检查组件内部标签类型</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">setup(props, context) &#123;</span><br><span class="line">  const defaults &#x3D; context.slots.default();</span><br><span class="line">  defaults.forEach((tag) &#x3D;&gt; &#123;</span><br><span class="line">     if (tag.type !&#x3D;&#x3D; Tab) &#123;</span><br><span class="line">       throw new Error(&quot;Tabs子标签必须是Tab标签);</span><br><span class="line">     &#125;</span><br><span class="line">  &#125;)&#125;</span><br></pre></td></tr></table></figure>
+<p>6、Vue3 支持 TS 和 markdown</p>
+<p>支持 TS</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;shims.vue.d.ts</span><br><span class="line">declare module &quot;*.vue&quot; &#123;</span><br><span class="line">import &#123; ComponentOptions &#125; from &quot;vue&quot;;</span><br><span class="line">const componentOptions: ComponentOptions;</span><br><span class="line">export default componentOptions;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>支持 markdown</p>
+<p>//shims.vue.d.ts</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">declare module &quot;*.md&quot; &#123;</span><br><span class="line">  const str: string;</span><br><span class="line">  export default str;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>plugin/md.ts</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; @ts-nocheck</span><br><span class="line">import path from &quot;path&quot;;</span><br><span class="line">import fs from &quot;fs&quot;;</span><br><span class="line">import marked from &quot;marked&quot;;</span><br><span class="line"></span><br><span class="line">const mdToJs &#x3D; (str) &#x3D;&gt; &#123;</span><br><span class="line">  const content &#x3D; JSON.stringify(marked(str));</span><br><span class="line">  return &#96;export default $&#123;content&#125;&#96;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">export function md() &#123;</span><br><span class="line">  return &#123;</span><br><span class="line">    configureServer: [</span><br><span class="line">      &#x2F;&#x2F; 用于开发</span><br><span class="line">      async (&#123; app &#125;) &#x3D;&gt; &#123;</span><br><span class="line">        app.use(async (ctx, next) &#x3D;&gt; &#123;</span><br><span class="line">          if (ctx.path.endsWith(&quot;.md&quot;)) &#123;</span><br><span class="line">            ctx.type &#x3D; &quot;js&quot;;</span><br><span class="line">            const filePath &#x3D; path.join(process.cwd(), ctx.path);</span><br><span class="line">            ctx.body &#x3D; mdToJs(fs.readFileSync(filePath).toString());</span><br><span class="line">          &#125; else &#123;</span><br><span class="line">            await next();</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">      &#125;,</span><br><span class="line">    ],</span><br><span class="line">    transforms: [</span><br><span class="line">      &#123;</span><br><span class="line">        &#x2F;&#x2F; 用于 rollup</span><br><span class="line">        test: (context) &#x3D;&gt; context.path.endsWith(&quot;.md&quot;),</span><br><span class="line">        transform: (&#123; code &#125;) &#x3D;&gt; mdToJs(code),</span><br><span class="line">      &#125;,</span><br><span class="line">    ],</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
       <tags>
         <tag>框架</tag>
         <tag>Vue</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Vue响应式原理</title>
-    <url>/2021/03/11/Vue%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86/</url>
-    <content><![CDATA[<h4 id="一、原理"><a href="#一、原理" class="headerlink" title="一、原理"></a>一、原理</h4><p><strong><code>Vue</code>会遍历<code>data</code>对象的所有<code>property</code>，并使用<code>Object.defineProperty</code>把这些<code>property</code>全部转为<code>getter/setter</code>。通过<code>getter/setter</code>让 Vue 能够追踪依赖，在<code>property</code>被访问和修改时通知变更。</strong></p>
- <a id="more"></a>
-
-<h4 id="二、Object-defineProperty-和-getter、setter"><a href="#二、Object-defineProperty-和-getter、setter" class="headerlink" title="二、Object.defineProperty 和 getter、setter"></a>二、Object.defineProperty 和 getter、setter</h4><p><code>Object.defineProperty</code>方法会直接在一个对象上定义一个新属性，或者修改一个对象的现有属性，并返回此对象。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"> let data1 &#x3D; &#123;&#125;;</span><br><span class="line">Object.defineProperty(data1, &quot;n&quot;, &#123;</span><br><span class="line">  value: 0</span><br><span class="line">&#125;);</span><br><span class="line">console.log(data1.n);  &#x2F;&#x2F;0</span><br></pre></td></tr></table></figure>
-<br>
-
-<p><code>getter/setter</code>用于对属性的读写进行监控</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">let myData2 &#x3D; &#123; n: 0 &#125;;</span><br><span class="line">let data2 &#x3D; proxy(&#123; data: myData2 &#125;); &#x2F;&#x2F; 括号里是匿名对象，无法访问</span><br><span class="line"></span><br><span class="line">function proxy(&#123; data &#125;) &#123;</span><br><span class="line">  let value &#x3D; data.n;</span><br><span class="line">  Object.defineProperty(data, &quot;n&quot;, &#123;</span><br><span class="line">    get() &#123;</span><br><span class="line">      return value;</span><br><span class="line">    &#125;,</span><br><span class="line">    set(newValue) &#123;</span><br><span class="line">      if (newValue &lt; 0) return;</span><br><span class="line">      value &#x3D; newValue;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">  &#x2F;&#x2F;监听 data</span><br><span class="line"></span><br><span class="line">  const obj &#x3D; &#123;&#125;;</span><br><span class="line">  Object.defineProperty(obj, &quot;n&quot;, &#123;</span><br><span class="line">    get() &#123;</span><br><span class="line">      return data.n;</span><br><span class="line">    &#125;,</span><br><span class="line">    set(value) &#123;</span><br><span class="line">     if (newValue &lt; 0) return;</span><br><span class="line">      data.n &#x3D; value;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">  return obj; &#x2F;&#x2F; obj 就是代理</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">console.log(data2.n);	&#x2F;&#x2F;0</span><br><span class="line">myData2.n &#x3D; -1;</span><br><span class="line">console.log(data2.n);	&#x2F;&#x2F;0</span><br><span class="line">myData2.n &#x3D; 1;</span><br><span class="line">console.log(data2.n);	&#x2F;&#x2F;1</span><br></pre></td></tr></table></figure>
-<br>
-
-<p><strong>当<code>let vm=new Vue(&#123;data:myData&#125;)</code>时，会让 vm 成为 Vue 的代理，对 myData 的所有属性进行监控，使得 myData 的属性变化的时候渲染页面。</strong></p>
-<h4 id="三、总结"><a href="#三、总结" class="headerlink" title="三、总结"></a>三、总结</h4><p><strong>Vue 的数据响应式，是通过<code>Object.defineProperty</code>将对象所有的属性转化为<code>getter/setter</code>来监控数据变化，即时渲染页面。</strong></p>
-<p><strong>注意</strong>：Vue 不能检测到对象属性的添加或删除，解决方法是手动调用 Vue.set 或者 this.$set<br><a href="https://cn.vuejs.org/v2/guide/reactivity.html#%E5%AF%B9%E4%BA%8E%E5%AF%B9%E8%B1%A1">文档</a></p>
-]]></content>
-      <tags>
-        <tag>框架</tag>
-        <tag>Vue</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>canvas</title>
-    <url>/2021/03/09/canvas/</url>
-    <content><![CDATA[<h2 id="canvas"><a href="#canvas" class="headerlink" title="canvas"></a>canvas</h2><p><code>&lt;canvas&gt;</code>元素可被用来通过 JS 绘制图形动画</p>
-<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><ol>
-<li><p>canvas 标签 （自带宽高属性）</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;canvas id&#x3D;&#39;canvas&#39; width:&quot;100&quot; height:&quot;100&quot;&gt;&lt;&#x2F;canvas&gt;</span><br></pre></td></tr></table></figure></li>
-<li><p>JS</p>
-<p>创建 canvas 画布</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">let canvas &#x3D; document.getElementById(&#39;canvas&#39;);</span><br><span class="line">let ctx &#x3D; canvas.getContext(&#39;2d&#39;);</span><br></pre></td></tr></table></figure></li>
-<li><p>常用属性</p>
-</li>
-</ol>
-<ul>
-<li><p>绘制矩形:</p>
-<ul>
-<li>填充：fillRect(x,y,width,height)</li>
-<li>边框：strokeRect</li>
-<li>清除指定矩形区域 <code>clearRect(x, y, width, height)</code></li>
-</ul>
-</li>
-</ul>
-]]></content>
-      <tags>
-        <tag>HTML</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>跨域 CORS和JSON</title>
-    <url>/2021/03/09/ajax/</url>
-    <content><![CDATA[<ol>
-<li>概述</li>
-</ol>
-<p>AJAX：Asynchronous JavaScript + XML（）</p>
-<ul>
-<li>AJAX 是浏览器上的功能，浏览器可以发请求，收响应</li>
-<li>浏览器在 window 上加了一个 XMLHttpRequest 函数</li>
-</ul>
-<ul>
-<li>用这个构造函数（类）可以构造出一个对象<br>JS 通过它实现发请求，收响应<a id="more"></a>
-</li>
-</ul>
-<ol start="2">
-<li>使用</li>
-</ol>
-<ul>
-<li>JS 代码<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const request &#x3D; new XMLHttpRequest()</span><br><span class="line">request.open(&quot;GET&quot;, &quot;&#x2F;style.css&quot;)</span><br><span class="line">request.onreadystatechange &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">    console.log(request.readyState)</span><br><span class="line">    if (request.readyState &#x3D;&#x3D;&#x3D; 4) &#123;</span><br><span class="line">        if (request.status &gt;&#x3D; 200 &amp;&amp; request.status &lt; 300) &#123;</span><br><span class="line">             console.log(&quot;下载完成了&quot;)</span><br><span class="line">            const style &#x3D; document.createElement(&quot;style&quot;)</span><br><span class="line">            style.innerHTML &#x3D; request.response</span><br><span class="line">             document.head.appendChild(style)</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        alert(&quot;加载 css 失败&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">request.send()</span><br></pre></td></tr></table></figure></li>
-</ul>
-<ul>
-<li><p>服务端：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;server.js</span><br><span class="line">var http &#x3D; require(&quot;http&quot;)</span><br><span class="line">var fs &#x3D; require(&quot;fs&quot;)</span><br><span class="line">var url &#x3D; require(&quot;url&quot;)</span><br><span class="line">var port &#x3D; process.argv[2]</span><br><span class="line"></span><br><span class="line">if (!port) &#123;</span><br><span class="line">console.log(&quot;请指定端口号好不啦？\nnode server.js 8888 这样不会吗？&quot;)</span><br><span class="line">process.exit(1)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var server &#x3D; http.createServer(function (request, response) &#123;</span><br><span class="line">var parsedUrl &#x3D; url.parse(request.url, true)</span><br><span class="line">var pathWithQuery &#x3D; request.url</span><br><span class="line">var queryString &#x3D; &quot;&quot;</span><br><span class="line">if (pathWithQuery.indexOf(&quot;?&quot;) &gt;&#x3D; 0) &#123;</span><br><span class="line">    queryString &#x3D; pathWithQuery.substring(pathWithQuery.indexOf(&quot;?&quot;))</span><br><span class="line">&#125;</span><br><span class="line">var path &#x3D; parsedUrl.pathname</span><br><span class="line">var query &#x3D; parsedUrl.query</span><br><span class="line">var method &#x3D; request.method</span><br><span class="line"></span><br><span class="line">console.log(&quot;有个傻子发请求过来啦！路径（带查询参数）为：&quot; + pathWithQuery)</span><br><span class="line"></span><br><span class="line">if (path &#x3D;&#x3D;&#x3D; &quot;&#x2F;index.html&quot;) &#123;</span><br><span class="line">    response.statusCode &#x3D; 200</span><br><span class="line">    response.setHeader(&quot;Content-Type&quot;, &quot;text&#x2F;html;charset&#x3D;utf-8&quot;)</span><br><span class="line">    let string &#x3D; fs.readFileSync(&quot;public&#x2F;index.html&quot;).toString()</span><br><span class="line">    const page1 &#x3D; fs.readFileSync(&quot;db&#x2F;page1.json&quot;).toString()</span><br><span class="line">    const array &#x3D; JSON.parse(page1)</span><br><span class="line">    const result &#x3D; array.map((item) &#x3D;&gt; &#96;&lt;li&gt;$&#123;item.id&#125;&lt;&#x2F;li&gt;&#96;).join(&quot;&quot;)</span><br><span class="line">    string &#x3D; string.replace(&quot;&#123;&#123;page1&#125;&#125;&quot;, &#96;&lt;ul id&#x3D;&quot;aa&quot;&gt;$&#123;result&#125;&lt;&#x2F;ul&gt;&#96;)</span><br><span class="line">    response.write(string)</span><br><span class="line">    response.end()</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    response.statusCode &#x3D; 404</span><br><span class="line">    response.setHeader(&quot;Content-Type&quot;, &quot;text&#x2F;css;charset&#x3D;utf-8&quot;)</span><br><span class="line">    response.write(&#96;你访问的页面不存在&#96;)</span><br><span class="line">    response.end()</span><br><span class="line">&#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">server.listen(port)</span><br><span class="line">console.log(</span><br><span class="line">&quot;监听 &quot; +</span><br><span class="line">    port +</span><br><span class="line">    &quot; 成功\n请用在空中转体720度然后用电饭煲打开 http:&#x2F;&#x2F;localhost:&quot; +</span><br><span class="line">    port</span><br><span class="line">)</span><br></pre></td></tr></table></figure></li>
-</ul>
-]]></content>
-      <tags>
-        <tag>AJAX</tag>
       </tags>
   </entry>
   <entry>
@@ -1043,31 +1055,83 @@
       </tags>
   </entry>
   <entry>
-    <title></title>
-    <url>/2021/03/10/ceshi/</url>
-    <content><![CDATA[<p>1111</p>
+    <title>跨域 CORS和JSON</title>
+    <url>/2021/03/09/ajax/</url>
+    <content><![CDATA[<ol>
+<li>概述</li>
+</ol>
+<p>AJAX：Asynchronous JavaScript + XML（）</p>
+<ul>
+<li>AJAX 是浏览器上的功能，浏览器可以发请求，收响应</li>
+<li>浏览器在 window 上加了一个 XMLHttpRequest 函数</li>
+</ul>
+<ul>
+<li>用这个构造函数（类）可以构造出一个对象<br>JS 通过它实现发请求，收响应<a id="more"></a>
+</li>
+</ul>
+<ol start="2">
+<li>使用</li>
+</ol>
+<ul>
+<li>JS 代码<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const request &#x3D; new XMLHttpRequest()</span><br><span class="line">request.open(&quot;GET&quot;, &quot;&#x2F;style.css&quot;)</span><br><span class="line">request.onreadystatechange &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">    console.log(request.readyState)</span><br><span class="line">    if (request.readyState &#x3D;&#x3D;&#x3D; 4) &#123;</span><br><span class="line">        if (request.status &gt;&#x3D; 200 &amp;&amp; request.status &lt; 300) &#123;</span><br><span class="line">             console.log(&quot;下载完成了&quot;)</span><br><span class="line">            const style &#x3D; document.createElement(&quot;style&quot;)</span><br><span class="line">            style.innerHTML &#x3D; request.response</span><br><span class="line">             document.head.appendChild(style)</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">        alert(&quot;加载 css 失败&quot;)</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br><span class="line">request.send()</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ul>
+<li><p>服务端：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;server.js</span><br><span class="line">var http &#x3D; require(&quot;http&quot;)</span><br><span class="line">var fs &#x3D; require(&quot;fs&quot;)</span><br><span class="line">var url &#x3D; require(&quot;url&quot;)</span><br><span class="line">var port &#x3D; process.argv[2]</span><br><span class="line"></span><br><span class="line">if (!port) &#123;</span><br><span class="line">console.log(&quot;请指定端口号好不啦？\nnode server.js 8888 这样不会吗？&quot;)</span><br><span class="line">process.exit(1)</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">var server &#x3D; http.createServer(function (request, response) &#123;</span><br><span class="line">var parsedUrl &#x3D; url.parse(request.url, true)</span><br><span class="line">var pathWithQuery &#x3D; request.url</span><br><span class="line">var queryString &#x3D; &quot;&quot;</span><br><span class="line">if (pathWithQuery.indexOf(&quot;?&quot;) &gt;&#x3D; 0) &#123;</span><br><span class="line">    queryString &#x3D; pathWithQuery.substring(pathWithQuery.indexOf(&quot;?&quot;))</span><br><span class="line">&#125;</span><br><span class="line">var path &#x3D; parsedUrl.pathname</span><br><span class="line">var query &#x3D; parsedUrl.query</span><br><span class="line">var method &#x3D; request.method</span><br><span class="line"></span><br><span class="line">console.log(&quot;有个傻子发请求过来啦！路径（带查询参数）为：&quot; + pathWithQuery)</span><br><span class="line"></span><br><span class="line">if (path &#x3D;&#x3D;&#x3D; &quot;&#x2F;index.html&quot;) &#123;</span><br><span class="line">    response.statusCode &#x3D; 200</span><br><span class="line">    response.setHeader(&quot;Content-Type&quot;, &quot;text&#x2F;html;charset&#x3D;utf-8&quot;)</span><br><span class="line">    let string &#x3D; fs.readFileSync(&quot;public&#x2F;index.html&quot;).toString()</span><br><span class="line">    const page1 &#x3D; fs.readFileSync(&quot;db&#x2F;page1.json&quot;).toString()</span><br><span class="line">    const array &#x3D; JSON.parse(page1)</span><br><span class="line">    const result &#x3D; array.map((item) &#x3D;&gt; &#96;&lt;li&gt;$&#123;item.id&#125;&lt;&#x2F;li&gt;&#96;).join(&quot;&quot;)</span><br><span class="line">    string &#x3D; string.replace(&quot;&#123;&#123;page1&#125;&#125;&quot;, &#96;&lt;ul id&#x3D;&quot;aa&quot;&gt;$&#123;result&#125;&lt;&#x2F;ul&gt;&#96;)</span><br><span class="line">    response.write(string)</span><br><span class="line">    response.end()</span><br><span class="line">&#125; else &#123;</span><br><span class="line">    response.statusCode &#x3D; 404</span><br><span class="line">    response.setHeader(&quot;Content-Type&quot;, &quot;text&#x2F;css;charset&#x3D;utf-8&quot;)</span><br><span class="line">    response.write(&#96;你访问的页面不存在&#96;)</span><br><span class="line">    response.end()</span><br><span class="line">&#125;</span><br><span class="line">&#125;)</span><br><span class="line"></span><br><span class="line">server.listen(port)</span><br><span class="line">console.log(</span><br><span class="line">&quot;监听 &quot; +</span><br><span class="line">    port +</span><br><span class="line">    &quot; 成功\n请用在空中转体720度然后用电饭煲打开 http:&#x2F;&#x2F;localhost:&quot; +</span><br><span class="line">    port</span><br><span class="line">)</span><br></pre></td></tr></table></figure></li>
+</ul>
 ]]></content>
+      <tags>
+        <tag>AJAX</tag>
+      </tags>
   </entry>
   <entry>
-    <title>jQuery</title>
-    <url>/2021/03/10/jQuery/</url>
-    <content><![CDATA[<p>jQuery 是一个轻量级的 JavaScript 函数库。<br>它的基本设计思想和主要用法，就是”<strong>选择某个网页元素，然后对其进行某种操作</strong>“。<br><br></p>
-<h3 id="jQuery-如何获取元素"><a href="#jQuery-如何获取元素" class="headerlink" title="jQuery 如何获取元素"></a>jQuery 如何获取元素</h3><p>使用 jQuery 的第一步，往往就是将一个选择表达式，放进构造函数 jQuery()（简写为$），然后得到被选中的元素<br><br><br><strong>选择表达式</strong>：</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$(document) &#x2F;&#x2F;选择整个文档对象</span><br><span class="line">$(&#39;#myId&#39;) &#x2F;&#x2F;选择ID为myId的网页元素</span><br><span class="line">$(&#39;div.myClass&#39;) &#x2F;&#x2F; 选择class为myClass的div元素</span><br><span class="line">$(&#39;a:first&#39;) &#x2F;&#x2F;选择网页中第一个a元素</span><br><span class="line">$(&#39;tr:odd&#39;) &#x2F;&#x2F;选择表格的奇数行</span><br><span class="line">$(&#39;#myForm :input&#39;) &#x2F;&#x2F; 选择表单中的input元素</span><br></pre></td></tr></table></figure>
-<p>对结果进行筛选</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$(&#39;div&#39;).has(&#39;p&#39;); &#x2F;&#x2F; 选择包含p元素的div元素</span><br><span class="line">$(&#39;div&#39;).not(&#39;.myClass&#39;); &#x2F;&#x2F;选择class不等于myClass的div元素</span><br><span class="line">$(&#39;div&#39;).filter(&#39;.myClass&#39;); &#x2F;&#x2F;选择class等于myClass的div元素</span><br></pre></td></tr></table></figure>
-<h3 id="jQuery-的链式操作"><a href="#jQuery-的链式操作" class="headerlink" title="jQuery 的链式操作"></a>jQuery 的链式操作</h3><p>选中网页元素以后，可以对它进行一系列操作，并且所有操作可以连接在一起，以链条的形式写出来</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$(&#39;div&#39;).find(&#39;h3&#39;).eq(2).html(&#39;Hello&#39;)</span><br></pre></td></tr></table></figure>
-<p>原理就是，每一步的 jQuery 操作，返回的都是一个 jQuery 对象<br><br><br>jQuery 提供 end()方法,返回上一次操作的结果</p>
-<h3 id="jQuery-如何创建元素"><a href="#jQuery-如何创建元素" class="headerlink" title="jQuery 如何创建元素"></a>jQuery 如何创建元素</h3><p>创建新元素只需要把新元素直接传入 jQuery 的构造函数</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$(&#39;&lt;p&gt;Hello&lt;&#x2F;p&gt;&#39;);</span><br><span class="line">$(&#39;&lt;li class&#x3D;&quot;new&quot;&gt;new list item&lt;&#x2F;li&gt;&#39;);</span><br><span class="line">$(&#39;ul&#39;).append(&#39;&lt;li&gt;list item&lt;&#x2F;li&gt;&#39;);</span><br></pre></td></tr></table></figure>
-<h3 id="jQuery-移动元素"><a href="#jQuery-移动元素" class="headerlink" title="jQuery 移动元素"></a>jQuery 移动元素</h3><p>一个方法是直接移动该元素，另一个方法是移动其他元素，使得目标元素达到我们想要的位置。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$(&#39;div&#39;).insertAfter($(&#39;p&#39;));  &#x2F;&#x2F;把div元素移动p元素后面,返回div元素</span><br><span class="line">$(&#39;p&#39;).after($(&#39;div&#39;));  &#x2F;&#x2F;把p元素加到div元素前面，返回p元素</span><br></pre></td></tr></table></figure>
-<h3 id="jQuery-修改元素属性"><a href="#jQuery-修改元素属性" class="headerlink" title="jQuery 修改元素属性"></a>jQuery 修改元素属性</h3><p>jQuery attr() 方法用于获取或修改元素属性值</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$(&quot;#id&quot;).attr(&quot;href&quot;,&quot;http:&#x2F;&#x2F;www.xxx.com&quot;);</span><br><span class="line">$(&quot;#runoob&quot;).attr(&#123;</span><br><span class="line">     &quot;href&quot; : &quot;www.xxx.com&quot;,</span><br><span class="line">     &quot;title&quot; : &quot;jQuery&quot;</span><br><span class="line">&#125;); &#x2F;&#x2F;同时设置多个属性</span><br></pre></td></tr></table></figure>]]></content>
+    <title>canvas</title>
+    <url>/2021/03/09/canvas/</url>
+    <content><![CDATA[<h2 id="canvas"><a href="#canvas" class="headerlink" title="canvas"></a>canvas</h2><p><code>&lt;canvas&gt;</code>元素可被用来通过 JS 绘制图形动画</p>
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><ol>
+<li><p>canvas 标签 （自带宽高属性）</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;canvas id&#x3D;&#39;canvas&#39; width:&quot;100&quot; height:&quot;100&quot;&gt;&lt;&#x2F;canvas&gt;</span><br></pre></td></tr></table></figure></li>
+<li><p>JS</p>
+<p>创建 canvas 画布</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">let canvas &#x3D; document.getElementById(&#39;canvas&#39;);</span><br><span class="line">let ctx &#x3D; canvas.getContext(&#39;2d&#39;);</span><br></pre></td></tr></table></figure></li>
+<li><p>常用属性</p>
+</li>
+</ol>
+<ul>
+<li><p>绘制矩形:</p>
+<ul>
+<li>填充：fillRect(x,y,width,height)</li>
+<li>边框：strokeRect</li>
+<li>清除指定矩形区域 <code>clearRect(x, y, width, height)</code></li>
+</ul>
+</li>
+</ul>
+]]></content>
       <tags>
-        <tag>DOM</tag>
-        <tag>库</tag>
+        <tag>HTML</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Vue响应式原理</title>
+    <url>/2021/03/11/Vue%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86/</url>
+    <content><![CDATA[<h4 id="一、原理"><a href="#一、原理" class="headerlink" title="一、原理"></a>一、原理</h4><p><strong><code>Vue</code>会遍历<code>data</code>对象的所有<code>property</code>，并使用<code>Object.defineProperty</code>把这些<code>property</code>全部转为<code>getter/setter</code>。通过<code>getter/setter</code>让 Vue 能够追踪依赖，在<code>property</code>被访问和修改时通知变更。</strong></p>
+ <a id="more"></a>
+
+<h4 id="二、Object-defineProperty-和-getter、setter"><a href="#二、Object-defineProperty-和-getter、setter" class="headerlink" title="二、Object.defineProperty 和 getter、setter"></a>二、Object.defineProperty 和 getter、setter</h4><p><code>Object.defineProperty</code>方法会直接在一个对象上定义一个新属性，或者修改一个对象的现有属性，并返回此对象。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"> let data1 &#x3D; &#123;&#125;;</span><br><span class="line">Object.defineProperty(data1, &quot;n&quot;, &#123;</span><br><span class="line">  value: 0</span><br><span class="line">&#125;);</span><br><span class="line">console.log(data1.n);  &#x2F;&#x2F;0</span><br></pre></td></tr></table></figure>
+<br>
+
+<p><code>getter/setter</code>用于对属性的读写进行监控</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">let myData2 &#x3D; &#123; n: 0 &#125;;</span><br><span class="line">let data2 &#x3D; proxy(&#123; data: myData2 &#125;); &#x2F;&#x2F; 括号里是匿名对象，无法访问</span><br><span class="line"></span><br><span class="line">function proxy(&#123; data &#125;) &#123;</span><br><span class="line">  let value &#x3D; data.n;</span><br><span class="line">  Object.defineProperty(data, &quot;n&quot;, &#123;</span><br><span class="line">    get() &#123;</span><br><span class="line">      return value;</span><br><span class="line">    &#125;,</span><br><span class="line">    set(newValue) &#123;</span><br><span class="line">      if (newValue &lt; 0) return;</span><br><span class="line">      value &#x3D; newValue;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">  &#x2F;&#x2F;监听 data</span><br><span class="line"></span><br><span class="line">  const obj &#x3D; &#123;&#125;;</span><br><span class="line">  Object.defineProperty(obj, &quot;n&quot;, &#123;</span><br><span class="line">    get() &#123;</span><br><span class="line">      return data.n;</span><br><span class="line">    &#125;,</span><br><span class="line">    set(value) &#123;</span><br><span class="line">     if (newValue &lt; 0) return;</span><br><span class="line">      data.n &#x3D; value;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">  return obj; &#x2F;&#x2F; obj 就是代理</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">console.log(data2.n);	&#x2F;&#x2F;0</span><br><span class="line">myData2.n &#x3D; -1;</span><br><span class="line">console.log(data2.n);	&#x2F;&#x2F;0</span><br><span class="line">myData2.n &#x3D; 1;</span><br><span class="line">console.log(data2.n);	&#x2F;&#x2F;1</span><br></pre></td></tr></table></figure>
+<br>
+
+<p><strong>当<code>let vm=new Vue(&#123;data:myData&#125;)</code>时，会让 vm 成为 Vue 的代理，对 myData 的所有属性进行监控，使得 myData 的属性变化的时候渲染页面。</strong></p>
+<h4 id="三、总结"><a href="#三、总结" class="headerlink" title="三、总结"></a>三、总结</h4><p><strong>Vue 的数据响应式，是通过<code>Object.defineProperty</code>将对象所有的属性转化为<code>getter/setter</code>来监控数据变化，即时渲染页面。</strong></p>
+<p><strong>注意</strong>：Vue 不能检测到对象属性的添加或删除，解决方法是手动调用 Vue.set 或者 this.$set<br><a href="https://cn.vuejs.org/v2/guide/reactivity.html#%E5%AF%B9%E4%BA%8E%E5%AF%B9%E8%B1%A1">文档</a></p>
+]]></content>
+      <tags>
+        <tag>框架</tag>
+        <tag>Vue</tag>
       </tags>
   </entry>
   <entry>
@@ -1154,6 +1218,30 @@
       <tags>
         <tag>工具</tag>
         <tag>webpack</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>jQuery</title>
+    <url>/2021/03/10/jQuery/</url>
+    <content><![CDATA[<p>jQuery 是一个轻量级的 JavaScript 函数库。<br>它的基本设计思想和主要用法，就是”<strong>选择某个网页元素，然后对其进行某种操作</strong>“。<br><br></p>
+<a id="more"></a>
+
+<h3 id="jQuery-如何获取元素"><a href="#jQuery-如何获取元素" class="headerlink" title="jQuery 如何获取元素"></a>jQuery 如何获取元素</h3><p>使用 jQuery 的第一步，往往就是将一个选择表达式，放进构造函数 jQuery()（简写为$），然后得到被选中的元素<br><br><br><strong>选择表达式</strong>：</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$(document) &#x2F;&#x2F;选择整个文档对象</span><br><span class="line">$(&#39;#myId&#39;) &#x2F;&#x2F;选择ID为myId的网页元素</span><br><span class="line">$(&#39;div.myClass&#39;) &#x2F;&#x2F; 选择class为myClass的div元素</span><br><span class="line">$(&#39;a:first&#39;) &#x2F;&#x2F;选择网页中第一个a元素</span><br><span class="line">$(&#39;tr:odd&#39;) &#x2F;&#x2F;选择表格的奇数行</span><br><span class="line">$(&#39;#myForm :input&#39;) &#x2F;&#x2F; 选择表单中的input元素</span><br></pre></td></tr></table></figure>
+<p>对结果进行筛选</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$(&#39;div&#39;).has(&#39;p&#39;); &#x2F;&#x2F; 选择包含p元素的div元素</span><br><span class="line">$(&#39;div&#39;).not(&#39;.myClass&#39;); &#x2F;&#x2F;选择class不等于myClass的div元素</span><br><span class="line">$(&#39;div&#39;).filter(&#39;.myClass&#39;); &#x2F;&#x2F;选择class等于myClass的div元素</span><br></pre></td></tr></table></figure>
+<h3 id="jQuery-的链式操作"><a href="#jQuery-的链式操作" class="headerlink" title="jQuery 的链式操作"></a>jQuery 的链式操作</h3><p>选中网页元素以后，可以对它进行一系列操作，并且所有操作可以连接在一起，以链条的形式写出来</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$(&#39;div&#39;).find(&#39;h3&#39;).eq(2).html(&#39;Hello&#39;)</span><br></pre></td></tr></table></figure>
+<p>原理就是，每一步的 jQuery 操作，返回的都是一个 jQuery 对象<br><br><br>jQuery 提供 end()方法,返回上一次操作的结果</p>
+<h3 id="jQuery-如何创建元素"><a href="#jQuery-如何创建元素" class="headerlink" title="jQuery 如何创建元素"></a>jQuery 如何创建元素</h3><p>创建新元素只需要把新元素直接传入 jQuery 的构造函数</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$(&#39;&lt;p&gt;Hello&lt;&#x2F;p&gt;&#39;);</span><br><span class="line">$(&#39;&lt;li class&#x3D;&quot;new&quot;&gt;new list item&lt;&#x2F;li&gt;&#39;);</span><br><span class="line">$(&#39;ul&#39;).append(&#39;&lt;li&gt;list item&lt;&#x2F;li&gt;&#39;);</span><br></pre></td></tr></table></figure>
+<h3 id="jQuery-移动元素"><a href="#jQuery-移动元素" class="headerlink" title="jQuery 移动元素"></a>jQuery 移动元素</h3><p>一个方法是直接移动该元素，另一个方法是移动其他元素，使得目标元素达到我们想要的位置。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$(&#39;div&#39;).insertAfter($(&#39;p&#39;));  &#x2F;&#x2F;把div元素移动p元素后面,返回div元素</span><br><span class="line">$(&#39;p&#39;).after($(&#39;div&#39;));  &#x2F;&#x2F;把p元素加到div元素前面，返回p元素</span><br></pre></td></tr></table></figure>
+<h3 id="jQuery-修改元素属性"><a href="#jQuery-修改元素属性" class="headerlink" title="jQuery 修改元素属性"></a>jQuery 修改元素属性</h3><p>jQuery attr() 方法用于获取或修改元素属性值</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">$(&quot;#id&quot;).attr(&quot;href&quot;,&quot;http:&#x2F;&#x2F;www.xxx.com&quot;);</span><br><span class="line">$(&quot;#runoob&quot;).attr(&#123;</span><br><span class="line">     &quot;href&quot; : &quot;www.xxx.com&quot;,</span><br><span class="line">     &quot;title&quot; : &quot;jQuery&quot;</span><br><span class="line">&#125;); &#x2F;&#x2F;同时设置多个属性</span><br></pre></td></tr></table></figure>]]></content>
+      <tags>
+        <tag>DOM</tag>
+        <tag>库</tag>
       </tags>
   </entry>
   <entry>
@@ -1256,6 +1344,8 @@
     <title>异步与Promise</title>
     <url>/2021/03/10/%E5%BC%82%E6%AD%A5%E5%92%8CPromise/</url>
     <content><![CDATA[<h3 id="一、异步与同步"><a href="#一、异步与同步" class="headerlink" title="一、异步与同步"></a>一、异步与同步</h3><p>同步:一定要当前任务执行完，才会执行下一个任务。</p>
+ <a id="more"></a>
+
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const fn1&#x3D;()&#x3D;&gt;&#123;</span><br><span class="line">  return &#39;结果&#39;</span><br><span class="line">&#125;</span><br><span class="line">const fn2&#x3D;()&#x3D;&gt;&#123;&#125;</span><br><span class="line">let x&#x3D;fn1()  &#x2F;&#x2F;拿到fn1的返回值之后才会执行下一句</span><br><span class="line">fn2()</span><br></pre></td></tr></table></figure>
 <p>异步：不等任务执行完，就执行下一个任务</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">function fn1 &#x3D; function(callback)&#123;</span><br><span class="line">  const result &#x3D; setTimeout(function()&#123;</span><br><span class="line">    callback(&#39;结果&#39;)</span><br><span class="line">  &#125;, 0)</span><br><span class="line">  return result</span><br><span class="line">&#125;</span><br><span class="line">fn1(function callback(x)&#123;</span><br><span class="line">  console.log(x)  &#x2F;&#x2F;别的代码执行完，再回来执行</span><br><span class="line">&#125;)</span><br><span class="line">fn2() &#x2F;&#x2F;先执行这一句</span><br></pre></td></tr></table></figure>
@@ -1312,15 +1402,6 @@
       </tags>
   </entry>
   <entry>
-    <title>闭包和立即执行函数</title>
-    <url>/2021/03/10/%E7%AE%97%E6%B3%95%E4%B8%8E%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</url>
-    <content><![CDATA[]]></content>
-      <tags>
-        <tag>闭包</tag>
-        <tag>函数</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>虚拟DOM</title>
     <url>/2021/03/11/%E8%99%9A%E6%8B%9Fdom/</url>
     <content><![CDATA[<h2 id="一、虚拟-DOM"><a href="#一、虚拟-DOM" class="headerlink" title="一、虚拟 DOM"></a>一、虚拟 DOM</h2><h4 id="1、虚拟-DOM-是什么？"><a href="#1、虚拟-DOM-是什么？" class="headerlink" title="1、虚拟 DOM 是什么？"></a>1、虚拟 DOM 是什么？</h4><p>一个能代表 DOM 树的对象，通常含有标签名、标签上的属性，事件监听以及其他属性</p>
@@ -1372,6 +1453,15 @@
       <tags>
         <tag>框架</tag>
         <tag>React</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>闭包和立即执行函数</title>
+    <url>/2021/03/10/%E7%AE%97%E6%B3%95%E4%B8%8E%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</url>
+    <content><![CDATA[]]></content>
+      <tags>
+        <tag>闭包</tag>
+        <tag>函数</tag>
       </tags>
   </entry>
   <entry>
@@ -1441,5 +1531,159 @@
         <tag>闭包</tag>
         <tag>函数</tag>
       </tags>
+  </entry>
+  <entry>
+    <title>React 基本用法</title>
+    <url>/2021/03/12/%E9%97%AD%E5%8C%85%E5%92%8C%E7%AB%8B%E5%8D%B3%E6%89%A7%E8%A1%8C%E5%87%BD%E6%95%B0%20copy/</url>
+    <content><![CDATA[<h3 id="一、createElement-和-JSX"><a href="#一、createElement-和-JSX" class="headerlink" title="一、createElement 和 JSX"></a>一、createElement 和 JSX</h3><ol>
+<li>createElement</li>
+</ol>
+<p>创建并返回指定类型的新 React 元素。其中的类型参数既可以是标签名字符串（如 ‘div’ 或 ‘span’），也可以是 React 组件 类型 （class 组件或函数组件）,代码编写复杂</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const element &#x3D; React.createElement(</span><br><span class="line">  &#39;h1&#39;,</span><br><span class="line">  &#123;className: &#39;greeting&#39;&#125;,</span><br><span class="line">  &#39;Hello, world!&#39;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<ol start="2">
+<li><p>JSX<br>下面代码会被编译为和上面相同的代码，完全等价</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const element &#x3D; (</span><br><span class="line">&lt;h1 className&#x3D;&quot;greeting&quot;&gt;</span><br><span class="line">    Hello, world!</span><br><span class="line">&lt;&#x2F;h1&gt;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
+<p>注意：</p>
+<ul>
+<li>在 JSX 中给元素添加类, 需要使用 className 代替 class</li>
+<li>JSX 中可以直接使用 {} 中间写 JS 代码<a id="more"></a>
+
+</li>
+</ul>
+</li>
+</ol>
+<h3 id="二、class-组件和生命周期钩子"><a href="#二、class-组件和生命周期钩子" class="headerlink" title="二、class 组件和生命周期钩子"></a>二、class 组件和生命周期钩子</h3><p>1、 class 组件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class Demo extends React.Component &#123;</span><br><span class="line">constructor(props) &#123;</span><br><span class="line">    super(props);   &#x2F;&#x2F;必须用super调用父类的constructor</span><br><span class="line">    this.state &#x3D; &#123;n: 1&#125;;</span><br><span class="line">&#125;</span><br><span class="line">add()&#123;this.setSTate((state)&#x3D;&gt;    &#x2F;&#x2F;使用函数</span><br><span class="line">     return &#123;n:this.state.n+1&#125;)&#125;</span><br><span class="line">render() &#123;</span><br><span class="line">    return (</span><br><span class="line">    &lt;div&gt;</span><br><span class="line">        &#123;this.state.n&#125;</span><br><span class="line">        &lt;button onClick&#x3D;&#123;()&#x3D;&gt;this.add()&#125;&gt;+1&lt;&#x2F;button&gt;</span><br><span class="line">    &lt;&#x2F;div&gt;</span><br><span class="line">    );</span><br><span class="line">&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>2、 props 和 state</p>
+<ul>
+<li><p>props</p>
+<ul>
+<li>给组件传递数据，一般用在父子组件之间</li>
+<li>React 把传递给组件的属性转化为一个对象并交给 props</li>
+<li>props 是只读的，无法给 props 添加或修改属性</li>
+<li>props.children：获取组件的内容</li>
+</ul>
+</li>
+<li><p>state</p>
+<ul>
+<li>用来给组件提供组件内部使用的数据</li>
+<li>只有通过 class 创建的组件才有，函数组件使用 useState</li>
+<li>setState 是异步的，改变之后马上取取不到最新的值</li>
+<li>setState 会自动合并第一层属性，useState 不会</li>
+</ul>
+</li>
+</ul>
+<p>3、生命周期钩子</p>
+<ol>
+<li><p>constructor</p>
+<ul>
+<li>初始化 props、state</li>
+<li>此时不能调用 setState</li>
+<li>bind this</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">constructor(props) &#123;     &#x2F;&#x2F;如果只是初始化props 可以省略</span><br><span class="line">    super(props);</span><br><span class="line">    this.state &#x3D; &#123;n: 1&#125;;</span><br><span class="line">    this.onClick&#x3D;this.onClick.bind(this)</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F;等价于 写在 constructor外面</span><br><span class="line">onClick&#x3D;()&#x3D;&gt;&#123;&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>shouldComponentUpdate</p>
+</li>
+</ol>
+<ul>
+<li>返回 false 阻止 UI 更新</li>
+<li>返回 true 不阻止</li>
+<li>作用：允许手动判断是否需要更新组件，避免不必要的更新</li>
+<li>如果返回值为 false，那么，后续 render()方法不会被调用</li>
+<li>可以使用 React.PureComponent 代替 React.Component,两者的区别在于 React.Component 并未实现 shouldComponentUpdate()，而 React.PureComponent 中以浅层对比 prop 和 state 的方式来实现了该函数。<a href="https://zh-hans.reactjs.org/docs/react-api.html#reactcomponent">官方文档</a></li>
+</ul>
+<ol start="3">
+<li>render</li>
+</ol>
+<ul>
+<li>展示视图</li>
+<li>只能有一个根元素</li>
+<li>多个根元素可以使用&lt;React.Fragment&gt;简写为 &lt;&gt;&lt;/&gt;</li>
+<li>函数能够执行多次，只要组件的属性或状态改变了，这个方法就会重新执行</li>
+</ul>
+<ol start="4">
+<li>componentDidMount</li>
+</ol>
+<ul>
+<li>组件已经挂载到页面中</li>
+<li>可以进行 DOM 操作，比如获取 DOM 元素的宽高属性</li>
+<li>可以<strong>发送请求</strong>获取数据（<strong>官方推荐</strong>）</li>
+</ul>
+<ol start="5">
+<li>componentDidUpdate</li>
+</ol>
+<ul>
+<li><p>组件已经更新</p>
+</li>
+<li><p>不能修改状态 否则会循环渲染（除非条件判断）</p>
+</li>
+<li><p>首次渲染不会执行此方法</p>
+</li>
+<li><p>shouldComponentUpdate() 返回值为 false，则不会调用 componentDidUpdate()。</p>
+</li>
+<li><p>参数：旧的属性和状态对象</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">componentDidUpdate(prevProps, prevState, snapshot)</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ol start="6">
+<li>componentWillUnmount()</li>
+</ol>
+<ul>
+<li>组件卸载,组件一辈子只能执行一次</li>
+<li>执行清理工作，清除定时器等</li>
+</ul>
+<h3 id="三、函数组件和-hooks"><a href="#三、函数组件和-hooks" class="headerlink" title="三、函数组件和 hooks"></a>三、函数组件和 hooks</h3><p>1、函数组件</p>
+<pre><code><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">function Demo(props) &#123;</span><br><span class="line">const [n,setN]&#x3D;React.useState(0)</span><br><span class="line">return &lt;h1&gt;Hello, &#123;props.name&#125;&lt;&#x2F;h1&gt;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></code></pre>
+<p>2、hooks</p>
+<ul>
+<li><p>useState</p>
+<ul>
+<li>使用状态</li>
+<li>不可局部更新，如果 state 是一个对象，并不会合并属性，可以使用…操作符</li>
+<li>对象要改变地址，React 才认为数据改变了</li>
+<li>初始化和 set 的时候可以使用函数</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const [n,setN]&#x3D;React.useState(()&#x3D;&gt;&#123;return initialState&#125;))</span><br><span class="line"></span><br><span class="line">setN(x&#x3D;&gt;x+1)</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ul>
+<li><p>useReducer</p>
+<p>useState 替代方案</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const initialState &#x3D; &#123;count: 0&#125;;      &#x2F;&#x2F;创建初始值</span><br><span class="line">function reducer(state, action) &#123;     &#x2F;&#x2F;创建所有操作</span><br><span class="line">  switch (action.type) &#123;</span><br><span class="line">      case &#39;increment&#39;:</span><br><span class="line">      return &#123;count: state.count + 1&#125;;</span><br><span class="line">      case &#39;decrement&#39;:</span><br><span class="line">      return &#123;count: state.count - 1&#125;;</span><br><span class="line">      default:</span><br><span class="line">      throw new Error();</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line"> function Counter() &#123;</span><br><span class="line">  const [state, dispatch] &#x3D; useReducer(reducer, initialState);    &#x2F;&#x2F;传给useReducer，获取读写操作</span><br><span class="line">  return (</span><br><span class="line">      &lt;&gt;</span><br><span class="line">      Count: &#123;state.count&#125;</span><br><span class="line">       &#x2F;&#x2F;调用对应操作</span><br><span class="line">      &lt;button onClick&#x3D;&#123;() &#x3D;&gt; dispatch(&#123;type: &#39;decrement&#39;&#125;)&#125;&gt;-&lt;&#x2F;button&gt;</span><br><span class="line">      &lt;button onClick&#x3D;&#123;() &#x3D;&gt; dispatch(&#123;type: &#39;increment&#39;&#125;)&#125;&gt;+&lt;&#x2F;button&gt;</span><br><span class="line">      &lt;&#x2F;&gt;</span><br><span class="line">  );</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>useContext</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const X&#x3D;React.createContext(null)     &#x2F;&#x2F;创建上下文</span><br><span class="line">function App()&#123;</span><br><span class="line">    const [n,setN]&#x3D;useState(0)</span><br><span class="line">    return (</span><br><span class="line">        &lt;X.Provider value&#x3D;&#123;&#123;n,setN&#125;&#125;&gt; &#x2F;&#x2F;划定区域 绑定数据</span><br><span class="line">          &lt;Demo1&#x2F;&gt;</span><br><span class="line">        &lt;&#x2F;X.Provider&gt;</span><br><span class="line">    )</span><br><span class="line">&#125;</span><br><span class="line">function Demo1()&#123;</span><br><span class="line">    return (</span><br><span class="line">        &lt;Demo2&#x2F;&gt;</span><br><span class="line">    )</span><br><span class="line">&#125;</span><br><span class="line">function Demo2()&#123;</span><br><span class="line">    const &#123;n,setN&#125;&#x3D;useContext(X)     &#x2F;&#x2F;拿到数据</span><br><span class="line">    return (</span><br><span class="line">        &lt;div&gt;</span><br><span class="line">          &#123;n&#125;</span><br><span class="line">          &lt;button onClick&#x3D;&#123;()&#x3D;&gt;setN(x&#x3D;&gt;x+1)&#125;&gt;+1&lt;&#x2F;&gt;</span><br><span class="line">        &lt;&#x2F;div&gt;</span><br><span class="line">    )</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>*使用 useReducer 和 useContext 代替 Redux**<br><a href="https://codesandbox.io/s/interesting-volhard-lfxpm">代码</a></p>
+</li>
+</ul>
+<ul>
+<li><p>useEffect</p>
+<p>在函数组件中执行副作用操作</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">useEffect(()&#x3D;&gt;&#123;&#125;,[])    &#x2F;&#x2F;只在第一次渲染执行 相当于componentDidMount</span><br><span class="line">useEffect(()&#x3D;&gt;&#123;&#125;,[x])    &#x2F;&#x2F;在数组中依赖变化时执行</span><br><span class="line">useEffect(()&#x3D;&gt;&#123;&#125;)</span><br><span class="line">useEffect(()&#x3D;&gt;&#123;</span><br><span class="line">    return ()&#x3D;&gt;&#123;&#125;  &#x2F;&#x2F; 在组件卸载时执行，清除计时器之类的操作</span><br><span class="line">&#125;)      &#x2F;&#x2F;每次渲染都执行</span><br></pre></td></tr></table></figure>
+<p>useLayoutEffect:它会在所有的 DOM 变更之后同步调用 effect。可以使用它来读取 DOM 布局并同步触发重渲染。在浏览器执行绘制之前，useLayoutEffect 内部的更新计划将被同步刷新</p>
+</li>
+</ul>
+<ul>
+<li><p>useMemo、React.memo、useCallback</p>
+<ol>
+<li>React.memo：组件在相同 props 的情况下渲染相同的结果，那么你可以通过将其包装在 React.memo 中调用,props 不变就不会重新渲染，<strong>如果 prop 是一个复杂对象，可以使用 useMemo</strong><a href="https://zh-hans.reactjs.org/docs/react-api.html#reactmemo">文档</a></li>
+<li>把“创建”函数和依赖项数组作为参数传入 useMemo，它仅会在某个依赖项改变时才重新计算 memoized 值。类似 Vue 的 computed</li>
+<li>useCallback(fn, deps) 相当于 useMemo(() =&gt; fn, deps)。</li>
+</ol>
+</li>
+<li><p>useRef</p>
+<ul>
+<li>返回一个可变的 ref 对象，其 .current 属性被初始化为传入的参数（initialValue）。返回的 ref 对象在组件的整个生命周期内保持不变。</li>
+<li>React.forwardRef 会创建一个 React 组件，这个组件能够将其接受的 ref 属性转发到其组件树下的另一个组件中。<strong>让函数组件在接受 props 之外，再接受一个 ref</strong><a href="https://zh-hans.reactjs.org/docs/react-api.html#reactforwardref">文档</a></li>
+<li>useImperativeHandle 可以让你在使用 ref 时自定义暴露给父组件的实例值<a href="https://zh-hans.reactjs.org/docs/hooks-reference.html#useimperativehandle">文档</a></li>
+</ul>
+</li>
+<li><p>自定义 hook</p>
+<p>自定义 Hook 是一个函数，其名称以 “use” 开头，函数内部可以调用其他的 Hook。<a href="https://codesandbox.io/s/recursing-darkness-zuo4b">例子</a></p>
+</li>
+</ul>
+]]></content>
+  </entry>
+  <entry>
+    <title>React 基本用法</title>
+    <url>/2021/03/12/class/</url>
+    <content><![CDATA[<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class Person&#123;</span><br><span class="line">  constructor()&#123;</span><br><span class="line">    this.n&#x3D;()&#123;&#125;   &#x2F;&#x2F;方法在对象上</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">class Person&#123;</span><br><span class="line">  n&#x3D;()&#x3D;&gt;&#123;&#125;  &#x2F;&#x2F;new的时候也会出现在对象上</span><br><span class="line">  n()&#123;&#125; &#x2F;&#x2F;new的时候会出现在原型上</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
   </entry>
 </search>
