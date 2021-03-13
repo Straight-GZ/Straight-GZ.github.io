@@ -1,0 +1,467 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/1.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/1.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/1.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"github.com","root":"/","images":"/images","scheme":"Mist","version":"8.2.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+<meta name="description" content="一、create-react-app 创建项目  新建项目目录 create-react-app . –template typescript (在当前目录创建项目，支持 TS) yarn start   CSS normalize 文档  @import-normalize;  作用是让不同浏览器上的默认样式相近 css reset 重置默认样式   支持 sass文档   node-sass">
+<meta property="og:type" content="article">
+<meta property="og:title" content="番茄记账项目总结">
+<meta property="og:url" content="https://github.com/Straight-GZ/2021/03/13/%E8%AE%B0%E8%B4%A6%E9%A1%B9%E7%9B%AEReact%E7%89%88/index.html">
+<meta property="og:site_name" content="耿直">
+<meta property="og:description" content="一、create-react-app 创建项目  新建项目目录 create-react-app . –template typescript (在当前目录创建项目，支持 TS) yarn start   CSS normalize 文档  @import-normalize;  作用是让不同浏览器上的默认样式相近 css reset 重置默认样式   支持 sass文档   node-sass">
+<meta property="og:locale" content="zh_CN">
+<meta property="og:image" content="https://ftp.bmp.ovh/imgs/2021/03/44d801cafa948ab4.png">
+<meta property="article:published_time" content="2021-03-13T06:23:20.644Z">
+<meta property="article:modified_time" content="2021-03-13T06:23:20.644Z">
+<meta property="article:author" content="GENGZHI">
+<meta property="article:tag" content="项目">
+<meta property="article:tag" content="React">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://ftp.bmp.ovh/imgs/2021/03/44d801cafa948ab4.png">
+
+
+<link rel="canonical" href="https://github.com/Straight-GZ/2021/03/13/%E8%AE%B0%E8%B4%A6%E9%A1%B9%E7%9B%AEReact%E7%89%88/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>番茄记账项目总结 | 耿直</title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="耿直" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">耿直</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">111</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tag"><a href="/tags" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-project"><a href="/projects" rel="section"><i class="fa fa-th fa-fw"></i>项目</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives" rel="section"><i class="fas fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%80%E3%80%81create-react-app"><span class="nav-text">一、create-react-app</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BA%8C%E3%80%81-styled-components"><span class="nav-text">二、 styled-components</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%B8%89%E3%80%81React-Router"><span class="nav-text">三、React-Router</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%BC%95%E5%85%A5-svg"><span class="nav-text">引入 svg</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%87%AA%E5%AE%9A%E4%B9%89-hook"><span class="nav-text">自定义 hook</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%8F%97%E6%8E%A7%E7%BB%84%E4%BB%B6%E5%92%8C%E9%9D%9E%E5%8F%97%E6%8E%A7%E7%BB%84%E4%BB%B6"><span class="nav-text">受控组件和非受控组件</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="GENGZHI"
+      src="https://sf3-ttcdn-tos.pstatp.com/img/user-avatar/2a6595de8f44b1a5709798149c05b86c~300x300.image">
+  <p class="site-author-name" itemprop="name">GENGZHI</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+        
+          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Straight-GZ/2021/03/13/%E8%AE%B0%E8%B4%A6%E9%A1%B9%E7%9B%AEReact%E7%89%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://sf3-ttcdn-tos.pstatp.com/img/user-avatar/2a6595de8f44b1a5709798149c05b86c~300x300.image">
+      <meta itemprop="name" content="GENGZHI">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="耿直">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          番茄记账项目总结
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-03-13 14:23:20" itemprop="dateCreated datePublished" datetime="2021-03-13T14:23:20+08:00">2021-03-13</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h3 id="一、create-react-app"><a href="#一、create-react-app" class="headerlink" title="一、create-react-app"></a>一、create-react-app</h3><ol>
+<li><p>创建项目</p>
+<ul>
+<li>新建项目目录</li>
+<li>create-react-app . –template typescript (在当前目录创建项目，支持 TS)</li>
+<li>yarn start</li>
+</ul>
+</li>
+<li><p>CSS normalize <a target="_blank" rel="noopener" href="https://create-react-app.dev/docs/adding-css-reset">文档</a></p>
+<ul>
+<li><code>@import-normalize; </code></li>
+<li>作用是让不同浏览器上的默认样式相近</li>
+<li>css reset 重置默认样式</li>
+</ul>
+</li>
+<li><p>支持 sass<a target="_blank" rel="noopener" href="https://create-react-app.dev/docs/adding-typescript#installation">文档</a></p>
+<ul>
+<li><ol>
+<li>node-sass 下载速度慢，本地编译慢，使用 dart-sass 代替，但 React 不支持 dart-sass</li>
+</ol>
+</li>
+<li><code>yarn add node-sass@npm:dart-sass</code>:使用 dart-sass 代替 node-sass <a href="https://github.com/facebook/create-react-app/issues/5282">github</a></li>
+<li>或者在 package.json 配置，修改 dependencies 配置<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;node-sass&quot;: &quot;npm:dart-sass&quot;, &quot;dart-sass&quot;: &quot;^1.19.0&quot;</span><br></pre></td></tr></table></figure></li>
+<li>npm6.9 新功能 package alias</li>
+</ul>
+</li>
+<li><p>绝对引用 <a target="_blank" rel="noopener" href="https://create-react-app.dev/docs/importing-a-component/#absolute-imports">Importing a Component</a></p>
+<ul>
+<li>配置<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;tsconfig.json</span><br><span class="line">&quot;compilerOptions&quot;: &#123;&quot;baseUrl&quot;: &quot;src&quot;&#125;,</span><br><span class="line">&quot;include&quot;: [&quot;src&quot;]</span><br></pre></td></tr></table></figure></li>
+<li>使用：<code>import Button from &#39;components/Button&#39;;</code></li>
+</ul>
+</li>
+</ol>
+<ul>
+<li><a id="more"></a>
+
+</li>
+</ul>
+<h3 id="二、-styled-components"><a href="#二、-styled-components" class="headerlink" title="二、 styled-components"></a>二、 styled-components</h3><ul>
+<li><p>安装</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yarn add styled-components</span><br><span class="line">yarn add --dev @types&#x2F;styled-components</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ul>
+<li><p>使用</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">const Button&#x3D;styled.button&#96;</span><br><span class="line">    color:red</span><br><span class="line">&#96;</span><br></pre></td></tr></table></figure></li>
+<li><p>插件</p>
+<p>webstorm:styled-components<br>vscode:vscode-styled-components</p>
+</li>
+</ul>
+<h3 id="三、React-Router"><a href="#三、React-Router" class="headerlink" title="三、React-Router"></a>三、React-Router</h3><ul>
+<li>安装<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">yarn add react-router-dom</span><br><span class="line">yarn add @types&#x2F;react-router-dom</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ul>
+<li><p>引入</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">import &#123;HashRouter as Router, Switch, Route, Redirect&#125; from &quot;react-router-dom&quot;;</span><br></pre></td></tr></table></figure></li>
+<li><p>使用</p>
+<ul>
+<li>路由</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br></pre></td><td class="code"><pre><span class="line">  function App() &#123;</span><br><span class="line">      return (</span><br><span class="line">      &lt;Router&gt;</span><br><span class="line">        &lt;Switch&gt;</span><br><span class="line">            &lt;Redirect exact from &#x3D; &quot;&#x2F;&quot; to &#x3D; &quot;&#x2F;  money&quot;&#x2F;&gt;  &#x2F;&#x2F;重定向</span><br><span class="line">            &lt;Route exact path &#x3D; &quot;&#x2F;tags&quot;&gt;</span><br><span class="line">                &lt;Tags&#x2F;&gt;</span><br><span class="line">            &lt;&#x2F;Route&gt;</span><br><span class="line">            &lt;Route exact path &#x3D; &quot;&#x2F;tags&#x2F;:id&quot;&gt;</span><br><span class="line">                &lt;Tag&#x2F;&gt;</span><br><span class="line">            &lt;&#x2F;Route&gt;</span><br><span class="line">            &lt;Route exact path &#x3D; &quot;&#x2F;money&quot;&gt;</span><br><span class="line">                &lt;Money&#x2F;&gt;</span><br><span class="line">            &lt;&#x2F;Route&gt;</span><br><span class="line">            &lt;Route exact path &#x3D; &quot;&#x2F;statistics&quot;&gt;</span><br><span class="line">                &lt;Statistics&#x2F;&gt;</span><br><span class="line">            &lt;&#x2F;Route&gt;</span><br><span class="line">            &lt;Route exact path &#x3D; &quot;*&quot;&gt;  &#x2F;&#x2F;除了上面路径之外的404页面</span><br><span class="line">                &lt;NoMatch&#x2F;&gt;</span><br><span class="line">            &lt;&#x2F;Route&gt;</span><br><span class="line">        &lt;&#x2F;Switch&gt;</span><br><span class="line">      &lt;&#x2F;Router&gt;</span><br><span class="line">      );</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>Link 和 传参</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;tags.tsx</span><br><span class="line">import &#123;Link&#125; from &#39;react-router-dom&#39;;</span><br><span class="line">...</span><br><span class="line"> &lt;Link to &#x3D; &#123;&#39;&#x2F;tags&#x2F;&#39; + tag.id&#125;&gt;    &#x2F;&#x2F;通过url传递参数</span><br><span class="line">          &lt;span&gt;&#123;tag.name&#125;&lt;&#x2F;span&gt;</span><br><span class="line">          &lt;Icon name &#x3D; &#39;right&#39;&#x2F;&gt;</span><br><span class="line">        &lt;&#x2F;Link&gt;</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;tag.tsx</span><br><span class="line">import &#123;useHistory, useParams&#125; from &#39;react-router-dom&#39;;</span><br><span class="line">...</span><br><span class="line">let &#123;id: idString&#125; &#x3D; useParams&lt;Params&gt;();   &#x2F;&#x2F;通过useParams拿到</span><br><span class="line">...</span><br></pre></td></tr></table></figure></li>
+<li><p>useHistory</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">...</span><br><span class="line">const history &#x3D; useHistory();</span><br><span class="line">const onClickBack &#x3D; () &#x3D;&gt; &#123;history.goBack();&#125;;    &#x2F;&#x2F;goBack 返回上一级</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<ul>
+<li>replace：替换历史堆栈上的当前条目</li>
+<li>go:按条目移动历史堆栈中</li>
+<li>goBack:相当于 go(-1)</li>
+<li>goForward:相当于 go(1)</li>
+</ul>
+</li>
+</ul>
+</li>
+<li><p>NavLink</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"> &lt;NavLink to&#x3D;&quot;&#x2F;&quot; activeClassName&#x3D;&quot;selected&quot;&gt; &#x2F;&#x2F;被选中会有对应的class</span><br><span class="line">&lt;&#x2F;NavLink&gt;</span><br></pre></td></tr></table></figure>
+<h3 id="引入-svg"><a href="#引入-svg" class="headerlink" title="引入 svg"></a>引入 svg</h3></li>
+</ul>
+<ul>
+<li><code>yarn eject</code>拿到 webpack 配置</li>
+</ul>
+<ul>
+<li><p>安装<code>svg-sprite-loader</code> <code>svgo-loader</code></p>
+</li>
+<li><p>配置<br><img src="https://ftp.bmp.ovh/imgs/2021/03/44d801cafa948ab4.png"></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">	test: &#x2F;\.svg$&#x2F;,</span><br><span class="line">	use: [</span><br><span class="line">		&#123;loader: &#39;svg-sprite-loader&#39;, options: &#123;&#125;&#125;,</span><br><span class="line">		&#123;</span><br><span class="line">			loader: &#39;svgo-loader&#39;, options: &#123;</span><br><span class="line">				plugins: [</span><br><span class="line">					&#123;removeAttrs: &#123;attrs: &#39;fill&#39;&#125;&#125;,     &#x2F;&#x2F;删除fill属性(颜色)</span><br><span class="line">				]</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">	]</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<p><strong>tree shaking</strong> 导入未使用默认会被删除，这就导致 svg 引入之后需要使用才能显示在页面</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">import x from &#39;icons&#x2F;chart.svg&#39;</span><br><span class="line">&#x2F;&#x2F;console.log(x) 不加这行 icon不显示   或者使用 require(&#39;icons&#x2F;chart&#39;)</span><br><span class="line">&lt;svg&gt;</span><br><span class="line">    &lt;use xlinkHerf&#x3D;&#39;#chart&#39;&gt;</span><br><span class="line">&lt;&#x2F;svg&gt;</span><br></pre></td></tr></table></figure></li>
+<li><p>封装 Icon 组件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">import React from &#39;react&#39;;</span><br><span class="line"></span><br><span class="line">const importAll &#x3D; (requireContext: __WebpackModuleApi.RequireContext) &#x3D;&gt; requireContext.keys().forEach(requireContext);</span><br><span class="line">try &#123; importAll(require.context(&#39;icons&#39;, true, &#x2F;\.svg$&#x2F;));&#125; catch (error) &#123; console.log(error);&#125;        &#x2F;&#x2F;引入整个icons文件夹，避免一个一个引入</span><br><span class="line">type Props &#x3D; &#123;</span><br><span class="line">name?: string</span><br><span class="line">&#125; &amp; React.SVGAttributes&lt;SVGElement&gt;</span><br><span class="line">const Icon &#x3D; (props: Props) &#x3D;&gt; &#123;</span><br><span class="line">const &#123;name, children, className, ...rest&#125; &#x3D; props;</span><br><span class="line">return (</span><br><span class="line">    &lt;svg className &#x3D; &#123;cs(&#39;icon&#39;, className)&#125; &#123;...rest&#125;&gt;</span><br><span class="line">    &#123;props.name &amp;&amp; &lt;use xlinkHref &#x3D; &#123;&#39;#&#39; + props.name&#125;&#x2F;&gt;&#125;</span><br><span class="line">    &lt;&#x2F;svg&gt;</span><br><span class="line">);</span><br><span class="line">&#125;;</span><br><span class="line">export &#123;Icon&#125;;</span><br></pre></td></tr></table></figure>
+<p><code>__WebpackModuleApi</code> 报错 google 搜索 <code>yarn add @types/webpack-env</code>即解决</p>
+</li>
+<li><p>icon 的 onClick</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">type Props &#x3D; &#123;</span><br><span class="line">name?: string</span><br><span class="line">&#125; &amp; React.SVGAttributes&lt;SVGElement&gt;		&#x2F;&#x2F;类型继承SVG所有属性</span><br><span class="line">const Icon &#x3D; (props: Props) &#x3D;&gt; &#123;</span><br><span class="line">const &#123;name, children, className, ...rest&#125; &#x3D; props;</span><br><span class="line">return (</span><br><span class="line">    &#x2F;&#x2F;将外部传入的className和内部的放在一起</span><br><span class="line">    &lt;svg className &#x3D; &#123;&#96;icon $&#123;className&#125;&#96;&#125; &#123;...rest&#125;&gt;</span><br><span class="line">    &#123;props.name &amp;&amp; &lt;use xlinkHref &#x3D; &#123;&#39;#&#39; + props.name&#125;&#x2F;&gt;&#125;</span><br><span class="line">    &lt;&#x2F;svg&gt;</span><br><span class="line">);</span><br><span class="line">&#125;;</span><br><span class="line">export &#123;Icon&#125;;</span><br></pre></td></tr></table></figure>
+<p>但是，如果此时外部没有传入 className 属性，当前位置就会变成<code>undefined</code>，解决方法是可以用判断语句，或 classNames 库</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;使用判断</span><br><span class="line">&lt;svg className &#x3D; &#123;&#96;icon $&#123;className ? className : &#39;&#39;&#125;&#96;&#125; &#123;...rest&#125;&gt;</span><br><span class="line">  &#123;props.name &amp;&amp; &lt;use xlinkHref &#x3D; &#123;&#39;#&#39; + props.name&#125;&#x2F;&gt;&#125;</span><br><span class="line">&lt;&#x2F;svg&gt;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;classnames</span><br><span class="line">  import cs from &quot;classnames&quot;;</span><br><span class="line">  ...</span><br><span class="line">&lt;svg className&#x3D;&#123;cs(&quot;icon&quot;, className)&#125; &#123;...rest&#125;&gt;</span><br><span class="line">  &#123;props.name &amp;&amp; &lt;use xlinkHref&#x3D;&#123;&quot;#&quot; + props.name&#125; &#x2F;&gt;&#125;</span><br><span class="line">&lt;&#x2F;svg&gt;</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+<h3 id="自定义-hook"><a href="#自定义-hook" class="headerlink" title="自定义 hook"></a>自定义 hook</h3><p>  使用useState等 返回数据读写接口 就是自定义hook</p>
+<pre><code><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">import &#123;useState&#125; from &#39;react&#39;;</span><br><span class="line"></span><br><span class="line">const useTags &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">const [tags, setTags] &#x3D; useState&lt;string[]&gt;([&#39;衣&#39;, &#39;食&#39;, &#39;住&#39;, &#39;行&#39;]);</span><br><span class="line">return &#123;tags, setTags&#125;;	&#x2F;&#x2F;不return数组 避免ts报错</span><br><span class="line">&#125;;</span><br><span class="line">export &#123;useTags&#125;;</span><br></pre></td></tr></table></figure></code></pre>
+<p>完整代码见 <a target="_blank" rel="noopener" href="https://gitee.com/gengzhii/morney-r/tree/master/src/hooks">Gitee</a></p>
+</li>
+</ul>
+<h3 id="受控组件和非受控组件"><a href="#受控组件和非受控组件" class="headerlink" title="受控组件和非受控组件"></a>受控组件和非受控组件</h3><ul>
+<li><p>受控模式<br><strong>受控模式</strong> 由 React 监控数据</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">const NoteSection:React.FC &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">const [note,setNote]&#x3D;useState&lt;string&gt;(&#39;&#39;)</span><br><span class="line">  return (</span><br><span class="line">    &lt;Wrapper&gt;</span><br><span class="line">      &lt;label&gt;</span><br><span class="line">        &lt;span&gt;备注&lt;&#x2F;span&gt;</span><br><span class="line">        &lt;input type &#x3D; &quot;text&quot; placeholder &#x3D; &#39;在这里输入备注&#39;</span><br><span class="line">          value&#x3D;&#123;note&#125;</span><br><span class="line">          onChange&#x3D;&#123;(e)&#x3D;&gt;setNote(e.target.value)&#125;&#x2F;&#x2F;调用setNote才会更新数据</span><br><span class="line">        &#x2F;&gt;</span><br><span class="line">      &lt;&#x2F;label&gt;</span><br><span class="line">    &lt;&#x2F;Wrapper&gt;</span><br><span class="line">  );</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ul>
+<li><p>非受控组件</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">const NoteSection: React.FC &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">const [note, setNote] &#x3D; useState&lt;string&gt;(&#39;&#39;);</span><br><span class="line">const refInput &#x3D; useRef&lt;htmlinputelement&gt;(null);</span><br><span class="line">const x &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">    if (refInput.current) &#123;</span><br><span class="line">      setNote(refInput.current.value); &#x2F;&#x2F;通过ref拿到当前数据</span><br><span class="line">    &#125;</span><br><span class="line">    &#125;;</span><br><span class="line">  console.log(note);</span><br><span class="line">  return (</span><br><span class="line">        &lt;wrapper&gt;</span><br><span class="line">            &lt;label&gt;</span><br><span class="line">                &lt;span&gt;备注&lt;&#x2F;span&gt;</span><br><span class="line">                &lt;input type &#x3D; &quot;text&quot; placeholder &#x3D; &#39;在这里输入备注&#39;</span><br><span class="line">                ref &#x3D; &#123;refInput&#125;</span><br><span class="line">                defaultValue &#x3D; &#123;note&#125;     &#x2F;&#x2F; 不同于 value</span><br><span class="line">                onBlur &#x3D; &#123;x&#125; &#x2F;&#x2F;如果监听事件，React无法获取数据变化</span><br><span class="line">                &#x2F;&gt;</span><br><span class="line">            &lt;&#x2F;label&gt;</span><br><span class="line">        &lt;&#x2F;wrapper&gt;</span><br><span class="line">);</span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p><a target="_blank" rel="noopener" href="https://zenozeng.github.io/fonts.css/">跨平台中文字体解决方案</a></p>
+</li>
+</ul>
+
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/%E9%A1%B9%E7%9B%AE/" rel="tag"># 项目</a>
+              <a href="/tags/React/" rel="tag"># React</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/03/12/class/" rel="prev" title="React 基本用法">
+                  <i class="fa fa-chevron-left"></i> React 基本用法
+                </a>
+            </div>
+            <div class="post-nav-item">
+                <a href="/2021/03/14/%E7%95%AA%E8%8C%84%E8%AE%B0%E8%B4%A6Vue%E7%89%88/" rel="next" title="番茄记账Vue版">
+                  番茄记账Vue版 <i class="fa fa-chevron-right"></i>
+                </a>
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+
+ 
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>

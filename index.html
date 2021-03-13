@@ -17,11 +17,10 @@
 
 
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
-  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/animate.css@3.1.1/animate.min.css">
 
 <script class="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"github.com","root":"/","images":"/images","scheme":"Mist","version":"8.2.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+    var CONFIG = {"hostname":"github.com","root":"/","images":"/images","scheme":"Mist","version":"8.2.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
   </script>
 <meta property="og:type" content="website">
 <meta property="og:title" content="耿直">
@@ -88,7 +87,7 @@
 <link rel="alternate" href="/atom.xml" title="耿直" type="application/atom+xml">
 </head>
 
-<body itemscope itemtype="http://schema.org/WebPage" class="use-motion">
+<body itemscope itemtype="http://schema.org/WebPage">
   <div class="headband"></div>
 
   <main class="main">
@@ -171,13 +170,13 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives">
         
-          <span class="site-state-item-count">25</span>
+          <span class="site-state-item-count">27</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">17</span>
+        <span class="site-state-item-count">18</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
@@ -206,6 +205,192 @@
 
 
     <div class="main-inner index posts-expand">
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Straight-GZ/2021/03/14/%E7%95%AA%E8%8C%84%E8%AE%B0%E8%B4%A6Vue%E7%89%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://sf3-ttcdn-tos.pstatp.com/img/user-avatar/2a6595de8f44b1a5709798149c05b86c~300x300.image">
+      <meta itemprop="name" content="GENGZHI">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="耿直">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/03/14/%E7%95%AA%E8%8C%84%E8%AE%B0%E8%B4%A6Vue%E7%89%88/" class="post-title-link" itemprop="url">番茄记账Vue版</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-03-14 01:11:58" itemprop="dateCreated datePublished" datetime="2021-03-14T01:11:58+08:00">2021-03-14</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h4 id="Vue-组件三种方式（单文件组件）"><a href="#Vue-组件三种方式（单文件组件）" class="headerlink" title="Vue 组件三种方式（单文件组件）"></a>Vue 组件三种方式（单文件组件）</h4><ol>
+<li><p>用 JS 对象</p>
+<p><code>export default &#123;data,props,methods,created,...&#125;</code></p>
+</li>
+<li><p>用 TS 类</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> 组件名 <span class="keyword">extends</span> <span class="title">Vue</span> </span>&#123;</span><br><span class="line">  xxx: string = <span class="string">&quot;hi&quot;</span>;</span><br><span class="line">  @prop(<span class="built_in">Number</span>) xxx: number | <span class="literal">undefined</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>用 JS 类 (和 TS 类似)</p>
+<p><code>export default class 组件名 extends Vue&#123;xxx=&#39;hi&#39;&#125;</code></p>
+</li>
+<li><p>vue-property-decorator</p>
+<p>更好的支持 TS</p></li></ol>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/03/14/%E7%95%AA%E8%8C%84%E8%AE%B0%E8%B4%A6Vue%E7%89%88/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Straight-GZ/2021/03/13/%E8%AE%B0%E8%B4%A6%E9%A1%B9%E7%9B%AEReact%E7%89%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://sf3-ttcdn-tos.pstatp.com/img/user-avatar/2a6595de8f44b1a5709798149c05b86c~300x300.image">
+      <meta itemprop="name" content="GENGZHI">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="耿直">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/03/13/%E8%AE%B0%E8%B4%A6%E9%A1%B9%E7%9B%AEReact%E7%89%88/" class="post-title-link" itemprop="url">番茄记账项目总结</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-03-13 14:23:20" itemprop="dateCreated datePublished" datetime="2021-03-13T14:23:20+08:00">2021-03-13</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="一、create-react-app"><a href="#一、create-react-app" class="headerlink" title="一、create-react-app"></a>一、create-react-app</h3><ol>
+<li><p>创建项目</p>
+<ul>
+<li>新建项目目录</li>
+<li>create-react-app . –template typescript (在当前目录创建项目，支持 TS)</li>
+<li>yarn start</li>
+</ul>
+</li>
+<li><p>CSS normalize <a target="_blank" rel="noopener" href="https://create-react-app.dev/docs/adding-css-reset">文档</a></p>
+<ul>
+<li><code>@import-normalize; </code></li>
+<li>作用是让不同浏览器上的默认样式相近</li>
+<li>css reset 重置默认样式</li>
+</ul>
+</li>
+<li><p>支持 sass<a target="_blank" rel="noopener" href="https://create-react-app.dev/docs/adding-typescript#installation">文档</a></p>
+<ul>
+<li><ol>
+<li>node-sass 下载速度慢，本地编译慢，使用 dart-sass 代替，但 React 不支持 dart-sass</li>
+</ol>
+</li>
+<li><code>yarn add node-sass@npm:dart-sass</code>:使用 dart-sass 代替 node-sass <a href="https://github.com/facebook/create-react-app/issues/5282">github</a></li>
+<li>或者在 package.json 配置，修改 dependencies 配置<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;node-sass&quot;: &quot;npm:dart-sass&quot;, &quot;dart-sass&quot;: &quot;^1.19.0&quot;</span><br></pre></td></tr></table></figure></li>
+<li>npm6.9 新功能 package alias</li>
+</ul>
+</li>
+<li><p>绝对引用 <a target="_blank" rel="noopener" href="https://create-react-app.dev/docs/importing-a-component/#absolute-imports">Importing a Component</a></p>
+<ul>
+<li>配置<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;tsconfig.json</span><br><span class="line">&quot;compilerOptions&quot;: &#123;&quot;baseUrl&quot;: &quot;src&quot;&#125;,</span><br><span class="line">&quot;include&quot;: [&quot;src&quot;]</span><br></pre></td></tr></table></figure></li>
+<li>使用：<code>import Button from &#39;components/Button&#39;;</code></li>
+</ul>
+</li>
+</ol>
+<ul>
+<li></li></ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/03/13/%E8%AE%B0%E8%B4%A6%E9%A1%B9%E7%9B%AEReact%E7%89%88/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
 
     
 
@@ -278,7 +463,7 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://github.com/Straight-GZ/2021/03/12/%E9%97%AD%E5%8C%85%E5%92%8C%E7%AB%8B%E5%8D%B3%E6%89%A7%E8%A1%8C%E5%87%BD%E6%95%B0%20copy/">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Straight-GZ/2021/03/12/React/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://sf3-ttcdn-tos.pstatp.com/img/user-avatar/2a6595de8f44b1a5709798149c05b86c~300x300.image">
@@ -291,7 +476,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/03/12/%E9%97%AD%E5%8C%85%E5%92%8C%E7%AB%8B%E5%8D%B3%E6%89%A7%E8%A1%8C%E5%87%BD%E6%95%B0%20copy/" class="post-title-link" itemprop="url">React 基本用法</a>
+          <a href="/2021/03/12/React/" class="post-title-link" itemprop="url">React 基本用法</a>
         </h2>
 
         <div class="post-meta-container">
@@ -329,7 +514,7 @@
 <li>JSX 中可以直接使用 {} 中间写 JS 代码</li></ul></li></ol>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/03/12/%E9%97%AD%E5%8C%85%E5%92%8C%E7%AB%8B%E5%8D%B3%E6%89%A7%E8%A1%8C%E5%87%BD%E6%95%B0%20copy/#more" rel="contents">
+              <a class="btn" href="/2021/03/12/React/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -403,8 +588,13 @@
 </ul>
 <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; Vue3 新方法 createApp 其作用是构建实例</span><br><span class="line">import &#123; createApp &#125; from &#39;vue&#39;</span><br><span class="line">const app &#x3D; createApp(&#123;&#125;)</span><br><span class="line">&#x2F;&#x2F; Vue2 使用的是 new Vue() 构建实例</span><br></pre></td></tr></table></figure>
 <ul>
-<li>Vue3 支持碎片(Fragments)，就是说在组件可以拥有多个根节点</li>
-</ul>
+<li><p>Vue3 支持碎片(Fragments)，就是说在组件可以拥有多个根节点</p>
+</li>
+<li><p>增<code>v-model</code>代替以前的<code>v-model</code>和<code>.sync</code></p>
+</li>
+<li><p>新增<code>context.emit</code>，与<code>this.$event</code>作用相同</p>
+</li>
+<li><p>具名插槽：</p></li></ul>
           <!--noindex-->
             <div class="post-button">
               <a class="btn" href="/2021/03/11/Vue3/#more" rel="contents">
@@ -776,7 +966,7 @@
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/03/11/webpack/" class="post-title-link" itemprop="url">webpack简单配置</a>
+          <a href="/2021/03/11/webpack/" class="post-title-link" itemprop="url">Webpack简单配置</a>
         </h2>
 
         <div class="post-meta-container">
@@ -809,140 +999,6 @@
             </div>
           <!--/noindex-->
         
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://github.com/Straight-GZ/2021/03/10/%E5%BC%82%E6%AD%A5%E5%92%8CPromise/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://sf3-ttcdn-tos.pstatp.com/img/user-avatar/2a6595de8f44b1a5709798149c05b86c~300x300.image">
-      <meta itemprop="name" content="GENGZHI">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="耿直">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/03/10/%E5%BC%82%E6%AD%A5%E5%92%8CPromise/" class="post-title-link" itemprop="url">异步与Promise</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-03-10 15:23:36" itemprop="dateCreated datePublished" datetime="2021-03-10T15:23:36+08:00">2021-03-10</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3 id="一、异步与同步"><a href="#一、异步与同步" class="headerlink" title="一、异步与同步"></a>一、异步与同步</h3><p>同步:一定要当前任务执行完，才会执行下一个任务。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/03/10/%E5%BC%82%E6%AD%A5%E5%92%8CPromise/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://github.com/Straight-GZ/2021/03/10/%E7%AE%97%E6%B3%95%E4%B8%8E%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://sf3-ttcdn-tos.pstatp.com/img/user-avatar/2a6595de8f44b1a5709798149c05b86c~300x300.image">
-      <meta itemprop="name" content="GENGZHI">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="耿直">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/03/10/%E7%AE%97%E6%B3%95%E4%B8%8E%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/" class="post-title-link" itemprop="url">闭包和立即执行函数</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-03-10 15:22:12" itemprop="dateCreated datePublished" datetime="2021-03-10T15:22:12+08:00">2021-03-10</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          
       
     </div>
 
@@ -1003,7 +1059,7 @@
 
   
   <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
-<script src="/js/utils.js"></script><script src="/js/motion.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+<script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
 
   
 

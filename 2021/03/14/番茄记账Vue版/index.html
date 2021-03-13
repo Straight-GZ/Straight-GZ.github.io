@@ -1,0 +1,378 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
+<meta name="theme-color" content="#222">
+<meta name="generator" content="Hexo 5.3.0">
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/1.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/1.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/1.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
+
+
+
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@5.15.2/css/all.min.css">
+
+<script class="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"github.com","root":"/","images":"/images","scheme":"Mist","version":"8.2.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+  </script>
+<meta name="description" content="Vue 组件三种方式（单文件组件） 用 JS 对象 export default &amp;#123;data,props,methods,created,...&amp;#125;  用 TS 类 1234export default class 组件名 extends Vue &amp;#123;  xxx: string &#x3D; &quot;hi&quot;;  @prop(Number) xxx: number |">
+<meta property="og:type" content="article">
+<meta property="og:title" content="番茄记账Vue版">
+<meta property="og:url" content="https://github.com/Straight-GZ/2021/03/14/%E7%95%AA%E8%8C%84%E8%AE%B0%E8%B4%A6Vue%E7%89%88/index.html">
+<meta property="og:site_name" content="耿直">
+<meta property="og:description" content="Vue 组件三种方式（单文件组件） 用 JS 对象 export default &amp;#123;data,props,methods,created,...&amp;#125;  用 TS 类 1234export default class 组件名 extends Vue &amp;#123;  xxx: string &#x3D; &quot;hi&quot;;  @prop(Number) xxx: number |">
+<meta property="og:locale" content="zh_CN">
+<meta property="article:published_time" content="2021-03-13T17:11:58.600Z">
+<meta property="article:modified_time" content="2021-03-13T17:11:58.600Z">
+<meta property="article:author" content="GENGZHI">
+<meta property="article:tag" content="Vue">
+<meta property="article:tag" content="项目">
+<meta name="twitter:card" content="summary">
+
+
+<link rel="canonical" href="https://github.com/Straight-GZ/2021/03/14/%E7%95%AA%E8%8C%84%E8%AE%B0%E8%B4%A6Vue%E7%89%88/">
+
+
+<script class="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : false,
+    isPost : true,
+    lang   : 'zh-CN'
+  };
+</script>
+<title>番茄记账Vue版 | 耿直</title>
+  
+
+
+
+
+  <noscript>
+  <style>
+  body { margin-top: 2rem; }
+
+  .use-motion .menu-item,
+  .use-motion .sidebar,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header {
+    visibility: visible;
+  }
+
+  .use-motion .header,
+  .use-motion .site-brand-container .toggle,
+  .use-motion .footer { opacity: initial; }
+
+  .use-motion .site-title,
+  .use-motion .site-subtitle,
+  .use-motion .custom-logo-image {
+    opacity: initial;
+    top: initial;
+  }
+
+  .use-motion .logo-line {
+    transform: scaleX(1);
+  }
+
+  .search-pop-overlay, .sidebar-nav { display: none; }
+  .sidebar-panel { display: block; }
+  </style>
+</noscript>
+
+<link rel="alternate" href="/atom.xml" title="耿直" type="application/atom+xml">
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="headband"></div>
+
+  <main class="main">
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏" role="button">
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+        <span class="toggle-line"></span>
+    </div>
+  </div>
+
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <i class="logo-line"></i>
+      <h1 class="site-title">耿直</h1>
+      <i class="logo-line"></i>
+    </a>
+      <p class="site-subtitle" itemprop="description">111</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
+  </div>
+</div>
+
+
+
+<nav class="site-nav">
+  <ul class="main-menu menu">
+        <li class="menu-item menu-item-home"><a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a></li>
+        <li class="menu-item menu-item-tag"><a href="/tags" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
+        <li class="menu-item menu-item-project"><a href="/projects" rel="section"><i class="fa fa-th fa-fw"></i>项目</a></li>
+        <li class="menu-item menu-item-archives"><a href="/archives" rel="section"><i class="fas fa-archive fa-fw"></i>归档</a></li>
+  </ul>
+</nav>
+
+
+
+
+</div>
+        
+  
+  <div class="toggle sidebar-toggle" role="button">
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+    <span class="toggle-line"></span>
+  </div>
+
+  <aside class="sidebar">
+
+    <div class="sidebar-inner sidebar-nav-active sidebar-toc-active">
+      <ul class="sidebar-nav">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <div class="sidebar-panel-container">
+        <!--noindex-->
+        <div class="post-toc-wrap sidebar-panel">
+            <div class="post-toc animated"><ol class="nav"><li class="nav-item nav-level-4"><a class="nav-link" href="#Vue-%E7%BB%84%E4%BB%B6%E4%B8%89%E7%A7%8D%E6%96%B9%E5%BC%8F%EF%BC%88%E5%8D%95%E6%96%87%E4%BB%B6%E7%BB%84%E4%BB%B6%EF%BC%89"><span class="nav-text">Vue 组件三种方式（单文件组件）</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%90%9C%E9%9B%86%E7%BB%84%E4%BB%B6%E7%9A%84%E6%95%B0%E6%8D%AE"><span class="nav-text">搜集组件的数据</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E8%BF%81%E7%A7%BB"><span class="nav-text">数据迁移</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%95%B0%E6%8D%AE%E8%BF%81%E7%A7%BB-1"><span class="nav-text">数据迁移</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AE%9A%E4%B9%89-TS-%E7%B1%BB%E5%9E%8B"><span class="nav-text">定义 TS 类型</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#MVC"><span class="nav-text">MVC</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Vuex"><span class="nav-text">Vuex</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E5%A4%9A%E4%B8%AA-class"><span class="nav-text">使用多个:class</span></a></li></ol></div>
+        </div>
+        <!--/noindex-->
+
+        <div class="site-overview-wrap sidebar-panel">
+          <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="GENGZHI"
+      src="https://sf3-ttcdn-tos.pstatp.com/img/user-avatar/2a6595de8f44b1a5709798149c05b86c~300x300.image">
+  <p class="site-author-name" itemprop="name">GENGZHI</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap site-overview-item animated">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives">
+        
+          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+        </div>
+      </div>
+    </div>
+  </aside>
+  <div class="sidebar-dimmer"></div>
+
+
+    </header>
+
+    
+  <div class="back-to-top" role="button">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+<noscript>
+  <div class="noscript-warning">Theme NexT works best with JavaScript enabled</div>
+</noscript>
+
+
+    <div class="main-inner post posts-expand">
+
+
+  
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Straight-GZ/2021/03/14/%E7%95%AA%E8%8C%84%E8%AE%B0%E8%B4%A6Vue%E7%89%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://sf3-ttcdn-tos.pstatp.com/img/user-avatar/2a6595de8f44b1a5709798149c05b86c~300x300.image">
+      <meta itemprop="name" content="GENGZHI">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="耿直">
+    </span>
+      <header class="post-header">
+        <h1 class="post-title" itemprop="name headline">
+          番茄记账Vue版
+        </h1>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-03-14 01:11:58" itemprop="dateCreated datePublished" datetime="2021-03-14T01:11:58+08:00">2021-03-14</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+        <h4 id="Vue-组件三种方式（单文件组件）"><a href="#Vue-组件三种方式（单文件组件）" class="headerlink" title="Vue 组件三种方式（单文件组件）"></a>Vue 组件三种方式（单文件组件）</h4><ol>
+<li><p>用 JS 对象</p>
+<p><code>export default &#123;data,props,methods,created,...&#125;</code></p>
+</li>
+<li><p>用 TS 类</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> 组件名 <span class="keyword">extends</span> <span class="title">Vue</span> </span>&#123;</span><br><span class="line">  xxx: string = <span class="string">&quot;hi&quot;</span>;</span><br><span class="line">  @prop(<span class="built_in">Number</span>) xxx: number | <span class="literal">undefined</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>用 JS 类 (和 TS 类似)</p>
+<p><code>export default class 组件名 extends Vue&#123;xxx=&#39;hi&#39;&#125;</code></p>
+</li>
+<li><p>vue-property-decorator</p>
+<p>更好的支持 TS</p>
+<a id="more"></a>
+
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">import Vue from &#39;vue&#39;;</span><br><span class="line">import &#123;Component, Prop&#125; from &#39;vue-property-decorator&#39;;</span><br><span class="line">@Component(&#123;</span><br><span class="line">  components: &#123;Button, FormItem&#125;,</span><br><span class="line">&#125;)</span><br><span class="line">export default class FormItem extends Vue &#123;</span><br><span class="line">  @Prop(&#123;default: &#39;&#39;&#125;) readonly value!: string; &#x2F;&#x2F;prop</span><br><span class="line">  @Prop() options?: EChartsOption;</span><br><span class="line">  ...</span><br><span class="line">  get tags() &#123;    &#x2F;&#x2F;计算属性 computed</span><br><span class="line">    return this.$store.state.tagList;</span><br><span class="line">  &#125;</span><br><span class="line">  ...</span><br><span class="line">  @Watch(&#39;options&#39;)   &#x2F;&#x2F;watch</span><br><span class="line">  onOptionsChange(newValue: EChartsOption) &#123;</span><br><span class="line">    this.chart &amp;&amp; this.chart.setOption(newValue);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="搜集组件的数据"><a href="#搜集组件的数据" class="headerlink" title="搜集组件的数据"></a>搜集组件的数据</h4></li>
+</ol>
+<p>子组件触发事件,将数据发送到父组件</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">this</span>.$emit(<span class="string">&quot;update:value&quot;</span>, <span class="built_in">this</span>.selectedTags);</span><br></pre></td></tr></table></figure>
+<p>默认数据可以是外部传入的 Prop，这样可以使用.sync 语法</p>
+<figure class="highlight xml"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Tags</span> <span class="attr">:data-source.sync</span>=<span class="string">&quot;tags&quot;</span> <span class="attr">:value.sync</span>=<span class="string">&quot;record.tags&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="数据迁移"><a href="#数据迁移" class="headerlink" title="数据迁移"></a>数据迁移</h4><h4 id="数据迁移-1"><a href="#数据迁移-1" class="headerlink" title="数据迁移"></a>数据迁移</h4><figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">//获取当前版本号</span></span><br><span class="line"><span class="keyword">const</span> version = <span class="built_in">window</span>.localStorage.getItem(<span class="string">&quot;version&quot;</span>);</span><br><span class="line"><span class="comment">//获取当前数据</span></span><br><span class="line"><span class="keyword">const</span> recordList: Record[] = <span class="built_in">JSON</span>.parse(</span><br><span class="line">  <span class="built_in">window</span>.localStorage.getItem(recordList)</span><br><span class="line">);</span><br><span class="line"><span class="keyword">if</span> (<span class="string">&quot;version&quot;</span> === <span class="string">&quot;0.0.1&quot;</span>) &#123;</span><br><span class="line">  recordList.forEach(<span class="function">(<span class="params">record</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">//遍历数据</span></span><br><span class="line">    record.createTime = <span class="keyword">new</span> <span class="built_in">Date</span>(<span class="number">2020</span>, <span class="number">0</span>, <span class="number">1</span>); <span class="comment">//将每个数据增加时间</span></span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="comment">//保存数据</span></span><br><span class="line">  <span class="built_in">window</span>.localStorage.setItem(<span class="string">&quot;recordList&quot;</span>, <span class="built_in">JSON</span>.stringfy(recordList));</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="string">&quot;version&quot;</span> === <span class="string">&quot;0.0.2&quot;</span>) &#123;</span><br><span class="line">  <span class="comment">//迁移</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//设置当前版本号</span></span><br><span class="line"><span class="built_in">window</span>.localStorage.setItem(<span class="string">&quot;version&quot;</span>, <span class="string">&quot;0.0.3&quot;</span>);</span><br></pre></td></tr></table></figure>
+<p>迁移数据只需要将版本一个版本一个版本的向上迁移</p>
+<h4 id="定义-TS-类型"><a href="#定义-TS-类型" class="headerlink" title="定义 TS 类型"></a>定义 TS 类型</h4><figure class="highlight typescript"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">type</span> RecordItem = &#123;</span><br><span class="line">  tags: <span class="built_in">string</span>[];</span><br><span class="line">  <span class="keyword">type</span>: <span class="built_in">string</span>;</span><br><span class="line">  notes: <span class="built_in">string</span>;</span><br><span class="line">  amount: <span class="built_in">string</span>;</span><br><span class="line">  createdTime?: <span class="built_in">Date</span>; <span class="comment">// ?表示有也可能没有</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>可以将内容放在根目录独立文件中，全局定义，文件名以<code>.d.ts</code>结尾，<code>cunstorm.d.ts</code>,当前文件夹内容都可以使用</p>
+<h4 id="MVC"><a href="#MVC" class="headerlink" title="MVC"></a>MVC</h4><p>Model(模型):管理应用的行为和数据，响应数据请求（经常来自视图）和更新状态的指令</p>
+<p>View(视图):管理作为位图展示到屏幕上的图形和文字输出；</p>
+<p>Controller(控制器)：翻译用户的输入并依照用户的输入操作模型和视图</p>
+<h4 id="Vuex"><a href="#Vuex" class="headerlink" title="Vuex"></a>Vuex</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line">import Vue from &#39;vue&#39;;</span><br><span class="line">import Vuex from &#39;vuex&#39;;</span><br><span class="line">import clone from &#39;@&#x2F;lib&#x2F;clone&#39;;</span><br><span class="line">import createId from &#39;@&#x2F;lib&#x2F;createId&#39;;</span><br><span class="line"></span><br><span class="line">Vue.use(Vuex);</span><br><span class="line"></span><br><span class="line">const store &#x3D; new Vuex.Store(&#123;</span><br><span class="line">&#x2F;&#x2F;存储数据  使用this.$store.state.recordList获取数据</span><br><span class="line">  state: &#123;</span><br><span class="line">    recordList: [] as RecordItem[],</span><br><span class="line">    createTagMessage: &#39;&#39;,</span><br><span class="line">    tagList: [] as Tag[],</span><br><span class="line">    currentTag: undefined,</span><br><span class="line">  &#125; as RootStore,</span><br><span class="line">&#x2F;&#x2F;对数据的读写  没有返回值  使用this.$store.commit(&#39;fetchTags&#39;,参数)</span><br><span class="line">  mutations: &#123;</span><br><span class="line">    setCurrentTag(state, id: string) &#123;</span><br><span class="line">      state.currentTag &#x3D; state.tagList.filter(d &#x3D;&gt; d.id &#x3D;&#x3D;&#x3D; id)[0];</span><br><span class="line">    &#125;,</span><br><span class="line">    fetchTags(state) &#123;&#125;,</span><br><span class="line">    createTag(state, name: string) &#123;</span><br><span class="line">    &#125;,</span><br><span class="line">    removeTag(state, id: string) &#123;&#125;,</span><br><span class="line">    saveTags(state) &#123;&#125;,</span><br><span class="line">    updateTag(state, object: &#123; id: string; name: string &#125;) &#123;&#125;,</span><br><span class="line">    fetchRecords(state) &#123;&#125;,</span><br><span class="line">    createRecord(state, record: RecordItem) &#123;&#125;,</span><br><span class="line">    saveRecord(state) &#123;</span><br><span class="line">      window.localStorage.setItem(&#39;recordList&#39;, JSON.stringify(state.recordList));</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;);</span><br><span class="line">export default store;</span><br></pre></td></tr></table></figure>
+<h4 id="使用多个-class"><a href="#使用多个-class" class="headerlink" title="使用多个:class"></a>使用多个<code>:class</code></h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">&lt;li :class&#x3D;&quot;value&#x3D;&#x3D;&#x3D;&#39;-&#39; &amp;&amp; &#39;selected&#39;&#125;&quot;  &#x2F;&#x2F;类名加引号 @click&#x3D;&quot;selectType(&#39;-&#39;)&quot;&gt;支出&lt;&#x2F;li&gt;</span><br><span class="line"></span><br><span class="line">&lt;li :class&#x3D;&quot;&#123;[classPrefix+&#39;-item&#39;]:classPrefix,&#39;selected&#39;:value&#x3D;&#x3D;&#x3D;&#39;-&#39;&#125;&quot; @click&#x3D;&quot;selectType(&#39;-&#39;)&quot;&gt;支出&lt;&#x2F;li&gt;</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">&#x2F;&#x2F;如果存在classPrefix 就存在前面的类名  如果类名存在变量，使用[]</span><br><span class="line">[classPrefix+&#39;-item&#39;]:classPrefix,</span><br><span class="line">&#39;selected&#39;:value&#x3D;&#x3D;&#x3D;&#39;-&#39;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+          <div class="post-tags">
+              <a href="/tags/Vue/" rel="tag"># Vue</a>
+              <a href="/tags/%E9%A1%B9%E7%9B%AE/" rel="tag"># 项目</a>
+          </div>
+
+        
+
+          <div class="post-nav">
+            <div class="post-nav-item">
+                <a href="/2021/03/13/%E8%AE%B0%E8%B4%A6%E9%A1%B9%E7%9B%AEReact%E7%89%88/" rel="prev" title="番茄记账项目总结">
+                  <i class="fa fa-chevron-left"></i> 番茄记账项目总结
+                </a>
+            </div>
+            <div class="post-nav-item">
+            </div>
+          </div>
+    </footer>
+  </article>
+</div>
+
+
+
+
+
+
+
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      const activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      const commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
+  }
+</script>
+</div>
+  </main>
+
+  <footer class="footer">
+    <div class="footer-inner">
+
+
+<div class="copyright">
+
+ 
+</div>
+
+    </div>
+  </footer>
+
+  
+  <script src="https://cdn.jsdelivr.net/npm/animejs@3.2.1/lib/anime.min.js"></script>
+<script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
+
+  
+
+
+
+
+
+
+  
+
+
+
+
+
+</body>
+</html>
