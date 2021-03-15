@@ -1,50 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <search>
   <entry>
-    <title>BFC是什么？</title>
-    <url>/2021/02/20/BFC/</url>
-    <content><![CDATA[<h3 id="1、BFC-概念"><a href="#1、BFC-概念" class="headerlink" title="1、BFC 概念"></a>1、BFC 概念</h3><ul>
-<li>块格式化上下文（Block Formatting Context，BFC），是块盒子的布局过程发生的区域，也是浮动元素与其他元素交互的区域。</li>
-<li>具有 BFC 特性的元素可以看作是隔离了的独立容器，容器里面的元素不会在布局上影响到外面的元素，并且 BFC 具有普通容器所没有的一些特性。<a id="more"></a>
-
-</li>
-</ul>
-<h3 id="2、触发-BFC"><a href="#2、触发-BFC" class="headerlink" title="2、触发 BFC"></a>2、触发 BFC</h3><p>常见触发 BFC 的方式</p>
-<ul>
-<li>根元素（html）</li>
-<li>浮动元素（元素的 float 不是 none）</li>
-<li>绝对定位元素（元素的 position 为 absolute 或 fixed）</li>
-<li>行内块元素（元素的 display 为 inline-block）</li>
-<li>overflow 计算值(Computed)不为 visible 的块元素</li>
-<li>弹性元素（display 为 flex 或 inline-flex 元素的直接子元素）</li>
-<li>网格元素（display 为 grid 或 inline-grid 元素的直接子元素）</li>
-</ul>
-<h3 id="4、BFC-的特性"><a href="#4、BFC-的特性" class="headerlink" title="4、BFC 的特性"></a>4、BFC 的特性</h3><ol>
-<li>在 BFC 中，盒子从顶端开始垂直地一个接一个地排列.</li>
-<li>盒子垂直方向的距离由 margin 决定。属于同一个 BFC 的两个相邻盒子的 margin 会发生重叠</li>
-</ol>
-<p>BFC 是一个独立的渲染区域，它规定了内部如何布局，与外部互不干涉</p>
-<h3 id="5、BFC-的应用"><a href="#5、BFC-的应用" class="headerlink" title="5、BFC 的应用"></a>5、BFC 的应用</h3><ol>
-<li><p>避免外边距重叠</p>
-<p>如果想要避免外边距的重叠，可以将其放在不同的 BFC 容器中。</p>
-</li>
-<li><p>清楚浮动<br>浮动的元素会脱离普通文档流</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;style&gt;</span><br><span class="line"> .test1&#123;</span><br><span class="line">     border:1px solid red;</span><br><span class="line"> &#125;</span><br><span class="line"> .test2&#123;</span><br><span class="line">     float:left;</span><br><span class="line">     width:100px;</span><br><span class="line">     height:100px;</span><br><span class="line">     border:1px solid black;</span><br><span class="line"> &#125;</span><br><span class="line">&lt;style&gt;</span><br><span class="line">&lt;div class&#x3D;test1&gt;</span><br><span class="line">     &lt;div class&#x3D;test2&gt;&lt;&#x2F;div&gt;</span><br><span class="line">&lt;&#x2F;div&gt;</span><br></pre></td></tr></table></figure>
-<p><img src="https://i.loli.net/2021/03/09/ILwB5DpFQ8RzmCr.png" alt="image-20210309124909376"></p>
-<p>这时候只要触发容器<code>test1</code>的 BFC 就可以清除浮动<br><img src="https://i.loli.net/2021/03/09/v3rmNdEZKQfALyi.png" alt="image-20210309125307615"></p>
-</li>
-<li><p>BFC 可以阻止元素被浮动元素覆盖</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;style&gt;</span><br><span class="line">.test1&#123;</span><br><span class="line">     width:100px;</span><br><span class="line">     height:100px;</span><br><span class="line">     border:1px solid red;</span><br><span class="line">     float:left;</span><br><span class="line"> &#125;</span><br><span class="line"> .test2&#123;</span><br><span class="line"> border:1px solid black;</span><br><span class="line"> &#125;</span><br><span class="line">&lt;&#x2F;style&gt;</span><br><span class="line">&lt;div class&#x3D;test1&gt;&lt;&#x2F;div&gt;</span><br><span class="line">&lt;div class&#x3D;test2&gt;文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字&lt;&#x2F;div&gt;</span><br></pre></td></tr></table></figure>
-<p><img src="https://i.loli.net/2021/03/09/C7VMyNGY8c5eRhp.png" alt="image-20210309125831884"><br>此时，只需要触发<code>test2</code>的 BFC 就可以解决</p>
-<p>这种方法也可以实现一侧固定宽度，一侧自适应的两栏布局。</p>
-</li>
-</ol>
-]]></content>
-      <tags>
-        <tag>CSS</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>CSS定位</title>
     <url>/2020/10/15/CSS%E4%B9%8B%E5%AE%9A%E4%BD%8D/</url>
     <content><![CDATA[<p>布局是屏幕平面上的，<strong>定位是垂直于屏幕的</strong></p>
@@ -119,6 +75,92 @@
       <tags>
         <tag>CSS</tag>
         <tag>布局</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>BFC是什么？</title>
+    <url>/2021/02/20/BFC/</url>
+    <content><![CDATA[<h3 id="1、BFC-概念"><a href="#1、BFC-概念" class="headerlink" title="1、BFC 概念"></a>1、BFC 概念</h3><ul>
+<li>块格式化上下文（Block Formatting Context，BFC），是块盒子的布局过程发生的区域，也是浮动元素与其他元素交互的区域。</li>
+<li>具有 BFC 特性的元素可以看作是隔离了的独立容器，容器里面的元素不会在布局上影响到外面的元素，并且 BFC 具有普通容器所没有的一些特性。<a id="more"></a>
+
+</li>
+</ul>
+<h3 id="2、触发-BFC"><a href="#2、触发-BFC" class="headerlink" title="2、触发 BFC"></a>2、触发 BFC</h3><p>常见触发 BFC 的方式</p>
+<ul>
+<li>根元素（html）</li>
+<li>浮动元素（元素的 float 不是 none）</li>
+<li>绝对定位元素（元素的 position 为 absolute 或 fixed）</li>
+<li>行内块元素（元素的 display 为 inline-block）</li>
+<li>overflow 计算值(Computed)不为 visible 的块元素</li>
+<li>弹性元素（display 为 flex 或 inline-flex 元素的直接子元素）</li>
+<li>网格元素（display 为 grid 或 inline-grid 元素的直接子元素）</li>
+</ul>
+<h3 id="4、BFC-的特性"><a href="#4、BFC-的特性" class="headerlink" title="4、BFC 的特性"></a>4、BFC 的特性</h3><ol>
+<li>在 BFC 中，盒子从顶端开始垂直地一个接一个地排列.</li>
+<li>盒子垂直方向的距离由 margin 决定。属于同一个 BFC 的两个相邻盒子的 margin 会发生重叠</li>
+</ol>
+<p>BFC 是一个独立的渲染区域，它规定了内部如何布局，与外部互不干涉</p>
+<h3 id="5、BFC-的应用"><a href="#5、BFC-的应用" class="headerlink" title="5、BFC 的应用"></a>5、BFC 的应用</h3><ol>
+<li><p>避免外边距重叠</p>
+<p>如果想要避免外边距的重叠，可以将其放在不同的 BFC 容器中。</p>
+</li>
+<li><p>清楚浮动<br>浮动的元素会脱离普通文档流</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;style&gt;</span><br><span class="line"> .test1&#123;</span><br><span class="line">     border:1px solid red;</span><br><span class="line"> &#125;</span><br><span class="line"> .test2&#123;</span><br><span class="line">     float:left;</span><br><span class="line">     width:100px;</span><br><span class="line">     height:100px;</span><br><span class="line">     border:1px solid black;</span><br><span class="line"> &#125;</span><br><span class="line">&lt;style&gt;</span><br><span class="line">&lt;div class&#x3D;test1&gt;</span><br><span class="line">     &lt;div class&#x3D;test2&gt;&lt;&#x2F;div&gt;</span><br><span class="line">&lt;&#x2F;div&gt;</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.loli.net/2021/03/09/ILwB5DpFQ8RzmCr.png" alt="image-20210309124909376"></p>
+<p>这时候只要触发容器<code>test1</code>的 BFC 就可以清除浮动<br><img src="https://i.loli.net/2021/03/09/v3rmNdEZKQfALyi.png" alt="image-20210309125307615"></p>
+</li>
+<li><p>BFC 可以阻止元素被浮动元素覆盖</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;style&gt;</span><br><span class="line">.test1&#123;</span><br><span class="line">     width:100px;</span><br><span class="line">     height:100px;</span><br><span class="line">     border:1px solid red;</span><br><span class="line">     float:left;</span><br><span class="line"> &#125;</span><br><span class="line"> .test2&#123;</span><br><span class="line"> border:1px solid black;</span><br><span class="line"> &#125;</span><br><span class="line">&lt;&#x2F;style&gt;</span><br><span class="line">&lt;div class&#x3D;test1&gt;&lt;&#x2F;div&gt;</span><br><span class="line">&lt;div class&#x3D;test2&gt;文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字文字&lt;&#x2F;div&gt;</span><br></pre></td></tr></table></figure>
+<p><img src="https://i.loli.net/2021/03/09/C7VMyNGY8c5eRhp.png" alt="image-20210309125831884"><br>此时，只需要触发<code>test2</code>的 BFC 就可以解决</p>
+<p>这种方法也可以实现一侧固定宽度，一侧自适应的两栏布局。</p>
+</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>CSS</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Cookie和Session</title>
+    <url>/2020/11/20/Cookie%E5%92%8CSession/</url>
+    <content><![CDATA[<h3 id="1、Cookie"><a href="#1、Cookie" class="headerlink" title="1、Cookie"></a>1、Cookie</h3><ul>
+<li><p>概述：</p>
+<p>HTTP Cookie（也叫 Web Cookie 或浏览器 Cookie）是服务器发送到用户浏览器并保存在本地的一小块数据，它会在浏览器下次向同一服务器再发起请求时被携带并发送到服务器上。通常，它用于告知服务端两个请求是否来自同一浏览器，如保持用户的登录状态。<br>通俗的说，Cookie 是服务器下发给浏览器的一段字符串<br>浏览器必须保存这个 Cookie(除非用户删除)<br>之后发起相同二级域名请求，浏览器必须附上 Cookie<a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Cookies">MDN</a></p>
+<a id="more"></a>
+</li>
+</ul>
+<ul>
+<li>创建 Cookie<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Set-Cookie: &lt;cookie 名&gt;&#x3D;&lt;cookie 值&gt;</span><br><span class="line">&#x2F;&#x2F;例</span><br><span class="line">response.setHeader(&quot;Set-Cookie&quot;, &#96;session_id&#x3D;$&#123;random&#125;;HttpOnly&#96;);</span><br></pre></td></tr></table></figure>
+<h3 id="2、Session"><a href="#2、Session" class="headerlink" title="2、Session"></a>2、Session</h3></li>
+</ul>
+<p>session 数据放在服务器上,一般由 cookie 保存 session 的 id，保存在 Cookie 里的 session id 是独一无二的随机生成的，服务器通过 Cookie 保存的 session id 获取数据</p>
+<h3 id="3、两者区别"><a href="#3、两者区别" class="headerlink" title="3、两者区别"></a>3、两者区别</h3><ol>
+<li><p>存储位置：cookie 数据存放在客户的浏览器上，session 数据放在服务器上。</p>
+</li>
+<li><p>安全性：cookie 不是很安全，别人可以分析存放在本地的 COOKIE 并进行篡改</p>
+</li>
+<li><p>限制：单个 cookie 保存的数据不能超过 4K，很多浏览器都限制一个站点最多保存 20 个 cookie。</p>
+</li>
+</ol>
+<p>简单实现</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">if (path &#x3D;&#x3D;&#x3D; &quot;&#x2F;sign_in&quot; &amp;&amp; method &#x3D;&#x3D;&#x3D; &quot;POST&quot;) &#123;</span><br><span class="line">  const array &#x3D; [];</span><br><span class="line">  const users &#x3D; JSON.parse(fs.readFileSync(&quot;.&#x2F;db&#x2F;users.json&quot;).toString());</span><br><span class="line">  response.setHeader(&quot;Content-Type&quot;, &quot;text&#x2F;html,charset&#x3D;UTF-8&quot;);</span><br><span class="line">  request.on(&quot;data&quot;, (chunk) &#x3D;&gt; &#123;</span><br><span class="line">    array.push(chunk);</span><br><span class="line">  &#125;);</span><br><span class="line">  request.on(&quot;end&quot;, () &#x3D;&gt; &#123;</span><br><span class="line">    const string &#x3D; Buffer.concat(array).toString();</span><br><span class="line">    const obj &#x3D; JSON.parse(string);</span><br><span class="line">    const user &#x3D; users.find(</span><br><span class="line">      (user) &#x3D;&gt; user.name &#x3D;&#x3D;&#x3D; obj.name &amp;&amp; user.password &#x3D;&#x3D;&#x3D; obj.password</span><br><span class="line">    );</span><br><span class="line">    if (user &#x3D;&#x3D;&#x3D; undefined) &#123;</span><br><span class="line">      response.statusCode &#x3D; 400;</span><br><span class="line">      response.setHeader(&quot;Content-Type&quot;, &quot;text&#x2F;json;charset&#x3D;utf-8&quot;);</span><br><span class="line">      response.end();</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      response.statusCode &#x3D; 200;</span><br><span class="line">      const random &#x3D; Math.random();</span><br><span class="line">      session[random] &#x3D; &#123; user_id: user.id &#125;;</span><br><span class="line">      fs.writeFileSync(&quot;.&#x2F;session.json&quot;, JSON.stringify(session));</span><br><span class="line">      response.setHeader(&quot;Set-Cookie&quot;, &#96;session_id&#x3D;$&#123;random&#125;;HttpOnly&#96;);</span><br><span class="line">      response.end();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125; else if (path &#x3D;&#x3D;&#x3D; &quot;&#x2F;home.html&quot;) &#123;</span><br><span class="line">  const cookie &#x3D; request.headers[&quot;cookie&quot;];</span><br><span class="line">  let sessionId;</span><br><span class="line"></span><br><span class="line">  try &#123;</span><br><span class="line">    sessionId &#x3D; cookie</span><br><span class="line">      .split(&quot;;&quot;)</span><br><span class="line">      .filter((s) &#x3D;&gt; s.indexOf(&quot;session_id&#x3D;&quot;) &gt;&#x3D; 0)[0]</span><br><span class="line">      .split(&quot;&#x3D;&quot;)[1];</span><br><span class="line">    console.log(sessionId);</span><br><span class="line">  &#125; catch (error) &#123;&#125;</span><br><span class="line">  if (sessionId &amp;&amp; session[sessionId]) &#123;</span><br><span class="line">    const userId &#x3D; session[sessionId].user_id;</span><br><span class="line">    console.log(userId);</span><br><span class="line">    const homeHtml &#x3D; fs.readFileSync(&quot;.&#x2F;public&#x2F;home.html&quot;).toString();</span><br><span class="line">    const users &#x3D; JSON.parse(fs.readFileSync(&quot;.&#x2F;db&#x2F;users.json&quot;).toString());</span><br><span class="line">    const user &#x3D; users.find((user) &#x3D;&gt; user.id &#x3D;&#x3D;&#x3D; userId);</span><br><span class="line">    let string;</span><br><span class="line">    if (user) &#123;</span><br><span class="line">      string &#x3D; homeHtml</span><br><span class="line">        .replace(&quot;&#123;&#123;loginStatus&#125;&#125;&quot;, &quot;已登录&quot;)</span><br><span class="line">        .replace(&quot;&#123;&#123;userName&#125;&#125;&quot;, user.name);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      string &#x3D; homeHtml</span><br><span class="line">        .replace(&quot;&#123;&#123;loginStatus&#125;&#125;&quot;, &quot;未登录&quot;)</span><br><span class="line">        .replace(&quot;&#123;&#123;userName&#125;&#125;&quot;, &quot;&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    response.write(string);</span><br><span class="line">    response.end();</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    const homeHtml &#x3D; fs.readFileSync(&quot;.&#x2F;public&#x2F;home.html&quot;).toString();</span><br><span class="line">    const string &#x3D; homeHtml</span><br><span class="line">      .replace(&quot;&#123;&#123;loginStatus&#125;&#125;&quot;, &quot;未登录&quot;)</span><br><span class="line">      .replace(&quot;&#123;&#123;userName&#125;&#125;&quot;, &quot;&quot;);</span><br><span class="line">    response.write(string);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Cookie-V-S-LocalStorage-V-S-SessionStorage-V-S-Session"><a href="#Cookie-V-S-LocalStorage-V-S-SessionStorage-V-S-Session" class="headerlink" title="Cookie V.S. LocalStorage V.S. SessionStorage V.S. Session"></a>Cookie V.S. LocalStorage V.S. SessionStorage V.S. Session</h4><ul>
+<li><p>Cookie V.S. LocalStorage</p>
+<p>主要区别是 Cookie 会被发送到服务器，而 LocalStorage 不会<br>Cookie 一般最大 4k，LocalStorage 可以用 5Mb 甚至 10Mb（各浏览器不同）</p>
+</li>
+</ul>
+<ul>
+<li><p>LocalStorage V.S. SessionStorage</p>
+<p>LocalStorage 一般不会自动过期（除非用户手动清除），而 SessionStorage 在回话结束时过期（如关闭浏览器）</p>
+</li>
+<li><p>Cookie V.S. Session</p>
+<p>Cookie 存在浏览器的文件里，Session 存在服务器的文件里<br>Session 是基于 Cookie 实现的，具体做法就是把 SessionID 存在 Cookie 里</p>
+</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>HTTP</tag>
       </tags>
   </entry>
   <entry>
@@ -392,48 +434,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Cookie和Session</title>
-    <url>/2020/11/20/Cookie%E5%92%8CSession/</url>
-    <content><![CDATA[<h3 id="1、Cookie"><a href="#1、Cookie" class="headerlink" title="1、Cookie"></a>1、Cookie</h3><ul>
-<li><p>概述：</p>
-<p>HTTP Cookie（也叫 Web Cookie 或浏览器 Cookie）是服务器发送到用户浏览器并保存在本地的一小块数据，它会在浏览器下次向同一服务器再发起请求时被携带并发送到服务器上。通常，它用于告知服务端两个请求是否来自同一浏览器，如保持用户的登录状态。<br>通俗的说，Cookie 是服务器下发给浏览器的一段字符串<br>浏览器必须保存这个 Cookie(除非用户删除)<br>之后发起相同二级域名请求，浏览器必须附上 Cookie<a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Cookies">MDN</a></p>
-<a id="more"></a>
-</li>
-</ul>
-<ul>
-<li>创建 Cookie<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Set-Cookie: &lt;cookie 名&gt;&#x3D;&lt;cookie 值&gt;</span><br><span class="line">&#x2F;&#x2F;例</span><br><span class="line">response.setHeader(&quot;Set-Cookie&quot;, &#96;session_id&#x3D;$&#123;random&#125;;HttpOnly&#96;);</span><br></pre></td></tr></table></figure>
-<h3 id="2、Session"><a href="#2、Session" class="headerlink" title="2、Session"></a>2、Session</h3></li>
-</ul>
-<p>session 数据放在服务器上,一般由 cookie 保存 session 的 id，保存在 Cookie 里的 session id 是独一无二的随机生成的，服务器通过 Cookie 保存的 session id 获取数据</p>
-<h3 id="3、两者区别"><a href="#3、两者区别" class="headerlink" title="3、两者区别"></a>3、两者区别</h3><ol>
-<li><p>存储位置：cookie 数据存放在客户的浏览器上，session 数据放在服务器上。</p>
-</li>
-<li><p>安全性：cookie 不是很安全，别人可以分析存放在本地的 COOKIE 并进行篡改</p>
-</li>
-<li><p>限制：单个 cookie 保存的数据不能超过 4K，很多浏览器都限制一个站点最多保存 20 个 cookie。</p>
-</li>
-</ol>
-<p>简单实现</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">if (path &#x3D;&#x3D;&#x3D; &quot;&#x2F;sign_in&quot; &amp;&amp; method &#x3D;&#x3D;&#x3D; &quot;POST&quot;) &#123;</span><br><span class="line">  const array &#x3D; [];</span><br><span class="line">  const users &#x3D; JSON.parse(fs.readFileSync(&quot;.&#x2F;db&#x2F;users.json&quot;).toString());</span><br><span class="line">  response.setHeader(&quot;Content-Type&quot;, &quot;text&#x2F;html,charset&#x3D;UTF-8&quot;);</span><br><span class="line">  request.on(&quot;data&quot;, (chunk) &#x3D;&gt; &#123;</span><br><span class="line">    array.push(chunk);</span><br><span class="line">  &#125;);</span><br><span class="line">  request.on(&quot;end&quot;, () &#x3D;&gt; &#123;</span><br><span class="line">    const string &#x3D; Buffer.concat(array).toString();</span><br><span class="line">    const obj &#x3D; JSON.parse(string);</span><br><span class="line">    const user &#x3D; users.find(</span><br><span class="line">      (user) &#x3D;&gt; user.name &#x3D;&#x3D;&#x3D; obj.name &amp;&amp; user.password &#x3D;&#x3D;&#x3D; obj.password</span><br><span class="line">    );</span><br><span class="line">    if (user &#x3D;&#x3D;&#x3D; undefined) &#123;</span><br><span class="line">      response.statusCode &#x3D; 400;</span><br><span class="line">      response.setHeader(&quot;Content-Type&quot;, &quot;text&#x2F;json;charset&#x3D;utf-8&quot;);</span><br><span class="line">      response.end();</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      response.statusCode &#x3D; 200;</span><br><span class="line">      const random &#x3D; Math.random();</span><br><span class="line">      session[random] &#x3D; &#123; user_id: user.id &#125;;</span><br><span class="line">      fs.writeFileSync(&quot;.&#x2F;session.json&quot;, JSON.stringify(session));</span><br><span class="line">      response.setHeader(&quot;Set-Cookie&quot;, &#96;session_id&#x3D;$&#123;random&#125;;HttpOnly&#96;);</span><br><span class="line">      response.end();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125; else if (path &#x3D;&#x3D;&#x3D; &quot;&#x2F;home.html&quot;) &#123;</span><br><span class="line">  const cookie &#x3D; request.headers[&quot;cookie&quot;];</span><br><span class="line">  let sessionId;</span><br><span class="line"></span><br><span class="line">  try &#123;</span><br><span class="line">    sessionId &#x3D; cookie</span><br><span class="line">      .split(&quot;;&quot;)</span><br><span class="line">      .filter((s) &#x3D;&gt; s.indexOf(&quot;session_id&#x3D;&quot;) &gt;&#x3D; 0)[0]</span><br><span class="line">      .split(&quot;&#x3D;&quot;)[1];</span><br><span class="line">    console.log(sessionId);</span><br><span class="line">  &#125; catch (error) &#123;&#125;</span><br><span class="line">  if (sessionId &amp;&amp; session[sessionId]) &#123;</span><br><span class="line">    const userId &#x3D; session[sessionId].user_id;</span><br><span class="line">    console.log(userId);</span><br><span class="line">    const homeHtml &#x3D; fs.readFileSync(&quot;.&#x2F;public&#x2F;home.html&quot;).toString();</span><br><span class="line">    const users &#x3D; JSON.parse(fs.readFileSync(&quot;.&#x2F;db&#x2F;users.json&quot;).toString());</span><br><span class="line">    const user &#x3D; users.find((user) &#x3D;&gt; user.id &#x3D;&#x3D;&#x3D; userId);</span><br><span class="line">    let string;</span><br><span class="line">    if (user) &#123;</span><br><span class="line">      string &#x3D; homeHtml</span><br><span class="line">        .replace(&quot;&#123;&#123;loginStatus&#125;&#125;&quot;, &quot;已登录&quot;)</span><br><span class="line">        .replace(&quot;&#123;&#123;userName&#125;&#125;&quot;, user.name);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      string &#x3D; homeHtml</span><br><span class="line">        .replace(&quot;&#123;&#123;loginStatus&#125;&#125;&quot;, &quot;未登录&quot;)</span><br><span class="line">        .replace(&quot;&#123;&#123;userName&#125;&#125;&quot;, &quot;&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    response.write(string);</span><br><span class="line">    response.end();</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    const homeHtml &#x3D; fs.readFileSync(&quot;.&#x2F;public&#x2F;home.html&quot;).toString();</span><br><span class="line">    const string &#x3D; homeHtml</span><br><span class="line">      .replace(&quot;&#123;&#123;loginStatus&#125;&#125;&quot;, &quot;未登录&quot;)</span><br><span class="line">      .replace(&quot;&#123;&#123;userName&#125;&#125;&quot;, &quot;&quot;);</span><br><span class="line">    response.write(string);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="Cookie-V-S-LocalStorage-V-S-SessionStorage-V-S-Session"><a href="#Cookie-V-S-LocalStorage-V-S-SessionStorage-V-S-Session" class="headerlink" title="Cookie V.S. LocalStorage V.S. SessionStorage V.S. Session"></a>Cookie V.S. LocalStorage V.S. SessionStorage V.S. Session</h4><ul>
-<li><p>Cookie V.S. LocalStorage</p>
-<p>主要区别是 Cookie 会被发送到服务器，而 LocalStorage 不会<br>Cookie 一般最大 4k，LocalStorage 可以用 5Mb 甚至 10Mb（各浏览器不同）</p>
-</li>
-</ul>
-<ul>
-<li><p>LocalStorage V.S. SessionStorage</p>
-<p>LocalStorage 一般不会自动过期（除非用户手动清除），而 SessionStorage 在回话结束时过期（如关闭浏览器）</p>
-</li>
-<li><p>Cookie V.S. Session</p>
-<p>Cookie 存在浏览器的文件里，Session 存在服务器的文件里<br>Session 是基于 Cookie 实现的，具体做法就是把 SessionID 存在 Cookie 里</p>
-</li>
-</ul>
-]]></content>
-      <tags>
-        <tag>HTTP</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Git</title>
     <url>/2020/10/04/Git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
     <content><![CDATA[<h2 id="1、git-本地仓库"><a href="#1、git-本地仓库" class="headerlink" title="1、git 本地仓库"></a>1、git 本地仓库</h2><p>git 就是一条命令</p>
@@ -489,7 +489,7 @@
 <li>打开 Github，在设置页面粘贴公钥内容</li>
 </ul>
 <h3 id="测试："><a href="#测试：" class="headerlink" title="测试："></a>测试：</h3><ul>
-<li>运行 ssh -T <a href="mailto:&#x67;&#x69;&#116;&#x40;&#103;&#105;&#116;&#x68;&#117;&#98;&#x2e;&#x63;&#111;&#109;">&#x67;&#x69;&#116;&#x40;&#103;&#105;&#116;&#x68;&#117;&#98;&#x2e;&#x63;&#111;&#109;</a></li>
+<li>运行 ssh -T <a href="mailto:&#103;&#x69;&#x74;&#64;&#x67;&#x69;&#116;&#x68;&#117;&#x62;&#46;&#x63;&#x6f;&#109;">&#103;&#x69;&#x74;&#64;&#x67;&#x69;&#116;&#x68;&#117;&#x62;&#46;&#x63;&#x6f;&#109;</a></li>
 <li>询问 yes/no,回答 yes</li>
 </ul>
 <h3 id="上传代码："><a href="#上传代码：" class="headerlink" title="上传代码："></a>上传代码：</h3><ol>
@@ -542,7 +542,7 @@
 <li>打开 Github，在设置页面粘贴公钥内容</li>
 </ul>
 <h3 id="测试：-1"><a href="#测试：-1" class="headerlink" title="测试："></a>测试：</h3><ul>
-<li>运行 ssh -T <a href="mailto:&#103;&#105;&#116;&#x40;&#103;&#105;&#116;&#104;&#x75;&#x62;&#46;&#x63;&#x6f;&#109;">&#103;&#105;&#116;&#x40;&#103;&#105;&#116;&#104;&#x75;&#x62;&#46;&#x63;&#x6f;&#109;</a></li>
+<li>运行 ssh -T <a href="mailto:&#x67;&#x69;&#116;&#x40;&#x67;&#x69;&#x74;&#x68;&#117;&#98;&#x2e;&#x63;&#111;&#109;">&#x67;&#x69;&#116;&#x40;&#x67;&#x69;&#x74;&#x68;&#117;&#98;&#x2e;&#x63;&#111;&#109;</a></li>
 <li>询问 yes/no,回答 yes</li>
 </ul>
 <h3 id="上传代码：-1"><a href="#上传代码：-1" class="headerlink" title="上传代码："></a>上传代码：</h3><ol>
@@ -949,44 +949,6 @@
       </tags>
   </entry>
   <entry>
-    <title>MVC</title>
-    <url>/2020/11/21/MVC/</url>
-    <content><![CDATA[<h4 id="一、MVC"><a href="#一、MVC" class="headerlink" title="一、MVC"></a>一、MVC</h4><p>MVC 包括三类对象:</p>
-<ol>
-<li>模型 model 用于封装与应用程序的业务逻辑相关的数据以及对数据的处理方法，会有一个或多个视图监听此模型。一旦模型的数据发生变化，模型将通知有关的视图。<a id="more"></a>
-
-</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const m &#x3D; &#123;</span><br><span class="line">  data: &#123;存储数据&#125;,</span><br><span class="line">  create() &#123;添加数据&#125;,</span><br><span class="line">  delete() &#123;删除数据&#125;,</span><br><span class="line">  update(data) &#123;     	更新数据</span><br><span class="line">    eventBus.trigger()	触发事件</span><br><span class="line">  &#125;,</span><br><span class="line">  get() &#123;读取数据&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ol>
-<li>视图 view 是它在屏幕上的表示，描绘的是 model 的当前状态。当模型的数据发生变化，视图相应地得到刷新自己的机会。</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const v &#x3D; &#123;</span><br><span class="line">  el: 渲染标记,</span><br><span class="line">  html: &#96;页面内容&#96;,</span><br><span class="line">  init()&#123;初始化页面&#125;,</span><br><span class="line">  render()&#123;渲染页面&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<ol start="3">
-<li>控制器 controller 定义用户界面对用户输入的响应方式，起到不同层面间的组织作用，用于控制应用程序的流程，它处理用户的行为和数据 model 上的改变。</li>
-</ol>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const c &#x3D; &#123;</span><br><span class="line">  init() &#123;</span><br><span class="line">    v.init(container)   		初始化view</span><br><span class="line">    v.render() 				第一次渲染</span><br><span class="line">    c.autoBindEvents()			自动绑定事件</span><br><span class="line">    eventBus.on()&#123;&#125;			监听事件</span><br><span class="line">    &#125;,</span><br><span class="line">  events: &#123;哈希表记录事件&#125;,</span><br><span class="line">  autoBindEvents() &#123;自动绑定事件&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="二、EventBus"><a href="#二、EventBus" class="headerlink" title="二、EventBus"></a>二、EventBus</h4><p>EventBus 事件总线,可以用来进行组件之间的监听和通信。</p>
-<ul>
-<li>初始化</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import $ from &#39;jquery&#39;</span><br><span class="line">const eventBus &#x3D; $(window)</span><br></pre></td></tr></table></figure>
-<ul>
-<li>api:<code>eventBus.trigger()</code>:触发事件；<code>eventBus.on()&#123;&#125;</code>：监听事件;<code>eventBus.off()&#123;&#125;</code>:解除事件</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const m &#x3D; &#123;</span><br><span class="line">	...</span><br><span class="line">   update(data) &#123;</span><br><span class="line">   ...</span><br><span class="line">    eventBus.trigger(&#39;m:updated&#39;)		&#x2F;&#x2F;在更新数据时触发事件</span><br><span class="line">  &#125;,</span><br><span class="line">const c &#x3D; &#123;</span><br><span class="line">  	...</span><br><span class="line">    eventBus.on(&#39;m:updated&#39;, () &#x3D;&gt; &#123;v.render(m.data.n)&#125;)</span><br><span class="line">  &#125;,		&#x2F;&#x2F;接收事件，事件触发就执行后面的函数</span><br><span class="line">  const</span><br><span class="line"></span><br><span class="line">  eventBus.off(&#39;m:updated&#39;)		&#x2F;&#x2F;移除事件</span><br></pre></td></tr></table></figure>
-<h4 id="三、表驱动编程"><a href="#三、表驱动编程" class="headerlink" title="三、表驱动编程"></a>三、表驱动编程</h4><p>简单来说，就是以查表的方式获取数据而不使用逻辑语句。事实上，凡是能通过逻辑语句来选择的事物，都可以通过查表来选择。<br>从表中查询数据主要有直接访问、索引访问、阶梯访问三种方式。</p>
-<p>例：今天星期几</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const day &#x3D; new Date().getDay()</span><br><span class="line">let day_zh;</span><br><span class="line">if(day &#x3D;&#x3D;&#x3D; 0)&#123;</span><br><span class="line">    day_zh &#x3D; &#39;星期日&#39;</span><br><span class="line">&#125;else if(day &#x3D;&#x3D;&#x3D; 1) &#123;</span><br><span class="line">    day_zh &#x3D; &#39;星期一&#39;</span><br><span class="line">&#125;</span><br><span class="line">...</span><br><span class="line">else&#123;</span><br><span class="line">    day_zh &#x3D; &#39;星期六&#39;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 或者 用 switch case</span><br><span class="line">switch(day) &#123;</span><br><span class="line">    case 0:</span><br><span class="line">        day_zh &#x3D; &#39;星期日&#39;</span><br><span class="line">        break;</span><br><span class="line">    case 1:</span><br><span class="line">        day_zh &#x3D; &#39;星期一&#39;</span><br><span class="line">        break;</span><br><span class="line">        ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>使用表驱动法，将数据放在一个表里</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const week &#x3D; [&#39;星期日&#39;, &#39;星期一&#39;,..., &#39;星期六&#39;]</span><br><span class="line">const day &#x3D; new Date().getDay(</span><br><span class="line">const day_zh &#x3D; week[day]</span><br></pre></td></tr></table></figure>
-<h4 id="四、如何理解模块化的"><a href="#四、如何理解模块化的" class="headerlink" title="四、如何理解模块化的"></a>四、如何理解模块化的</h4><p>模块化就是将一个复杂的程序，通过一定规则封装成不同的模块，可以是对象、文件等。降低代码耦合度，各个模块有更好的独立性。这样做可以解决项目中的全局变量污染的问题，使开发效率更高，方便代码复用和维护 。</p>
-]]></content>
-      <tags>
-        <tag>MVC</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>React 基本用法</title>
     <url>/2020/12/04/React/</url>
     <content><![CDATA[<h3 id="一、createElement-和-JSX"><a href="#一、createElement-和-JSX" class="headerlink" title="一、createElement 和 JSX"></a>一、createElement 和 JSX</h3><ol>
@@ -1140,6 +1102,40 @@
       </tags>
   </entry>
   <entry>
+    <title>TS的泛型</title>
+    <url>/2021/03/05/TS%E6%B3%9B%E5%9E%8B/</url>
+    <content><![CDATA[<h5 id="1、泛型有什么用？"><a href="#1、泛型有什么用？" class="headerlink" title="1、泛型有什么用？"></a>1、泛型有什么用？</h5><p>先看一个函数</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">function fn(x: string): string &#123;</span><br><span class="line">    return x</span><br><span class="line">&#125;</span><br><span class="line">console.log(fn(1)) &#x2F;&#x2F; 1</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>如果这样写，函数 fn 只能接受 string 类型，如果想要传入别的类型，返回别的类型呢？这样需要使用泛型</p>
+   <a id="more"></a>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">function fn&lt;T&gt;(x:T):T&#123;</span><br><span class="line">    return x</span><br><span class="line">&#125;</span><br><span class="line">console.log(fn(true)) &#x2F;&#x2F; true</span><br><span class="line">console.log(fn(1))   &#x2F;&#x2F; 1</span><br><span class="line">console.log(fn(&#39;1&#39;)) &#x2F;&#x2F; &#39;1&#39;</span><br><span class="line">console.log(fn([1, 2, 3])) &#x2F;&#x2F; [1, 2, 3]</span><br></pre></td></tr></table></figure>
+<p>T 帮助我们捕获用户传入的类型（比如：number），我们就可以使用这个类型,之后我们再次使用了 T 当做返回值类型。这个函数 fn 就叫做泛型</p>
+<ul>
+<li><p>使用</p>
+<ul>
+<li>传入参数、类型</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">let n &#x3D; identity&lt;string&gt;(&quot;n&quot;);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>类型推论</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">let n &#x3D; identity(&quot;n&quot;);</span><br></pre></td></tr></table></figure>
+<h5 id="2、泛型变量"><a href="#2、泛型变量" class="headerlink" title="2、泛型变量"></a>2、泛型变量</h5></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">function fn&lt;T&gt;(x: T[]): T[] &#123;</span><br><span class="line">  console.log(x.length);</span><br><span class="line">  return x;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>把泛型变量 T 当做类型的一部分使用，而不是整个类型，增加了灵活性。</p>
+<h5 id="3、泛型接口"><a href="#3、泛型接口" class="headerlink" title="3、泛型接口"></a>3、泛型接口</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">interface Fn&lt;T&gt; &#123;</span><br><span class="line">   (arg: T): T;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function fn&lt;T&gt;(x: T): T &#123;</span><br><span class="line">    return x;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let func: Fn&lt;number&gt; &#x3D; fn;</span><br></pre></td></tr></table></figure>
+<h5 id="4、泛型类"><a href="#4、泛型类" class="headerlink" title="4、泛型类"></a>4、泛型类</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">  class X&lt;T&gt; &#123;</span><br><span class="line">    value: T;</span><br><span class="line">    add: (x: T, y: T) &#x3D;&gt; T;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">let x &#x3D; new X&lt;number&gt;();</span><br><span class="line">x.value &#x3D; 0;</span><br><span class="line">x.add &#x3D; function(x, y) &#123; return x + y; &#125;;</span><br></pre></td></tr></table></figure>
+<p>与接口一样，直接把泛型类型放在类后面，可以帮助我们确认类的所有属性都在使用相同的类型。</p>
+<h5 id="5、泛型约束"><a href="#5、泛型约束" class="headerlink" title="5、泛型约束"></a>5、泛型约束</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">interface Lengthwise &#123;</span><br><span class="line">    length: number;</span><br><span class="line">&#125;</span><br><span class="line">function fn&lt;T extends Lengthwise&gt;(n: T): T &#123;</span><br><span class="line">    console.log(n.length);</span><br><span class="line">    return n;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>现在这个泛型函数被定义了约束，因此它不再是适用于任意类型。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">fn(1)   &#x2F;&#x2F;error，必须带有length属性</span><br></pre></td></tr></table></figure>]]></content>
+      <tags>
+        <tag>Typescript</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>URL</title>
     <url>/2020/10/20/URL/</url>
     <content><![CDATA[<p><strong>URL（统一资源定位符 Uniform Resource Locator）</strong></p>
@@ -1254,37 +1250,131 @@ nslookup 命令 `nslookup baidu.com` 得到百度的 IP 地址</li>
       </tags>
   </entry>
   <entry>
-    <title>TS的泛型</title>
-    <url>/2021/03/05/TS%E6%B3%9B%E5%9E%8B/</url>
-    <content><![CDATA[<h5 id="1、泛型有什么用？"><a href="#1、泛型有什么用？" class="headerlink" title="1、泛型有什么用？"></a>1、泛型有什么用？</h5><p>先看一个函数</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">function fn(x: string): string &#123;</span><br><span class="line">    return x</span><br><span class="line">&#125;</span><br><span class="line">console.log(fn(1)) &#x2F;&#x2F; 1</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>如果这样写，函数 fn 只能接受 string 类型，如果想要传入别的类型，返回别的类型呢？这样需要使用泛型</p>
-   <a id="more"></a>
+    <title>MVC</title>
+    <url>/2020/11/21/MVC/</url>
+    <content><![CDATA[<h4 id="一、MVC"><a href="#一、MVC" class="headerlink" title="一、MVC"></a>一、MVC</h4><p>MVC 包括三类对象:</p>
+<ol>
+<li>模型 model 用于封装与应用程序的业务逻辑相关的数据以及对数据的处理方法，会有一个或多个视图监听此模型。一旦模型的数据发生变化，模型将通知有关的视图。<a id="more"></a>
 
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">function fn&lt;T&gt;(x:T):T&#123;</span><br><span class="line">    return x</span><br><span class="line">&#125;</span><br><span class="line">console.log(fn(true)) &#x2F;&#x2F; true</span><br><span class="line">console.log(fn(1))   &#x2F;&#x2F; 1</span><br><span class="line">console.log(fn(&#39;1&#39;)) &#x2F;&#x2F; &#39;1&#39;</span><br><span class="line">console.log(fn([1, 2, 3])) &#x2F;&#x2F; [1, 2, 3]</span><br></pre></td></tr></table></figure>
-<p>T 帮助我们捕获用户传入的类型（比如：number），我们就可以使用这个类型,之后我们再次使用了 T 当做返回值类型。这个函数 fn 就叫做泛型</p>
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const m &#x3D; &#123;</span><br><span class="line">  data: &#123;存储数据&#125;,</span><br><span class="line">  create() &#123;添加数据&#125;,</span><br><span class="line">  delete() &#123;删除数据&#125;,</span><br><span class="line">  update(data) &#123;     	更新数据</span><br><span class="line">    eventBus.trigger()	触发事件</span><br><span class="line">  &#125;,</span><br><span class="line">  get() &#123;读取数据&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>视图 view 是它在屏幕上的表示，描绘的是 model 的当前状态。当模型的数据发生变化，视图相应地得到刷新自己的机会。</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const v &#x3D; &#123;</span><br><span class="line">  el: 渲染标记,</span><br><span class="line">  html: &#96;页面内容&#96;,</span><br><span class="line">  init()&#123;初始化页面&#125;,</span><br><span class="line">  render()&#123;渲染页面&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>控制器 controller 定义用户界面对用户输入的响应方式，起到不同层面间的组织作用，用于控制应用程序的流程，它处理用户的行为和数据 model 上的改变。</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const c &#x3D; &#123;</span><br><span class="line">  init() &#123;</span><br><span class="line">    v.init(container)   		初始化view</span><br><span class="line">    v.render() 				第一次渲染</span><br><span class="line">    c.autoBindEvents()			自动绑定事件</span><br><span class="line">    eventBus.on()&#123;&#125;			监听事件</span><br><span class="line">    &#125;,</span><br><span class="line">  events: &#123;哈希表记录事件&#125;,</span><br><span class="line">  autoBindEvents() &#123;自动绑定事件&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="二、EventBus"><a href="#二、EventBus" class="headerlink" title="二、EventBus"></a>二、EventBus</h4><p>EventBus 事件总线,可以用来进行组件之间的监听和通信。</p>
 <ul>
-<li><p>使用</p>
+<li>初始化</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import $ from &#39;jquery&#39;</span><br><span class="line">const eventBus &#x3D; $(window)</span><br></pre></td></tr></table></figure>
 <ul>
-<li>传入参数、类型</li>
+<li>api:<code>eventBus.trigger()</code>:触发事件；<code>eventBus.on()&#123;&#125;</code>：监听事件;<code>eventBus.off()&#123;&#125;</code>:解除事件</li>
 </ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">let n &#x3D; identity&lt;string&gt;(&quot;n&quot;);</span><br></pre></td></tr></table></figure>
-<ul>
-<li>类型推论</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">let n &#x3D; identity(&quot;n&quot;);</span><br></pre></td></tr></table></figure>
-<h5 id="2、泛型变量"><a href="#2、泛型变量" class="headerlink" title="2、泛型变量"></a>2、泛型变量</h5></li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">function fn&lt;T&gt;(x: T[]): T[] &#123;</span><br><span class="line">  console.log(x.length);</span><br><span class="line">  return x;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>把泛型变量 T 当做类型的一部分使用，而不是整个类型，增加了灵活性。</p>
-<h5 id="3、泛型接口"><a href="#3、泛型接口" class="headerlink" title="3、泛型接口"></a>3、泛型接口</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">interface Fn&lt;T&gt; &#123;</span><br><span class="line">   (arg: T): T;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function fn&lt;T&gt;(x: T): T &#123;</span><br><span class="line">    return x;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let func: Fn&lt;number&gt; &#x3D; fn;</span><br></pre></td></tr></table></figure>
-<h5 id="4、泛型类"><a href="#4、泛型类" class="headerlink" title="4、泛型类"></a>4、泛型类</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">  class X&lt;T&gt; &#123;</span><br><span class="line">    value: T;</span><br><span class="line">    add: (x: T, y: T) &#x3D;&gt; T;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">let x &#x3D; new X&lt;number&gt;();</span><br><span class="line">x.value &#x3D; 0;</span><br><span class="line">x.add &#x3D; function(x, y) &#123; return x + y; &#125;;</span><br></pre></td></tr></table></figure>
-<p>与接口一样，直接把泛型类型放在类后面，可以帮助我们确认类的所有属性都在使用相同的类型。</p>
-<h5 id="5、泛型约束"><a href="#5、泛型约束" class="headerlink" title="5、泛型约束"></a>5、泛型约束</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">interface Lengthwise &#123;</span><br><span class="line">    length: number;</span><br><span class="line">&#125;</span><br><span class="line">function fn&lt;T extends Lengthwise&gt;(n: T): T &#123;</span><br><span class="line">    console.log(n.length);</span><br><span class="line">    return n;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>现在这个泛型函数被定义了约束，因此它不再是适用于任意类型。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">fn(1)   &#x2F;&#x2F;error，必须带有length属性</span><br></pre></td></tr></table></figure>]]></content>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const m &#x3D; &#123;</span><br><span class="line">	...</span><br><span class="line">   update(data) &#123;</span><br><span class="line">   ...</span><br><span class="line">    eventBus.trigger(&#39;m:updated&#39;)		&#x2F;&#x2F;在更新数据时触发事件</span><br><span class="line">  &#125;,</span><br><span class="line">const c &#x3D; &#123;</span><br><span class="line">  	...</span><br><span class="line">    eventBus.on(&#39;m:updated&#39;, () &#x3D;&gt; &#123;v.render(m.data.n)&#125;)</span><br><span class="line">  &#125;,		&#x2F;&#x2F;接收事件，事件触发就执行后面的函数</span><br><span class="line">  const</span><br><span class="line"></span><br><span class="line">  eventBus.off(&#39;m:updated&#39;)		&#x2F;&#x2F;移除事件</span><br></pre></td></tr></table></figure>
+<h4 id="三、表驱动编程"><a href="#三、表驱动编程" class="headerlink" title="三、表驱动编程"></a>三、表驱动编程</h4><p>简单来说，就是以查表的方式获取数据而不使用逻辑语句。事实上，凡是能通过逻辑语句来选择的事物，都可以通过查表来选择。<br>从表中查询数据主要有直接访问、索引访问、阶梯访问三种方式。</p>
+<p>例：今天星期几</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const day &#x3D; new Date().getDay()</span><br><span class="line">let day_zh;</span><br><span class="line">if(day &#x3D;&#x3D;&#x3D; 0)&#123;</span><br><span class="line">    day_zh &#x3D; &#39;星期日&#39;</span><br><span class="line">&#125;else if(day &#x3D;&#x3D;&#x3D; 1) &#123;</span><br><span class="line">    day_zh &#x3D; &#39;星期一&#39;</span><br><span class="line">&#125;</span><br><span class="line">...</span><br><span class="line">else&#123;</span><br><span class="line">    day_zh &#x3D; &#39;星期六&#39;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 或者 用 switch case</span><br><span class="line">switch(day) &#123;</span><br><span class="line">    case 0:</span><br><span class="line">        day_zh &#x3D; &#39;星期日&#39;</span><br><span class="line">        break;</span><br><span class="line">    case 1:</span><br><span class="line">        day_zh &#x3D; &#39;星期一&#39;</span><br><span class="line">        break;</span><br><span class="line">        ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用表驱动法，将数据放在一个表里</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const week &#x3D; [&#39;星期日&#39;, &#39;星期一&#39;,..., &#39;星期六&#39;]</span><br><span class="line">const day &#x3D; new Date().getDay(</span><br><span class="line">const day_zh &#x3D; week[day]</span><br></pre></td></tr></table></figure>
+<h4 id="四、如何理解模块化的"><a href="#四、如何理解模块化的" class="headerlink" title="四、如何理解模块化的"></a>四、如何理解模块化的</h4><p>模块化就是将一个复杂的程序，通过一定规则封装成不同的模块，可以是对象、文件等。降低代码耦合度，各个模块有更好的独立性。这样做可以解决项目中的全局变量污染的问题，使开发效率更高，方便代码复用和维护 。</p>
+]]></content>
       <tags>
-        <tag>Typescript</tag>
+        <tag>MVC</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Vue Router</title>
+    <url>/2021/02/10/Vue%20router/</url>
+    <content><![CDATA[<h5 id="1、Vue-Router"><a href="#1、Vue-Router" class="headerlink" title="1、Vue Router"></a>1、Vue Router</h5><p>Vue.js 官方的路由管理器。路由就是 SPA（single page application 单页应用）的路径管理器，单页面应用的思路是一个 index.html 里面有一个容器，在用户进行交互的时候，并不会重新加载某个界面，而是只选择把某个视图更新到容器中去显示。</p>
+ <a id="more"></a>
+
+<h5 id="2、路由模式"><a href="#2、路由模式" class="headerlink" title="2、路由模式"></a>2、路由模式</h5><ul>
+<li><p>hash 模式</p>
+<p>vue-router 默认 hash 模式 —— 使用 URL 的 hash 来模拟一个完整的 URL，当 URL 改变时，页面不会重新加载。# 是 url 的一个锚点，记载了网页中的位置，Hash 模式通过锚点值的改变，根据不同的值，渲染指定 DOM 位置的不同数据。<br>hash 模式的原理是 onhashchange 事件(监测 hash 值变化)，可以在 window 对象上监听这个事件。</p>
+</li>
+</ul>
+<ul>
+<li><p>history 模式</p>
+<p>当你使用 history 模式时，URL 就像正常的 url，需要后台配置支持</p>
+</li>
+</ul>
+<h5 id="3、页面跳转"><a href="#3、页面跳转" class="headerlink" title="3、页面跳转"></a>3、页面跳转</h5><ul>
+<li><p>声明式：以标签的形式声明为一个跳转的标签</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;简单用法</span><br><span class="line">&lt;router-link to&#x3D;&quot;&#x2F;&quot;&gt;Home&lt;&#x2F;router-link&gt;</span><br><span class="line">&#x2F;&#x2F;传递参数</span><br><span class="line">&lt;router-link :to&#x3D;&quot;&#123;name:xxx,params:&#123;key:value&#125;&#125;&quot;&gt;&lt;&#x2F;router-link&gt;</span><br><span class="line">&#x2F;&#x2F;url 传值（index.js设置路由）</span><br><span class="line">&#123;</span><br><span class="line">  path:&#39;&#x2F;user&#x2F;:id&#x2F;&#39;, &#x2F;&#x2F;id就是传递的参数</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F;获取参数</span><br><span class="line">$route.params.key</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;使用name匹配路由，使用query来传递参数</span><br><span class="line">&lt;router-link :to&#x3D;&quot;&#123; name:&#39;xxx&#39;,query: &#123; key:value&#125;&#125;&quot; &gt;跳转Query&lt;&#x2F;router-link&gt;</span><br><span class="line">&#x2F;&#x2F;获取参数</span><br><span class="line">this.$route.query.queryId</span><br></pre></td></tr></table></figure>
+<p><strong>param 和 query 的区别</strong></p>
+<ul>
+<li>使用 params 传参只能用 name 来引入路由，即 push 里面只能是 name:’xxx’,不能是 path:’/xxx’,因为 params 只能用 name 来引入路由，如果这里写成了 path，接收参数页面会是 undefined。</li>
+<li>query name 和 path 都支持。query，url 会加上参数信息，而 param url 并不会携带参数信息。</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>编程式</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; 不带参数</span><br><span class="line">this.$router.push(&#123;name:&#39;xxx&#39;&#125;)</span><br><span class="line">&#x2F;&#x2F; 带参数 params</span><br><span class="line">this.$router.push(&#123;name:&#39;xxx&#39;,params:&#123;key:value&#125;&#125;)</span><br><span class="line">&#x2F;&#x2F;query</span><br><span class="line">this.$router.push(&#123;name:&#39;xxx&#39;,query:&#123;key:value&#125;&#125;)</span><br><span class="line"></span><br><span class="line">this.$router.go(-1)&#x2F;&#x2F;跳转到上一次浏览的页面</span><br><span class="line">this.$router.replace(&#39;&#x2F;menu&#39;)&#x2F;&#x2F;指定跳转的地址</span><br><span class="line">this.$router.replace(&#123;name:&#39;menuLink&#39;&#125;)&#x2F;&#x2F;指定跳转路由的名字下</span><br></pre></td></tr></table></figure>
+<p><strong>push 和 replace 的区别：</strong></p>
+<ul>
+<li>使用 push 方法的跳转会向 history 栈添加一个新的记录，当我们点击浏览器的返回按钮时可以看到之前的页面。也就是说是支持后退的。</li>
+</ul>
+<ul>
+<li>使用 replace 方法不会向 history 添加新记录，而是替换掉当前的 history 记录，即当 replace 跳转到的网页后，’后退’ 按钮不能查看之前的页面。</li>
+</ul>
+</li>
+</ul>
+<h5 id="4、导航守卫"><a href="#4、导航守卫" class="headerlink" title="4、导航守卫"></a>4、导航守卫</h5><ol>
+<li><p>全局前置守卫</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const router &#x3D; new VueRouter(&#123; ... &#125;)</span><br><span class="line">router.beforeEach((to, from, next) &#x3D;&gt; &#123;</span><br><span class="line">...</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
+<p>参数</p>
+</li>
+</ol>
+<ul>
+<li><p>to 即将要进入的目标 路由对象</p>
+</li>
+<li><p>from 当前导航正要离开的路由</p>
+</li>
+<li><p>next 要执行的操作</p>
+<ul>
+<li>next(): 进行管道中的下一个钩子（放行）。</li>
+<li>next(false): 中断当前的导航。</li>
+<li>next(‘/‘) 或者 next({ path: ‘/‘ }):跳转到一个不同的地址。</li>
+<li>next(error): 如果传入 next 的参数是一个 Error 实例，则导航会被终止且该错误会被传递给 router.onError() 注册过的回调。</li>
+</ul>
+</li>
+</ul>
+<ol start="2">
+<li><p>全局解析守卫</p>
+<p> router.beforeEach 类似，区别是在导航被确认之前，同时在所有组件内守卫和异步路由组件被解析之后，解析守卫就被调用</p>
+</li>
+<li><p>全局后置钩子</p>
+<p> 你也可以注册全局后置钩子，然而和守卫不同的是，这些钩子不会接受 next 函数也不会改变导航本身：</p>
+ <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">router.afterEach((to, from) &#x3D;&gt; &#123;</span><br><span class="line">&#x2F;&#x2F; ...</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></li>
+<li><p>路由独享的守卫<br> 在路由配置上直接定义 beforeEnter 守卫：<br> 与全局前置守卫的方法参数是一样的。</p>
+ <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const router &#x3D; new VueRouter(&#123;</span><br><span class="line">  routes: [</span><br><span class="line">    &#123;</span><br><span class="line">      path: &#39;&#x2F;foo&#39;,</span><br><span class="line">      component: Foo,</span><br><span class="line">      beforeEnter: (to, from, next) &#x3D;&gt; &#123;</span><br><span class="line">        &#x2F;&#x2F; ...</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></li>
+</ol>
+<ul>
+<li><p>组件内的守卫</p>
+<ul>
+<li>beforeRouteEnter</li>
+</ul>
+<ul>
+<li>beforeRouteUpdate</li>
+<li>beforeRouteLeave</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">  const Foo &#x3D; &#123;</span><br><span class="line">  template: &#96;...&#96;,</span><br><span class="line">  beforeRouteEnter (to, from, next) &#123;</span><br><span class="line">    &#x2F;&#x2F; 在渲染该组件的对应路由被 confirm 前调用</span><br><span class="line">    &#x2F;&#x2F; 不！能！获取组件实例 &#96;this&#96;</span><br><span class="line">    &#x2F;&#x2F; 因为当守卫执行前，组件实例还没被创建</span><br><span class="line">  &#125;,</span><br><span class="line">  beforeRouteUpdate (to, from, next) &#123;</span><br><span class="line">    &#x2F;&#x2F; 在当前路由改变，但是该组件被复用时调用</span><br><span class="line">    &#x2F;&#x2F; 举例来说，对于一个带有动态参数的路径 &#x2F;foo&#x2F;:id，在 &#x2F;foo&#x2F;1 和 &#x2F;foo&#x2F;2 之间跳转的时候，</span><br><span class="line">    &#x2F;&#x2F; 由于会渲染同样的 Foo 组件，因此组件实例会被复用。而这个钩子就会在这个情况下被调用。</span><br><span class="line">    &#x2F;&#x2F; 可以访问组件实例 &#96;this&#96;</span><br><span class="line">  &#125;,</span><br><span class="line">  beforeRouteLeave (to, from, next) &#123;</span><br><span class="line">    &#x2F;&#x2F; 导航离开该组件的对应路由时调用</span><br><span class="line">    &#x2F;&#x2F; 可以访问组件实例 &#96;this&#96;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>beforeRouteEnter 守卫 不能 访问 this,可以通过传一个回调给 next 来访问组件实例。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">beforeRouteEnter (to, from, next) &#123;</span><br><span class="line">  next(vm &#x3D;&gt; &#123;</span><br><span class="line">  &#x2F;&#x2F; 通过 &#96;vm&#96; 访问组件实例</span><br><span class="line">&#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>完整的导航解析流程</p>
+<p><a href="https://router.vuejs.org/zh/guide/advanced/navigation-guards.html#%E7%BB%84%E4%BB%B6%E5%86%85%E7%9A%84%E5%AE%88%E5%8D%AB">官方文档</a></p>
+</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>框架</tag>
+        <tag>Vue</tag>
       </tags>
   </entry>
   <entry>
@@ -1381,119 +1471,6 @@ export default &#123;
       </tags>
   </entry>
   <entry>
-    <title>Vue Router</title>
-    <url>/2021/02/10/Vue%20router/</url>
-    <content><![CDATA[<h5 id="1、Vue-Router"><a href="#1、Vue-Router" class="headerlink" title="1、Vue Router"></a>1、Vue Router</h5><p>Vue.js 官方的路由管理器。路由就是 SPA（single page application 单页应用）的路径管理器，单页面应用的思路是一个 index.html 里面有一个容器，在用户进行交互的时候，并不会重新加载某个界面，而是只选择把某个视图更新到容器中去显示。</p>
- <a id="more"></a>
-
-<h5 id="2、路由模式"><a href="#2、路由模式" class="headerlink" title="2、路由模式"></a>2、路由模式</h5><ul>
-<li><p>hash 模式</p>
-<p>vue-router 默认 hash 模式 —— 使用 URL 的 hash 来模拟一个完整的 URL，当 URL 改变时，页面不会重新加载。# 是 url 的一个锚点，记载了网页中的位置，Hash 模式通过锚点值的改变，根据不同的值，渲染指定 DOM 位置的不同数据。<br>hash 模式的原理是 onhashchange 事件(监测 hash 值变化)，可以在 window 对象上监听这个事件。</p>
-</li>
-</ul>
-<ul>
-<li><p>history 模式</p>
-<p>当你使用 history 模式时，URL 就像正常的 url，需要后台配置支持</p>
-</li>
-</ul>
-<h5 id="3、页面跳转"><a href="#3、页面跳转" class="headerlink" title="3、页面跳转"></a>3、页面跳转</h5><ul>
-<li><p>声明式：以标签的形式声明为一个跳转的标签</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;简单用法</span><br><span class="line">&lt;router-link to&#x3D;&quot;&#x2F;&quot;&gt;Home&lt;&#x2F;router-link&gt;</span><br><span class="line">&#x2F;&#x2F;传递参数</span><br><span class="line">&lt;router-link :to&#x3D;&quot;&#123;name:xxx,params:&#123;key:value&#125;&#125;&quot;&gt;&lt;&#x2F;router-link&gt;</span><br><span class="line">&#x2F;&#x2F;url 传值（index.js设置路由）</span><br><span class="line">&#123;</span><br><span class="line">  path:&#39;&#x2F;user&#x2F;:id&#x2F;&#39;, &#x2F;&#x2F;id就是传递的参数</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F;获取参数</span><br><span class="line">$route.params.key</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;使用name匹配路由，使用query来传递参数</span><br><span class="line">&lt;router-link :to&#x3D;&quot;&#123; name:&#39;xxx&#39;,query: &#123; key:value&#125;&#125;&quot; &gt;跳转Query&lt;&#x2F;router-link&gt;</span><br><span class="line">&#x2F;&#x2F;获取参数</span><br><span class="line">this.$route.query.queryId</span><br></pre></td></tr></table></figure>
-<p><strong>param 和 query 的区别</strong></p>
-<ul>
-<li>使用 params 传参只能用 name 来引入路由，即 push 里面只能是 name:’xxx’,不能是 path:’/xxx’,因为 params 只能用 name 来引入路由，如果这里写成了 path，接收参数页面会是 undefined。</li>
-<li>query name 和 path 都支持。query，url 会加上参数信息，而 param url 并不会携带参数信息。</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li><p>编程式</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; 不带参数</span><br><span class="line">this.$router.push(&#123;name:&#39;xxx&#39;&#125;)</span><br><span class="line">&#x2F;&#x2F; 带参数 params</span><br><span class="line">this.$router.push(&#123;name:&#39;xxx&#39;,params:&#123;key:value&#125;&#125;)</span><br><span class="line">&#x2F;&#x2F;query</span><br><span class="line">this.$router.push(&#123;name:&#39;xxx&#39;,query:&#123;key:value&#125;&#125;)</span><br><span class="line"></span><br><span class="line">this.$router.go(-1)&#x2F;&#x2F;跳转到上一次浏览的页面</span><br><span class="line">this.$router.replace(&#39;&#x2F;menu&#39;)&#x2F;&#x2F;指定跳转的地址</span><br><span class="line">this.$router.replace(&#123;name:&#39;menuLink&#39;&#125;)&#x2F;&#x2F;指定跳转路由的名字下</span><br></pre></td></tr></table></figure>
-<p><strong>push 和 replace 的区别：</strong></p>
-<ul>
-<li>使用 push 方法的跳转会向 history 栈添加一个新的记录，当我们点击浏览器的返回按钮时可以看到之前的页面。也就是说是支持后退的。</li>
-</ul>
-<ul>
-<li>使用 replace 方法不会向 history 添加新记录，而是替换掉当前的 history 记录，即当 replace 跳转到的网页后，’后退’ 按钮不能查看之前的页面。</li>
-</ul>
-</li>
-</ul>
-<h5 id="4、导航守卫"><a href="#4、导航守卫" class="headerlink" title="4、导航守卫"></a>4、导航守卫</h5><ol>
-<li><p>全局前置守卫</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const router &#x3D; new VueRouter(&#123; ... &#125;)</span><br><span class="line">router.beforeEach((to, from, next) &#x3D;&gt; &#123;</span><br><span class="line">...</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure>
-<p>参数</p>
-</li>
-</ol>
-<ul>
-<li><p>to 即将要进入的目标 路由对象</p>
-</li>
-<li><p>from 当前导航正要离开的路由</p>
-</li>
-<li><p>next 要执行的操作</p>
-<ul>
-<li>next(): 进行管道中的下一个钩子（放行）。</li>
-<li>next(false): 中断当前的导航。</li>
-<li>next(‘/‘) 或者 next({ path: ‘/‘ }):跳转到一个不同的地址。</li>
-<li>next(error): 如果传入 next 的参数是一个 Error 实例，则导航会被终止且该错误会被传递给 router.onError() 注册过的回调。</li>
-</ul>
-</li>
-</ul>
-<ol start="2">
-<li><p>全局解析守卫</p>
-<p> router.beforeEach 类似，区别是在导航被确认之前，同时在所有组件内守卫和异步路由组件被解析之后，解析守卫就被调用</p>
-</li>
-<li><p>全局后置钩子</p>
-<p> 你也可以注册全局后置钩子，然而和守卫不同的是，这些钩子不会接受 next 函数也不会改变导航本身：</p>
- <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">router.afterEach((to, from) &#x3D;&gt; &#123;</span><br><span class="line">&#x2F;&#x2F; ...</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></li>
-<li><p>路由独享的守卫<br> 在路由配置上直接定义 beforeEnter 守卫：<br> 与全局前置守卫的方法参数是一样的。</p>
- <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const router &#x3D; new VueRouter(&#123;</span><br><span class="line">  routes: [</span><br><span class="line">    &#123;</span><br><span class="line">      path: &#39;&#x2F;foo&#39;,</span><br><span class="line">      component: Foo,</span><br><span class="line">      beforeEnter: (to, from, next) &#x3D;&gt; &#123;</span><br><span class="line">        &#x2F;&#x2F; ...</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  ]</span><br><span class="line">&#125;)</span><br></pre></td></tr></table></figure></li>
-</ol>
-<ul>
-<li><p>组件内的守卫</p>
-<ul>
-<li>beforeRouteEnter</li>
-</ul>
-<ul>
-<li>beforeRouteUpdate</li>
-<li>beforeRouteLeave</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">  const Foo &#x3D; &#123;</span><br><span class="line">  template: &#96;...&#96;,</span><br><span class="line">  beforeRouteEnter (to, from, next) &#123;</span><br><span class="line">    &#x2F;&#x2F; 在渲染该组件的对应路由被 confirm 前调用</span><br><span class="line">    &#x2F;&#x2F; 不！能！获取组件实例 &#96;this&#96;</span><br><span class="line">    &#x2F;&#x2F; 因为当守卫执行前，组件实例还没被创建</span><br><span class="line">  &#125;,</span><br><span class="line">  beforeRouteUpdate (to, from, next) &#123;</span><br><span class="line">    &#x2F;&#x2F; 在当前路由改变，但是该组件被复用时调用</span><br><span class="line">    &#x2F;&#x2F; 举例来说，对于一个带有动态参数的路径 &#x2F;foo&#x2F;:id，在 &#x2F;foo&#x2F;1 和 &#x2F;foo&#x2F;2 之间跳转的时候，</span><br><span class="line">    &#x2F;&#x2F; 由于会渲染同样的 Foo 组件，因此组件实例会被复用。而这个钩子就会在这个情况下被调用。</span><br><span class="line">    &#x2F;&#x2F; 可以访问组件实例 &#96;this&#96;</span><br><span class="line">  &#125;,</span><br><span class="line">  beforeRouteLeave (to, from, next) &#123;</span><br><span class="line">    &#x2F;&#x2F; 导航离开该组件的对应路由时调用</span><br><span class="line">    &#x2F;&#x2F; 可以访问组件实例 &#96;this&#96;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>beforeRouteEnter 守卫 不能 访问 this,可以通过传一个回调给 next 来访问组件实例。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">beforeRouteEnter (to, from, next) &#123;</span><br><span class="line">  next(vm &#x3D;&gt; &#123;</span><br><span class="line">  &#x2F;&#x2F; 通过 &#96;vm&#96; 访问组件实例</span><br><span class="line">&#125;)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>完整的导航解析流程</p>
-<p><a href="https://router.vuejs.org/zh/guide/advanced/navigation-guards.html#%E7%BB%84%E4%BB%B6%E5%86%85%E7%9A%84%E5%AE%88%E5%8D%AB">官方文档</a></p>
-</li>
-</ul>
-]]></content>
-      <tags>
-        <tag>框架</tag>
-        <tag>Vue</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>Vue响应式原理</title>
-    <url>/2020/11/24/Vue%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86/</url>
-    <content><![CDATA[<h4 id="一、原理"><a href="#一、原理" class="headerlink" title="一、原理"></a>一、原理</h4><p><strong><code>Vue</code>会遍历<code>data</code>对象的所有<code>property</code>，并使用<code>Object.defineProperty</code>把这些<code>property</code>全部转为<code>getter/setter</code>。通过<code>getter/setter</code>让 Vue 能够追踪依赖，在<code>property</code>被访问和修改时通知变更。</strong></p>
- <a id="more"></a>
-
-<h4 id="二、Object-defineProperty-和-getter、setter"><a href="#二、Object-defineProperty-和-getter、setter" class="headerlink" title="二、Object.defineProperty 和 getter、setter"></a>二、Object.defineProperty 和 getter、setter</h4><p><code>Object.defineProperty</code>方法会直接在一个对象上定义一个新属性，或者修改一个对象的现有属性，并返回此对象。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"> let data1 &#x3D; &#123;&#125;;</span><br><span class="line">Object.defineProperty(data1, &quot;n&quot;, &#123;</span><br><span class="line">  value: 0</span><br><span class="line">&#125;);</span><br><span class="line">console.log(data1.n);  &#x2F;&#x2F;0</span><br></pre></td></tr></table></figure>
-<br>
-
-<p><code>getter/setter</code>用于对属性的读写进行监控</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">let myData2 &#x3D; &#123; n: 0 &#125;;</span><br><span class="line">let data2 &#x3D; proxy(&#123; data: myData2 &#125;); &#x2F;&#x2F; 括号里是匿名对象，无法访问</span><br><span class="line"></span><br><span class="line">function proxy(&#123; data &#125;) &#123;</span><br><span class="line">  let value &#x3D; data.n;</span><br><span class="line">  Object.defineProperty(data, &quot;n&quot;, &#123;</span><br><span class="line">    get() &#123;</span><br><span class="line">      return value;</span><br><span class="line">    &#125;,</span><br><span class="line">    set(newValue) &#123;</span><br><span class="line">      if (newValue &lt; 0) return;</span><br><span class="line">      value &#x3D; newValue;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">  &#x2F;&#x2F;监听 data</span><br><span class="line"></span><br><span class="line">  const obj &#x3D; &#123;&#125;;</span><br><span class="line">  Object.defineProperty(obj, &quot;n&quot;, &#123;</span><br><span class="line">    get() &#123;</span><br><span class="line">      return data.n;</span><br><span class="line">    &#125;,</span><br><span class="line">    set(value) &#123;</span><br><span class="line">     if (newValue &lt; 0) return;</span><br><span class="line">      data.n &#x3D; value;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">  return obj; &#x2F;&#x2F; obj 就是代理</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">console.log(data2.n);	&#x2F;&#x2F;0</span><br><span class="line">myData2.n &#x3D; -1;</span><br><span class="line">console.log(data2.n);	&#x2F;&#x2F;0</span><br><span class="line">myData2.n &#x3D; 1;</span><br><span class="line">console.log(data2.n);	&#x2F;&#x2F;1</span><br></pre></td></tr></table></figure>
-<br>
-
-<p><strong>当<code>let vm=new Vue(&#123;data:myData&#125;)</code>时，会让 vm 成为 Vue 的代理，对 myData 的所有属性进行监控，使得 myData 的属性变化的时候渲染页面。</strong></p>
-<h4 id="三、总结"><a href="#三、总结" class="headerlink" title="三、总结"></a>三、总结</h4><p><strong>Vue 的数据响应式，是通过<code>Object.defineProperty</code>将对象所有的属性转化为<code>getter/setter</code>来监控数据变化，即时渲染页面。</strong></p>
-<p><strong>注意</strong>：Vue 不能检测到对象属性的添加或删除，解决方法是手动调用 Vue.set 或者 this.$set<br><a href="https://cn.vuejs.org/v2/guide/reactivity.html#%E5%AF%B9%E4%BA%8E%E5%AF%B9%E8%B1%A1">文档</a></p>
-]]></content>
-      <tags>
-        <tag>框架</tag>
-        <tag>Vue</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Vuex的基本用法</title>
     <url>/2021/02/16/Vuex/</url>
     <content><![CDATA[<h5 id="1、Vuex-是什么？"><a href="#1、Vuex-是什么？" class="headerlink" title="1、Vuex 是什么？"></a>1、Vuex 是什么？</h5><p>一个专为 Vue.js 应用程序开发的状态管理工具</p>
@@ -1582,6 +1559,29 @@ export default &#123;
 ]]></content>
       <tags>
         <tag>AJAX</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Vue响应式原理</title>
+    <url>/2020/11/24/Vue%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86/</url>
+    <content><![CDATA[<h4 id="一、原理"><a href="#一、原理" class="headerlink" title="一、原理"></a>一、原理</h4><p><strong><code>Vue</code>会遍历<code>data</code>对象的所有<code>property</code>，并使用<code>Object.defineProperty</code>把这些<code>property</code>全部转为<code>getter/setter</code>。通过<code>getter/setter</code>让 Vue 能够追踪依赖，在<code>property</code>被访问和修改时通知变更。</strong></p>
+ <a id="more"></a>
+
+<h4 id="二、Object-defineProperty-和-getter、setter"><a href="#二、Object-defineProperty-和-getter、setter" class="headerlink" title="二、Object.defineProperty 和 getter、setter"></a>二、Object.defineProperty 和 getter、setter</h4><p><code>Object.defineProperty</code>方法会直接在一个对象上定义一个新属性，或者修改一个对象的现有属性，并返回此对象。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"> let data1 &#x3D; &#123;&#125;;</span><br><span class="line">Object.defineProperty(data1, &quot;n&quot;, &#123;</span><br><span class="line">  value: 0</span><br><span class="line">&#125;);</span><br><span class="line">console.log(data1.n);  &#x2F;&#x2F;0</span><br></pre></td></tr></table></figure>
+<br>
+
+<p><code>getter/setter</code>用于对属性的读写进行监控</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">let myData2 &#x3D; &#123; n: 0 &#125;;</span><br><span class="line">let data2 &#x3D; proxy(&#123; data: myData2 &#125;); &#x2F;&#x2F; 括号里是匿名对象，无法访问</span><br><span class="line"></span><br><span class="line">function proxy(&#123; data &#125;) &#123;</span><br><span class="line">  let value &#x3D; data.n;</span><br><span class="line">  Object.defineProperty(data, &quot;n&quot;, &#123;</span><br><span class="line">    get() &#123;</span><br><span class="line">      return value;</span><br><span class="line">    &#125;,</span><br><span class="line">    set(newValue) &#123;</span><br><span class="line">      if (newValue &lt; 0) return;</span><br><span class="line">      value &#x3D; newValue;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">  &#x2F;&#x2F;监听 data</span><br><span class="line"></span><br><span class="line">  const obj &#x3D; &#123;&#125;;</span><br><span class="line">  Object.defineProperty(obj, &quot;n&quot;, &#123;</span><br><span class="line">    get() &#123;</span><br><span class="line">      return data.n;</span><br><span class="line">    &#125;,</span><br><span class="line">    set(value) &#123;</span><br><span class="line">     if (newValue &lt; 0) return;</span><br><span class="line">      data.n &#x3D; value;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">  return obj; &#x2F;&#x2F; obj 就是代理</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">console.log(data2.n);	&#x2F;&#x2F;0</span><br><span class="line">myData2.n &#x3D; -1;</span><br><span class="line">console.log(data2.n);	&#x2F;&#x2F;0</span><br><span class="line">myData2.n &#x3D; 1;</span><br><span class="line">console.log(data2.n);	&#x2F;&#x2F;1</span><br></pre></td></tr></table></figure>
+<br>
+
+<p><strong>当<code>let vm=new Vue(&#123;data:myData&#125;)</code>时，会让 vm 成为 Vue 的代理，对 myData 的所有属性进行监控，使得 myData 的属性变化的时候渲染页面。</strong></p>
+<h4 id="三、总结"><a href="#三、总结" class="headerlink" title="三、总结"></a>三、总结</h4><p><strong>Vue 的数据响应式，是通过<code>Object.defineProperty</code>将对象所有的属性转化为<code>getter/setter</code>来监控数据变化，即时渲染页面。</strong></p>
+<p><strong>注意</strong>：Vue 不能检测到对象属性的添加或删除，解决方法是手动调用 Vue.set 或者 this.$set<br><a href="https://cn.vuejs.org/v2/guide/reactivity.html#%E5%AF%B9%E4%BA%8E%E5%AF%B9%E8%B1%A1">文档</a></p>
+]]></content>
+      <tags>
+        <tag>框架</tag>
+        <tag>Vue</tag>
       </tags>
   </entry>
   <entry>
@@ -1868,6 +1868,48 @@ export default &#123;
       </tags>
   </entry>
   <entry>
+    <title>封装DOM</title>
+    <url>/2020/11/08/%E5%B0%81%E8%A3%85DOM/</url>
+    <content><![CDATA[<h3 id="封装-DOM-操作，对象风格"><a href="#封装-DOM-操作，对象风格" class="headerlink" title="封装 DOM 操作，对象风格"></a>封装 DOM 操作，对象风格</h3><h4 id="一、增加-和-删除"><a href="#一、增加-和-删除" class="headerlink" title="一、增加 和 删除"></a>一、增加 和 删除</h4><p>创建节点</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">create(string) &#123;</span><br><span class="line">  const container &#x3D; document.createElement(&quot;template&quot;)</span><br><span class="line">   &#x2F;&#x2F;template可以包含任意节点</span><br><span class="line">  container.innerHTML &#x3D; string.trim()</span><br><span class="line">  return container.content.firstChild</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+ <a id="more"></a>
+
+<p>改变位置</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;在目标节点前面插入</span><br><span class="line">  before(newNode, node) &#123;</span><br><span class="line">    node.parentNode.insertBefore(newNode, node)</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;在目标节点后面插入，也就是在目标节点的下一个节点的前面插入</span><br><span class="line">  after(newNode, node) &#123;</span><br><span class="line">    node.parentNode.insertBefore(newNode, node.nextSibling)</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure>
+<p>作为目标节点子节点</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">append(parent, node) &#123;</span><br><span class="line">  parent.appendChild(node)</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<p>作为目标节点父节点</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wrap(node, parent) &#123;</span><br><span class="line">  dom.before(parent, node)</span><br><span class="line">  dom.append(parent, node)</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<p>删除</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">remove(node) &#123;</span><br><span class="line">  node.parentNode.removeChild(node)</span><br><span class="line">  return node</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<p>清空</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">empty(parent) &#123;</span><br><span class="line">  let array &#x3D; []</span><br><span class="line">  let x &#x3D; parent.firstChild</span><br><span class="line">  while (x) &#123;</span><br><span class="line">  &#x2F;&#x2F;删除子节点会使children的长度马上变化，所以不能用for循环遍历</span><br><span class="line">    array.push(dom.remove(x))</span><br><span class="line">    x &#x3D; parent.firstChild</span><br><span class="line">  &#125;</span><br><span class="line">  return array</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<h4 id="二、读写操作"><a href="#二、读写操作" class="headerlink" title="二、读写操作"></a>二、读写操作</h4><p>读写属性</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;判断参数数量，执行不同的操作</span><br><span class="line">  attr(node, name, value) &#123;</span><br><span class="line">    if (arguments.length &#x3D;&#x3D;&#x3D; 3) &#123;</span><br><span class="line">      node.setAttribute(name, value)</span><br><span class="line">    &#125; else if (arguments.length &#x3D;&#x3D;&#x3D; 2) &#123;</span><br><span class="line">      return node.getAttribute(name)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure>
+<p>读写文本内容</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">text(node, string) &#123;</span><br><span class="line">  if (arguments.length &#x3D;&#x3D;&#x3D; 2) &#123;</span><br><span class="line">    if (&quot;innerText&quot; in node) &#123;    &#x2F;&#x2F;浏览器兼容</span><br><span class="line">      node.innerText &#x3D; string</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      node.textContent &#x3D; string</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; else if (arguments.length &#x3D;&#x3D;&#x3D; 1) &#123;</span><br><span class="line">    if (&quot;innerText&quot; in node) &#123;</span><br><span class="line">      return node.innerText</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      return node.textContent</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<p>读写 HTML 内容</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">html(node, string) &#123;</span><br><span class="line">  if (arguments.length &#x3D;&#x3D;&#x3D; 2) &#123;</span><br><span class="line">    node.innerHTML &#x3D; string</span><br><span class="line">  &#125; else if (arguments.length &#x3D;&#x3D;&#x3D; 1) &#123;</span><br><span class="line">    return node.innerHTML</span><br><span class="line">  &#125;</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<p>读写 style</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">  style(node, name, value) &#123;</span><br><span class="line">    if (arguments.length &#x3D;&#x3D;&#x3D; 3) &#123;</span><br><span class="line">      node.style[name] &#x3D; value</span><br><span class="line">    &#125; else if (arguments.length &#x3D;&#x3D;&#x3D; 2) &#123;</span><br><span class="line">      if (typeof name &#x3D;&#x3D;&#x3D; &quot;string&quot;) &#123;</span><br><span class="line">        return node.style[name]</span><br><span class="line">      &#125; else if (name instanceof Object) &#123;</span><br><span class="line">        const object &#x3D; name</span><br><span class="line">        for (let key in object) &#123;</span><br><span class="line">          node.style[key] &#x3D; object[key]</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">&#x2F;&#x2F;用法</span><br><span class="line">dom.style(node,&quot;color&quot;,&quot;red&quot;)</span><br><span class="line">dom.style(node,&quot;color&quot;)</span><br><span class="line">dom.style(node,&#123;color:&quot;red&quot;&#125;)</span><br></pre></td></tr></table></figure>
+<p>class 增加和删除</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class: &#123;</span><br><span class="line">    add(node, className) &#123;</span><br><span class="line">      node.classList.add(className)</span><br><span class="line">    &#125;,</span><br><span class="line">    remove(node, className) &#123;</span><br><span class="line">      node.classList.remove(className)</span><br><span class="line">    &#125;,</span><br><span class="line">    has(node, className) &#123;</span><br><span class="line">      return node.classList.contains(className)</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure>
+<p>添加、移出事件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">on(node, eventName, fn) &#123;</span><br><span class="line">  node.addEventListener(eventName, fn)</span><br><span class="line">&#125;,</span><br><span class="line">off(node, eventName, fn) &#123;</span><br><span class="line">  node.removeEventListener(eventName, fn)</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<h4 id="三、查找操作"><a href="#三、查找操作" class="headerlink" title="三、查找操作"></a>三、查找操作</h4><p>选择器查找</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">find(selector, scope) &#123;</span><br><span class="line">    &#x2F;&#x2F;查找范围 全局或给定范围</span><br><span class="line">   return (scope || document).querySelectorAll(selector)</span><br><span class="line"> &#125;,</span><br></pre></td></tr></table></figure>
+<p>获取父元素/子元素/兄弟元素/上一个元素/下一个元素</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">parent(node) &#123;</span><br><span class="line">  return node.parentNode</span><br><span class="line">&#125;,</span><br><span class="line">children(node) &#123;</span><br><span class="line">  return node.children</span><br><span class="line">&#125;,</span><br><span class="line">sibling(node) &#123;</span><br><span class="line">  &#x2F;&#x2F;获取父元素的子元素排除自己</span><br><span class="line">  return Array.from(node.parentNode.children).filter((n) &#x3D;&gt; n !&#x3D;&#x3D; node)</span><br><span class="line">&#125;,</span><br><span class="line">next(node) &#123;</span><br><span class="line">  let x &#x3D; node.nextSibling</span><br><span class="line">  &#x2F;&#x2F;如果节点type为3 文本，就找下一个</span><br><span class="line">  while (x &amp;&amp; x.nodeType &#x3D;&#x3D;&#x3D; 3) &#123;</span><br><span class="line">    x &#x3D; x.nextSibling</span><br><span class="line">  &#125;</span><br><span class="line">  return x</span><br><span class="line">&#125;,</span><br><span class="line">previous(node) &#123;</span><br><span class="line">  &#x2F;&#x2F;同上</span><br><span class="line">  let x &#x3D; node.previousSibling</span><br><span class="line">  while (x &amp;&amp; x.nodeType &#x3D;&#x3D;&#x3D; 3) &#123;</span><br><span class="line">    x &#x3D; x.previousSibling</span><br><span class="line">  &#125;</span><br><span class="line">  return x</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<p>遍历</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">each(nodes, fn) &#123;</span><br><span class="line">  for (let i &#x3D; 0; i &lt; nodes.length; i++) &#123;</span><br><span class="line">    fn.call(null, nodes[i])</span><br><span class="line">  &#125;</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<p>获取下标</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">index(node) &#123;</span><br><span class="line">    let list &#x3D; dom.children(node.parentNode)</span><br><span class="line">    let i</span><br><span class="line">    for (i &#x3D; 0; i &lt; list.length; i++) &#123;</span><br><span class="line">      if (list[i] &#x3D;&#x3D;&#x3D; node) &#123;</span><br><span class="line">        break</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return i</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure>]]></content>
+      <tags>
+        <tag>JavaScript</tag>
+        <tag>DOM</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>异步与Promise</title>
     <url>/2020/11/16/%E5%BC%82%E6%AD%A5%E5%92%8CPromise/</url>
     <content><![CDATA[<h3 id="一、异步与同步"><a href="#一、异步与同步" class="headerlink" title="一、异步与同步"></a>一、异步与同步</h3><p>同步:一定要当前任务执行完，才会执行下一个任务。</p>
@@ -1929,6 +1971,28 @@ export default &#123;
       </tags>
   </entry>
   <entry>
+    <title>四种简单算法</title>
+    <url>/2020/11/07/%E7%AE%97%E6%B3%95%E4%B8%8E%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</url>
+    <content><![CDATA[<h4 id="1、选择排序"><a href="#1、选择排序" class="headerlink" title="1、选择排序"></a>1、选择排序</h4><p>第一次从数据元素中选出最小（或最大）的一个元素，存放在序列的起始位置，然后再从剩余的未排序元素中寻找到最小（大）元素，然后放到已排序的序列的末尾。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;*</span><br><span class="line">选择排序</span><br><span class="line">*&#x2F;</span><br><span class="line">function selectionSort(arr) &#123;</span><br><span class="line">  let len &#x3D; arr.length;</span><br><span class="line">  let minIndex, temp;</span><br><span class="line">  for (let i &#x3D; 0; i &lt; len - 1; i++) &#123;</span><br><span class="line">      minIndex &#x3D; i;</span><br><span class="line">      for (let j &#x3D; i + 1; j &lt; len; j++) &#123;</span><br><span class="line">          if (arr[j] &lt; arr[minIndex]) &#123;     &#x2F;&#x2F; 寻找最小的数</span><br><span class="line">              minIndex &#x3D; j;                 &#x2F;&#x2F; 将最小数的索引保存</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      temp &#x3D; arr[i];</span><br><span class="line">      arr[i] &#x3D; arr[minIndex];</span><br><span class="line">      arr[minIndex] &#x3D; temp;</span><br><span class="line">  &#125;</span><br><span class="line">  return arr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="2、快速排序"><a href="#2、快速排序" class="headerlink" title="2、快速排序"></a>2、快速排序</h4><ul>
+<li>在数据中找一项作为基准</li>
+<li>比基准数大的放右边，小的放左边 （基准的位置是正确的）</li>
+<li>把左右两边再分别这样划分排序，直到左右两边只有一项</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;*</span><br><span class="line">快速排序</span><br><span class="line">*&#x2F;</span><br><span class="line">let quickSort &#x3D; (array) &#x3D;&gt; &#123;</span><br><span class="line">  if (array.length &lt;&#x3D; 1) &#123;</span><br><span class="line">    return array</span><br><span class="line">  &#125;</span><br><span class="line">  let pivotIndex &#x3D; Math.floor(array.length &#x2F; 2)</span><br><span class="line">  let pivot &#x3D; array.splice(pivotIndex, 1)[0]</span><br><span class="line">  let left &#x3D; []</span><br><span class="line">  let right &#x3D; []</span><br><span class="line">  for (let i &#x3D; 0; i &lt; array.length; i++) &#123;</span><br><span class="line">    if (array[i] &lt; pivot) &#123;</span><br><span class="line">      left.push(array[i])</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      right.push(array[i])</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  return quickSort(left).concat([pivot], quickSort(right))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="3、归并排序"><a href="#3、归并排序" class="headerlink" title="3、归并排序"></a>3、归并排序</h4><p><img src="https://pic4.zhimg.com/v2-a29c0dd0186d1f8cef3c5ebdedf3e5a3_b.webp"></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;*</span><br><span class="line">归并排序</span><br><span class="line">*&#x2F;</span><br><span class="line">let mergeSort &#x3D; (array) &#x3D;&gt; &#123;</span><br><span class="line">  if (array.length &#x3D;&#x3D;&#x3D; 1) &#123;</span><br><span class="line">    return array</span><br><span class="line">  &#125;</span><br><span class="line">  let left &#x3D; array.slice(0, Math.floor(array.length &#x2F; 2))</span><br><span class="line">  let right &#x3D; array.slice(Math.floor(array.length &#x2F; 2))</span><br><span class="line">  return merge(mergeSort(left), mergeSort(right))</span><br><span class="line">&#125;</span><br><span class="line">let merge &#x3D; (a, b) &#x3D;&gt; &#123;</span><br><span class="line">  if (a.length &#x3D;&#x3D;&#x3D; 0) &#123;</span><br><span class="line">    return b</span><br><span class="line">  &#125;</span><br><span class="line">  if (b.length &#x3D;&#x3D;&#x3D; 0) &#123;</span><br><span class="line">    return a</span><br><span class="line">  &#125;</span><br><span class="line">  return a[0] &gt; b[0]</span><br><span class="line">    ? [b[0]].concat(merge(a, b.slice(1)))</span><br><span class="line">    : [a[0]].concat(merge(a.slice(1), b))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="4、计数排序"><a href="#4、计数排序" class="headerlink" title="4、计数排序"></a>4、计数排序</h4><ul>
+<li>使用哈希表将数据对应起来，重复次数作为哈希表对应 key 的 value</li>
+<li>遍历哈希表，对于哈希表的每个 key，遍历对应的 value 次</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;*</span><br><span class="line">计数排序</span><br><span class="line">*&#x2F;</span><br><span class="line">let countSort &#x3D; (array) &#x3D;&gt; &#123;</span><br><span class="line">  let hashTable &#x3D; &#123;&#125;,</span><br><span class="line">    max &#x3D; 0,</span><br><span class="line">    result &#x3D; []</span><br><span class="line">  for (let i &#x3D; 0; i &lt; array.length; i++) &#123;</span><br><span class="line">    if (!(array[i] in hashTable)) &#123;</span><br><span class="line">      hashTable[array[i]] &#x3D; 1</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      hashTable[array[i]] +&#x3D; 1</span><br><span class="line">    &#125;</span><br><span class="line">    if (array[i] &gt; max) &#123;</span><br><span class="line">      max &#x3D; array[i]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  for (let i &#x3D; 0; i &lt;&#x3D; max; i++) &#123;</span><br><span class="line">    if (i in hashTable) &#123;</span><br><span class="line">      for (let j &#x3D; 0; j &lt; hashTable[i]; j++) &#123;</span><br><span class="line">        result.push(i)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  return result</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <tags>
+        <tag>算法</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>番茄记账Vue版</title>
     <url>/2020/12/25/%E7%95%AA%E8%8C%84%E8%AE%B0%E8%B4%A6Vue%E7%89%88/</url>
     <content><![CDATA[<h4 id="Vue-组件三种方式（单文件组件）"><a href="#Vue-组件三种方式（单文件组件）" class="headerlink" title="Vue 组件三种方式（单文件组件）"></a>Vue 组件三种方式（单文件组件）</h4><ol>
@@ -1963,70 +2027,6 @@ export default &#123;
       <tags>
         <tag>Vue</tag>
         <tag>项目</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>封装DOM</title>
-    <url>/2020/11/08/%E5%B0%81%E8%A3%85DOM/</url>
-    <content><![CDATA[<h3 id="封装-DOM-操作，对象风格"><a href="#封装-DOM-操作，对象风格" class="headerlink" title="封装 DOM 操作，对象风格"></a>封装 DOM 操作，对象风格</h3><h4 id="一、增加-和-删除"><a href="#一、增加-和-删除" class="headerlink" title="一、增加 和 删除"></a>一、增加 和 删除</h4><p>创建节点</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">create(string) &#123;</span><br><span class="line">  const container &#x3D; document.createElement(&quot;template&quot;)</span><br><span class="line">   &#x2F;&#x2F;template可以包含任意节点</span><br><span class="line">  container.innerHTML &#x3D; string.trim()</span><br><span class="line">  return container.content.firstChild</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
- <a id="more"></a>
-
-<p>改变位置</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;在目标节点前面插入</span><br><span class="line">  before(newNode, node) &#123;</span><br><span class="line">    node.parentNode.insertBefore(newNode, node)</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;在目标节点后面插入，也就是在目标节点的下一个节点的前面插入</span><br><span class="line">  after(newNode, node) &#123;</span><br><span class="line">    node.parentNode.insertBefore(newNode, node.nextSibling)</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure>
-<p>作为目标节点子节点</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">append(parent, node) &#123;</span><br><span class="line">  parent.appendChild(node)</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
-<p>作为目标节点父节点</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wrap(node, parent) &#123;</span><br><span class="line">  dom.before(parent, node)</span><br><span class="line">  dom.append(parent, node)</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
-<p>删除</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">remove(node) &#123;</span><br><span class="line">  node.parentNode.removeChild(node)</span><br><span class="line">  return node</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
-<p>清空</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">empty(parent) &#123;</span><br><span class="line">  let array &#x3D; []</span><br><span class="line">  let x &#x3D; parent.firstChild</span><br><span class="line">  while (x) &#123;</span><br><span class="line">  &#x2F;&#x2F;删除子节点会使children的长度马上变化，所以不能用for循环遍历</span><br><span class="line">    array.push(dom.remove(x))</span><br><span class="line">    x &#x3D; parent.firstChild</span><br><span class="line">  &#125;</span><br><span class="line">  return array</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
-<h4 id="二、读写操作"><a href="#二、读写操作" class="headerlink" title="二、读写操作"></a>二、读写操作</h4><p>读写属性</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;判断参数数量，执行不同的操作</span><br><span class="line">  attr(node, name, value) &#123;</span><br><span class="line">    if (arguments.length &#x3D;&#x3D;&#x3D; 3) &#123;</span><br><span class="line">      node.setAttribute(name, value)</span><br><span class="line">    &#125; else if (arguments.length &#x3D;&#x3D;&#x3D; 2) &#123;</span><br><span class="line">      return node.getAttribute(name)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure>
-<p>读写文本内容</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">text(node, string) &#123;</span><br><span class="line">  if (arguments.length &#x3D;&#x3D;&#x3D; 2) &#123;</span><br><span class="line">    if (&quot;innerText&quot; in node) &#123;    &#x2F;&#x2F;浏览器兼容</span><br><span class="line">      node.innerText &#x3D; string</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      node.textContent &#x3D; string</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; else if (arguments.length &#x3D;&#x3D;&#x3D; 1) &#123;</span><br><span class="line">    if (&quot;innerText&quot; in node) &#123;</span><br><span class="line">      return node.innerText</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      return node.textContent</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
-<p>读写 HTML 内容</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">html(node, string) &#123;</span><br><span class="line">  if (arguments.length &#x3D;&#x3D;&#x3D; 2) &#123;</span><br><span class="line">    node.innerHTML &#x3D; string</span><br><span class="line">  &#125; else if (arguments.length &#x3D;&#x3D;&#x3D; 1) &#123;</span><br><span class="line">    return node.innerHTML</span><br><span class="line">  &#125;</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
-<p>读写 style</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">  style(node, name, value) &#123;</span><br><span class="line">    if (arguments.length &#x3D;&#x3D;&#x3D; 3) &#123;</span><br><span class="line">      node.style[name] &#x3D; value</span><br><span class="line">    &#125; else if (arguments.length &#x3D;&#x3D;&#x3D; 2) &#123;</span><br><span class="line">      if (typeof name &#x3D;&#x3D;&#x3D; &quot;string&quot;) &#123;</span><br><span class="line">        return node.style[name]</span><br><span class="line">      &#125; else if (name instanceof Object) &#123;</span><br><span class="line">        const object &#x3D; name</span><br><span class="line">        for (let key in object) &#123;</span><br><span class="line">          node.style[key] &#x3D; object[key]</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">&#x2F;&#x2F;用法</span><br><span class="line">dom.style(node,&quot;color&quot;,&quot;red&quot;)</span><br><span class="line">dom.style(node,&quot;color&quot;)</span><br><span class="line">dom.style(node,&#123;color:&quot;red&quot;&#125;)</span><br></pre></td></tr></table></figure>
-<p>class 增加和删除</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class: &#123;</span><br><span class="line">    add(node, className) &#123;</span><br><span class="line">      node.classList.add(className)</span><br><span class="line">    &#125;,</span><br><span class="line">    remove(node, className) &#123;</span><br><span class="line">      node.classList.remove(className)</span><br><span class="line">    &#125;,</span><br><span class="line">    has(node, className) &#123;</span><br><span class="line">      return node.classList.contains(className)</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure>
-<p>添加、移出事件</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">on(node, eventName, fn) &#123;</span><br><span class="line">  node.addEventListener(eventName, fn)</span><br><span class="line">&#125;,</span><br><span class="line">off(node, eventName, fn) &#123;</span><br><span class="line">  node.removeEventListener(eventName, fn)</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
-<h4 id="三、查找操作"><a href="#三、查找操作" class="headerlink" title="三、查找操作"></a>三、查找操作</h4><p>选择器查找</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">find(selector, scope) &#123;</span><br><span class="line">    &#x2F;&#x2F;查找范围 全局或给定范围</span><br><span class="line">   return (scope || document).querySelectorAll(selector)</span><br><span class="line"> &#125;,</span><br></pre></td></tr></table></figure>
-<p>获取父元素/子元素/兄弟元素/上一个元素/下一个元素</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">parent(node) &#123;</span><br><span class="line">  return node.parentNode</span><br><span class="line">&#125;,</span><br><span class="line">children(node) &#123;</span><br><span class="line">  return node.children</span><br><span class="line">&#125;,</span><br><span class="line">sibling(node) &#123;</span><br><span class="line">  &#x2F;&#x2F;获取父元素的子元素排除自己</span><br><span class="line">  return Array.from(node.parentNode.children).filter((n) &#x3D;&gt; n !&#x3D;&#x3D; node)</span><br><span class="line">&#125;,</span><br><span class="line">next(node) &#123;</span><br><span class="line">  let x &#x3D; node.nextSibling</span><br><span class="line">  &#x2F;&#x2F;如果节点type为3 文本，就找下一个</span><br><span class="line">  while (x &amp;&amp; x.nodeType &#x3D;&#x3D;&#x3D; 3) &#123;</span><br><span class="line">    x &#x3D; x.nextSibling</span><br><span class="line">  &#125;</span><br><span class="line">  return x</span><br><span class="line">&#125;,</span><br><span class="line">previous(node) &#123;</span><br><span class="line">  &#x2F;&#x2F;同上</span><br><span class="line">  let x &#x3D; node.previousSibling</span><br><span class="line">  while (x &amp;&amp; x.nodeType &#x3D;&#x3D;&#x3D; 3) &#123;</span><br><span class="line">    x &#x3D; x.previousSibling</span><br><span class="line">  &#125;</span><br><span class="line">  return x</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
-<p>遍历</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">each(nodes, fn) &#123;</span><br><span class="line">  for (let i &#x3D; 0; i &lt; nodes.length; i++) &#123;</span><br><span class="line">    fn.call(null, nodes[i])</span><br><span class="line">  &#125;</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
-<p>获取下标</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">index(node) &#123;</span><br><span class="line">    let list &#x3D; dom.children(node.parentNode)</span><br><span class="line">    let i</span><br><span class="line">    for (i &#x3D; 0; i &lt; list.length; i++) &#123;</span><br><span class="line">      if (list[i] &#x3D;&#x3D;&#x3D; node) &#123;</span><br><span class="line">        break</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return i</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure>]]></content>
-      <tags>
-        <tag>JavaScript</tag>
-        <tag>DOM</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>四种简单算法</title>
-    <url>/2020/11/07/%E7%AE%97%E6%B3%95%E4%B8%8E%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</url>
-    <content><![CDATA[<h4 id="1、选择排序"><a href="#1、选择排序" class="headerlink" title="1、选择排序"></a>1、选择排序</h4><p>第一次从数据元素中选出最小（或最大）的一个元素，存放在序列的起始位置，然后再从剩余的未排序元素中寻找到最小（大）元素，然后放到已排序的序列的末尾。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;*</span><br><span class="line">选择排序</span><br><span class="line">*&#x2F;</span><br><span class="line">function selectionSort(arr) &#123;</span><br><span class="line">  let len &#x3D; arr.length;</span><br><span class="line">  let minIndex, temp;</span><br><span class="line">  for (let i &#x3D; 0; i &lt; len - 1; i++) &#123;</span><br><span class="line">      minIndex &#x3D; i;</span><br><span class="line">      for (let j &#x3D; i + 1; j &lt; len; j++) &#123;</span><br><span class="line">          if (arr[j] &lt; arr[minIndex]) &#123;     &#x2F;&#x2F; 寻找最小的数</span><br><span class="line">              minIndex &#x3D; j;                 &#x2F;&#x2F; 将最小数的索引保存</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      temp &#x3D; arr[i];</span><br><span class="line">      arr[i] &#x3D; arr[minIndex];</span><br><span class="line">      arr[minIndex] &#x3D; temp;</span><br><span class="line">  &#125;</span><br><span class="line">  return arr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="2、快速排序"><a href="#2、快速排序" class="headerlink" title="2、快速排序"></a>2、快速排序</h4><ul>
-<li>在数据中找一项作为基准</li>
-<li>比基准数大的放右边，小的放左边 （基准的位置是正确的）</li>
-<li>把左右两边再分别这样划分排序，直到左右两边只有一项</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;*</span><br><span class="line">快速排序</span><br><span class="line">*&#x2F;</span><br><span class="line">let quickSort &#x3D; (array) &#x3D;&gt; &#123;</span><br><span class="line">  if (array.length &lt;&#x3D; 1) &#123;</span><br><span class="line">    return array</span><br><span class="line">  &#125;</span><br><span class="line">  let pivotIndex &#x3D; Math.floor(array.length &#x2F; 2)</span><br><span class="line">  let pivot &#x3D; array.splice(pivotIndex, 1)[0]</span><br><span class="line">  let left &#x3D; []</span><br><span class="line">  let right &#x3D; []</span><br><span class="line">  for (let i &#x3D; 0; i &lt; array.length; i++) &#123;</span><br><span class="line">    if (array[i] &lt; pivot) &#123;</span><br><span class="line">      left.push(array[i])</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      right.push(array[i])</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  return quickSort(left).concat([pivot], quickSort(right))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="3、归并排序"><a href="#3、归并排序" class="headerlink" title="3、归并排序"></a>3、归并排序</h4><p><img src="https://pic4.zhimg.com/v2-a29c0dd0186d1f8cef3c5ebdedf3e5a3_b.webp"></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;*</span><br><span class="line">归并排序</span><br><span class="line">*&#x2F;</span><br><span class="line">let mergeSort &#x3D; (array) &#x3D;&gt; &#123;</span><br><span class="line">  if (array.length &#x3D;&#x3D;&#x3D; 1) &#123;</span><br><span class="line">    return array</span><br><span class="line">  &#125;</span><br><span class="line">  let left &#x3D; array.slice(0, Math.floor(array.length &#x2F; 2))</span><br><span class="line">  let right &#x3D; array.slice(Math.floor(array.length &#x2F; 2))</span><br><span class="line">  return merge(mergeSort(left), mergeSort(right))</span><br><span class="line">&#125;</span><br><span class="line">let merge &#x3D; (a, b) &#x3D;&gt; &#123;</span><br><span class="line">  if (a.length &#x3D;&#x3D;&#x3D; 0) &#123;</span><br><span class="line">    return b</span><br><span class="line">  &#125;</span><br><span class="line">  if (b.length &#x3D;&#x3D;&#x3D; 0) &#123;</span><br><span class="line">    return a</span><br><span class="line">  &#125;</span><br><span class="line">  return a[0] &gt; b[0]</span><br><span class="line">    ? [b[0]].concat(merge(a, b.slice(1)))</span><br><span class="line">    : [a[0]].concat(merge(a.slice(1), b))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="4、计数排序"><a href="#4、计数排序" class="headerlink" title="4、计数排序"></a>4、计数排序</h4><ul>
-<li>使用哈希表将数据对应起来，重复次数作为哈希表对应 key 的 value</li>
-<li>遍历哈希表，对于哈希表的每个 key，遍历对应的 value 次</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;*</span><br><span class="line">计数排序</span><br><span class="line">*&#x2F;</span><br><span class="line">let countSort &#x3D; (array) &#x3D;&gt; &#123;</span><br><span class="line">  let hashTable &#x3D; &#123;&#125;,</span><br><span class="line">    max &#x3D; 0,</span><br><span class="line">    result &#x3D; []</span><br><span class="line">  for (let i &#x3D; 0; i &lt; array.length; i++) &#123;</span><br><span class="line">    if (!(array[i] in hashTable)) &#123;</span><br><span class="line">      hashTable[array[i]] &#x3D; 1</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      hashTable[array[i]] +&#x3D; 1</span><br><span class="line">    &#125;</span><br><span class="line">    if (array[i] &gt; max) &#123;</span><br><span class="line">      max &#x3D; array[i]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  for (let i &#x3D; 0; i &lt;&#x3D; max; i++) &#123;</span><br><span class="line">    if (i in hashTable) &#123;</span><br><span class="line">      for (let j &#x3D; 0; j &lt; hashTable[i]; j++) &#123;</span><br><span class="line">        result.push(i)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  return result</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <tags>
-        <tag>算法</tag>
       </tags>
   </entry>
   <entry>
@@ -2203,37 +2203,6 @@ export default &#123;
       </tags>
   </entry>
   <entry>
-    <title>闭包和立即执行函数</title>
-    <url>/2020/12/09/%E9%97%AD%E5%8C%85%E5%92%8C%E7%AB%8B%E5%8D%B3%E6%89%A7%E8%A1%8C%E5%87%BD%E6%95%B0/</url>
-    <content><![CDATA[<h3 id="一、闭包"><a href="#一、闭包" class="headerlink" title="一、闭包"></a>一、闭包</h3><h4 id="1、概念"><a href="#1、概念" class="headerlink" title="1、概念"></a>1、概念</h4><pre><code>[MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Closures) 的解释：
-一个函数和对其周围状态（lexical environment，词法环境）的引用捆绑在一起（或者说函数被引用包围），这样的组合就是闭包</code></pre>
-<h4 id="2、作用"><a href="#2、作用" class="headerlink" title="2、作用"></a>2、作用</h4><pre><code>1. 让外部访问函数内部变量成为可能；(隐藏变量)
-
-2. 局部变量会常驻在内存中；
-
-3. 可以避免使用全局变量，防止全局变量污染；</code></pre>
- <a id="more"></a>
-
-<h4 id="3、示例"><a href="#3、示例" class="headerlink" title="3、示例"></a>3、示例</h4><pre><code><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">function fn1()&#123;</span><br><span class="line">let a&#x3D;1;</span><br><span class="line">function b()&#123;</span><br><span class="line">    console.log(a)</span><br><span class="line">    a+&#x3D;1;</span><br><span class="line">&#125;</span><br><span class="line">return b</span><br><span class="line">&#125;</span><br><span class="line">const fn2&#x3D;fn1()</span><br><span class="line">fn2()   &#x2F;&#x2F;1</span><br><span class="line">fn2()   &#x2F;&#x2F;2</span><br></pre></td></tr></table></figure>
-这就是一个最简单的闭包，fn2 可以获取到函数内部的变量 a</code></pre>
-<h3 id="二、立即调用函数表达式（IIFE）"><a href="#二、立即调用函数表达式（IIFE）" class="headerlink" title="二、立即调用函数表达式（IIFE）"></a>二、立即调用函数表达式（IIFE）</h3><ol>
-<li>在定义时就直接执行的函数<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">(function () &#123;</span><br><span class="line">    let x&#x3D;1;</span><br><span class="line">    return x</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure></li>
-<li>可以将立即执行函数分配给一个变量，变量将得到函数的返回值<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"> let a&#x3D;(function () &#123;</span><br><span class="line">    let x&#x3D;1;</span><br><span class="line">    return x</span><br><span class="line">&#125;)();</span><br><span class="line"> a &#x2F;&#x2F;1</span><br></pre></td></tr></table></figure>
-<strong>作用</strong>：由于立即执行函数内部变量无法访问，立即执行函数可以避免变量污染。</li>
-</ol>
-<h3 id="一个经典的面试题"><a href="#一个经典的面试题" class="headerlink" title="一个经典的面试题"></a>一个经典的面试题</h3><pre><code><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">for(var i&#x3D;0;i&lt;5;i++)&#123;</span><br><span class="line">    setTimeout(()&#x3D;&gt;&#123;</span><br><span class="line">        console.log(i)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;&#x2F;&#x2F;输出 5个5</span><br></pre></td></tr></table></figure></code></pre>
-<p>可以使用闭包和立即执行函数</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">for(var i&#x3D;0;i&lt;5;i++)&#123;</span><br><span class="line">  (function (i) &#123;</span><br><span class="line">    setTimeout(()&#x3D;&gt;&#123;</span><br><span class="line">    console.log(i)</span><br><span class="line">  &#125;)</span><br><span class="line">  &#125;)(i)</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F; 依次打出0~4</span><br></pre></td></tr></table></figure>
-<p>或者把 var 改为 let</p>
-<p>var 声明的 i 相当于是在全局作用域，在 for 循环结束之后才会执行，因此打出 5 个 5</p>
-<p>而使用 let，会在每次执行 for 循环的时候重新创建一个变量 i，每次循环是一个新的作用域，因此不会打出 5 个 5</p>
-]]></content>
-      <tags>
-        <tag>闭包</tag>
-        <tag>函数</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>跨域 CORS和JSON</title>
     <url>/2020/11/18/%E8%B7%A8%E5%9F%9F%20CORS%E5%92%8CJSONP/</url>
     <content><![CDATA[<h4 id="一、同源策略"><a href="#一、同源策略" class="headerlink" title="一、同源策略"></a>一、同源策略</h4><ol>
@@ -2268,6 +2237,37 @@ export default &#123;
 ]]></content>
       <tags>
         <tag>AJAX</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>闭包和立即执行函数</title>
+    <url>/2020/12/09/%E9%97%AD%E5%8C%85%E5%92%8C%E7%AB%8B%E5%8D%B3%E6%89%A7%E8%A1%8C%E5%87%BD%E6%95%B0/</url>
+    <content><![CDATA[<h3 id="一、闭包"><a href="#一、闭包" class="headerlink" title="一、闭包"></a>一、闭包</h3><h4 id="1、概念"><a href="#1、概念" class="headerlink" title="1、概念"></a>1、概念</h4><pre><code>[MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Closures) 的解释：
+一个函数和对其周围状态（lexical environment，词法环境）的引用捆绑在一起（或者说函数被引用包围），这样的组合就是闭包</code></pre>
+<h4 id="2、作用"><a href="#2、作用" class="headerlink" title="2、作用"></a>2、作用</h4><pre><code>1. 让外部访问函数内部变量成为可能；(隐藏变量)
+
+2. 局部变量会常驻在内存中；
+
+3. 可以避免使用全局变量，防止全局变量污染；</code></pre>
+ <a id="more"></a>
+
+<h4 id="3、示例"><a href="#3、示例" class="headerlink" title="3、示例"></a>3、示例</h4><pre><code><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">function fn1()&#123;</span><br><span class="line">let a&#x3D;1;</span><br><span class="line">function b()&#123;</span><br><span class="line">    console.log(a)</span><br><span class="line">    a+&#x3D;1;</span><br><span class="line">&#125;</span><br><span class="line">return b</span><br><span class="line">&#125;</span><br><span class="line">const fn2&#x3D;fn1()</span><br><span class="line">fn2()   &#x2F;&#x2F;1</span><br><span class="line">fn2()   &#x2F;&#x2F;2</span><br></pre></td></tr></table></figure>
+这就是一个最简单的闭包，fn2 可以获取到函数内部的变量 a</code></pre>
+<h3 id="二、立即调用函数表达式（IIFE）"><a href="#二、立即调用函数表达式（IIFE）" class="headerlink" title="二、立即调用函数表达式（IIFE）"></a>二、立即调用函数表达式（IIFE）</h3><ol>
+<li>在定义时就直接执行的函数<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">(function () &#123;</span><br><span class="line">    let x&#x3D;1;</span><br><span class="line">    return x</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure></li>
+<li>可以将立即执行函数分配给一个变量，变量将得到函数的返回值<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"> let a&#x3D;(function () &#123;</span><br><span class="line">    let x&#x3D;1;</span><br><span class="line">    return x</span><br><span class="line">&#125;)();</span><br><span class="line"> a &#x2F;&#x2F;1</span><br></pre></td></tr></table></figure>
+<strong>作用</strong>：由于立即执行函数内部变量无法访问，立即执行函数可以避免变量污染。</li>
+</ol>
+<h3 id="一个经典的面试题"><a href="#一个经典的面试题" class="headerlink" title="一个经典的面试题"></a>一个经典的面试题</h3><pre><code><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">for(var i&#x3D;0;i&lt;5;i++)&#123;</span><br><span class="line">    setTimeout(()&#x3D;&gt;&#123;</span><br><span class="line">        console.log(i)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;&#x2F;&#x2F;输出 5个5</span><br></pre></td></tr></table></figure></code></pre>
+<p>可以使用闭包和立即执行函数</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">for(var i&#x3D;0;i&lt;5;i++)&#123;</span><br><span class="line">  (function (i) &#123;</span><br><span class="line">    setTimeout(()&#x3D;&gt;&#123;</span><br><span class="line">    console.log(i)</span><br><span class="line">  &#125;)</span><br><span class="line">  &#125;)(i)</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F; 依次打出0~4</span><br></pre></td></tr></table></figure>
+<p>或者把 var 改为 let</p>
+<p>var 声明的 i 相当于是在全局作用域，在 for 循环结束之后才会执行，因此打出 5 个 5</p>
+<p>而使用 let，会在每次执行 for 循环的时候重新创建一个变量 i，每次循环是一个新的作用域，因此不会打出 5 个 5</p>
+]]></content>
+      <tags>
+        <tag>闭包</tag>
+        <tag>函数</tag>
       </tags>
   </entry>
 </search>
