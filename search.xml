@@ -2,7 +2,7 @@
 <search>
   <entry>
     <title>BFC是什么？</title>
-    <url>/2021/03/09/BFC/</url>
+    <url>/2021/02/20/BFC/</url>
     <content><![CDATA[<h3 id="1、BFC-概念"><a href="#1、BFC-概念" class="headerlink" title="1、BFC 概念"></a>1、BFC 概念</h3><ul>
 <li>块格式化上下文（Block Formatting Context，BFC），是块盒子的布局过程发生的区域，也是浮动元素与其他元素交互的区域。</li>
 <li>具有 BFC 特性的元素可以看作是隔离了的独立容器，容器里面的元素不会在布局上影响到外面的元素，并且 BFC 具有普通容器所没有的一些特性。<a id="more"></a>
@@ -46,7 +46,7 @@
   </entry>
   <entry>
     <title>CSS定位</title>
-    <url>/2021/03/09/CSS%E4%B9%8B%E5%AE%9A%E4%BD%8D/</url>
+    <url>/2020/10/15/CSS%E4%B9%8B%E5%AE%9A%E4%BD%8D/</url>
     <content><![CDATA[<p>布局是屏幕平面上的，<strong>定位是垂直于屏幕的</strong></p>
 <h2 id="1、盒模型："><a href="#1、盒模型：" class="headerlink" title="1、盒模型："></a>1、盒模型：</h2><ul>
 <li>背景的范围：border<strong>外边沿</strong>围城的区域（包括 border）</li>
@@ -122,8 +122,134 @@
       </tags>
   </entry>
   <entry>
+    <title>CSS动画</title>
+    <url>/2020/10/17/CSS%E5%8A%A8%E7%94%BB/</url>
+    <content><![CDATA[<h2 id="一、浏览器渲染原理及过程："><a href="#一、浏览器渲染原理及过程：" class="headerlink" title="一、浏览器渲染原理及过程："></a>一、浏览器渲染原理及过程：</h2><p>浏览器通过解析生成 DOM、CSSDOM，合成 render tree，然后布局（Layout）、绘制（Paint）、合成（Compose）页面。</p>
+ <a id="more"></a>
+
+<p>步骤：</p>
+<ul>
+<li>根据 HTML 构建 HTML 树（DOM）</li>
+<li>根据 CSS 构建 CSS 树（CSSOM）</li>
+<li>将两棵树合并成一棵渲染树（render tree）</li>
+<li>Layout 布局（文档流、盒模型、计算大小和位置）</li>
+<li>Paint 绘制（边框颜色、文字颜色、阴影等）</li>
+<li>Compose 合成（根据层叠关系展示画面）</li>
+</ul>
+<p><strong>三棵树：</strong><br><img src="https://p1-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/87fa48987593403fa2840d7fc4a394af~tplv-k3u1fbpfcp-watermark.webp"></p>
+<p>三种更新方式：</p>
+<p>JS / CSS &gt; 样式 &gt; 布局 &gt; 绘制 &gt; 合成<br><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/1db893095cee40779dd3cb941d30ce05~tplv-k3u1fbpfcp-watermark.webp"><br>如果您修改元素的“layout”属性，也就是改变了元素的几何属性（例如宽度、高度、左侧或顶部位置等），那么浏览器将必须检查所有其他元素，然后“自动重排”页面。任何受影响的部分都需要重新绘制，而且最终绘制的元素需进行合成。<br><img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/59b28c5d64ad4a5696e2dbd22ff3ad00~tplv-k3u1fbpfcp-watermark.webp"><br>如果您修改“paint only”属性（例如背景图片、文字颜色或阴影等），即不会影响页面布局的属性，则浏览器会跳过布局，但仍将执行绘制。<br><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/8cbccf8baf0444ab99d8d461cbb05654~tplv-k3u1fbpfcp-watermark.webp"><br>如果您更改一个既不要布局也不要绘制的属性，则浏览器将跳到只执行合成。这个<strong>最后的版本开销最小</strong>，最适合于应用生命周期中的高压力点，例如<strong>动画或滚动</strong>。</p>
+<p>一般使用 js 更新样式：</p>
+<ul>
+<li><p>div.style.background=’red’ 改变背景颜色，跳过 Layout，直接 repaint+Compose</p>
+</li>
+<li><p>div.remove()删掉节点 触发当前消失，其他元素 Layout</p>
+</li>
+<li><p>div.classList.add(‘red’) 改变 transform，只需 Compose</p>
+<p><strong>不同属性触发的过程 祥见：<a href="https://csstriggers.com/">https://csstriggers.com/</a></strong></p>
+<br>
+
+</li>
+</ul>
+<h2 id="二、transform-改变形态"><a href="#二、transform-改变形态" class="headerlink" title="二、transform 改变形态"></a>二、transform 改变形态</h2><p><strong>旋转、旋转，缩放，倾斜或平移。</strong></p>
+<ul>
+<li><p>translate：位移 参数：长度、百分数（translate()不可用）</p>
+<p><code>translateX（tx）</code> 水平移动 <code>translateY(ty)</code> 垂直移动</p>
+<p><code>translateZ(tz)</code> 3D 空间的 z 轴方向移动 配合父元素 perspective() （到 z=0 平面的距离）</p>
+<p><code>translate(tx,ty?)</code> <code>translate(tx,ty,tz)</code></p>
+<p><strong><code>translate(50%,50%)</code>可以做绝对定位元素居中</strong></p>
+</li>
+<li><p>scale：缩放 参数：number</p>
+<p><code>scaleX(sx)</code> 横坐标缩放 <code>scaleY(sy)</code> 纵坐标缩放 <code>scaleX(sx,sy?)</code></p>
+<p><strong>容易出现模糊</strong></p>
+</li>
+<li><p>rotate：旋转</p>
+<p><code>rotate(a)</code> 旋转角度 同<code>rotateZ(a)</code> <code>rotateX(a)</code> x 轴旋转 <code>rotateY(a)</code> y 轴转动</p>
+<p><strong>用 360° 旋转 制作 loading</strong></p>
+</li>
+<li><p>skew：倾斜</p>
+<p><code>skewX()</code>沿横倾斜 <code>skewY()</code>沿纵轴倾斜 <code>skew(ax, ay?)</code></p>
+</li>
+</ul>
+<p><strong>transform 组合使用：</strong></p>
+<p><code>transform: scale(0.5) translate(-100%, -100%);</code></p>
+<p><code>transform: none</code> 取消所有 <br><br><strong>注</strong>：</p>
+<ul>
+<li><p>一般配合<strong>transition</strong>过渡</p>
+</li>
+<li><p>inline 元素不支持 transform，需要先变成 block</p>
+</li>
+</ul>
+<br>
+
+<h2 id="三、制作动画"><a href="#三、制作动画" class="headerlink" title="三、制作动画"></a>三、制作动画</h2><ol>
+<li>transition 过渡</li>
+</ol>
+<ul>
+<li><p>作用：补充中间帧</p>
+</li>
+<li><p>语法：</p>
+<ol>
+<li><p>transition：属性名 时长 过渡方式 延迟 <code>transition: left 200ms linear</code></p>
+</li>
+<li><p>可以用逗号分隔两个属性 <code>transition: left 200ms,right 200ms</code></p>
+</li>
+<li><p>可以用 all 代表所有属性 <code>transition all 200ms</code></p>
+</li>
+<li><p>过渡方式：linear | ease | ease-in-out | step-start <a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/timing-function">详细点击</a></p>
+</li>
+</ol>
+</li>
+<li><p>注意：并不是所有的属性都可以过渡</p>
+<ol>
+<li><p>display：none =&gt; block 无法过渡 一般改成 visibility:hidden =&gt; visible(隐藏或显示，但不改变布局)</p>
+</li>
+<li><p>颜色、透明度，都可以过渡。<strong>过渡必须有起始</strong></p>
+</li>
+</ol>
+</li>
+<li><p>如果有中间点</p>
+<ol>
+<li>使用两次 transform .a=transform=&gt;.b .b=transform=&gt;.c</li>
+<li>使用 setTimeout 或者监听 transitioned 事件</li>
+<li><strong>animation</strong></li>
+</ol>
+</li>
+</ul>
+<h5 id="例子：跳动的心"><a href="#例子：跳动的心" class="headerlink" title="例子：跳动的心"></a><strong>例子：<a href="http://js.jirengu.com/dunuz/1/edit?html,css,output">跳动的心</a></strong></h5><br>
+
+<ol start="2">
+<li>animation 动画制作</li>
+</ol>
+<ul>
+<li><p>声明关键帧</p>
+<p>**<code>@keyframes</code>**语法 两种写法</p>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="keyword">@keyframes</span> slidein &#123;</span><br><span class="line">  <span class="selector-tag">from</span> &#123;</span><br><span class="line">    <span class="attribute">transform</span>: <span class="built_in">translateX</span>(<span class="number">0%</span>);</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">  <span class="selector-tag">to</span> &#123;</span><br><span class="line">    <span class="attribute">transform</span>: <span class="built_in">translateX</span>(<span class="number">100%</span>);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight css"><table><tr><td class="code"><pre><span class="line"><span class="keyword">@keyframes</span> identifier &#123;</span><br><span class="line">  0% &#123;</span><br><span class="line">    <span class="attribute">top</span>: <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  50% &#123;</span><br><span class="line">    <span class="attribute">top</span>: <span class="number">30px</span>;</span><br><span class="line">    <span class="attribute">left</span>: <span class="number">20px</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  50% &#123;</span><br><span class="line">    <span class="attribute">top</span>: <span class="number">10px</span>;</span><br><span class="line">  &#125;</span><br><span class="line">  100% &#123;</span><br><span class="line">    <span class="attribute">top</span>: <span class="number">0</span>;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>添加动画</p>
+<p>animation 缩写语法：</p>
+<p><code>animation: 时长|过渡方式|延迟|次数|方向|填充模式|是否暂停|动画名</code></p>
+<ol>
+<li>时长：1s 或者 100ms</li>
+<li>过渡方式：和 transition 的取值一样</li>
+<li>次数：1 或者 2.4 infinite 无限次</li>
+<li>方向 reverse|alternate|alternate-reverse</li>
+<li>填充模式：none|forwards|backwards|both</li>
+<li>是否暂停：paused|running</li>
+<li>以上属性均有单独属性</li>
+</ol>
+<p><strong>我们可以在任意一个点指定关键帧，所以 animation 可以用来做更复杂的动画</strong></p>
+</li>
+</ul>
+<h5 id="例子：跳动的心-1"><a href="#例子：跳动的心-1" class="headerlink" title="例子：跳动的心"></a>例子：<a href="http://js.jirengu.com/fuzib/7/edit?html,css,output">跳动的心</a></h5>]]></content>
+      <tags>
+        <tag>CSS</tag>
+        <tag>动画</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>简述CSS三种布局</title>
-    <url>/2021/03/09/CSS%E5%B8%83%E5%B1%80/</url>
+    <url>/2020/10/11/CSS%E5%B8%83%E5%B1%80/</url>
     <content><![CDATA[<h3 id="一、布局概述"><a href="#一、布局概述" class="headerlink" title="一、布局概述"></a>一、布局概述</h3><p>布局就是把页面分成一块一块，按左中右、上中下等排列。</p>
 <p>1、布局分类：</p>
 <ul>
@@ -267,7 +393,7 @@
   </entry>
   <entry>
     <title>Cookie和Session</title>
-    <url>/2021/03/09/Cookie%E5%92%8CSession/</url>
+    <url>/2020/11/20/Cookie%E5%92%8CSession/</url>
     <content><![CDATA[<h3 id="1、Cookie"><a href="#1、Cookie" class="headerlink" title="1、Cookie"></a>1、Cookie</h3><ul>
 <li><p>概述：</p>
 <p>HTTP Cookie（也叫 Web Cookie 或浏览器 Cookie）是服务器发送到用户浏览器并保存在本地的一小块数据，它会在浏览器下次向同一服务器再发起请求时被携带并发送到服务器上。通常，它用于告知服务端两个请求是否来自同一浏览器，如保持用户的登录状态。<br>通俗的说，Cookie 是服务器下发给浏览器的一段字符串<br>浏览器必须保存这个 Cookie(除非用户删除)<br>之后发起相同二级域名请求，浏览器必须附上 Cookie<a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Cookies">MDN</a></p>
@@ -309,7 +435,7 @@
   </entry>
   <entry>
     <title>Git</title>
-    <url>/2021/03/09/Git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
+    <url>/2020/10/04/Git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
     <content><![CDATA[<h2 id="1、git-本地仓库"><a href="#1、git-本地仓库" class="headerlink" title="1、git 本地仓库"></a>1、git 本地仓库</h2><p>git 就是一条命令</p>
 <p>六行配置</p>
 <figure class="highlight bash"><table><tr><td class="code"><pre><span class="line">git config --global user.name 你的英文名</span><br><span class="line">git config --global user.email 你的邮箱</span><br><span class="line">git config --global push.default simple</span><br><span class="line">git config --global core.quotepath <span class="literal">false</span></span><br><span class="line">git config --global core.editor <span class="string">&quot;code --wait&quot;</span></span><br><span class="line">git config --global core.autocrlf input</span><br></pre></td></tr></table></figure>
@@ -363,7 +489,7 @@
 <li>打开 Github，在设置页面粘贴公钥内容</li>
 </ul>
 <h3 id="测试："><a href="#测试：" class="headerlink" title="测试："></a>测试：</h3><ul>
-<li>运行 ssh -T <a href="mailto:&#103;&#x69;&#x74;&#64;&#x67;&#105;&#116;&#x68;&#x75;&#x62;&#46;&#99;&#111;&#109;">&#103;&#x69;&#x74;&#64;&#x67;&#105;&#116;&#x68;&#x75;&#x62;&#46;&#99;&#111;&#109;</a></li>
+<li>运行 ssh -T <a href="mailto:&#x67;&#x69;&#116;&#x40;&#103;&#105;&#116;&#x68;&#117;&#98;&#x2e;&#x63;&#111;&#109;">&#x67;&#x69;&#116;&#x40;&#103;&#105;&#116;&#x68;&#117;&#98;&#x2e;&#x63;&#111;&#109;</a></li>
 <li>询问 yes/no,回答 yes</li>
 </ul>
 <h3 id="上传代码："><a href="#上传代码：" class="headerlink" title="上传代码："></a>上传代码：</h3><ol>
@@ -416,7 +542,7 @@
 <li>打开 Github，在设置页面粘贴公钥内容</li>
 </ul>
 <h3 id="测试：-1"><a href="#测试：-1" class="headerlink" title="测试："></a>测试：</h3><ul>
-<li>运行 ssh -T <a href="mailto:&#x67;&#105;&#x74;&#64;&#103;&#105;&#x74;&#104;&#x75;&#x62;&#x2e;&#99;&#x6f;&#x6d;">&#x67;&#105;&#x74;&#64;&#103;&#105;&#x74;&#104;&#x75;&#x62;&#x2e;&#99;&#x6f;&#x6d;</a></li>
+<li>运行 ssh -T <a href="mailto:&#103;&#105;&#116;&#x40;&#103;&#105;&#116;&#104;&#x75;&#x62;&#46;&#x63;&#x6f;&#109;">&#103;&#105;&#116;&#x40;&#103;&#105;&#116;&#104;&#x75;&#x62;&#46;&#x63;&#x6f;&#109;</a></li>
 <li>询问 yes/no,回答 yes</li>
 </ul>
 <h3 id="上传代码：-1"><a href="#上传代码：-1" class="headerlink" title="上传代码："></a>上传代码：</h3><ol>
@@ -472,7 +598,7 @@
   </entry>
   <entry>
     <title>HTML常用标签</title>
-    <url>/2021/03/09/HTML5%E4%B9%8B%E5%B8%B8%E7%94%A8%E6%A0%87%E7%AD%BE/</url>
+    <url>/2020/10/07/HTML5%E4%B9%8B%E5%B8%B8%E7%94%A8%E6%A0%87%E7%AD%BE/</url>
     <content><![CDATA[<h4 id="一、a-标签"><a href="#一、a-标签" class="headerlink" title="一、a 标签"></a>一、a 标签</h4><ol>
 <li>属性：</li>
 </ol>
@@ -665,7 +791,7 @@
   </entry>
   <entry>
     <title>JS 对象</title>
-    <url>/2021/03/09/JS%E5%AF%B9%E8%B1%A1/</url>
+    <url>/2020/11/02/JS%E5%AF%B9%E8%B1%A1/</url>
     <content><![CDATA[<h3 id="一、常见用法"><a href="#一、常见用法" class="headerlink" title="一、常见用法"></a>一、常见用法</h3><p>变量做属性名</p>
 <p>除了字符串之外，变量也可以做属性名</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">let p1 &#x3D; &#39;name&#39;</span><br><span class="line">let obj &#x3D; &#123; p1 : &#39;ss&#39;&#125; 这样写，属性名为 &#39;p1&#39;</span><br><span class="line">let obj &#x3D; &#123; [p1] : &#39;ss&#39; &#125; 这样写，属性名为 &#39;name&#39;</span><br></pre></td></tr></table></figure>
@@ -712,7 +838,7 @@
   </entry>
   <entry>
     <title>JS 数组</title>
-    <url>/2021/03/09/JS%E6%95%B0%E7%BB%84/</url>
+    <url>/2020/11/04/JS%E6%95%B0%E7%BB%84/</url>
     <content><![CDATA[<h4 id="1、数组对象"><a href="#1、数组对象" class="headerlink" title="1、数组对象:"></a>1、数组对象:</h4><ul>
 <li>元素的数据类型可以不同</li>
 <li>内存不一定是连续的（对象随机存储）</li>
@@ -812,8 +938,57 @@
       </tags>
   </entry>
   <entry>
+    <title>JS继承</title>
+    <url>/2020/11/06/JS%E7%BB%A7%E6%89%BF/</url>
+    <content><![CDATA[<h3 id="1、原型继承"><a href="#1、原型继承" class="headerlink" title="1、原型继承"></a>1、原型继承</h3> <a id="more"></a>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">function Animal(x)&#123;</span><br><span class="line">	this.type&#x3D;x</span><br><span class="line">&#125;</span><br><span class="line">Animal.prototype.run&#x3D;function()&#123;</span><br><span class="line">	console.log(this.type+&quot;正在跑&quot;)</span><br><span class="line">&#125;</span><br><span class="line">function Dog(x,name)&#123;</span><br><span class="line">	Animal.call(this,x) &#x2F;&#x2F;调用Animal的属性</span><br><span class="line">    this.name&#x3D;name  &#x2F;&#x2F;自有属性</span><br><span class="line">&#125;</span><br><span class="line">Dog.prototype.eat&#x3D;function()&#123;</span><br><span class="line">	console.log(this.name+&quot;正在吃&quot;)</span><br><span class="line">&#125;</span><br><span class="line">Dog.prototype.__proto__&#x3D;Animal.prototype</span><br><span class="line">&#x2F;&#x2F;或者</span><br><span class="line">&#x2F;&#x2F;const S&#x3D;function()&#123;&#125;  &#x2F;&#x2F;创建空</span><br><span class="line">&#x2F;&#x2F;S.prototype&#x3D;Animal.prototype</span><br><span class="line">&#x2F;&#x2F;Dog.prototype&#x3D;new S()</span><br><span class="line">let dog&#x3D;new Dog(&quot;狗&quot;,&quot;藏獒&quot;)</span><br><span class="line">dog.name &#x2F;&#x2F;&quot;藏獒&quot;</span><br><span class="line">dog.type &#x2F;&#x2F;&quot;狗&quot;</span><br><span class="line">dog.run()&#x2F;&#x2F;狗正在跑</span><br><span class="line">dog.eat()&#x2F;&#x2F;藏獒正在吃</span><br></pre></td></tr></table></figure>
+<h3 id="2、class-继承"><a href="#2、class-继承" class="headerlink" title="2、class 继承"></a>2、class 继承</h3><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class Animal&#123;</span><br><span class="line">	constructor(x)&#123;</span><br><span class="line">    	this.type&#x3D;x</span><br><span class="line">    &#125;</span><br><span class="line">	run()&#123;</span><br><span class="line">		console.log(this.type+&quot;正在跑&quot;)</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">class Dog extends Animal&#123;</span><br><span class="line">	constructor(x,name)&#123;</span><br><span class="line">		super(x); &#x2F;&#x2F;继承父类属性，需在使用this之前</span><br><span class="line">       		this.name&#x3D;name;</span><br><span class="line">	&#125;</span><br><span class="line">    eat()&#123;console.log(this.name+&quot;正在吃&quot;)&#125;</span><br><span class="line">&#125;</span><br><span class="line">dog.name &#x2F;&#x2F;&quot;藏獒&quot;</span><br><span class="line">dog.type &#x2F;&#x2F;&quot;狗&quot;</span><br><span class="line">dog.run()&#x2F;&#x2F;狗正在跑</span><br><span class="line">dog.eat()&#x2F;&#x2F;藏獒正在吃</span><br></pre></td></tr></table></figure>]]></content>
+      <tags>
+        <tag>JavaScript</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>MVC</title>
+    <url>/2020/11/21/MVC/</url>
+    <content><![CDATA[<h4 id="一、MVC"><a href="#一、MVC" class="headerlink" title="一、MVC"></a>一、MVC</h4><p>MVC 包括三类对象:</p>
+<ol>
+<li>模型 model 用于封装与应用程序的业务逻辑相关的数据以及对数据的处理方法，会有一个或多个视图监听此模型。一旦模型的数据发生变化，模型将通知有关的视图。<a id="more"></a>
+
+</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const m &#x3D; &#123;</span><br><span class="line">  data: &#123;存储数据&#125;,</span><br><span class="line">  create() &#123;添加数据&#125;,</span><br><span class="line">  delete() &#123;删除数据&#125;,</span><br><span class="line">  update(data) &#123;     	更新数据</span><br><span class="line">    eventBus.trigger()	触发事件</span><br><span class="line">  &#125;,</span><br><span class="line">  get() &#123;读取数据&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol>
+<li>视图 view 是它在屏幕上的表示，描绘的是 model 的当前状态。当模型的数据发生变化，视图相应地得到刷新自己的机会。</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const v &#x3D; &#123;</span><br><span class="line">  el: 渲染标记,</span><br><span class="line">  html: &#96;页面内容&#96;,</span><br><span class="line">  init()&#123;初始化页面&#125;,</span><br><span class="line">  render()&#123;渲染页面&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<ol start="3">
+<li>控制器 controller 定义用户界面对用户输入的响应方式，起到不同层面间的组织作用，用于控制应用程序的流程，它处理用户的行为和数据 model 上的改变。</li>
+</ol>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const c &#x3D; &#123;</span><br><span class="line">  init() &#123;</span><br><span class="line">    v.init(container)   		初始化view</span><br><span class="line">    v.render() 				第一次渲染</span><br><span class="line">    c.autoBindEvents()			自动绑定事件</span><br><span class="line">    eventBus.on()&#123;&#125;			监听事件</span><br><span class="line">    &#125;,</span><br><span class="line">  events: &#123;哈希表记录事件&#125;,</span><br><span class="line">  autoBindEvents() &#123;自动绑定事件&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="二、EventBus"><a href="#二、EventBus" class="headerlink" title="二、EventBus"></a>二、EventBus</h4><p>EventBus 事件总线,可以用来进行组件之间的监听和通信。</p>
+<ul>
+<li>初始化</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import $ from &#39;jquery&#39;</span><br><span class="line">const eventBus &#x3D; $(window)</span><br></pre></td></tr></table></figure>
+<ul>
+<li>api:<code>eventBus.trigger()</code>:触发事件；<code>eventBus.on()&#123;&#125;</code>：监听事件;<code>eventBus.off()&#123;&#125;</code>:解除事件</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const m &#x3D; &#123;</span><br><span class="line">	...</span><br><span class="line">   update(data) &#123;</span><br><span class="line">   ...</span><br><span class="line">    eventBus.trigger(&#39;m:updated&#39;)		&#x2F;&#x2F;在更新数据时触发事件</span><br><span class="line">  &#125;,</span><br><span class="line">const c &#x3D; &#123;</span><br><span class="line">  	...</span><br><span class="line">    eventBus.on(&#39;m:updated&#39;, () &#x3D;&gt; &#123;v.render(m.data.n)&#125;)</span><br><span class="line">  &#125;,		&#x2F;&#x2F;接收事件，事件触发就执行后面的函数</span><br><span class="line">  const</span><br><span class="line"></span><br><span class="line">  eventBus.off(&#39;m:updated&#39;)		&#x2F;&#x2F;移除事件</span><br></pre></td></tr></table></figure>
+<h4 id="三、表驱动编程"><a href="#三、表驱动编程" class="headerlink" title="三、表驱动编程"></a>三、表驱动编程</h4><p>简单来说，就是以查表的方式获取数据而不使用逻辑语句。事实上，凡是能通过逻辑语句来选择的事物，都可以通过查表来选择。<br>从表中查询数据主要有直接访问、索引访问、阶梯访问三种方式。</p>
+<p>例：今天星期几</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const day &#x3D; new Date().getDay()</span><br><span class="line">let day_zh;</span><br><span class="line">if(day &#x3D;&#x3D;&#x3D; 0)&#123;</span><br><span class="line">    day_zh &#x3D; &#39;星期日&#39;</span><br><span class="line">&#125;else if(day &#x3D;&#x3D;&#x3D; 1) &#123;</span><br><span class="line">    day_zh &#x3D; &#39;星期一&#39;</span><br><span class="line">&#125;</span><br><span class="line">...</span><br><span class="line">else&#123;</span><br><span class="line">    day_zh &#x3D; &#39;星期六&#39;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F; 或者 用 switch case</span><br><span class="line">switch(day) &#123;</span><br><span class="line">    case 0:</span><br><span class="line">        day_zh &#x3D; &#39;星期日&#39;</span><br><span class="line">        break;</span><br><span class="line">    case 1:</span><br><span class="line">        day_zh &#x3D; &#39;星期一&#39;</span><br><span class="line">        break;</span><br><span class="line">        ...</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用表驱动法，将数据放在一个表里</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const week &#x3D; [&#39;星期日&#39;, &#39;星期一&#39;,..., &#39;星期六&#39;]</span><br><span class="line">const day &#x3D; new Date().getDay(</span><br><span class="line">const day_zh &#x3D; week[day]</span><br></pre></td></tr></table></figure>
+<h4 id="四、如何理解模块化的"><a href="#四、如何理解模块化的" class="headerlink" title="四、如何理解模块化的"></a>四、如何理解模块化的</h4><p>模块化就是将一个复杂的程序，通过一定规则封装成不同的模块，可以是对象、文件等。降低代码耦合度，各个模块有更好的独立性。这样做可以解决项目中的全局变量污染的问题，使开发效率更高，方便代码复用和维护 。</p>
+]]></content>
+      <tags>
+        <tag>MVC</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>React 基本用法</title>
-    <url>/2021/03/12/React/</url>
+    <url>/2020/12/04/React/</url>
     <content><![CDATA[<h3 id="一、createElement-和-JSX"><a href="#一、createElement-和-JSX" class="headerlink" title="一、createElement 和 JSX"></a>一、createElement 和 JSX</h3><ol>
 <li>createElement</li>
 </ol>
@@ -959,10 +1134,255 @@
 </li>
 </ul>
 ]]></content>
+      <tags>
+        <tag>React</tag>
+        <tag>框架</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>URL</title>
+    <url>/2020/10/20/URL/</url>
+    <content><![CDATA[<p><strong>URL（统一资源定位符 Uniform Resource Locator）</strong></p>
+<p>包括：**协议+域名或 IP+端口号+路径+查询字符串+锚点 **<br><br></p>
+  <a id="more"></a>
+
+<h2 id="一、协议-HTTP"><a href="#一、协议-HTTP" class="headerlink" title="一、协议 HTTP"></a>一、协议 HTTP</h2><p>基于 TCP 和 IP 两个协议</p>
+<p><strong>curl 命令</strong></p>
+<p>用 curl 可以发 HTTP 请求</p>
+<ul>
+<li><p>curl -v http:<span>//baidu.com</span></p>
+</li>
+<li><p>curl -s -v https://<span>www.<span>baidu.com</span></span></p>
+</li>
+</ul>
+<p>注：</p>
+<ul>
+<li>url 会被 curl 工具重写，先请求 DNS 获得 IP</li>
+<li>先进行 TCP 链接，TCP 连接成功后，发送 HTTP 请求</li>
+<li>请求、响应结束后，关闭 TCP 连接（看不出来），真正结束。<br>
+
+</li>
+</ul>
+<p>具体内容，后续详细介绍</p>
+<h2 id="二、域名"><a href="#二、域名" class="headerlink" title="二、域名"></a>二、域名</h2><h3 id="1、IP-Internet-Protocol-网际互联协议"><a href="#1、IP-Internet-Protocol-网际互联协议" class="headerlink" title="1、IP(Internet Protocol)网际互联协议"></a>1、IP(Internet Protocol)网际互联协议</h3><p>IP 主要约定两件事：</p>
+<ul>
+<li>如何定位一台设备</li>
+<li>如何封装数据报文，以跟其他设备交流</li>
+</ul>
+<p>1、外网 IP 和内网 IP</p>
+<ul>
+<li>租用宽带，连接路由器，就会有一个<strong>外网 IP</strong>（重启路由器，可能会重新分配）</li>
+<li>路由器创建内网，内网中的设备使用内网 IP，一般格式是 192.168.X.X</li>
+</ul>
+<p>2、路由器</p>
+<ul>
+<li>路由器有一个内网 IP、一个外网 IP</li>
+<li>内网中的设备可以互相访问，但不能直接访问外网，需经过路由器中转</li>
+<li>外网中的设备可以互相访问，但无法访问你的内网，访问也必须结果路由器</li>
+<li>内网外网互相隔绝，唯一联通的点就是路由器，也被叫做<strong>网关</strong></li>
+</ul>
+<p>特殊的 IP：</p>
+<ul>
+<li><p>127.0.0.1 表示自己</p>
+</li>
+<li><p>localhost 通过 hosts 指定为自己（可以编辑 hosts 自定义）</p>
+</li>
+<li><p>0.0.0.0 不表示任何设备</p>
+</li>
+</ul>
+<h3 id="2、域名"><a href="#2、域名" class="headerlink" title="2、域名"></a>2、域名</h3><ul>
+<li><p>域名就是对 IP 的别称</p>
+<br>
+ping 命令 `ping baidu.com` （对应百度的 IP）
+
+<p>一个域名可以对应不同的 IP，均衡负载</p>
+<p>一个 IP 可以对应不同域名，共享主机</p>
+</li>
+<li><p>域名和 IP 是如何对应的呢？ DNS（<strong>D</strong>omain <strong>N</strong>ame <strong>S</strong>ystem）</p>
+<p>过程：</p>
+<ol>
+<li>当你输入域名，浏览器会向网络运营商的<strong>DNS 服务器</strong>询问对应的 IP（nslookup 命令）<br>
+nslookup 命令 `nslookup baidu.com` 得到百度的 IP 地址</li>
+<li>浏览器向对应的 IP 的 <strong>80/443 端口</strong> 发送请求</li>
+<li>请求内容是查看域名首页。</li>
+</ol>
+<p>服务器默认<strong>80 端口</strong>提供 HTTP 服务，<strong>443 端口</strong>提供 https 服务（开发者工具可以看到具体的端口）</p>
+</li>
+<li><p>域名级别：</p>
+</li>
+</ul>
+<p>顶级域名：.com</p>
+<p>二级域名：xxx.com 俗称一级域名</p>
+<p>三级域名：www.<span>xxx.com</span> 俗称二级域名 （是 xxx.com 的子域名)</p>
+<ul>
+<li><p>请求不同的页面，使用<strong>路径</strong></p>
+<p><a href="https://d/">https://d</a><span>eveloper.mozilla.org/zh-CN/docs/Web/HTML<span></span></span></p>
+<p><a href="https://d/">https://d</a><span>eveloper.mozilla.org/zh-CN/docs/Web/CSS<span></span></span></p>
+</li>
+<li><p>同一个页面不同内容，使用<strong>查询参数</strong></p>
+<p><a href="https://www.baidu.com/s?wd=hi">https://www.baidu.com/s?wd=hi</a> （&amp;pn=10 可以确定页数)</p>
+<p><a href="https://www.baidu.com/s?wd=hello">https://www.baidu.com/s?wd=hello</a></p>
+</li>
+<li><p>同一个内容，不同位置 使用<strong>锚点</strong></p>
+<p><a href="https://d/">https://d</a><span>eveloper.mozilla.org/zh-CN/docs/Web/CSS#参考书<span></span></span></p>
+<p><a href="https://d/">https://d</a><span>eveloper.mozilla.org/zh-CN/docs/Web/CSS#教程<span></span></span></p>
+<p>锚点看起来有中文，其实不支持中文，上述链接会变成</p>
+<p><a href="https://d/">https://d</a><span>eveloper.mozilla.org/zh-CN/docs/Web/CSS#%E5%8F%82%E8%80%83%E4%B9%A6<span></span></span></p>
+<p><a href="https://d/">https://d</a><span>eveloper.mozilla.org/zh-CN/docs/Web/CSS#%E6%95%99%E7%A8%8B<span></span></span></p>
+<p>锚点无法在 Network 面板看到，因为锚点不会传给服务器</p>
+<h2 id="三、端口-Port"><a href="#三、端口-Port" class="headerlink" title="三、端口 Port"></a>三、端口 Port</h2></li>
+</ul>
+<p>一台机器可以提供不同服务</p>
+<ul>
+<li>HTTP 服务最好使用 80 端口</li>
+<li>https 服务使用 443 端口</li>
+<li>ftp 服务使用 21 端口</li>
+<li>一共 65535 个端口</li>
+</ul>
+<p>端口使用规则：</p>
+<ul>
+<li>0~1023 号端口是留给系统使用的端口，只有拥有管理员权限才能使用</li>
+<li>其他端口普通用户可以使用，如 http-server 默认使用 8080 端口（http-server -c -1 -p 1234 把端口改为 1234）</li>
+<li>一个端口如果被占用，只能换一个端口</li>
+</ul>
+<p><strong>端口和 IP 缺一不可</strong></p>
+<h2 id="四、URL"><a href="#四、URL" class="headerlink" title="四、URL"></a>四、URL</h2><p><img src="https://p9-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/a6d346d2405844818d3e439fe98b4fad~tplv-k3u1fbpfcp-watermark.webp"><br>**协议+域名或 IP+端口号+路径+查询字符串+锚点 **<br><br><br>https 端口为默认为 443；</p>
+]]></content>
+      <tags>
+        <tag>CSS</tag>
+        <tag>动画</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>TS的泛型</title>
+    <url>/2021/03/05/TS%E6%B3%9B%E5%9E%8B/</url>
+    <content><![CDATA[<h5 id="1、泛型有什么用？"><a href="#1、泛型有什么用？" class="headerlink" title="1、泛型有什么用？"></a>1、泛型有什么用？</h5><p>先看一个函数</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">function fn(x: string): string &#123;</span><br><span class="line">    return x</span><br><span class="line">&#125;</span><br><span class="line">console.log(fn(1)) &#x2F;&#x2F; 1</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>如果这样写，函数 fn 只能接受 string 类型，如果想要传入别的类型，返回别的类型呢？这样需要使用泛型</p>
+   <a id="more"></a>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">function fn&lt;T&gt;(x:T):T&#123;</span><br><span class="line">    return x</span><br><span class="line">&#125;</span><br><span class="line">console.log(fn(true)) &#x2F;&#x2F; true</span><br><span class="line">console.log(fn(1))   &#x2F;&#x2F; 1</span><br><span class="line">console.log(fn(&#39;1&#39;)) &#x2F;&#x2F; &#39;1&#39;</span><br><span class="line">console.log(fn([1, 2, 3])) &#x2F;&#x2F; [1, 2, 3]</span><br></pre></td></tr></table></figure>
+<p>T 帮助我们捕获用户传入的类型（比如：number），我们就可以使用这个类型,之后我们再次使用了 T 当做返回值类型。这个函数 fn 就叫做泛型</p>
+<ul>
+<li><p>使用</p>
+<ul>
+<li>传入参数、类型</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">let n &#x3D; identity&lt;string&gt;(&quot;n&quot;);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>类型推论</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">let n &#x3D; identity(&quot;n&quot;);</span><br></pre></td></tr></table></figure>
+<h5 id="2、泛型变量"><a href="#2、泛型变量" class="headerlink" title="2、泛型变量"></a>2、泛型变量</h5></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">function fn&lt;T&gt;(x: T[]): T[] &#123;</span><br><span class="line">  console.log(x.length);</span><br><span class="line">  return x;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>把泛型变量 T 当做类型的一部分使用，而不是整个类型，增加了灵活性。</p>
+<h5 id="3、泛型接口"><a href="#3、泛型接口" class="headerlink" title="3、泛型接口"></a>3、泛型接口</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">interface Fn&lt;T&gt; &#123;</span><br><span class="line">   (arg: T): T;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function fn&lt;T&gt;(x: T): T &#123;</span><br><span class="line">    return x;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let func: Fn&lt;number&gt; &#x3D; fn;</span><br></pre></td></tr></table></figure>
+<h5 id="4、泛型类"><a href="#4、泛型类" class="headerlink" title="4、泛型类"></a>4、泛型类</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">  class X&lt;T&gt; &#123;</span><br><span class="line">    value: T;</span><br><span class="line">    add: (x: T, y: T) &#x3D;&gt; T;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">let x &#x3D; new X&lt;number&gt;();</span><br><span class="line">x.value &#x3D; 0;</span><br><span class="line">x.add &#x3D; function(x, y) &#123; return x + y; &#125;;</span><br></pre></td></tr></table></figure>
+<p>与接口一样，直接把泛型类型放在类后面，可以帮助我们确认类的所有属性都在使用相同的类型。</p>
+<h5 id="5、泛型约束"><a href="#5、泛型约束" class="headerlink" title="5、泛型约束"></a>5、泛型约束</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">interface Lengthwise &#123;</span><br><span class="line">    length: number;</span><br><span class="line">&#125;</span><br><span class="line">function fn&lt;T extends Lengthwise&gt;(n: T): T &#123;</span><br><span class="line">    console.log(n.length);</span><br><span class="line">    return n;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>现在这个泛型函数被定义了约束，因此它不再是适用于任意类型。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">fn(1)   &#x2F;&#x2F;error，必须带有length属性</span><br></pre></td></tr></table></figure>]]></content>
+      <tags>
+        <tag>Typescript</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Vue3的一些新特性和一些问题</title>
+    <url>/2020/12/11/Vue3/</url>
+    <content><![CDATA[<h4 id="1、Vue3-和-Vue2-的一些区别"><a href="#1、Vue3-和-Vue2-的一些区别" class="headerlink" title="1、Vue3 和 Vue2 的一些区别"></a>1、Vue3 和 Vue2 的一些区别</h4><ul>
+<li>创建实例</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; Vue3 新方法 createApp 其作用是构建实例</span><br><span class="line">import &#123; createApp &#125; from &#39;vue&#39;</span><br><span class="line">const app &#x3D; createApp(&#123;&#125;)</span><br><span class="line">&#x2F;&#x2F; Vue2 使用的是 new Vue() 构建实例</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>Vue3 支持碎片(Fragments)，就是说在组件可以拥有多个根节点</p>
+</li>
+<li><p>增<code>v-model</code>代替以前的<code>v-model</code>和<code>.sync</code></p>
+</li>
+<li><p>新增<code>context.emit</code>，与<code>this.$event</code>作用相同</p>
+</li>
+<li><p>具名插槽：</p>
+<a id="more"></a>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;template v-slot:content&gt;</span><br><span class="line">  &lt;strong&gt;hi&lt;&#x2F;strong&gt;</span><br><span class="line">  &lt;div&gt;你好&lt;&#x2F;div&gt;</span><br><span class="line">&lt;&#x2F;template&gt;</span><br><span class="line">&lt;template v-slot:title&gt;</span><br><span class="line">  &lt;strong&gt;加粗的标签 &lt;&#x2F;strong&gt;</span><br><span class="line">&lt;&#x2F;template&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&lt;header&gt;</span><br><span class="line">    &lt;slot name&#x3D;&quot;title&quot; &#x2F;&gt;  &#x2F;&#x2F;对应 v-slot:title</span><br><span class="line">    &lt;span @click&#x3D;&quot;close&quot; class&#x3D;&quot;lunzi-dialog-close&quot;&gt;&lt;&#x2F;span&gt;</span><br><span class="line">    &lt;&#x2F;header&gt;</span><br><span class="line">&lt;main&gt;</span><br><span class="line">    &lt;slot name&#x3D;&quot;content&quot; &#x2F;&gt;  &#x2F;&#x2F;对应 v-slot:content</span><br><span class="line">&lt;&#x2F;main&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="2、组合式-api"><a href="#2、组合式-api" class="headerlink" title="2、组合式 api"></a>2、组合式 api</h4></li>
+<li><p>setup 组件选项</p>
+<ul>
+<li><p>在创建组件之前执行，一旦 props 被解析，就作为组合式 API 的入口。接受两个参数 props 和 context</p>
+</li>
+<li><p>props:响应式的，当传入新的 prop 时，它将被更新。</p>
+<p>不能使用 ES6 解构，因为它会消除 prop 的响应性，需要解构 prop，可以通过使用 setup 函数中的 toRefs</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import &#123; toRefs &#125; from &#39;vue&#39;</span><br><span class="line">setup(props) &#123;</span><br><span class="line">const &#123; title &#125; &#x3D; toRefs(props)</span><br><span class="line">    console.log(title.value)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ul>
+<li><p>Context:context 是一个普通的 JavaScript 对象，它暴露三个组件的 property</p>
+<pre><code>export default &#123;
+ setup(props, context) &#123;
+      // Attribute (非响应式对象)
+      console.log(context.attrs)
+     // 插槽 (非响应式对象)
+     console.log(context.slots)
+     // 触发事件 (方法)
+     console.log(context.emit)
+ &#125;
+&#125;
+//可以使用es6解构
+export default &#123;
+  setup(props, &#123; attrs, slots, emit &#125;) &#123;
+  ...
+  &#125;
+&#125;</code></pre>
+</li>
+<li><p>执行 setup 时，组件实例尚未被创建，将无法访问组件选项：data、computed、methods</p>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>带 ref 的响应式变量</p>
+<p>接受参数，并将其包裹在一个带有 value property 的对象中返回</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import &#123; ref &#125; from &#39;vue&#39;</span><br><span class="line">const counter &#x3D; ref(0)</span><br><span class="line">console.log(counter) &#x2F;&#x2F; &#123; value: 0 &#125;</span><br><span class="line">console.log(counter.value) &#x2F;&#x2F; 读</span><br><span class="line">counter.value++     &#x2F;&#x2F;写</span><br></pre></td></tr></table></figure></li>
+<li><p>在 setup()中 methods、computed、watch、生命周期函数</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import &#123; computed, ref, onMounted,  watchEffect &#125; from &quot;vue&quot;;</span><br><span class="line">export default &#123;</span><br><span class="line">props: &#123;</span><br><span class="line">  title: String</span><br><span class="line">&#125;,</span><br><span class="line">setup (props, context) &#123;</span><br><span class="line">  const counter &#x3D; ref(0)</span><br><span class="line">  const &#123; user &#125; &#x3D; toRefs(props)</span><br><span class="line">  const add1&#x3D;()&#x3D;&gt;&#123;  &#x2F;&#x2F; context.emit代替this.$emit</span><br><span class="line">    context.emit(&#39;x&#39;,counter.value+1</span><br><span class="line">  &#125;</span><br><span class="line">  const add2 &#x3D; computed(() &#x3D;&gt; &#123;</span><br><span class="line">    return counter.value+2</span><br><span class="line">  &#125;)</span><br><span class="line">  onMounted(add1)</span><br><span class="line">  watch(user, add1)   &#x2F;&#x2F;return 之后才能在模板中使用</span><br><span class="line">  return &#123;counter,add1,add2&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>Teleport:允许我们控制在 DOM 中哪个父节点下呈现 HTML</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;teleport to&#x3D;&quot;body&quot;&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">  &lt;&#x2F;div&gt;</span><br><span class="line">&lt;&#x2F;teleport&gt;  &#x2F;&#x2F;将 div放在body里面</span><br></pre></td></tr></table></figure>
+<h4 id="3、属性绑定"><a href="#3、属性绑定" class="headerlink" title="3、属性绑定"></a>3、属性绑定</h4></li>
+</ul>
+<p>默认所有属性都绑定到根元素</p>
+<p>//<strong>Button.vue</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">    &lt;button&gt;&lt;slot &#x2F;&gt;&lt;&#x2F;button&gt;</span><br><span class="line">  &lt;&#x2F;div&gt;</span><br><span class="line">&lt;&#x2F;template&gt;</span><br></pre></td></tr></table></figure>
+<p>//<strong>ButtonDemo.vue</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;button 内容&lt;&#x2F;div&gt;</span><br><span class="line">  &lt;h1&gt;示例&lt;&#x2F;h1&gt;</span><br><span class="line">  &lt;Button @click&#x3D;&quot;&quot; @focus&#x3D;&quot;&quot;&gt;按钮&lt;&#x2F;Button&gt; &#x2F;&#x2F;Button上所有时间属性</span><br><span class="line">  会绑定到Button组件跟元素上</span><br><span class="line">&lt;&#x2F;template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">import Button from &quot;..&#x2F;lib&#x2F;Button.vue&quot;;</span><br><span class="line">export default &#123;</span><br><span class="line">  components: &#123; Button &#125;,</span><br><span class="line">&#125;;</span><br><span class="line">&lt;&#x2F;script&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用<code>inheritAttrs:false</code>可以取消默认绑定</li>
+<li>使用<code>$attrs</code>或者 <code>context.attrs</code> 获取所有属性</li>
+<li>使用 <code>v-bind=&#39;$attrs&#39;</code>批量绑定属性</li>
+<li>使用<code>const &#123;size,onclick,...xxx&#125;=context.attrs</code>将属性分开</li>
+</ul>
+<p>props 和 attrs 的区别</p>
+<ul>
+<li>props 要先声明才能取值，attrs 不需要</li>
+<li>props 不包含事件，attrs 包含</li>
+<li>props 没有声明的属性，会跑到 attrs 里</li>
+<li>props 支持 String 之外的类型，attrs 只支持 String 类型</li>
+</ul>
+<h4 id="4、context-slots-default"><a href="#4、context-slots-default" class="headerlink" title="4、context.slots.default()"></a>4、context.slots.default()</h4><p><strong>检查组件内部标签类型</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">setup(props, context) &#123;</span><br><span class="line">  const defaults &#x3D; context.slots.default();</span><br><span class="line">  defaults.forEach((tag) &#x3D;&gt; &#123;</span><br><span class="line">     if (tag.type !&#x3D;&#x3D; Tab) &#123;</span><br><span class="line">       throw new Error(&quot;Tabs子标签必须是Tab标签);</span><br><span class="line">     &#125;</span><br><span class="line">  &#125;)&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="5、Vue3-支持-TS-和-markdown"><a href="#5、Vue3-支持-TS-和-markdown" class="headerlink" title="5、Vue3 支持 TS 和 markdown"></a>5、Vue3 支持 TS 和 markdown</h4><p>支持 TS</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;shims.vue.d.ts</span><br><span class="line">declare module &quot;*.vue&quot; &#123;</span><br><span class="line">import &#123; ComponentOptions &#125; from &quot;vue&quot;;</span><br><span class="line">const componentOptions: ComponentOptions;</span><br><span class="line">export default componentOptions;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>支持 markdown</p>
+<p>//shims.vue.d.ts</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">declare module &quot;*.md&quot; &#123;</span><br><span class="line">  const str: string;</span><br><span class="line">  export default str;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>plugin/md.ts</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; @ts-nocheck</span><br><span class="line">import path from &quot;path&quot;;</span><br><span class="line">import fs from &quot;fs&quot;;</span><br><span class="line">import marked from &quot;marked&quot;;</span><br><span class="line"></span><br><span class="line">const mdToJs &#x3D; (str) &#x3D;&gt; &#123;</span><br><span class="line">  const content &#x3D; JSON.stringify(marked(str));</span><br><span class="line">  return &#96;export default $&#123;content&#125;&#96;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">export function md() &#123;</span><br><span class="line">  return &#123;</span><br><span class="line">    configureServer: [</span><br><span class="line">      &#x2F;&#x2F; 用于开发</span><br><span class="line">      async (&#123; app &#125;) &#x3D;&gt; &#123;</span><br><span class="line">        app.use(async (ctx, next) &#x3D;&gt; &#123;</span><br><span class="line">          if (ctx.path.endsWith(&quot;.md&quot;)) &#123;</span><br><span class="line">            ctx.type &#x3D; &quot;js&quot;;</span><br><span class="line">            const filePath &#x3D; path.join(process.cwd(), ctx.path);</span><br><span class="line">            ctx.body &#x3D; mdToJs(fs.readFileSync(filePath).toString());</span><br><span class="line">          &#125; else &#123;</span><br><span class="line">            await next();</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">      &#125;,</span><br><span class="line">    ],</span><br><span class="line">    transforms: [</span><br><span class="line">      &#123;</span><br><span class="line">        &#x2F;&#x2F; 用于 rollup</span><br><span class="line">        test: (context) &#x3D;&gt; context.path.endsWith(&quot;.md&quot;),</span><br><span class="line">        transform: (&#123; code &#125;) &#x3D;&gt; mdToJs(code),</span><br><span class="line">      &#125;,</span><br><span class="line">    ],</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <tags>
+        <tag>框架</tag>
+        <tag>Vue</tag>
+      </tags>
   </entry>
   <entry>
     <title>Vue Router</title>
-    <url>/2021/03/11/Vue%20router/</url>
+    <url>/2021/02/10/Vue%20router/</url>
     <content><![CDATA[<h5 id="1、Vue-Router"><a href="#1、Vue-Router" class="headerlink" title="1、Vue Router"></a>1、Vue Router</h5><p>Vue.js 官方的路由管理器。路由就是 SPA（single page application 单页应用）的路径管理器，单页面应用的思路是一个 index.html 里面有一个容器，在用户进行交互的时候，并不会重新加载某个界面，而是只选择把某个视图更新到容器中去显示。</p>
  <a id="more"></a>
 
@@ -1051,98 +1471,23 @@
       </tags>
   </entry>
   <entry>
-    <title>Vue3的一些新特性和一些问题</title>
-    <url>/2021/03/11/Vue3/</url>
-    <content><![CDATA[<p>1、Vue3 和 Vue2 的一些区别</p>
-<ul>
-<li>创建实例</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; Vue3 新方法 createApp 其作用是构建实例</span><br><span class="line">import &#123; createApp &#125; from &#39;vue&#39;</span><br><span class="line">const app &#x3D; createApp(&#123;&#125;)</span><br><span class="line">&#x2F;&#x2F; Vue2 使用的是 new Vue() 构建实例</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>Vue3 支持碎片(Fragments)，就是说在组件可以拥有多个根节点</p>
-</li>
-<li><p>增<code>v-model</code>代替以前的<code>v-model</code>和<code>.sync</code></p>
-</li>
-<li><p>新增<code>context.emit</code>，与<code>this.$event</code>作用相同</p>
-</li>
-<li><p>具名插槽：</p>
-<a id="more"></a>
+    <title>Vue响应式原理</title>
+    <url>/2020/11/24/Vue%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86/</url>
+    <content><![CDATA[<h4 id="一、原理"><a href="#一、原理" class="headerlink" title="一、原理"></a>一、原理</h4><p><strong><code>Vue</code>会遍历<code>data</code>对象的所有<code>property</code>，并使用<code>Object.defineProperty</code>把这些<code>property</code>全部转为<code>getter/setter</code>。通过<code>getter/setter</code>让 Vue 能够追踪依赖，在<code>property</code>被访问和修改时通知变更。</strong></p>
+ <a id="more"></a>
 
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;template v-slot:content&gt;</span><br><span class="line">  &lt;strong&gt;hi&lt;&#x2F;strong&gt;</span><br><span class="line">  &lt;div&gt;你好&lt;&#x2F;div&gt;</span><br><span class="line">&lt;&#x2F;template&gt;</span><br><span class="line">&lt;template v-slot:title&gt;</span><br><span class="line">  &lt;strong&gt;加粗的标签 &lt;&#x2F;strong&gt;</span><br><span class="line">&lt;&#x2F;template&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&lt;header&gt;</span><br><span class="line">    &lt;slot name&#x3D;&quot;title&quot; &#x2F;&gt;  &#x2F;&#x2F;对应 v-slot:title</span><br><span class="line">    &lt;span @click&#x3D;&quot;close&quot; class&#x3D;&quot;lunzi-dialog-close&quot;&gt;&lt;&#x2F;span&gt;</span><br><span class="line">    &lt;&#x2F;header&gt;</span><br><span class="line">&lt;main&gt;</span><br><span class="line">    &lt;slot name&#x3D;&quot;content&quot; &#x2F;&gt;  &#x2F;&#x2F;对应 v-slot:content</span><br><span class="line">&lt;&#x2F;main&gt;</span><br></pre></td></tr></table></figure>
-<p>3、组合式 api</p>
-</li>
-<li><p>setup 组件选项</p>
-<ul>
-<li><p>在创建组件之前执行，一旦 props 被解析，就作为组合式 API 的入口。接受两个参数 props 和 context</p>
-</li>
-<li><p>props:响应式的，当传入新的 prop 时，它将被更新。</p>
-<p>不能使用 ES6 解构，因为它会消除 prop 的响应性，需要解构 prop，可以通过使用 setup 函数中的 toRefs</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import &#123; toRefs &#125; from &#39;vue&#39;</span><br><span class="line">setup(props) &#123;</span><br><span class="line">const &#123; title &#125; &#x3D; toRefs(props)</span><br><span class="line">    console.log(title.value)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<ul>
-<li><p>Context:context 是一个普通的 JavaScript 对象，它暴露三个组件的 property</p>
-<pre><code>export default &#123;
- setup(props, context) &#123;
-      // Attribute (非响应式对象)
-      console.log(context.attrs)
-     // 插槽 (非响应式对象)
-     console.log(context.slots)
-     // 触发事件 (方法)
-     console.log(context.emit)
- &#125;
-&#125;
-//可以使用es6解构
-export default &#123;
-  setup(props, &#123; attrs, slots, emit &#125;) &#123;
-  ...
-  &#125;
-&#125;</code></pre>
-</li>
-<li><p>执行 setup 时，组件实例尚未被创建，将无法访问组件选项：data、computed、methods</p>
-</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li><p>带 ref 的响应式变量</p>
-<p>接受参数，并将其包裹在一个带有 value property 的对象中返回</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import &#123; ref &#125; from &#39;vue&#39;</span><br><span class="line">const counter &#x3D; ref(0)</span><br><span class="line">console.log(counter) &#x2F;&#x2F; &#123; value: 0 &#125;</span><br><span class="line">console.log(counter.value) &#x2F;&#x2F; 读</span><br><span class="line">counter.value++     &#x2F;&#x2F;写</span><br></pre></td></tr></table></figure></li>
-<li><p>在 setup()中 methods、computed、watch、生命周期函数</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import &#123; computed, ref, onMounted,  watchEffect &#125; from &quot;vue&quot;;</span><br><span class="line">export default &#123;</span><br><span class="line">props: &#123;</span><br><span class="line">  title: String</span><br><span class="line">&#125;,</span><br><span class="line">setup (props, context) &#123;</span><br><span class="line">  const counter &#x3D; ref(0)</span><br><span class="line">  const &#123; user &#125; &#x3D; toRefs(props)</span><br><span class="line">  const add1&#x3D;()&#x3D;&gt;&#123;  &#x2F;&#x2F; context.emit代替this.$emit</span><br><span class="line">    context.emit(&#39;x&#39;,counter.value+1</span><br><span class="line">  &#125;</span><br><span class="line">  const add2 &#x3D; computed(() &#x3D;&gt; &#123;</span><br><span class="line">    return counter.value+2</span><br><span class="line">  &#125;)</span><br><span class="line">  onMounted(add1)</span><br><span class="line">  watch(user, add1)   &#x2F;&#x2F;return 之后才能在模板中使用</span><br><span class="line">  return &#123;counter,add1,add2&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>Teleport:允许我们控制在 DOM 中哪个父节点下呈现 HTML</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;teleport to&#x3D;&quot;body&quot;&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">  &lt;&#x2F;div&gt;</span><br><span class="line">&lt;&#x2F;teleport&gt;  &#x2F;&#x2F;将 div放在body里面</span><br></pre></td></tr></table></figure>
-<p>4、属性绑定</p>
-</li>
-</ul>
-<p>默认所有属性都绑定到根元素</p>
-<p>//<strong>Button.vue</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">    &lt;button&gt;&lt;slot &#x2F;&gt;&lt;&#x2F;button&gt;</span><br><span class="line">  &lt;&#x2F;div&gt;</span><br><span class="line">&lt;&#x2F;template&gt;</span><br></pre></td></tr></table></figure>
-<p>//<strong>ButtonDemo.vue</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;button 内容&lt;&#x2F;div&gt;</span><br><span class="line">  &lt;h1&gt;示例&lt;&#x2F;h1&gt;</span><br><span class="line">  &lt;Button @click&#x3D;&quot;&quot; @focus&#x3D;&quot;&quot;&gt;按钮&lt;&#x2F;Button&gt; &#x2F;&#x2F;Button上所有时间属性</span><br><span class="line">  会绑定到Button组件跟元素上</span><br><span class="line">&lt;&#x2F;template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">import Button from &quot;..&#x2F;lib&#x2F;Button.vue&quot;;</span><br><span class="line">export default &#123;</span><br><span class="line">  components: &#123; Button &#125;,</span><br><span class="line">&#125;;</span><br><span class="line">&lt;&#x2F;script&gt;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>使用<code>inheritAttrs:false</code>可以取消默认绑定</li>
-<li>使用<code>$attrs</code>或者 <code>context.attrs</code> 获取所有属性</li>
-<li>使用 <code>v-bind=&#39;$attrs&#39;</code>批量绑定属性</li>
-<li>使用<code>const &#123;size,onclick,...xxx&#125;=context.attrs</code>将属性分开</li>
-</ul>
-<p>props 和 attrs 的区别</p>
-<ul>
-<li>props 要先声明才能取值，attrs 不需要</li>
-<li>props 不包含事件，attrs 包含</li>
-<li>props 没有声明的属性，会跑到 attrs 里</li>
-<li>props 支持 String 之外的类型，attrs 只支持 String 类型</li>
-</ul>
-<p>5、context.slots.default()</p>
-<p><strong>检查组件内部标签类型</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">setup(props, context) &#123;</span><br><span class="line">  const defaults &#x3D; context.slots.default();</span><br><span class="line">  defaults.forEach((tag) &#x3D;&gt; &#123;</span><br><span class="line">     if (tag.type !&#x3D;&#x3D; Tab) &#123;</span><br><span class="line">       throw new Error(&quot;Tabs子标签必须是Tab标签);</span><br><span class="line">     &#125;</span><br><span class="line">  &#125;)&#125;</span><br></pre></td></tr></table></figure>
-<p>6、Vue3 支持 TS 和 markdown</p>
-<p>支持 TS</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;shims.vue.d.ts</span><br><span class="line">declare module &quot;*.vue&quot; &#123;</span><br><span class="line">import &#123; ComponentOptions &#125; from &quot;vue&quot;;</span><br><span class="line">const componentOptions: ComponentOptions;</span><br><span class="line">export default componentOptions;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>支持 markdown</p>
-<p>//shims.vue.d.ts</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">declare module &quot;*.md&quot; &#123;</span><br><span class="line">  const str: string;</span><br><span class="line">  export default str;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>plugin/md.ts</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; @ts-nocheck</span><br><span class="line">import path from &quot;path&quot;;</span><br><span class="line">import fs from &quot;fs&quot;;</span><br><span class="line">import marked from &quot;marked&quot;;</span><br><span class="line"></span><br><span class="line">const mdToJs &#x3D; (str) &#x3D;&gt; &#123;</span><br><span class="line">  const content &#x3D; JSON.stringify(marked(str));</span><br><span class="line">  return &#96;export default $&#123;content&#125;&#96;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">export function md() &#123;</span><br><span class="line">  return &#123;</span><br><span class="line">    configureServer: [</span><br><span class="line">      &#x2F;&#x2F; 用于开发</span><br><span class="line">      async (&#123; app &#125;) &#x3D;&gt; &#123;</span><br><span class="line">        app.use(async (ctx, next) &#x3D;&gt; &#123;</span><br><span class="line">          if (ctx.path.endsWith(&quot;.md&quot;)) &#123;</span><br><span class="line">            ctx.type &#x3D; &quot;js&quot;;</span><br><span class="line">            const filePath &#x3D; path.join(process.cwd(), ctx.path);</span><br><span class="line">            ctx.body &#x3D; mdToJs(fs.readFileSync(filePath).toString());</span><br><span class="line">          &#125; else &#123;</span><br><span class="line">            await next();</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">      &#125;,</span><br><span class="line">    ],</span><br><span class="line">    transforms: [</span><br><span class="line">      &#123;</span><br><span class="line">        &#x2F;&#x2F; 用于 rollup</span><br><span class="line">        test: (context) &#x3D;&gt; context.path.endsWith(&quot;.md&quot;),</span><br><span class="line">        transform: (&#123; code &#125;) &#x3D;&gt; mdToJs(code),</span><br><span class="line">      &#125;,</span><br><span class="line">    ],</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+<h4 id="二、Object-defineProperty-和-getter、setter"><a href="#二、Object-defineProperty-和-getter、setter" class="headerlink" title="二、Object.defineProperty 和 getter、setter"></a>二、Object.defineProperty 和 getter、setter</h4><p><code>Object.defineProperty</code>方法会直接在一个对象上定义一个新属性，或者修改一个对象的现有属性，并返回此对象。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"> let data1 &#x3D; &#123;&#125;;</span><br><span class="line">Object.defineProperty(data1, &quot;n&quot;, &#123;</span><br><span class="line">  value: 0</span><br><span class="line">&#125;);</span><br><span class="line">console.log(data1.n);  &#x2F;&#x2F;0</span><br></pre></td></tr></table></figure>
+<br>
+
+<p><code>getter/setter</code>用于对属性的读写进行监控</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">let myData2 &#x3D; &#123; n: 0 &#125;;</span><br><span class="line">let data2 &#x3D; proxy(&#123; data: myData2 &#125;); &#x2F;&#x2F; 括号里是匿名对象，无法访问</span><br><span class="line"></span><br><span class="line">function proxy(&#123; data &#125;) &#123;</span><br><span class="line">  let value &#x3D; data.n;</span><br><span class="line">  Object.defineProperty(data, &quot;n&quot;, &#123;</span><br><span class="line">    get() &#123;</span><br><span class="line">      return value;</span><br><span class="line">    &#125;,</span><br><span class="line">    set(newValue) &#123;</span><br><span class="line">      if (newValue &lt; 0) return;</span><br><span class="line">      value &#x3D; newValue;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">  &#x2F;&#x2F;监听 data</span><br><span class="line"></span><br><span class="line">  const obj &#x3D; &#123;&#125;;</span><br><span class="line">  Object.defineProperty(obj, &quot;n&quot;, &#123;</span><br><span class="line">    get() &#123;</span><br><span class="line">      return data.n;</span><br><span class="line">    &#125;,</span><br><span class="line">    set(value) &#123;</span><br><span class="line">     if (newValue &lt; 0) return;</span><br><span class="line">      data.n &#x3D; value;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">  return obj; &#x2F;&#x2F; obj 就是代理</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">console.log(data2.n);	&#x2F;&#x2F;0</span><br><span class="line">myData2.n &#x3D; -1;</span><br><span class="line">console.log(data2.n);	&#x2F;&#x2F;0</span><br><span class="line">myData2.n &#x3D; 1;</span><br><span class="line">console.log(data2.n);	&#x2F;&#x2F;1</span><br></pre></td></tr></table></figure>
+<br>
+
+<p><strong>当<code>let vm=new Vue(&#123;data:myData&#125;)</code>时，会让 vm 成为 Vue 的代理，对 myData 的所有属性进行监控，使得 myData 的属性变化的时候渲染页面。</strong></p>
+<h4 id="三、总结"><a href="#三、总结" class="headerlink" title="三、总结"></a>三、总结</h4><p><strong>Vue 的数据响应式，是通过<code>Object.defineProperty</code>将对象所有的属性转化为<code>getter/setter</code>来监控数据变化，即时渲染页面。</strong></p>
+<p><strong>注意</strong>：Vue 不能检测到对象属性的添加或删除，解决方法是手动调用 Vue.set 或者 this.$set<br><a href="https://cn.vuejs.org/v2/guide/reactivity.html#%E5%AF%B9%E4%BA%8E%E5%AF%B9%E8%B1%A1">文档</a></p>
+]]></content>
       <tags>
         <tag>框架</tag>
         <tag>Vue</tag>
@@ -1150,7 +1495,7 @@ export default &#123;
   </entry>
   <entry>
     <title>Vuex的基本用法</title>
-    <url>/2021/03/11/Vuex/</url>
+    <url>/2021/02/16/Vuex/</url>
     <content><![CDATA[<h5 id="1、Vuex-是什么？"><a href="#1、Vuex-是什么？" class="headerlink" title="1、Vuex 是什么？"></a>1、Vuex 是什么？</h5><p>一个专为 Vue.js 应用程序开发的状态管理工具</p>
 <h5 id="2、作用"><a href="#2、作用" class="headerlink" title="2、作用"></a>2、作用</h5><ul>
 <li>解耦：将所有数据相关的逻辑放入 store（也就是 MVC 中的 Model，换了个名字而已）</li>
@@ -1210,31 +1555,8 @@ export default &#123;
       </tags>
   </entry>
   <entry>
-    <title>Vue响应式原理</title>
-    <url>/2021/03/11/Vue%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86/</url>
-    <content><![CDATA[<h4 id="一、原理"><a href="#一、原理" class="headerlink" title="一、原理"></a>一、原理</h4><p><strong><code>Vue</code>会遍历<code>data</code>对象的所有<code>property</code>，并使用<code>Object.defineProperty</code>把这些<code>property</code>全部转为<code>getter/setter</code>。通过<code>getter/setter</code>让 Vue 能够追踪依赖，在<code>property</code>被访问和修改时通知变更。</strong></p>
- <a id="more"></a>
-
-<h4 id="二、Object-defineProperty-和-getter、setter"><a href="#二、Object-defineProperty-和-getter、setter" class="headerlink" title="二、Object.defineProperty 和 getter、setter"></a>二、Object.defineProperty 和 getter、setter</h4><p><code>Object.defineProperty</code>方法会直接在一个对象上定义一个新属性，或者修改一个对象的现有属性，并返回此对象。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"> let data1 &#x3D; &#123;&#125;;</span><br><span class="line">Object.defineProperty(data1, &quot;n&quot;, &#123;</span><br><span class="line">  value: 0</span><br><span class="line">&#125;);</span><br><span class="line">console.log(data1.n);  &#x2F;&#x2F;0</span><br></pre></td></tr></table></figure>
-<br>
-
-<p><code>getter/setter</code>用于对属性的读写进行监控</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">let myData2 &#x3D; &#123; n: 0 &#125;;</span><br><span class="line">let data2 &#x3D; proxy(&#123; data: myData2 &#125;); &#x2F;&#x2F; 括号里是匿名对象，无法访问</span><br><span class="line"></span><br><span class="line">function proxy(&#123; data &#125;) &#123;</span><br><span class="line">  let value &#x3D; data.n;</span><br><span class="line">  Object.defineProperty(data, &quot;n&quot;, &#123;</span><br><span class="line">    get() &#123;</span><br><span class="line">      return value;</span><br><span class="line">    &#125;,</span><br><span class="line">    set(newValue) &#123;</span><br><span class="line">      if (newValue &lt; 0) return;</span><br><span class="line">      value &#x3D; newValue;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">  &#x2F;&#x2F;监听 data</span><br><span class="line"></span><br><span class="line">  const obj &#x3D; &#123;&#125;;</span><br><span class="line">  Object.defineProperty(obj, &quot;n&quot;, &#123;</span><br><span class="line">    get() &#123;</span><br><span class="line">      return data.n;</span><br><span class="line">    &#125;,</span><br><span class="line">    set(value) &#123;</span><br><span class="line">     if (newValue &lt; 0) return;</span><br><span class="line">      data.n &#x3D; value;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">  return obj; &#x2F;&#x2F; obj 就是代理</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">console.log(data2.n);	&#x2F;&#x2F;0</span><br><span class="line">myData2.n &#x3D; -1;</span><br><span class="line">console.log(data2.n);	&#x2F;&#x2F;0</span><br><span class="line">myData2.n &#x3D; 1;</span><br><span class="line">console.log(data2.n);	&#x2F;&#x2F;1</span><br></pre></td></tr></table></figure>
-<br>
-
-<p><strong>当<code>let vm=new Vue(&#123;data:myData&#125;)</code>时，会让 vm 成为 Vue 的代理，对 myData 的所有属性进行监控，使得 myData 的属性变化的时候渲染页面。</strong></p>
-<h4 id="三、总结"><a href="#三、总结" class="headerlink" title="三、总结"></a>三、总结</h4><p><strong>Vue 的数据响应式，是通过<code>Object.defineProperty</code>将对象所有的属性转化为<code>getter/setter</code>来监控数据变化，即时渲染页面。</strong></p>
-<p><strong>注意</strong>：Vue 不能检测到对象属性的添加或删除，解决方法是手动调用 Vue.set 或者 this.$set<br><a href="https://cn.vuejs.org/v2/guide/reactivity.html#%E5%AF%B9%E4%BA%8E%E5%AF%B9%E8%B1%A1">文档</a></p>
-]]></content>
-      <tags>
-        <tag>框架</tag>
-        <tag>Vue</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>跨域 CORS和JSON</title>
-    <url>/2021/03/09/ajax/</url>
+    <url>/2020/11/13/ajax/</url>
     <content><![CDATA[<ol>
 <li>概述</li>
 </ol>
@@ -1264,8 +1586,10 @@ export default &#123;
   </entry>
   <entry>
     <title>Canvas</title>
-    <url>/2021/03/09/canvas/</url>
+    <url>/2020/10/22/canvas/</url>
     <content><![CDATA[<h2 id="canvas"><a href="#canvas" class="headerlink" title="canvas"></a>canvas</h2><p><code>&lt;canvas&gt;</code>元素可被用来通过 JS 绘制图形动画</p>
+ <a id="more"></a>
+
 <h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><ol>
 <li><p>canvas 标签 （自带宽高属性）</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;canvas id&#x3D;&#39;canvas&#39; width:&quot;100&quot; height:&quot;100&quot;&gt;&lt;&#x2F;canvas&gt;</span><br></pre></td></tr></table></figure></li>
@@ -1290,13 +1614,38 @@ export default &#123;
       </tags>
   </entry>
   <entry>
-    <title>React 基本用法</title>
-    <url>/2021/03/12/class/</url>
-    <content><![CDATA[<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class Person&#123;</span><br><span class="line">  constructor()&#123;</span><br><span class="line">    this.n&#x3D;()&#123;&#125;   &#x2F;&#x2F;方法在对象上</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">class Person&#123;</span><br><span class="line">  n&#x3D;()&#x3D;&gt;&#123;&#125;  &#x2F;&#x2F;new的时候也会出现在对象上</span><br><span class="line">  n()&#123;&#125; &#x2F;&#x2F;new的时候会出现在原型上</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+    <title>Computed和watch的区别</title>
+    <url>/2020/11/26/computed%E5%92%8Cwatch/</url>
+    <content><![CDATA[<h3 id="1、computed"><a href="#1、computed" class="headerlink" title="1、computed"></a>1、computed</h3><ul>
+<li><p>computed 虽然看上去是方法，但实际上是计算属性，因此，使用方法和属性的使用方法相同，不需要加括号。</p>
+</li>
+<li><p>computed 会根据依赖的数据动态显示，并且计算结果会被缓存，只有在依赖的数据发生变化的之后再次获取 computed 的值才会重新计算。</p>
+<a id="more"></a>
+
+</li>
+</ul>
+<p><strong>示例</strong></p>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  data: &#123;</span><br><span class="line">    users: &#123;</span><br><span class="line">      id: <span class="number">1</span>,</span><br><span class="line">      name: <span class="string">&quot;张三&quot;</span>,</span><br><span class="line">      phone: <span class="string">&quot;123456&quot;</span>,</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">  computed: &#123;</span><br><span class="line">    _user: &#123;</span><br><span class="line">      <span class="function"><span class="title">get</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">        <span class="keyword">return</span> <span class="built_in">this</span>.users.name + <span class="string">&quot;:&quot;</span> + <span class="built_in">this</span>.users.phone;</span><br><span class="line">      &#125;,</span><br><span class="line">      <span class="function"><span class="title">set</span>(<span class="params">value</span>)</span> &#123;</span><br><span class="line">        <span class="built_in">this</span>.users.name = value;</span><br><span class="line">      &#125;,</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">  template: <span class="string">`</span></span><br><span class="line"><span class="string">  &lt;div&gt;</span></span><br><span class="line"><span class="string">    &#123;&#123;_user&#125;&#125;</span></span><br><span class="line"><span class="string">    &lt;button @click=&quot;name=&#x27;李四&#x27;&quot;&gt;setName&lt;/button&gt;</span></span><br><span class="line"><span class="string">  &lt;/div&gt;</span></span><br><span class="line"><span class="string">  `</span>,</span><br><span class="line">&#125;).$mount(<span class="string">&quot;#app&quot;</span>);</span><br></pre></td></tr></table></figure>
+<p><strong>注意：</strong></p>
+<blockquote>
+<p>上述例子可以直接在模板字符串中写undefined:undefined ，模板内的表达式非常便利，但是设计它们的初衷是用于简单运算的。在模板中放入太多的逻辑会让模板过重且难以维护。</p>
+</blockquote>
+<h3 id="2、watch"><a href="#2、watch" class="headerlink" title="2、watch"></a>2、watch</h3><ul>
+<li>watch 是对数据 data 的监听回调，当所依赖的 data 变化时，执行回调，是异步的,会传入<code>newVal</code>和<code>oldVal</code>.</li>
+<li>提供两个选项，<code>immediate</code>用来设置是否在第一次渲染的时候执行，<code>deep</code>用来设置要监听对象内部属性的变化<br><strong>示例</strong></li>
+</ul>
+<figure class="highlight javascript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">new</span> Vue(&#123;</span><br><span class="line">  <span class="function"><span class="title">data</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">    <span class="keyword">return</span> &#123;</span><br><span class="line">      n: <span class="number">0</span>,</span><br><span class="line">      history: [],</span><br><span class="line">      isUndo: <span class="literal">false</span>,</span><br><span class="line">    &#125;;</span><br><span class="line">  &#125;,</span><br><span class="line">  methods: &#123;</span><br><span class="line">    <span class="function"><span class="title">add</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">      <span class="built_in">this</span>.n += <span class="number">1</span>;</span><br><span class="line">    &#125;,</span><br><span class="line">    <span class="function"><span class="title">undo</span>(<span class="params"></span>)</span> &#123;</span><br><span class="line">      <span class="keyword">const</span> last = <span class="built_in">this</span>.history.pop();</span><br><span class="line">      <span class="built_in">this</span>.isUndo = <span class="literal">true</span>;</span><br><span class="line">      <span class="built_in">this</span>.n = last.from; <span class="comment">//触发watch异步更新</span></span><br><span class="line">      <span class="built_in">this</span>.$nextTick(<span class="function">() =&gt;</span> &#123;</span><br><span class="line">        <span class="comment">//需要在上一步更新之后 再设置    setTimeout</span></span><br><span class="line">        <span class="built_in">this</span>.isUndo = <span class="literal">false</span>;</span><br><span class="line">      &#125;, <span class="number">0</span>);</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">  watch: &#123;</span><br><span class="line">    <span class="function"><span class="title">n</span>(<span class="params">newN, oldN</span>)</span> &#123;</span><br><span class="line">      <span class="comment">//当 this.isUndo为false 才会执行</span></span><br><span class="line">      <span class="keyword">if</span> (!<span class="built_in">this</span>.isUndo) <span class="built_in">this</span>.history.push(&#123; <span class="attr">from</span>: oldN, <span class="attr">to</span>: newN &#125;);</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br><span class="line">  template: <span class="string">`&lt;div&gt;</span></span><br><span class="line"><span class="string">  &#123;&#123;n&#125;&#125;</span></span><br><span class="line"><span class="string">  &lt;hr&gt;</span></span><br><span class="line"><span class="string"> &lt;button @click=&#x27;add&#x27;&gt;+1&lt;/button&gt;</span></span><br><span class="line"><span class="string"> &lt;button @click=&#x27;undo&#x27;&gt;撤销&lt;/button&gt;</span></span><br><span class="line"><span class="string"> &lt;hr&gt;</span></span><br><span class="line"><span class="string">&#123;&#123;history&#125;&#125;</span></span><br><span class="line"><span class="string">&lt;/div&gt;`</span>,</span><br><span class="line">&#125;).$mount(<span class="string">&quot;#app&quot;</span>);</span><br></pre></td></tr></table></figure>
+<p><img src="https://p3-juejin.byteimg.com/tos-cn-i-k3u1fbpfcp/b43acb00de3a401cb8714c3c978ef48b~tplv-k3u1fbpfcp-watermark.image"></p>
+<p><strong>计算属性在大多数情况下更合适，但有时也需要一个自定义的侦听器。当需要在数据变化时执行异步或开销较大的操作时，这个方式是最有用的。</strong></p>
+]]></content>
+      <tags>
+        <tag>框架</tag>
+        <tag>Vue</tag>
+      </tags>
   </entry>
   <entry>
     <title>jQuery</title>
-    <url>/2021/03/10/jQuery/</url>
+    <url>/2020/11/10/jQuery/</url>
     <content><![CDATA[<p>jQuery 是一个轻量级的 JavaScript 函数库。<br>它的基本设计思想和主要用法，就是”<strong>选择某个网页元素，然后对其进行某种操作</strong>“。<br><br></p>
 <a id="more"></a>
 
@@ -1320,7 +1669,7 @@ export default &#123;
   </entry>
   <entry>
     <title>Webpack简单配置</title>
-    <url>/2021/03/11/webpack/</url>
+    <url>/2020/11/22/webpack/</url>
     <content><![CDATA[<h4 id="1、简介"><a href="#1、简介" class="headerlink" title="1、简介"></a>1、简介</h4><p>Webpack 是一个模块打包工具(module bundler)，其最主要的功能就是模块打包，模块打包，通俗地说就是：找出模块之间的依赖关系，按照一定的规则把这些模块组织合并为一个 JavaScript 文件。Webpack 认为一切都是模块，JS 文件、CSS 文件、jpg/png 图片等等都是模块。</p>
 <a id="more"></a>
 
@@ -1405,10 +1754,24 @@ export default &#123;
       </tags>
   </entry>
   <entry>
+    <title>函数防抖和函数节流</title>
+    <url>/2021/03/01/%E5%87%BD%E6%95%B0%E9%98%B2%E6%8A%96%E5%92%8C%E5%87%BD%E6%95%B0%E8%8A%82%E6%B5%81/</url>
+    <content><![CDATA[<h5 id="1、函数防抖"><a href="#1、函数防抖" class="headerlink" title="1、函数防抖"></a>1、函数防抖</h5><p>在事件被触发 n 秒后，在执行函数，如果 n 秒内被重新触发，则重新计时</p>
+   <a id="more"></a>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"> const debounce&#x3D;(fn,delay)&#x3D;&gt;&#123;</span><br><span class="line">  let timer&#x3D;null</span><br><span class="line">  return function()&#123;</span><br><span class="line">    let context&#x3D;this  &#x2F;&#x2F;获取debounce执行作用域的this</span><br><span class="line">    &#x2F;&#x2F;如果计时器存在，那么就将计时器取消，新增一个计时器，重新计时</span><br><span class="line">    if(timer)&#123;clearTimeout(timer)&#125;</span><br><span class="line">    timer&#x3D;setTimeout(()&#x3D;&gt;&#123;</span><br><span class="line">      fn.apply(context,arguments)</span><br><span class="line">    &#125;,delay)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">const x&#x3D;x(()&#x3D;&gt;&#123;console.log(&#39;1&#39;)&#125;,1000)</span><br><span class="line">x()</span><br><span class="line">x()   &#x2F;&#x2F;延迟时间内多次执行，函数只会执行一次</span><br></pre></td></tr></table></figure>
+<p><a href="https://codesandbox.io/s/hardcore-bose-kq9gg">代码演示</a></p>
+<h4 id="2、函数节流"><a href="#2、函数节流" class="headerlink" title="2、函数节流"></a>2、函数节流</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">  const throttle &#x3D; (fn, delay) &#x3D;&gt; &#123;</span><br><span class="line">  let timer;</span><br><span class="line">  return function () &#123;</span><br><span class="line">    const context &#x3D; this;</span><br><span class="line">    if (!timer) &#123;</span><br><span class="line">      timer &#x3D; setTimeout(() &#x3D;&gt; &#123;</span><br><span class="line">        timer &#x3D; null;</span><br><span class="line">        fn.apply(context, arguments);</span><br><span class="line">      &#125;, delay);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br><span class="line">const x&#x3D;throttle()</span><br><span class="line">x()</span><br><span class="line">x()</span><br></pre></td></tr></table></figure>
+<p><a href="https://codesandbox.io/s/frosty-fermi-cztc1">代码演示</a></p>
+]]></content>
+      <tags>
+        <tag>JavaScript</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>常用命令行</title>
-    <url>/2021/03/09/%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
-    <content><![CDATA[<p><img src="https://gimg2.baidu.com/image_search/src=http%3A%2F%2Fwww.linuxeden.com%2Fwp-content%2Fuploads%2F2017%2F07%2Fbgnu6ymb2jmqy5o01200.jpg&refer=http%3A%2F%2Fwww.linuxeden.com&app=2002&size=f9999,10000&q=a80&n=0&g=0n&fmt=jpeg?sec=1617944609&t=0f849011a818a10c06e11636a6d92a48"></p>
- <a id="more"></a>
+    <url>/2020/10/02/%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
+    <content><![CDATA[ <a id="more"></a>
 
 <h4 id="查："><a href="#查：" class="headerlink" title="查："></a>查：</h4><p>查看目录绝对路径：pwd</p>
 <p>查看当前目录内容：ls</p>
@@ -1442,11 +1805,11 @@ export default &#123;
 <p>修改文件名/目录：<code>mv 1.txt 2.txt</code>mv：移动</p>
 <p>重命名文件名/目录：同上</p>
 <p>修改文件最后更新时间：<code>touch 1.txt</code></p>
-<h3 id="命令的组合："><a href="#命令的组合：" class="headerlink" title="命令的组合："></a>命令的组合：</h3><p>命令成功：没有提示，返回 0</p>
+<h4 id="命令的组合："><a href="#命令的组合：" class="headerlink" title="命令的组合："></a>命令的组合：</h4><p>命令成功：没有提示，返回 0</p>
 <p>命令失败：提示 error，返回非 0</p>
 <p><code>&amp;&amp;</code>命令：当第一条命令成功之后执行下一条命令</p>
 <p><code>;</code>命令：不管第一条命令是否成功，都执行下一条</p>
-<h3 id="脚本文件"><a href="#脚本文件" class="headerlink" title="脚本文件"></a>脚本文件</h3><p>1.创建任意后缀文件</p>
+<h4 id="脚本文件"><a href="#脚本文件" class="headerlink" title="脚本文件"></a>脚本文件</h4><p>1.创建任意后缀文件</p>
 <ol start="2">
 <li>添加可执行性权限：chmod +x ./文件名</li>
 <li>文件里写命令</li>
@@ -1459,50 +1822,54 @@ export default &#123;
       </tags>
   </entry>
   <entry>
-    <title>封装DOM</title>
-    <url>/2021/03/09/%E5%B0%81%E8%A3%85DOM/</url>
-    <content><![CDATA[<h3 id="封装-DOM-操作，对象风格"><a href="#封装-DOM-操作，对象风格" class="headerlink" title="封装 DOM 操作，对象风格"></a>封装 DOM 操作，对象风格</h3><h4 id="一、增加-和-删除"><a href="#一、增加-和-删除" class="headerlink" title="一、增加 和 删除"></a>一、增加 和 删除</h4><p>创建节点</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">create(string) &#123;</span><br><span class="line">  const container &#x3D; document.createElement(&quot;template&quot;)</span><br><span class="line">   &#x2F;&#x2F;template可以包含任意节点</span><br><span class="line">  container.innerHTML &#x3D; string.trim()</span><br><span class="line">  return container.content.firstChild</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+    <title>图床项目</title>
+    <url>/2021/01/16/%E5%9B%BE%E5%BA%8A%E9%A1%B9%E7%9B%AE/</url>
+    <content><![CDATA[<h5 id="1、Suspense-和-lazy"><a href="#1、Suspense-和-lazy" class="headerlink" title="1、Suspense 和 lazy"></a>1、Suspense 和 lazy</h5><ul>
+<li>Suspense</li>
+</ul>
+<p>React 16.6 新增了 <Suspense> 组件，让你可以“等待”目标代码加载，并且可以直接指定一个加载的界面（像是个 spinner），让它在用户等待的时候显示<br><a href="https://zh-hans.reactjs.org/docs/concurrent-mode-suspense.html#gatsby-focus-wrapper">官方文档</a></Suspense></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;Suspense fallback &#x3D; &#123;&lt;Loading&#x2F;&gt;&#125;&gt;      &#x2F;&#x2F;等待加载时显示 Loading组件</span><br><span class="line">&lt;&#x2F;Suspense&gt;</span><br></pre></td></tr></table></figure>
  <a id="more"></a>
 
-<p>改变位置</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;在目标节点前面插入</span><br><span class="line">  before(newNode, node) &#123;</span><br><span class="line">    node.parentNode.insertBefore(newNode, node)</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;在目标节点后面插入，也就是在目标节点的下一个节点的前面插入</span><br><span class="line">  after(newNode, node) &#123;</span><br><span class="line">    node.parentNode.insertBefore(newNode, node.nextSibling)</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure>
-<p>作为目标节点子节点</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">append(parent, node) &#123;</span><br><span class="line">  parent.appendChild(node)</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
-<p>作为目标节点父节点</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wrap(node, parent) &#123;</span><br><span class="line">  dom.before(parent, node)</span><br><span class="line">  dom.append(parent, node)</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
-<p>删除</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">remove(node) &#123;</span><br><span class="line">  node.parentNode.removeChild(node)</span><br><span class="line">  return node</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
-<p>清空</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">empty(parent) &#123;</span><br><span class="line">  let array &#x3D; []</span><br><span class="line">  let x &#x3D; parent.firstChild</span><br><span class="line">  while (x) &#123;</span><br><span class="line">  &#x2F;&#x2F;删除子节点会使children的长度马上变化，所以不能用for循环遍历</span><br><span class="line">    array.push(dom.remove(x))</span><br><span class="line">    x &#x3D; parent.firstChild</span><br><span class="line">  &#125;</span><br><span class="line">  return array</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
-<h4 id="二、读写操作"><a href="#二、读写操作" class="headerlink" title="二、读写操作"></a>二、读写操作</h4><p>读写属性</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;判断参数数量，执行不同的操作</span><br><span class="line">  attr(node, name, value) &#123;</span><br><span class="line">    if (arguments.length &#x3D;&#x3D;&#x3D; 3) &#123;</span><br><span class="line">      node.setAttribute(name, value)</span><br><span class="line">    &#125; else if (arguments.length &#x3D;&#x3D;&#x3D; 2) &#123;</span><br><span class="line">      return node.getAttribute(name)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure>
-<p>读写文本内容</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">text(node, string) &#123;</span><br><span class="line">  if (arguments.length &#x3D;&#x3D;&#x3D; 2) &#123;</span><br><span class="line">    if (&quot;innerText&quot; in node) &#123;    &#x2F;&#x2F;浏览器兼容</span><br><span class="line">      node.innerText &#x3D; string</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      node.textContent &#x3D; string</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; else if (arguments.length &#x3D;&#x3D;&#x3D; 1) &#123;</span><br><span class="line">    if (&quot;innerText&quot; in node) &#123;</span><br><span class="line">      return node.innerText</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      return node.textContent</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
-<p>读写 HTML 内容</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">html(node, string) &#123;</span><br><span class="line">  if (arguments.length &#x3D;&#x3D;&#x3D; 2) &#123;</span><br><span class="line">    node.innerHTML &#x3D; string</span><br><span class="line">  &#125; else if (arguments.length &#x3D;&#x3D;&#x3D; 1) &#123;</span><br><span class="line">    return node.innerHTML</span><br><span class="line">  &#125;</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
-<p>读写 style</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">  style(node, name, value) &#123;</span><br><span class="line">    if (arguments.length &#x3D;&#x3D;&#x3D; 3) &#123;</span><br><span class="line">      node.style[name] &#x3D; value</span><br><span class="line">    &#125; else if (arguments.length &#x3D;&#x3D;&#x3D; 2) &#123;</span><br><span class="line">      if (typeof name &#x3D;&#x3D;&#x3D; &quot;string&quot;) &#123;</span><br><span class="line">        return node.style[name]</span><br><span class="line">      &#125; else if (name instanceof Object) &#123;</span><br><span class="line">        const object &#x3D; name</span><br><span class="line">        for (let key in object) &#123;</span><br><span class="line">          node.style[key] &#x3D; object[key]</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">&#x2F;&#x2F;用法</span><br><span class="line">dom.style(node,&quot;color&quot;,&quot;red&quot;)</span><br><span class="line">dom.style(node,&quot;color&quot;)</span><br><span class="line">dom.style(node,&#123;color:&quot;red&quot;&#125;)</span><br></pre></td></tr></table></figure>
-<p>class 增加和删除</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class: &#123;</span><br><span class="line">    add(node, className) &#123;</span><br><span class="line">      node.classList.add(className)</span><br><span class="line">    &#125;,</span><br><span class="line">    remove(node, className) &#123;</span><br><span class="line">      node.classList.remove(className)</span><br><span class="line">    &#125;,</span><br><span class="line">    has(node, className) &#123;</span><br><span class="line">      return node.classList.contains(className)</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure>
-<p>添加、移出事件</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">on(node, eventName, fn) &#123;</span><br><span class="line">  node.addEventListener(eventName, fn)</span><br><span class="line">&#125;,</span><br><span class="line">off(node, eventName, fn) &#123;</span><br><span class="line">  node.removeEventListener(eventName, fn)</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
-<h4 id="三、查找操作"><a href="#三、查找操作" class="headerlink" title="三、查找操作"></a>三、查找操作</h4><p>选择器查找</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">find(selector, scope) &#123;</span><br><span class="line">    &#x2F;&#x2F;查找范围 全局或给定范围</span><br><span class="line">   return (scope || document).querySelectorAll(selector)</span><br><span class="line"> &#125;,</span><br></pre></td></tr></table></figure>
-<p>获取父元素/子元素/兄弟元素/上一个元素/下一个元素</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">parent(node) &#123;</span><br><span class="line">  return node.parentNode</span><br><span class="line">&#125;,</span><br><span class="line">children(node) &#123;</span><br><span class="line">  return node.children</span><br><span class="line">&#125;,</span><br><span class="line">sibling(node) &#123;</span><br><span class="line">  &#x2F;&#x2F;获取父元素的子元素排除自己</span><br><span class="line">  return Array.from(node.parentNode.children).filter((n) &#x3D;&gt; n !&#x3D;&#x3D; node)</span><br><span class="line">&#125;,</span><br><span class="line">next(node) &#123;</span><br><span class="line">  let x &#x3D; node.nextSibling</span><br><span class="line">  &#x2F;&#x2F;如果节点type为3 文本，就找下一个</span><br><span class="line">  while (x &amp;&amp; x.nodeType &#x3D;&#x3D;&#x3D; 3) &#123;</span><br><span class="line">    x &#x3D; x.nextSibling</span><br><span class="line">  &#125;</span><br><span class="line">  return x</span><br><span class="line">&#125;,</span><br><span class="line">previous(node) &#123;</span><br><span class="line">  &#x2F;&#x2F;同上</span><br><span class="line">  let x &#x3D; node.previousSibling</span><br><span class="line">  while (x &amp;&amp; x.nodeType &#x3D;&#x3D;&#x3D; 3) &#123;</span><br><span class="line">    x &#x3D; x.previousSibling</span><br><span class="line">  &#125;</span><br><span class="line">  return x</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
-<p>遍历</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">each(nodes, fn) &#123;</span><br><span class="line">  for (let i &#x3D; 0; i &lt; nodes.length; i++) &#123;</span><br><span class="line">    fn.call(null, nodes[i])</span><br><span class="line">  &#125;</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
-<p>获取下标</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">index(node) &#123;</span><br><span class="line">    let list &#x3D; dom.children(node.parentNode)</span><br><span class="line">    let i</span><br><span class="line">    for (i &#x3D; 0; i &lt; list.length; i++) &#123;</span><br><span class="line">      if (list[i] &#x3D;&#x3D;&#x3D; node) &#123;</span><br><span class="line">        break</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return i</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure>]]></content>
+<ul>
+<li>React.lazy</li>
+</ul>
+<p>动态引入组件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;使用前</span><br><span class="line">import Home from &#39;.&#x2F;pages&#x2F;Home&#39;</span><br><span class="line">import History from &#39;.&#x2F;pages&#x2F;History&#39;</span><br><span class="line">import About from &#39;.&#x2F;pages&#x2F;About&#39;</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;使用后</span><br><span class="line">import &#123;lazy&#125; from &#39;react&#39;</span><br><span class="line">const Home &#x3D; lazy(() &#x3D;&gt; import(&#39;.&#x2F;pages&#x2F;Home&#39;))</span><br><span class="line">const History &#x3D; lazy(() &#x3D;&gt; import(&#39;.&#x2F;pages&#x2F;History&#39;))</span><br><span class="line">const About &#x3D; lazy(() &#x3D;&gt; import(&#39;.&#x2F;pages&#x2F;About&#39;))</span><br></pre></td></tr></table></figure>
+<p>React.lazy 接受一个函数，这个函数需要动态调用 import()。它必须返回一个 Promise，该 Promise 需要 resolve 一个 default export 的 React 组件。</p>
+<p>然后应在 Suspense 组件中渲染 lazy 组件，如此使得我们可以使用在等待加载 lazy 组件时做优</p>
+<ul>
+<li>完整代码</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import &#123;Suspense, lazy&#125; from &#39;react&#39;</span><br><span class="line">import &#39;.&#x2F;App.css&#39;</span><br><span class="line">import Header from &#39;.&#x2F;components&#x2F;Header&#39;</span><br><span class="line">import Footer from &#39;.&#x2F;components&#x2F;Footer&#39;</span><br><span class="line">import &#123;Switch, Route&#125; from &#39;react-router-dom&#39;</span><br><span class="line">import Loading from &#39;.&#x2F;components&#x2F;Loading&#39;</span><br><span class="line">import Login from &#39;.&#x2F;pages&#x2F;Login&#39;</span><br><span class="line">import Register from &#39;.&#x2F;pages&#x2F;Register&#39;</span><br><span class="line">&#x2F;&#x2F; import Home from &#39;.&#x2F;pages&#x2F;Home&#39;</span><br><span class="line">&#x2F;&#x2F; import History from &#39;.&#x2F;pages&#x2F;History&#39;</span><br><span class="line">&#x2F;&#x2F; import About from &#39;.&#x2F;pages&#x2F;About&#39;</span><br><span class="line">const Home &#x3D; lazy(() &#x3D;&gt; import(&#39;.&#x2F;pages&#x2F;Home&#39;))</span><br><span class="line">const History &#x3D; lazy(() &#x3D;&gt; import(&#39;.&#x2F;pages&#x2F;History&#39;))</span><br><span class="line">const About &#x3D; lazy(() &#x3D;&gt; import(&#39;.&#x2F;pages&#x2F;About&#39;))</span><br><span class="line">function App() &#123;</span><br><span class="line">	return (</span><br><span class="line">		&lt;&gt;</span><br><span class="line">			&lt;Header&#x2F;&gt;</span><br><span class="line">			&lt;main&gt;</span><br><span class="line">				&lt;Suspense fallback &#x3D; &#123;&lt;Loading&#x2F;&gt;&#125;&gt;</span><br><span class="line">					&lt;Switch&gt;</span><br><span class="line">						&lt;Route path &#x3D; &quot;&#x2F;&quot; exact component &#x3D; &#123;Home&#125;&#x2F;&gt;</span><br><span class="line">						&lt;Route path &#x3D; &quot;&#x2F;history&quot; component &#x3D; &#123;History&#125;&#x2F;&gt;</span><br><span class="line">						&lt;Route path &#x3D; &quot;&#x2F;about&quot; component &#x3D; &#123;About&#125;&#x2F;&gt;</span><br><span class="line">						&lt;Route path &#x3D; &quot;&#x2F;Login&quot; component &#x3D; &#123;Login&#125;&#x2F;&gt;</span><br><span class="line">						&lt;Route path &#x3D; &quot;&#x2F;Register&quot; component &#x3D; &#123;Register&#125;&#x2F;&gt;</span><br><span class="line">					&lt;&#x2F;Switch&gt;</span><br><span class="line">				&lt;&#x2F;Suspense&gt;</span><br><span class="line">			&lt;&#x2F;main&gt;</span><br><span class="line">			&lt;Footer&#x2F;&gt;</span><br><span class="line">		&lt;&#x2F;&gt;</span><br><span class="line">	)</span><br><span class="line">&#125;</span><br><span class="line">export default App</span><br></pre></td></tr></table></figure>
+<h3 id="2、mobx"><a href="#2、mobx" class="headerlink" title="2、mobx"></a>2、mobx</h3><ul>
+<li><p>@observable 被观察者</p>
+<ul>
+<li>类似 Vuex 的 state，声明需要的状态</li>
+<li>被观察者可以是：JS 基本数据类型、引用类型、普通对象、类实例、数组和映射</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>action 动作</p>
+<p>用来更改被观察者</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import &#123;observable, action, makeObservable&#125; from &#39;mobx&#39;</span><br><span class="line">import &#123;Auth&#125; from &#39;..&#x2F;models&#39;</span><br><span class="line"></span><br><span class="line">class UserStore &#123;</span><br><span class="line">    @observable currentUser &#x3D; null</span><br><span class="line"></span><br><span class="line">    constructor() &#123;</span><br><span class="line">        makeObservable(this)</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @action pullUser() &#123;</span><br><span class="line">        this.currentUser &#x3D; Auth.getCurrentUser()</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line">    @action resetUser() &#123;</span><br><span class="line">        this.currentUser &#x3D; null</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">export default new UserStore()</span><br></pre></td></tr></table></figure></li>
+<li><p>observer</p>
+<p>可以将 React 组件转换为可响应 MobX 的组件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import React from &#39;react&#39;</span><br><span class="line">import &#123;observer&#125; from &#39;mobx-react&#39;</span><br><span class="line">import Uploader from &#39;..&#x2F;components&#x2F;Uploader&#39;</span><br><span class="line">import Tips from &#39;..&#x2F;components&#x2F;Tips&#39;</span><br><span class="line">const Home &#x3D; observer(() &#x3D;&gt; &#123;</span><br><span class="line">    return (</span><br><span class="line">        &lt;&gt;</span><br><span class="line">            &lt;Tips&gt;请先登录!!&lt;&#x2F;Tips&gt;</span><br><span class="line">            &lt;Uploader&#x2F;&gt;</span><br><span class="line">        &lt;&#x2F;&gt;</span><br><span class="line">    )</span><br><span class="line">&#125;)</span><br><span class="line">export default Home</span><br></pre></td></tr></table></figure>
+<p>完整代码见<a href="https://github.com/Straight-GZ/epic/tree/master/src/stores">Github</a></p>
+</li>
+</ul>
+]]></content>
       <tags>
-        <tag>JavaScript</tag>
-        <tag>DOM</tag>
+        <tag>React</tag>
+        <tag>mobx</tag>
+        <tag>项目</tag>
       </tags>
   </entry>
   <entry>
     <title>异步与Promise</title>
-    <url>/2021/03/10/%E5%BC%82%E6%AD%A5%E5%92%8CPromise/</url>
+    <url>/2020/11/16/%E5%BC%82%E6%AD%A5%E5%92%8CPromise/</url>
     <content><![CDATA[<h3 id="一、异步与同步"><a href="#一、异步与同步" class="headerlink" title="一、异步与同步"></a>一、异步与同步</h3><p>同步:一定要当前任务执行完，才会执行下一个任务。</p>
  <a id="more"></a>
 
@@ -1563,7 +1930,7 @@ export default &#123;
   </entry>
   <entry>
     <title>番茄记账Vue版</title>
-    <url>/2021/03/14/%E7%95%AA%E8%8C%84%E8%AE%B0%E8%B4%A6Vue%E7%89%88/</url>
+    <url>/2020/12/25/%E7%95%AA%E8%8C%84%E8%AE%B0%E8%B4%A6Vue%E7%89%88/</url>
     <content><![CDATA[<h4 id="Vue-组件三种方式（单文件组件）"><a href="#Vue-组件三种方式（单文件组件）" class="headerlink" title="Vue 组件三种方式（单文件组件）"></a>Vue 组件三种方式（单文件组件）</h4><ol>
 <li><p>用 JS 对象</p>
 <p><code>export default &#123;data,props,methods,created,...&#125;</code></p>
@@ -1599,9 +1966,75 @@ export default &#123;
       </tags>
   </entry>
   <entry>
+    <title>封装DOM</title>
+    <url>/2020/11/08/%E5%B0%81%E8%A3%85DOM/</url>
+    <content><![CDATA[<h3 id="封装-DOM-操作，对象风格"><a href="#封装-DOM-操作，对象风格" class="headerlink" title="封装 DOM 操作，对象风格"></a>封装 DOM 操作，对象风格</h3><h4 id="一、增加-和-删除"><a href="#一、增加-和-删除" class="headerlink" title="一、增加 和 删除"></a>一、增加 和 删除</h4><p>创建节点</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">create(string) &#123;</span><br><span class="line">  const container &#x3D; document.createElement(&quot;template&quot;)</span><br><span class="line">   &#x2F;&#x2F;template可以包含任意节点</span><br><span class="line">  container.innerHTML &#x3D; string.trim()</span><br><span class="line">  return container.content.firstChild</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+ <a id="more"></a>
+
+<p>改变位置</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;在目标节点前面插入</span><br><span class="line">  before(newNode, node) &#123;</span><br><span class="line">    node.parentNode.insertBefore(newNode, node)</span><br><span class="line">  &#125;,</span><br><span class="line"></span><br><span class="line">&#x2F;&#x2F;在目标节点后面插入，也就是在目标节点的下一个节点的前面插入</span><br><span class="line">  after(newNode, node) &#123;</span><br><span class="line">    node.parentNode.insertBefore(newNode, node.nextSibling)</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure>
+<p>作为目标节点子节点</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">append(parent, node) &#123;</span><br><span class="line">  parent.appendChild(node)</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<p>作为目标节点父节点</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">wrap(node, parent) &#123;</span><br><span class="line">  dom.before(parent, node)</span><br><span class="line">  dom.append(parent, node)</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<p>删除</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">remove(node) &#123;</span><br><span class="line">  node.parentNode.removeChild(node)</span><br><span class="line">  return node</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<p>清空</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">empty(parent) &#123;</span><br><span class="line">  let array &#x3D; []</span><br><span class="line">  let x &#x3D; parent.firstChild</span><br><span class="line">  while (x) &#123;</span><br><span class="line">  &#x2F;&#x2F;删除子节点会使children的长度马上变化，所以不能用for循环遍历</span><br><span class="line">    array.push(dom.remove(x))</span><br><span class="line">    x &#x3D; parent.firstChild</span><br><span class="line">  &#125;</span><br><span class="line">  return array</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<h4 id="二、读写操作"><a href="#二、读写操作" class="headerlink" title="二、读写操作"></a>二、读写操作</h4><p>读写属性</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;判断参数数量，执行不同的操作</span><br><span class="line">  attr(node, name, value) &#123;</span><br><span class="line">    if (arguments.length &#x3D;&#x3D;&#x3D; 3) &#123;</span><br><span class="line">      node.setAttribute(name, value)</span><br><span class="line">    &#125; else if (arguments.length &#x3D;&#x3D;&#x3D; 2) &#123;</span><br><span class="line">      return node.getAttribute(name)</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure>
+<p>读写文本内容</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">text(node, string) &#123;</span><br><span class="line">  if (arguments.length &#x3D;&#x3D;&#x3D; 2) &#123;</span><br><span class="line">    if (&quot;innerText&quot; in node) &#123;    &#x2F;&#x2F;浏览器兼容</span><br><span class="line">      node.innerText &#x3D; string</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      node.textContent &#x3D; string</span><br><span class="line">    &#125;</span><br><span class="line">  &#125; else if (arguments.length &#x3D;&#x3D;&#x3D; 1) &#123;</span><br><span class="line">    if (&quot;innerText&quot; in node) &#123;</span><br><span class="line">      return node.innerText</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      return node.textContent</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<p>读写 HTML 内容</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">html(node, string) &#123;</span><br><span class="line">  if (arguments.length &#x3D;&#x3D;&#x3D; 2) &#123;</span><br><span class="line">    node.innerHTML &#x3D; string</span><br><span class="line">  &#125; else if (arguments.length &#x3D;&#x3D;&#x3D; 1) &#123;</span><br><span class="line">    return node.innerHTML</span><br><span class="line">  &#125;</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<p>读写 style</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">  style(node, name, value) &#123;</span><br><span class="line">    if (arguments.length &#x3D;&#x3D;&#x3D; 3) &#123;</span><br><span class="line">      node.style[name] &#x3D; value</span><br><span class="line">    &#125; else if (arguments.length &#x3D;&#x3D;&#x3D; 2) &#123;</span><br><span class="line">      if (typeof name &#x3D;&#x3D;&#x3D; &quot;string&quot;) &#123;</span><br><span class="line">        return node.style[name]</span><br><span class="line">      &#125; else if (name instanceof Object) &#123;</span><br><span class="line">        const object &#x3D; name</span><br><span class="line">        for (let key in object) &#123;</span><br><span class="line">          node.style[key] &#x3D; object[key]</span><br><span class="line">        &#125;</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">&#x2F;&#x2F;用法</span><br><span class="line">dom.style(node,&quot;color&quot;,&quot;red&quot;)</span><br><span class="line">dom.style(node,&quot;color&quot;)</span><br><span class="line">dom.style(node,&#123;color:&quot;red&quot;&#125;)</span><br></pre></td></tr></table></figure>
+<p>class 增加和删除</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">class: &#123;</span><br><span class="line">    add(node, className) &#123;</span><br><span class="line">      node.classList.add(className)</span><br><span class="line">    &#125;,</span><br><span class="line">    remove(node, className) &#123;</span><br><span class="line">      node.classList.remove(className)</span><br><span class="line">    &#125;,</span><br><span class="line">    has(node, className) &#123;</span><br><span class="line">      return node.classList.contains(className)</span><br><span class="line">    &#125;,</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure>
+<p>添加、移出事件</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">on(node, eventName, fn) &#123;</span><br><span class="line">  node.addEventListener(eventName, fn)</span><br><span class="line">&#125;,</span><br><span class="line">off(node, eventName, fn) &#123;</span><br><span class="line">  node.removeEventListener(eventName, fn)</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<h4 id="三、查找操作"><a href="#三、查找操作" class="headerlink" title="三、查找操作"></a>三、查找操作</h4><p>选择器查找</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">find(selector, scope) &#123;</span><br><span class="line">    &#x2F;&#x2F;查找范围 全局或给定范围</span><br><span class="line">   return (scope || document).querySelectorAll(selector)</span><br><span class="line"> &#125;,</span><br></pre></td></tr></table></figure>
+<p>获取父元素/子元素/兄弟元素/上一个元素/下一个元素</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">parent(node) &#123;</span><br><span class="line">  return node.parentNode</span><br><span class="line">&#125;,</span><br><span class="line">children(node) &#123;</span><br><span class="line">  return node.children</span><br><span class="line">&#125;,</span><br><span class="line">sibling(node) &#123;</span><br><span class="line">  &#x2F;&#x2F;获取父元素的子元素排除自己</span><br><span class="line">  return Array.from(node.parentNode.children).filter((n) &#x3D;&gt; n !&#x3D;&#x3D; node)</span><br><span class="line">&#125;,</span><br><span class="line">next(node) &#123;</span><br><span class="line">  let x &#x3D; node.nextSibling</span><br><span class="line">  &#x2F;&#x2F;如果节点type为3 文本，就找下一个</span><br><span class="line">  while (x &amp;&amp; x.nodeType &#x3D;&#x3D;&#x3D; 3) &#123;</span><br><span class="line">    x &#x3D; x.nextSibling</span><br><span class="line">  &#125;</span><br><span class="line">  return x</span><br><span class="line">&#125;,</span><br><span class="line">previous(node) &#123;</span><br><span class="line">  &#x2F;&#x2F;同上</span><br><span class="line">  let x &#x3D; node.previousSibling</span><br><span class="line">  while (x &amp;&amp; x.nodeType &#x3D;&#x3D;&#x3D; 3) &#123;</span><br><span class="line">    x &#x3D; x.previousSibling</span><br><span class="line">  &#125;</span><br><span class="line">  return x</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<p>遍历</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">each(nodes, fn) &#123;</span><br><span class="line">  for (let i &#x3D; 0; i &lt; nodes.length; i++) &#123;</span><br><span class="line">    fn.call(null, nodes[i])</span><br><span class="line">  &#125;</span><br><span class="line">&#125;,</span><br></pre></td></tr></table></figure>
+<p>获取下标</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">index(node) &#123;</span><br><span class="line">    let list &#x3D; dom.children(node.parentNode)</span><br><span class="line">    let i</span><br><span class="line">    for (i &#x3D; 0; i &lt; list.length; i++) &#123;</span><br><span class="line">      if (list[i] &#x3D;&#x3D;&#x3D; node) &#123;</span><br><span class="line">        break</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">    return i</span><br><span class="line">  &#125;,</span><br></pre></td></tr></table></figure>]]></content>
+      <tags>
+        <tag>JavaScript</tag>
+        <tag>DOM</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>四种简单算法</title>
+    <url>/2020/11/07/%E7%AE%97%E6%B3%95%E4%B8%8E%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</url>
+    <content><![CDATA[<h4 id="1、选择排序"><a href="#1、选择排序" class="headerlink" title="1、选择排序"></a>1、选择排序</h4><p>第一次从数据元素中选出最小（或最大）的一个元素，存放在序列的起始位置，然后再从剩余的未排序元素中寻找到最小（大）元素，然后放到已排序的序列的末尾。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;*</span><br><span class="line">选择排序</span><br><span class="line">*&#x2F;</span><br><span class="line">function selectionSort(arr) &#123;</span><br><span class="line">  let len &#x3D; arr.length;</span><br><span class="line">  let minIndex, temp;</span><br><span class="line">  for (let i &#x3D; 0; i &lt; len - 1; i++) &#123;</span><br><span class="line">      minIndex &#x3D; i;</span><br><span class="line">      for (let j &#x3D; i + 1; j &lt; len; j++) &#123;</span><br><span class="line">          if (arr[j] &lt; arr[minIndex]) &#123;     &#x2F;&#x2F; 寻找最小的数</span><br><span class="line">              minIndex &#x3D; j;                 &#x2F;&#x2F; 将最小数的索引保存</span><br><span class="line">          &#125;</span><br><span class="line">      &#125;</span><br><span class="line">      temp &#x3D; arr[i];</span><br><span class="line">      arr[i] &#x3D; arr[minIndex];</span><br><span class="line">      arr[minIndex] &#x3D; temp;</span><br><span class="line">  &#125;</span><br><span class="line">  return arr;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="2、快速排序"><a href="#2、快速排序" class="headerlink" title="2、快速排序"></a>2、快速排序</h4><ul>
+<li>在数据中找一项作为基准</li>
+<li>比基准数大的放右边，小的放左边 （基准的位置是正确的）</li>
+<li>把左右两边再分别这样划分排序，直到左右两边只有一项</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;*</span><br><span class="line">快速排序</span><br><span class="line">*&#x2F;</span><br><span class="line">let quickSort &#x3D; (array) &#x3D;&gt; &#123;</span><br><span class="line">  if (array.length &lt;&#x3D; 1) &#123;</span><br><span class="line">    return array</span><br><span class="line">  &#125;</span><br><span class="line">  let pivotIndex &#x3D; Math.floor(array.length &#x2F; 2)</span><br><span class="line">  let pivot &#x3D; array.splice(pivotIndex, 1)[0]</span><br><span class="line">  let left &#x3D; []</span><br><span class="line">  let right &#x3D; []</span><br><span class="line">  for (let i &#x3D; 0; i &lt; array.length; i++) &#123;</span><br><span class="line">    if (array[i] &lt; pivot) &#123;</span><br><span class="line">      left.push(array[i])</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      right.push(array[i])</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  return quickSort(left).concat([pivot], quickSort(right))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="3、归并排序"><a href="#3、归并排序" class="headerlink" title="3、归并排序"></a>3、归并排序</h4><p><img src="https://pic4.zhimg.com/v2-a29c0dd0186d1f8cef3c5ebdedf3e5a3_b.webp"></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;*</span><br><span class="line">归并排序</span><br><span class="line">*&#x2F;</span><br><span class="line">let mergeSort &#x3D; (array) &#x3D;&gt; &#123;</span><br><span class="line">  if (array.length &#x3D;&#x3D;&#x3D; 1) &#123;</span><br><span class="line">    return array</span><br><span class="line">  &#125;</span><br><span class="line">  let left &#x3D; array.slice(0, Math.floor(array.length &#x2F; 2))</span><br><span class="line">  let right &#x3D; array.slice(Math.floor(array.length &#x2F; 2))</span><br><span class="line">  return merge(mergeSort(left), mergeSort(right))</span><br><span class="line">&#125;</span><br><span class="line">let merge &#x3D; (a, b) &#x3D;&gt; &#123;</span><br><span class="line">  if (a.length &#x3D;&#x3D;&#x3D; 0) &#123;</span><br><span class="line">    return b</span><br><span class="line">  &#125;</span><br><span class="line">  if (b.length &#x3D;&#x3D;&#x3D; 0) &#123;</span><br><span class="line">    return a</span><br><span class="line">  &#125;</span><br><span class="line">  return a[0] &gt; b[0]</span><br><span class="line">    ? [b[0]].concat(merge(a, b.slice(1)))</span><br><span class="line">    : [a[0]].concat(merge(a.slice(1), b))</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="4、计数排序"><a href="#4、计数排序" class="headerlink" title="4、计数排序"></a>4、计数排序</h4><ul>
+<li>使用哈希表将数据对应起来，重复次数作为哈希表对应 key 的 value</li>
+<li>遍历哈希表，对于哈希表的每个 key，遍历对应的 value 次</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;*</span><br><span class="line">计数排序</span><br><span class="line">*&#x2F;</span><br><span class="line">let countSort &#x3D; (array) &#x3D;&gt; &#123;</span><br><span class="line">  let hashTable &#x3D; &#123;&#125;,</span><br><span class="line">    max &#x3D; 0,</span><br><span class="line">    result &#x3D; []</span><br><span class="line">  for (let i &#x3D; 0; i &lt; array.length; i++) &#123;</span><br><span class="line">    if (!(array[i] in hashTable)) &#123;</span><br><span class="line">      hashTable[array[i]] &#x3D; 1</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      hashTable[array[i]] +&#x3D; 1</span><br><span class="line">    &#125;</span><br><span class="line">    if (array[i] &gt; max) &#123;</span><br><span class="line">      max &#x3D; array[i]</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  for (let i &#x3D; 0; i &lt;&#x3D; max; i++) &#123;</span><br><span class="line">    if (i in hashTable) &#123;</span><br><span class="line">      for (let j &#x3D; 0; j &lt; hashTable[i]; j++) &#123;</span><br><span class="line">        result.push(i)</span><br><span class="line">      &#125;</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;</span><br><span class="line">  return result</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <tags>
+        <tag>算法</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>虚拟DOM</title>
-    <url>/2021/03/11/%E8%99%9A%E6%8B%9Fdom/</url>
+    <url>/2020/12/14/%E8%99%9A%E6%8B%9Fdom/</url>
     <content><![CDATA[<h2 id="一、虚拟-DOM"><a href="#一、虚拟-DOM" class="headerlink" title="一、虚拟 DOM"></a>一、虚拟 DOM</h2><h4 id="1、虚拟-DOM-是什么？"><a href="#1、虚拟-DOM-是什么？" class="headerlink" title="1、虚拟 DOM 是什么？"></a>1、虚拟 DOM 是什么？</h4><p>一个能代表 DOM 树的对象，通常含有标签名、标签上的属性，事件监听以及其他属性</p>
+<a id="more"></a>
+
 <h4 id="2、虚拟-DOM-的优点"><a href="#2、虚拟-DOM-的优点" class="headerlink" title="2、虚拟 DOM 的优点"></a>2、虚拟 DOM 的优点</h4><ol>
 <li>减少 DOM 操作</li>
 </ol>
@@ -1648,59 +2081,13 @@ export default &#123;
 </ul>
 ]]></content>
       <tags>
-        <tag>框架</tag>
         <tag>React</tag>
+        <tag>框架</tag>
       </tags>
   </entry>
   <entry>
-    <title>闭包和立即执行函数</title>
-    <url>/2021/03/10/%E7%AE%97%E6%B3%95%E4%B8%8E%E6%95%B0%E6%8D%AE%E7%BB%93%E6%9E%84/</url>
-    <content><![CDATA[]]></content>
-      <tags>
-        <tag>闭包</tag>
-        <tag>函数</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>跨域 CORS和JSON</title>
-    <url>/2021/03/09/%E8%B7%A8%E5%9F%9F%20CORS%E5%92%8CJSONP/</url>
-    <content><![CDATA[<h4 id="一、同源策略"><a href="#一、同源策略" class="headerlink" title="一、同源策略"></a>一、同源策略</h4><ol>
-<li>同源定义：</li>
-</ol>
-<ul>
-<li>源： window.Origin 或 location.origin 可以得到当前源</li>
-<li>源=协议+域名+端口号</li>
-<li>如果两个 url 协议、域名、端口号完全一致，那么这两个 url 就是同源的<a id="more"></a>
-</li>
-</ul>
-<ol start="2">
-<li>同源策略：</li>
-</ol>
-<ul>
-<li>浏览器规定：如果 JS 运行在源 A，那么就只能获取源 A 的数据，不允许获取源 B 的数据，即不允许跨源</li>
-<li>目的：保护隐私</li>
-<li>主要原因：无法区分发送者，如果没有同源策略，任何网站都可以访问别的网站数据(检查 referer)</li>
-<li>同源策略：不同源的页面中间，不允许互相访问数据</li>
-</ul>
-<ul>
-<li>同源策略限制访问数据，引用 css、JS 和图片的时候，其实并不知道其内容，只是在引用</li>
-</ul>
-<h4 id="二、跨域"><a href="#二、跨域" class="headerlink" title="二、跨域"></a>二、跨域</h4><p>浏览器有同源策略限制，不允许一个源里的文档访问另一个源里资源。而跨域就是为了解决同源策略限制。</p>
-<ul>
-<li><p>CORS：<br>跨源资源共享，使用附加的 HTTP 头来告诉浏览器，准许运行在一个源上的 Web 应用访问位于另一不同源选定的资源。使用<strong>Access-Control-Allow-Origin</strong>响应头可以指定一个可以访问资源的 URI</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">if (path &#x3D;&#x3D;&#x3D; &quot;&#x2F;friends.json&quot;) &#123;</span><br><span class="line">    response.statusCode &#x3D; 200</span><br><span class="line">    response.setHeader(&quot;Content-Type&quot;, &quot;text&#x2F;json;charset&#x3D;utf-8&quot;)</span><br><span class="line">    response.setHeader(&quot;Access-Control-Allow-Origin&quot;, &quot;http:&#x2F;&#x2F;crystal.com:9999&quot;)</span><br><span class="line">    response.write(fs.readFileSync(&quot;public&#x2F;friends.json&quot;))</span><br><span class="line">    response.end()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>JSONP ：在无法使用 CORS 跨域的情况下，请求 JS 文件，这个 JS 文件会执行一个回调，回调里面包含数据。可以兼容 IE 浏览器实现跨域，但只能发 get 请求，并且无法读取精确的状态码。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">function jsonp(url) &#123;</span><br><span class="line">  return new Promise((resolve, reject) &#x3D;&gt; &#123;</span><br><span class="line">     const random &#x3D; &quot;crystalJSONPCallbackName&quot; + Math.random()</span><br><span class="line">     window[random] &#x3D; (data) &#x3D;&gt; &#123;</span><br><span class="line">       resolve(data)</span><br><span class="line">     &#125;</span><br><span class="line">     const script &#x3D; document.createElement(&quot;script&quot;)</span><br><span class="line">     script.src &#x3D; &#96;$&#123;url&#125;?callback&#x3D;$&#123;random&#125;&#96;</span><br><span class="line">     script.onload &#x3D; () &#x3D;&gt; &#123;  &#x2F;&#x2F;无法获取状态码，只能知道成功或者失败</span><br><span class="line">       script.remove()</span><br><span class="line">     &#125;</span><br><span class="line">     script.onerror &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">       reject()</span><br><span class="line">     &#125;</span><br><span class="line">     document.body.appendChild(script)</span><br><span class="line">   &#125;)</span><br><span class="line"> &#125;</span><br><span class="line"> jsonp(&quot;http:&#x2F;&#x2F;qq.com:8888&#x2F;friends.js&quot;).then((data) &#x3D;&gt; &#123;</span><br><span class="line">   console.log(data)</span><br><span class="line"> &#125;)</span><br><span class="line"> script.onload &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">   console.log(window.xxx)</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">if (path &#x3D;&#x3D;&#x3D; &quot;&#x2F;friends.js&quot;) &#123;</span><br><span class="line">  if (request.headers[&quot;referer&quot;].indexOf(&quot;http:&#x2F;&#x2F;crystal.com:9999&quot;) &#x3D;&#x3D;&#x3D; 0) &#123;</span><br><span class="line">    response.statusCode &#x3D; 200</span><br><span class="line">    response.setHeader(&quot;Content-Type&quot;, &quot;text&#x2F;javascript;charset&#x3D;utf-8&quot;)</span><br><span class="line">    const string &#x3D; &#96;window[&quot;&#123;&#123;xxx&#125;&#125;&quot;](&#123;&#123;data&#125;&#125;)&#96;</span><br><span class="line">    const data &#x3D; fs.readFileSync(&quot;public&#x2F;friends.json&quot;).toString()</span><br><span class="line">    const string2 &#x3D; string</span><br><span class="line">      .replace(&quot;&#123;&#123;data&#125;&#125;&quot;, data)</span><br><span class="line">      .replace(&quot;&#123;&#123;xxx&#125;&#125;&quot;, query.callback)     &#x2F;&#x2F;上面的random</span><br><span class="line">    response.write(string2)</span><br><span class="line">    response.end()</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-]]></content>
-      <tags>
-        <tag>AJAX</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>番茄记账项目总结</title>
-    <url>/2021/03/13/%E8%AE%B0%E8%B4%A6%E9%A1%B9%E7%9B%AEReact%E7%89%88/</url>
+    <title>番茄记账React版</title>
+    <url>/2021/01/06/%E8%AE%B0%E8%B4%A6%E9%A1%B9%E7%9B%AEReact%E7%89%88/</url>
     <content><![CDATA[<h3 id="一、create-react-app"><a href="#一、create-react-app" class="headerlink" title="一、create-react-app"></a>一、create-react-app</h3><ol>
 <li><p>创建项目</p>
 <ul>
@@ -1726,6 +2113,7 @@ export default &#123;
 <li>或者在 package.json 配置，修改 dependencies 配置<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&quot;node-sass&quot;: &quot;npm:dart-sass&quot;, &quot;dart-sass&quot;: &quot;^1.19.0&quot;</span><br></pre></td></tr></table></figure></li>
 <li>npm6.9 新功能 package alias</li>
 </ul>
+<a id="more"></a>
 </li>
 <li><p>绝对引用 <a href="https://create-react-app.dev/docs/importing-a-component/#absolute-imports">Importing a Component</a></p>
 <ul>
@@ -1734,11 +2122,6 @@ export default &#123;
 </ul>
 </li>
 </ol>
-<ul>
-<li><a id="more"></a>
-
-</li>
-</ul>
 <h3 id="二、-styled-components"><a href="#二、-styled-components" class="headerlink" title="二、 styled-components"></a>二、 styled-components</h3><ul>
 <li><p>安装</p>
 <figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">yarn add styled-components</span><br><span class="line">yarn add --dev @types&#x2F;styled-components</span><br></pre></td></tr></table></figure></li>
@@ -1815,13 +2198,13 @@ export default &#123;
 </ul>
 ]]></content>
       <tags>
-        <tag>项目</tag>
         <tag>React</tag>
+        <tag>项目</tag>
       </tags>
   </entry>
   <entry>
     <title>闭包和立即执行函数</title>
-    <url>/2021/03/09/%E9%97%AD%E5%8C%85%E5%92%8C%E7%AB%8B%E5%8D%B3%E6%89%A7%E8%A1%8C%E5%87%BD%E6%95%B0/</url>
+    <url>/2020/12/09/%E9%97%AD%E5%8C%85%E5%92%8C%E7%AB%8B%E5%8D%B3%E6%89%A7%E8%A1%8C%E5%87%BD%E6%95%B0/</url>
     <content><![CDATA[<h3 id="一、闭包"><a href="#一、闭包" class="headerlink" title="一、闭包"></a>一、闭包</h3><h4 id="1、概念"><a href="#1、概念" class="headerlink" title="1、概念"></a>1、概念</h4><pre><code>[MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Closures) 的解释：
 一个函数和对其周围状态（lexical environment，词法环境）的引用捆绑在一起（或者说函数被引用包围），这样的组合就是闭包</code></pre>
 <h4 id="2、作用"><a href="#2、作用" class="headerlink" title="2、作用"></a>2、作用</h4><pre><code>1. 让外部访问函数内部变量成为可能；(隐藏变量)
@@ -1848,6 +2231,43 @@ export default &#123;
       <tags>
         <tag>闭包</tag>
         <tag>函数</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>跨域 CORS和JSON</title>
+    <url>/2020/11/18/%E8%B7%A8%E5%9F%9F%20CORS%E5%92%8CJSONP/</url>
+    <content><![CDATA[<h4 id="一、同源策略"><a href="#一、同源策略" class="headerlink" title="一、同源策略"></a>一、同源策略</h4><ol>
+<li>同源定义：</li>
+</ol>
+<ul>
+<li>源： window.Origin 或 location.origin 可以得到当前源</li>
+<li>源=协议+域名+端口号</li>
+<li>如果两个 url 协议、域名、端口号完全一致，那么这两个 url 就是同源的<a id="more"></a>
+</li>
+</ul>
+<ol start="2">
+<li>同源策略：</li>
+</ol>
+<ul>
+<li>浏览器规定：如果 JS 运行在源 A，那么就只能获取源 A 的数据，不允许获取源 B 的数据，即不允许跨源</li>
+<li>目的：保护隐私</li>
+<li>主要原因：无法区分发送者，如果没有同源策略，任何网站都可以访问别的网站数据(检查 referer)</li>
+<li>同源策略：不同源的页面中间，不允许互相访问数据</li>
+</ul>
+<ul>
+<li>同源策略限制访问数据，引用 css、JS 和图片的时候，其实并不知道其内容，只是在引用</li>
+</ul>
+<h4 id="二、跨域"><a href="#二、跨域" class="headerlink" title="二、跨域"></a>二、跨域</h4><p>浏览器有同源策略限制，不允许一个源里的文档访问另一个源里资源。而跨域就是为了解决同源策略限制。</p>
+<ul>
+<li><p>CORS：<br>跨源资源共享，使用附加的 HTTP 头来告诉浏览器，准许运行在一个源上的 Web 应用访问位于另一不同源选定的资源。使用<strong>Access-Control-Allow-Origin</strong>响应头可以指定一个可以访问资源的 URI</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">if (path &#x3D;&#x3D;&#x3D; &quot;&#x2F;friends.json&quot;) &#123;</span><br><span class="line">    response.statusCode &#x3D; 200</span><br><span class="line">    response.setHeader(&quot;Content-Type&quot;, &quot;text&#x2F;json;charset&#x3D;utf-8&quot;)</span><br><span class="line">    response.setHeader(&quot;Access-Control-Allow-Origin&quot;, &quot;http:&#x2F;&#x2F;crystal.com:9999&quot;)</span><br><span class="line">    response.write(fs.readFileSync(&quot;public&#x2F;friends.json&quot;))</span><br><span class="line">    response.end()</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>JSONP ：在无法使用 CORS 跨域的情况下，请求 JS 文件，这个 JS 文件会执行一个回调，回调里面包含数据。可以兼容 IE 浏览器实现跨域，但只能发 get 请求，并且无法读取精确的状态码。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">function jsonp(url) &#123;</span><br><span class="line">  return new Promise((resolve, reject) &#x3D;&gt; &#123;</span><br><span class="line">     const random &#x3D; &quot;crystalJSONPCallbackName&quot; + Math.random()</span><br><span class="line">     window[random] &#x3D; (data) &#x3D;&gt; &#123;</span><br><span class="line">       resolve(data)</span><br><span class="line">     &#125;</span><br><span class="line">     const script &#x3D; document.createElement(&quot;script&quot;)</span><br><span class="line">     script.src &#x3D; &#96;$&#123;url&#125;?callback&#x3D;$&#123;random&#125;&#96;</span><br><span class="line">     script.onload &#x3D; () &#x3D;&gt; &#123;  &#x2F;&#x2F;无法获取状态码，只能知道成功或者失败</span><br><span class="line">       script.remove()</span><br><span class="line">     &#125;</span><br><span class="line">     script.onerror &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">       reject()</span><br><span class="line">     &#125;</span><br><span class="line">     document.body.appendChild(script)</span><br><span class="line">   &#125;)</span><br><span class="line"> &#125;</span><br><span class="line"> jsonp(&quot;http:&#x2F;&#x2F;qq.com:8888&#x2F;friends.js&quot;).then((data) &#x3D;&gt; &#123;</span><br><span class="line">   console.log(data)</span><br><span class="line"> &#125;)</span><br><span class="line"> script.onload &#x3D; () &#x3D;&gt; &#123;</span><br><span class="line">   console.log(window.xxx)</span><br><span class="line"> &#125;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">if (path &#x3D;&#x3D;&#x3D; &quot;&#x2F;friends.js&quot;) &#123;</span><br><span class="line">  if (request.headers[&quot;referer&quot;].indexOf(&quot;http:&#x2F;&#x2F;crystal.com:9999&quot;) &#x3D;&#x3D;&#x3D; 0) &#123;</span><br><span class="line">    response.statusCode &#x3D; 200</span><br><span class="line">    response.setHeader(&quot;Content-Type&quot;, &quot;text&#x2F;javascript;charset&#x3D;utf-8&quot;)</span><br><span class="line">    const string &#x3D; &#96;window[&quot;&#123;&#123;xxx&#125;&#125;&quot;](&#123;&#123;data&#125;&#125;)&#96;</span><br><span class="line">    const data &#x3D; fs.readFileSync(&quot;public&#x2F;friends.json&quot;).toString()</span><br><span class="line">    const string2 &#x3D; string</span><br><span class="line">      .replace(&quot;&#123;&#123;data&#125;&#125;&quot;, data)</span><br><span class="line">      .replace(&quot;&#123;&#123;xxx&#125;&#125;&quot;, query.callback)     &#x2F;&#x2F;上面的random</span><br><span class="line">    response.write(string2)</span><br><span class="line">    response.end()</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+]]></content>
+      <tags>
+        <tag>AJAX</tag>
       </tags>
   </entry>
 </search>

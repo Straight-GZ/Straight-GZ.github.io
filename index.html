@@ -20,14 +20,14 @@
 
 <script class="hexo-configurations">
     var NexT = window.NexT || {};
-    var CONFIG = {"hostname":"github.com","root":"/","images":"/images","scheme":"Mist","version":"8.2.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"}};
+    var CONFIG = {"hostname":"github.com","root":"/","images":"/images","scheme":"Mist","version":"8.2.1","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12},"copycode":false,"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"motion":{"enable":false,"async":false,"transition":{"post_block":"fadeIn","post_header":"fadeInDown","post_body":"fadeInDown","coll_header":"fadeInLeft","sidebar":"fadeInUp"}},"prism":false,"i18n":{"placeholder":"搜索...","empty":"没有找到任何搜索结果：${query}","hits_time":"找到 ${hits} 个搜索结果（用时 ${time} 毫秒）","hits":"找到 ${hits} 个搜索结果"},"path":"/search.xml","localsearch":{"enable":true,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false}};
   </script>
 <meta property="og:type" content="website">
-<meta property="og:title" content="耿直">
+<meta property="og:title" content="blog">
 <meta property="og:url" content="https://github.com/Straight-GZ/index.html">
-<meta property="og:site_name" content="耿直">
+<meta property="og:site_name" content="blog">
 <meta property="og:locale" content="zh_CN">
-<meta property="article:author" content="GENGZHI">
+<meta property="article:author" content="耿直">
 <meta name="twitter:card" content="summary">
 
 
@@ -43,7 +43,7 @@
     lang   : 'zh-CN'
   };
 </script>
-<title>耿直</title>
+<title>blog</title>
   
 
 
@@ -84,7 +84,7 @@
   </style>
 </noscript>
 
-<link rel="alternate" href="/atom.xml" title="耿直" type="application/atom+xml">
+<link rel="alternate" href="/atom.xml" title="blog" type="application/atom+xml">
 </head>
 
 <body itemscope itemtype="http://schema.org/WebPage">
@@ -105,14 +105,14 @@
 
     <a href="/" class="brand" rel="start">
       <i class="logo-line"></i>
-      <h1 class="site-title">耿直</h1>
+      <h1 class="site-title">blog</h1>
       <i class="logo-line"></i>
     </a>
-      <p class="site-subtitle" itemprop="description">111</p>
   </div>
 
   <div class="site-nav-right">
     <div class="toggle popup-trigger">
+        <i class="fa fa-search fa-fw fa-lg"></i>
     </div>
   </div>
 </div>
@@ -125,11 +125,37 @@
         <li class="menu-item menu-item-tag"><a href="/tags" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a></li>
         <li class="menu-item menu-item-project"><a href="/projects" rel="section"><i class="fa fa-th fa-fw"></i>项目</a></li>
         <li class="menu-item menu-item-archives"><a href="/archives" rel="section"><i class="fas fa-archive fa-fw"></i>归档</a></li>
+      <li class="menu-item menu-item-search">
+        <a role="button" class="popup-trigger"><i class="fa fa-search fa-fw"></i>搜索
+        </a>
+      </li>
   </ul>
 </nav>
 
 
 
+  <div class="search-pop-overlay">
+    <div class="popup search-popup"><div class="search-header">
+  <span class="search-icon">
+    <i class="fa fa-search"></i>
+  </span>
+  <div class="search-input-container">
+    <input autocomplete="off" autocapitalize="off" maxlength="80"
+           placeholder="搜索..." spellcheck="false"
+           type="search" class="search-input">
+  </div>
+  <span class="popup-btn-close" role="button">
+    <i class="fa fa-times-circle"></i>
+  </span>
+</div>
+<div class="search-result-container no-result">
+  <div class="search-result-icon">
+    <i class="fa fa-spinner fa-pulse fa-5x"></i>
+  </div>
+</div>
+
+    </div>
+  </div>
 
 </div>
         
@@ -160,9 +186,9 @@
 
         <div class="site-overview-wrap sidebar-panel">
           <div class="site-author site-overview-item animated" itemprop="author" itemscope itemtype="http://schema.org/Person">
-    <img class="site-author-image" itemprop="image" alt="GENGZHI"
+    <img class="site-author-image" itemprop="image" alt="耿直"
       src="https://sf3-ttcdn-tos.pstatp.com/img/user-avatar/2a6595de8f44b1a5709798149c05b86c~300x300.image">
-  <p class="site-author-name" itemprop="name">GENGZHI</p>
+  <p class="site-author-name" itemprop="name">耿直</p>
   <div class="site-description" itemprop="description"></div>
 </div>
 <div class="site-state-wrap site-overview-item animated">
@@ -170,17 +196,25 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives">
         
-          <span class="site-state-item-count">27</span>
+          <span class="site-state-item-count">34</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
       <div class="site-state-item site-state-tags">
             <a href="/tags/">
-        <span class="site-state-item-count">18</span>
+        <span class="site-state-item-count">23</span>
         <span class="site-state-item-name">标签</span></a>
       </div>
   </nav>
 </div>
+  <div class="links-of-author site-overview-item animated">
+      <span class="links-of-author-item">
+        <a href="https://github.com/Straight-GZ" title="GitHub → https:&#x2F;&#x2F;github.com&#x2F;Straight-GZ"><i class="fab fa-github fa-fw"></i>GitHub</a>
+      </span>
+      <span class="links-of-author-item">
+        <a href="mailto:gengzhi.str@foxmail.com" title="E-Mail → mailto:gengzhi.str@foxmail.com" rel="noopener" target="_blank"><i class="fa fa-envelope fa-fw"></i>E-Mail</a>
+      </span>
+  </div>
 
 
 
@@ -214,20 +248,20 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://github.com/Straight-GZ/2021/03/14/%E7%95%AA%E8%8C%84%E8%AE%B0%E8%B4%A6Vue%E7%89%88/">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Straight-GZ/2021/03/05/TS%E6%B3%9B%E5%9E%8B/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://sf3-ttcdn-tos.pstatp.com/img/user-avatar/2a6595de8f44b1a5709798149c05b86c~300x300.image">
-      <meta itemprop="name" content="GENGZHI">
+      <meta itemprop="name" content="耿直">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="耿直">
+      <meta itemprop="name" content="blog">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/03/14/%E7%95%AA%E8%8C%84%E8%AE%B0%E8%B4%A6Vue%E7%89%88/" class="post-title-link" itemprop="url">番茄记账Vue版</a>
+          <a href="/2021/03/05/TS%E6%B3%9B%E5%9E%8B/" class="post-title-link" itemprop="url">TS的泛型</a>
         </h2>
 
         <div class="post-meta-container">
@@ -238,7 +272,7 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2021-03-14 01:11:58" itemprop="dateCreated datePublished" datetime="2021-03-14T01:11:58+08:00">2021-03-14</time>
+      <time title="创建时间：2021-03-05 16:37:14" itemprop="dateCreated datePublished" datetime="2021-03-05T16:37:14+08:00">2021-03-05</time>
     </span>
 
   
@@ -251,20 +285,12 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h4 id="Vue-组件三种方式（单文件组件）"><a href="#Vue-组件三种方式（单文件组件）" class="headerlink" title="Vue 组件三种方式（单文件组件）"></a>Vue 组件三种方式（单文件组件）</h4><ol>
-<li><p>用 JS 对象</p>
-<p><code>export default &#123;data,props,methods,created,...&#125;</code></p>
-</li>
-<li><p>用 TS 类</p>
-<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> 组件名 <span class="keyword">extends</span> <span class="title">Vue</span> </span>&#123;</span><br><span class="line">  xxx: string = <span class="string">&quot;hi&quot;</span>;</span><br><span class="line">  @prop(<span class="built_in">Number</span>) xxx: number | <span class="literal">undefined</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>用 JS 类 (和 TS 类似)</p>
-<p><code>export default class 组件名 extends Vue&#123;xxx=&#39;hi&#39;&#125;</code></p>
-</li>
-<li><p>vue-property-decorator</p>
-<p>更好的支持 TS</p></li></ol>
+          <h5 id="1、泛型有什么用？"><a href="#1、泛型有什么用？" class="headerlink" title="1、泛型有什么用？"></a>1、泛型有什么用？</h5><p>先看一个函数</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">function fn(x: string): string &#123;</span><br><span class="line">    return x</span><br><span class="line">&#125;</span><br><span class="line">console.log(fn(1)) &#x2F;&#x2F; 1</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>如果这样写，函数 fn 只能接受 string 类型，如果想要传入别的类型，返回别的类型呢？这样需要使用泛型</p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/03/14/%E7%95%AA%E8%8C%84%E8%AE%B0%E8%B4%A6Vue%E7%89%88/#more" rel="contents">
+              <a class="btn" href="/2021/03/05/TS%E6%B3%9B%E5%9E%8B/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -295,20 +321,20 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://github.com/Straight-GZ/2021/03/13/%E8%AE%B0%E8%B4%A6%E9%A1%B9%E7%9B%AEReact%E7%89%88/">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Straight-GZ/2021/03/01/%E5%87%BD%E6%95%B0%E9%98%B2%E6%8A%96%E5%92%8C%E5%87%BD%E6%95%B0%E8%8A%82%E6%B5%81/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://sf3-ttcdn-tos.pstatp.com/img/user-avatar/2a6595de8f44b1a5709798149c05b86c~300x300.image">
-      <meta itemprop="name" content="GENGZHI">
+      <meta itemprop="name" content="耿直">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="耿直">
+      <meta itemprop="name" content="blog">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/03/13/%E8%AE%B0%E8%B4%A6%E9%A1%B9%E7%9B%AEReact%E7%89%88/" class="post-title-link" itemprop="url">番茄记账项目总结</a>
+          <a href="/2021/03/01/%E5%87%BD%E6%95%B0%E9%98%B2%E6%8A%96%E5%92%8C%E5%87%BD%E6%95%B0%E8%8A%82%E6%B5%81/" class="post-title-link" itemprop="url">函数防抖和函数节流</a>
         </h2>
 
         <div class="post-meta-container">
@@ -319,7 +345,372 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2021-03-13 14:23:20" itemprop="dateCreated datePublished" datetime="2021-03-13T14:23:20+08:00">2021-03-13</time>
+      <time title="创建时间：2021-03-01 17:25:27" itemprop="dateCreated datePublished" datetime="2021-03-01T17:25:27+08:00">2021-03-01</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h5 id="1、函数防抖"><a href="#1、函数防抖" class="headerlink" title="1、函数防抖"></a>1、函数防抖</h5><p>在事件被触发 n 秒后，在执行函数，如果 n 秒内被重新触发，则重新计时</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/03/01/%E5%87%BD%E6%95%B0%E9%98%B2%E6%8A%96%E5%92%8C%E5%87%BD%E6%95%B0%E8%8A%82%E6%B5%81/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Straight-GZ/2021/02/20/BFC/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://sf3-ttcdn-tos.pstatp.com/img/user-avatar/2a6595de8f44b1a5709798149c05b86c~300x300.image">
+      <meta itemprop="name" content="耿直">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/02/20/BFC/" class="post-title-link" itemprop="url">BFC是什么？</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-02-20 10:48:53" itemprop="dateCreated datePublished" datetime="2021-02-20T10:48:53+08:00">2021-02-20</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h3 id="1、BFC-概念"><a href="#1、BFC-概念" class="headerlink" title="1、BFC 概念"></a>1、BFC 概念</h3><ul>
+<li>块格式化上下文（Block Formatting Context，BFC），是块盒子的布局过程发生的区域，也是浮动元素与其他元素交互的区域。</li>
+<li>具有 BFC 特性的元素可以看作是隔离了的独立容器，容器里面的元素不会在布局上影响到外面的元素，并且 BFC 具有普通容器所没有的一些特性。</li></ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/02/20/BFC/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Straight-GZ/2021/02/16/Vuex/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://sf3-ttcdn-tos.pstatp.com/img/user-avatar/2a6595de8f44b1a5709798149c05b86c~300x300.image">
+      <meta itemprop="name" content="耿直">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/02/16/Vuex/" class="post-title-link" itemprop="url">Vuex的基本用法</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-02-16 14:54:09" itemprop="dateCreated datePublished" datetime="2021-02-16T14:54:09+08:00">2021-02-16</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h5 id="1、Vuex-是什么？"><a href="#1、Vuex-是什么？" class="headerlink" title="1、Vuex 是什么？"></a>1、Vuex 是什么？</h5><p>一个专为 Vue.js 应用程序开发的状态管理工具</p>
+<h5 id="2、作用"><a href="#2、作用" class="headerlink" title="2、作用"></a>2、作用</h5><ul>
+<li>解耦：将所有数据相关的逻辑放入 store（也就是 MVC 中的 Model，换了个名字而已）</li>
+<li>数据读写更方便：任何组件不管在哪里，都可以直接读写数据</li>
+<li>控制力更强：组件对数据的读写只能使用 store 提供的 API 进行</li></ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/02/16/Vuex/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Straight-GZ/2021/02/10/Vue%20router/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://sf3-ttcdn-tos.pstatp.com/img/user-avatar/2a6595de8f44b1a5709798149c05b86c~300x300.image">
+      <meta itemprop="name" content="耿直">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/02/10/Vue%20router/" class="post-title-link" itemprop="url">Vue Router</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-02-10 16:06:54" itemprop="dateCreated datePublished" datetime="2021-02-10T16:06:54+08:00">2021-02-10</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h5 id="1、Vue-Router"><a href="#1、Vue-Router" class="headerlink" title="1、Vue Router"></a>1、Vue Router</h5><p>Vue.js 官方的路由管理器。路由就是 SPA（single page application 单页应用）的路径管理器，单页面应用的思路是一个 index.html 里面有一个容器，在用户进行交互的时候，并不会重新加载某个界面，而是只选择把某个视图更新到容器中去显示。</p>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/02/10/Vue%20router/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Straight-GZ/2021/01/16/%E5%9B%BE%E5%BA%8A%E9%A1%B9%E7%9B%AE/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://sf3-ttcdn-tos.pstatp.com/img/user-avatar/2a6595de8f44b1a5709798149c05b86c~300x300.image">
+      <meta itemprop="name" content="耿直">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/01/16/%E5%9B%BE%E5%BA%8A%E9%A1%B9%E7%9B%AE/" class="post-title-link" itemprop="url">图床项目</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-01-16 23:06:09" itemprop="dateCreated datePublished" datetime="2021-01-16T23:06:09+08:00">2021-01-16</time>
+    </span>
+
+  
+</div>
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+          <h5 id="1、Suspense-和-lazy"><a href="#1、Suspense-和-lazy" class="headerlink" title="1、Suspense 和 lazy"></a>1、Suspense 和 lazy</h5><ul>
+<li>Suspense</li>
+</ul>
+<p>React 16.6 新增了 <Suspense> 组件，让你可以“等待”目标代码加载，并且可以直接指定一个加载的界面（像是个 spinner），让它在用户等待的时候显示<br><a target="_blank" rel="noopener" href="https://zh-hans.reactjs.org/docs/concurrent-mode-suspense.html#gatsby-focus-wrapper">官方文档</a></Suspense></p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&lt;Suspense fallback &#x3D; &#123;&lt;Loading&#x2F;&gt;&#125;&gt;      &#x2F;&#x2F;等待加载时显示 Loading组件</span><br><span class="line">&lt;&#x2F;Suspense&gt;</span><br></pre></td></tr></table></figure>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2021/01/16/%E5%9B%BE%E5%BA%8A%E9%A1%B9%E7%9B%AE/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+
+    <footer class="post-footer">
+        <div class="post-eof"></div>
+      
+    </footer>
+  </article>
+</div>
+
+
+
+
+    
+
+
+<div class="post-block">
+  
+  
+
+  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Straight-GZ/2021/01/06/%E8%AE%B0%E8%B4%A6%E9%A1%B9%E7%9B%AEReact%E7%89%88/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="https://sf3-ttcdn-tos.pstatp.com/img/user-avatar/2a6595de8f44b1a5709798149c05b86c~300x300.image">
+      <meta itemprop="name" content="耿直">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="blog">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          <a href="/2021/01/06/%E8%AE%B0%E8%B4%A6%E9%A1%B9%E7%9B%AEReact%E7%89%88/" class="post-title-link" itemprop="url">番茄记账React版</a>
+        </h2>
+
+        <div class="post-meta-container">
+          <div class="post-meta">
+    <span class="post-meta-item">
+      <span class="post-meta-item-icon">
+        <i class="far fa-calendar"></i>
+      </span>
+      <span class="post-meta-item-text">发表于</span>
+
+      <time title="创建时间：2021-01-06 14:23:20" itemprop="dateCreated datePublished" datetime="2021-01-06T14:23:20+08:00">2021-01-06</time>
     </span>
 
   
@@ -356,20 +747,10 @@
 <li><code>yarn add node-sass@npm:dart-sass</code>:使用 dart-sass 代替 node-sass <a href="https://github.com/facebook/create-react-app/issues/5282">github</a></li>
 <li>或者在 package.json 配置，修改 dependencies 配置<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">&quot;node-sass&quot;: &quot;npm:dart-sass&quot;, &quot;dart-sass&quot;: &quot;^1.19.0&quot;</span><br></pre></td></tr></table></figure></li>
 <li>npm6.9 新功能 package alias</li>
-</ul>
-</li>
-<li><p>绝对引用 <a target="_blank" rel="noopener" href="https://create-react-app.dev/docs/importing-a-component/#absolute-imports">Importing a Component</a></p>
-<ul>
-<li>配置<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;tsconfig.json</span><br><span class="line">&quot;compilerOptions&quot;: &#123;&quot;baseUrl&quot;: &quot;src&quot;&#125;,</span><br><span class="line">&quot;include&quot;: [&quot;src&quot;]</span><br></pre></td></tr></table></figure></li>
-<li>使用：<code>import Button from &#39;components/Button&#39;;</code></li>
-</ul>
-</li>
-</ol>
-<ul>
-<li></li></ul>
+</ul></li></ol>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/03/13/%E8%AE%B0%E8%B4%A6%E9%A1%B9%E7%9B%AEReact%E7%89%88/#more" rel="contents">
+              <a class="btn" href="/2021/01/06/%E8%AE%B0%E8%B4%A6%E9%A1%B9%E7%9B%AEReact%E7%89%88/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -400,20 +781,20 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://github.com/Straight-GZ/2021/03/12/class/">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Straight-GZ/2020/12/25/%E7%95%AA%E8%8C%84%E8%AE%B0%E8%B4%A6Vue%E7%89%88/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://sf3-ttcdn-tos.pstatp.com/img/user-avatar/2a6595de8f44b1a5709798149c05b86c~300x300.image">
-      <meta itemprop="name" content="GENGZHI">
+      <meta itemprop="name" content="耿直">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="耿直">
+      <meta itemprop="name" content="blog">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/03/12/class/" class="post-title-link" itemprop="url">React 基本用法</a>
+          <a href="/2020/12/25/%E7%95%AA%E8%8C%84%E8%AE%B0%E8%B4%A6Vue%E7%89%88/" class="post-title-link" itemprop="url">番茄记账Vue版</a>
         </h2>
 
         <div class="post-meta-container">
@@ -424,7 +805,7 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2021-03-12 19:19:40" itemprop="dateCreated datePublished" datetime="2021-03-12T19:19:40+08:00">2021-03-12</time>
+      <time title="创建时间：2020-12-25 01:11:58" itemprop="dateCreated datePublished" datetime="2020-12-25T01:11:58+08:00">2020-12-25</time>
     </span>
 
   
@@ -437,167 +818,20 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line">class Person&#123;</span><br><span class="line">  constructor()&#123;</span><br><span class="line">    this.n&#x3D;()&#123;&#125;   &#x2F;&#x2F;方法在对象上</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">class Person&#123;</span><br><span class="line">  n&#x3D;()&#x3D;&gt;&#123;&#125;  &#x2F;&#x2F;new的时候也会出现在对象上</span><br><span class="line">  n()&#123;&#125; &#x2F;&#x2F;new的时候会出现在原型上</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://github.com/Straight-GZ/2021/03/12/React/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://sf3-ttcdn-tos.pstatp.com/img/user-avatar/2a6595de8f44b1a5709798149c05b86c~300x300.image">
-      <meta itemprop="name" content="GENGZHI">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="耿直">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/03/12/React/" class="post-title-link" itemprop="url">React 基本用法</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-03-12 15:30:23" itemprop="dateCreated datePublished" datetime="2021-03-12T15:30:23+08:00">2021-03-12</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h3 id="一、createElement-和-JSX"><a href="#一、createElement-和-JSX" class="headerlink" title="一、createElement 和 JSX"></a>一、createElement 和 JSX</h3><ol>
-<li>createElement</li>
-</ol>
-<p>创建并返回指定类型的新 React 元素。其中的类型参数既可以是标签名字符串（如 ‘div’ 或 ‘span’），也可以是 React 组件 类型 （class 组件或函数组件）,代码编写复杂</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">const element &#x3D; React.createElement(</span><br><span class="line">  &#39;h1&#39;,</span><br><span class="line">  &#123;className: &#39;greeting&#39;&#125;,</span><br><span class="line">  &#39;Hello, world!&#39;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
-<ol start="2">
-<li><p>JSX<br>下面代码会被编译为和上面相同的代码，完全等价</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">const element &#x3D; (</span><br><span class="line">&lt;h1 className&#x3D;&quot;greeting&quot;&gt;</span><br><span class="line">    Hello, world!</span><br><span class="line">&lt;&#x2F;h1&gt;</span><br><span class="line">);</span><br></pre></td></tr></table></figure>
-<p>注意：</p>
-<ul>
-<li>在 JSX 中给元素添加类, 需要使用 className 代替 class</li>
-<li>JSX 中可以直接使用 {} 中间写 JS 代码</li></ul></li></ol>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/03/12/React/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://github.com/Straight-GZ/2021/03/11/Vue3/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://sf3-ttcdn-tos.pstatp.com/img/user-avatar/2a6595de8f44b1a5709798149c05b86c~300x300.image">
-      <meta itemprop="name" content="GENGZHI">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="耿直">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/03/11/Vue3/" class="post-title-link" itemprop="url">Vue3的一些新特性和一些问题</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-03-11 23:18:15" itemprop="dateCreated datePublished" datetime="2021-03-11T23:18:15+08:00">2021-03-11</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <p>1、Vue3 和 Vue2 的一些区别</p>
-<ul>
-<li>创建实例</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; Vue3 新方法 createApp 其作用是构建实例</span><br><span class="line">import &#123; createApp &#125; from &#39;vue&#39;</span><br><span class="line">const app &#x3D; createApp(&#123;&#125;)</span><br><span class="line">&#x2F;&#x2F; Vue2 使用的是 new Vue() 构建实例</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>Vue3 支持碎片(Fragments)，就是说在组件可以拥有多个根节点</p>
+          <h4 id="Vue-组件三种方式（单文件组件）"><a href="#Vue-组件三种方式（单文件组件）" class="headerlink" title="Vue 组件三种方式（单文件组件）"></a>Vue 组件三种方式（单文件组件）</h4><ol>
+<li><p>用 JS 对象</p>
+<p><code>export default &#123;data,props,methods,created,...&#125;</code></p>
 </li>
-<li><p>增<code>v-model</code>代替以前的<code>v-model</code>和<code>.sync</code></p>
+<li><p>用 TS 类</p>
+<figure class="highlight js"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> 组件名 <span class="keyword">extends</span> <span class="title">Vue</span> </span>&#123;</span><br><span class="line">  xxx: string = <span class="string">&quot;hi&quot;</span>;</span><br><span class="line">  @prop(<span class="built_in">Number</span>) xxx: number | <span class="literal">undefined</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>用 JS 类 (和 TS 类似)</p>
+<p><code>export default class 组件名 extends Vue&#123;xxx=&#39;hi&#39;&#125;</code></p>
 </li>
-<li><p>新增<code>context.emit</code>，与<code>this.$event</code>作用相同</p>
-</li>
-<li><p>具名插槽：</p></li></ul>
+<li><p>vue-property-decorator</p>
+<p>更好的支持 TS</p></li></ol>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/03/11/Vue3/#more" rel="contents">
+              <a class="btn" href="/2020/12/25/%E7%95%AA%E8%8C%84%E8%AE%B0%E8%B4%A6Vue%E7%89%88/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -628,20 +862,20 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://github.com/Straight-GZ/2021/03/11/Vue%20router/">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Straight-GZ/2020/12/14/%E8%99%9A%E6%8B%9Fdom/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://sf3-ttcdn-tos.pstatp.com/img/user-avatar/2a6595de8f44b1a5709798149c05b86c~300x300.image">
-      <meta itemprop="name" content="GENGZHI">
+      <meta itemprop="name" content="耿直">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="耿直">
+      <meta itemprop="name" content="blog">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/03/11/Vue%20router/" class="post-title-link" itemprop="url">Vue Router</a>
+          <a href="/2020/12/14/%E8%99%9A%E6%8B%9Fdom/" class="post-title-link" itemprop="url">虚拟DOM</a>
         </h2>
 
         <div class="post-meta-container">
@@ -652,153 +886,7 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2021-03-11 16:06:54" itemprop="dateCreated datePublished" datetime="2021-03-11T16:06:54+08:00">2021-03-11</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h5 id="1、Vue-Router"><a href="#1、Vue-Router" class="headerlink" title="1、Vue Router"></a>1、Vue Router</h5><p>Vue.js 官方的路由管理器。路由就是 SPA（single page application 单页应用）的路径管理器，单页面应用的思路是一个 index.html 里面有一个容器，在用户进行交互的时候，并不会重新加载某个界面，而是只选择把某个视图更新到容器中去显示。</p>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/03/11/Vue%20router/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://github.com/Straight-GZ/2021/03/11/Vuex/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://sf3-ttcdn-tos.pstatp.com/img/user-avatar/2a6595de8f44b1a5709798149c05b86c~300x300.image">
-      <meta itemprop="name" content="GENGZHI">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="耿直">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/03/11/Vuex/" class="post-title-link" itemprop="url">Vuex的基本用法</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-03-11 14:54:09" itemprop="dateCreated datePublished" datetime="2021-03-11T14:54:09+08:00">2021-03-11</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h5 id="1、Vuex-是什么？"><a href="#1、Vuex-是什么？" class="headerlink" title="1、Vuex 是什么？"></a>1、Vuex 是什么？</h5><p>一个专为 Vue.js 应用程序开发的状态管理工具</p>
-<h5 id="2、作用"><a href="#2、作用" class="headerlink" title="2、作用"></a>2、作用</h5><ul>
-<li>解耦：将所有数据相关的逻辑放入 store（也就是 MVC 中的 Model，换了个名字而已）</li>
-<li>数据读写更方便：任何组件不管在哪里，都可以直接读写数据</li>
-<li>控制力更强：组件对数据的读写只能使用 store 提供的 API 进行</li></ul>
-          <!--noindex-->
-            <div class="post-button">
-              <a class="btn" href="/2021/03/11/Vuex/#more" rel="contents">
-                阅读全文 &raquo;
-              </a>
-            </div>
-          <!--/noindex-->
-        
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://github.com/Straight-GZ/2021/03/11/%E8%99%9A%E6%8B%9Fdom/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://sf3-ttcdn-tos.pstatp.com/img/user-avatar/2a6595de8f44b1a5709798149c05b86c~300x300.image">
-      <meta itemprop="name" content="GENGZHI">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="耿直">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/03/11/%E8%99%9A%E6%8B%9Fdom/" class="post-title-link" itemprop="url">虚拟DOM</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-03-11 14:45:01" itemprop="dateCreated datePublished" datetime="2021-03-11T14:45:01+08:00">2021-03-11</time>
+      <time title="创建时间：2020-12-14 14:45:01" itemprop="dateCreated datePublished" datetime="2020-12-14T14:45:01+08:00">2020-12-14</time>
     </span>
 
   
@@ -812,117 +900,9 @@
     
     <div class="post-body" itemprop="articleBody">
           <h2 id="一、虚拟-DOM"><a href="#一、虚拟-DOM" class="headerlink" title="一、虚拟 DOM"></a>一、虚拟 DOM</h2><h4 id="1、虚拟-DOM-是什么？"><a href="#1、虚拟-DOM-是什么？" class="headerlink" title="1、虚拟 DOM 是什么？"></a>1、虚拟 DOM 是什么？</h4><p>一个能代表 DOM 树的对象，通常含有标签名、标签上的属性，事件监听以及其他属性</p>
-<h4 id="2、虚拟-DOM-的优点"><a href="#2、虚拟-DOM-的优点" class="headerlink" title="2、虚拟 DOM 的优点"></a>2、虚拟 DOM 的优点</h4><ol>
-<li>减少 DOM 操作</li>
-</ol>
-<ul>
-<li>虚拟 DOM 可以将多次 DOM 操作合并成一次操作。比如添加 1000 个节点，DOM 是一个一个操作，虚拟 DOM 可以减少 DOM 操作次数</li>
-<li>虚拟 DOM 借助 DOM diff 可以省掉多余操作。比如添加 1000 个节点，只有 10 个是新增的。虚拟 DOM 可以减少操作范围</li>
-</ul>
-<ol start="2">
-<li>跨平台</li>
-</ol>
-<ul>
-<li>虚拟 DOM 是一个对象，不仅可以变成 DOM 还可以变成小程序，ios 应用，本质上是一个 JS 对象</li>
-</ul>
-<h4 id="3、虚拟-DOM-的缺点"><a href="#3、虚拟-DOM-的缺点" class="headerlink" title="3、虚拟 DOM 的缺点"></a>3、虚拟 DOM 的缺点</h4><p>需要额外的创建函数，比如<code>createElement</code>，或<code>h</code>,可以通过 JSX 和 XML 简化，但严重依赖打包工具</p>
-<h2 id="二、DOM-diff"><a href="#二、DOM-diff" class="headerlink" title="二、DOM diff"></a>二、DOM diff</h2><p>DOM diff 是虚拟 DOM 的对比算法</p>
-<h4 id="1、DOM-diff-的优点"><a href="#1、DOM-diff-的优点" class="headerlink" title="1、DOM diff 的优点"></a>1、DOM diff 的优点</h4><ul>
-<li><p>diff 算法会帮助我们计算出虚拟 DOM 中真正变化的部分，并只针对该部分进行实际 DOM 操作，而非重新渲染整个页面，从而保证了每次操作更新后页面的高效渲染。</p>
-</li>
-<li><p>大概逻辑</p>
-<p>Tree diff</p>
-<ul>
-<li>将新旧两棵树逐层对比，找出哪些节点需要更新</li>
-<li>如果节点是组件就看 Component diff</li>
-<li>如果节点是标签就看 Element diff</li>
-</ul>
-<p>Component diff</p>
-<ul>
-<li>如果节点是组件，就先看组件类型</li>
-<li>类型不同直接替换（删除旧的）</li>
-<li>类型相同则只更新属性</li>
-<li>然后深入组件做 Tree diff（递归）</li>
-</ul>
-<p>Element diff</p>
-<ul>
-<li>如果节点是原生标签，则看标签名</li>
-<li>标签名不同直接替换，相同则只更新属性</li>
-<li>然后进入标签后代做 Tree diff（递归）</li>
-</ul>
-</li>
-</ul>
-<h4 id="2、DOM-diff-的问题"><a href="#2、DOM-diff-的问题" class="headerlink" title="2、DOM diff 的问题"></a>2、DOM diff 的问题</h4><ul>
-<li>DOM diff 在同级对比时会出现 bug。由于计算机总是从上到下，从做左到右计算的，在同级别有多个节点，删除前面的节点时，会被 diff 算法认为是修改了前面的节点，删除了后面的节点，这就会导致渲染不符合预期。</li>
-<li>解决方法是，在每一个节点增加一个唯一的 key 属性，用来标识节点。这也是 Vue 和 React 在使用循环时需要添加 key 属性的原因</li>
-</ul>
-
-      
-    </div>
-
-    
-    
-    
-
-    <footer class="post-footer">
-        <div class="post-eof"></div>
-      
-    </footer>
-  </article>
-</div>
-
-
-
-
-    
-
-
-<div class="post-block">
-  
-  
-
-  <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://github.com/Straight-GZ/2021/03/11/Vue%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="image" content="https://sf3-ttcdn-tos.pstatp.com/img/user-avatar/2a6595de8f44b1a5709798149c05b86c~300x300.image">
-      <meta itemprop="name" content="GENGZHI">
-      <meta itemprop="description" content="">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="耿直">
-    </span>
-      <header class="post-header">
-        <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/03/11/Vue%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86/" class="post-title-link" itemprop="url">Vue响应式原理</a>
-        </h2>
-
-        <div class="post-meta-container">
-          <div class="post-meta">
-    <span class="post-meta-item">
-      <span class="post-meta-item-icon">
-        <i class="far fa-calendar"></i>
-      </span>
-      <span class="post-meta-item-text">发表于</span>
-
-      <time title="创建时间：2021-03-11 14:42:50" itemprop="dateCreated datePublished" datetime="2021-03-11T14:42:50+08:00">2021-03-11</time>
-    </span>
-
-  
-</div>
-
-        </div>
-      </header>
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-          <h4 id="一、原理"><a href="#一、原理" class="headerlink" title="一、原理"></a>一、原理</h4><p><strong><code>Vue</code>会遍历<code>data</code>对象的所有<code>property</code>，并使用<code>Object.defineProperty</code>把这些<code>property</code>全部转为<code>getter/setter</code>。通过<code>getter/setter</code>让 Vue 能够追踪依赖，在<code>property</code>被访问和修改时通知变更。</strong></p>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/03/11/Vue%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86/#more" rel="contents">
+              <a class="btn" href="/2020/12/14/%E8%99%9A%E6%8B%9Fdom/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -953,20 +933,20 @@
   
 
   <article itemscope itemtype="http://schema.org/Article" class="post-content" lang="">
-    <link itemprop="mainEntityOfPage" href="https://github.com/Straight-GZ/2021/03/11/webpack/">
+    <link itemprop="mainEntityOfPage" href="https://github.com/Straight-GZ/2020/12/11/Vue3/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="image" content="https://sf3-ttcdn-tos.pstatp.com/img/user-avatar/2a6595de8f44b1a5709798149c05b86c~300x300.image">
-      <meta itemprop="name" content="GENGZHI">
+      <meta itemprop="name" content="耿直">
       <meta itemprop="description" content="">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="耿直">
+      <meta itemprop="name" content="blog">
     </span>
       <header class="post-header">
         <h2 class="post-title" itemprop="name headline">
-          <a href="/2021/03/11/webpack/" class="post-title-link" itemprop="url">Webpack简单配置</a>
+          <a href="/2020/12/11/Vue3/" class="post-title-link" itemprop="url">Vue3的一些新特性和一些问题</a>
         </h2>
 
         <div class="post-meta-container">
@@ -977,7 +957,7 @@
       </span>
       <span class="post-meta-item-text">发表于</span>
 
-      <time title="创建时间：2021-03-11 11:29:07" itemprop="dateCreated datePublished" datetime="2021-03-11T11:29:07+08:00">2021-03-11</time>
+      <time title="创建时间：2020-12-11 23:18:15" itemprop="dateCreated datePublished" datetime="2020-12-11T23:18:15+08:00">2020-12-11</time>
     </span>
 
   
@@ -990,10 +970,21 @@
     
     
     <div class="post-body" itemprop="articleBody">
-          <h4 id="1、简介"><a href="#1、简介" class="headerlink" title="1、简介"></a>1、简介</h4><p>Webpack 是一个模块打包工具(module bundler)，其最主要的功能就是模块打包，模块打包，通俗地说就是：找出模块之间的依赖关系，按照一定的规则把这些模块组织合并为一个 JavaScript 文件。Webpack 认为一切都是模块，JS 文件、CSS 文件、jpg/png 图片等等都是模块。</p>
+          <h4 id="1、Vue3-和-Vue2-的一些区别"><a href="#1、Vue3-和-Vue2-的一些区别" class="headerlink" title="1、Vue3 和 Vue2 的一些区别"></a>1、Vue3 和 Vue2 的一些区别</h4><ul>
+<li>创建实例</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F; Vue3 新方法 createApp 其作用是构建实例</span><br><span class="line">import &#123; createApp &#125; from &#39;vue&#39;</span><br><span class="line">const app &#x3D; createApp(&#123;&#125;)</span><br><span class="line">&#x2F;&#x2F; Vue2 使用的是 new Vue() 构建实例</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>Vue3 支持碎片(Fragments)，就是说在组件可以拥有多个根节点</p>
+</li>
+<li><p>增<code>v-model</code>代替以前的<code>v-model</code>和<code>.sync</code></p>
+</li>
+<li><p>新增<code>context.emit</code>，与<code>this.$event</code>作用相同</p>
+</li>
+<li><p>具名插槽：</p></li></ul>
           <!--noindex-->
             <div class="post-button">
-              <a class="btn" href="/2021/03/11/webpack/#more" rel="contents">
+              <a class="btn" href="/2020/12/11/Vue3/#more" rel="contents">
                 阅读全文 &raquo;
               </a>
             </div>
@@ -1017,7 +1008,7 @@
 
 
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="page-number" href="/page/3/">3</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><span class="space">&hellip;</span><a class="page-number" href="/page/4/">4</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1062,6 +1053,7 @@
 <script src="/js/utils.js"></script><script src="/js/schemes/muse.js"></script><script src="/js/next-boot.js"></script>
 
   
+<script src="/js/local-search.js"></script>
 
 
 
