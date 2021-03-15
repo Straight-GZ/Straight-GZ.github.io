@@ -392,48 +392,6 @@
       </tags>
   </entry>
   <entry>
-    <title>Cookie和Session</title>
-    <url>/2020/11/20/Cookie%E5%92%8CSession/</url>
-    <content><![CDATA[<h3 id="1、Cookie"><a href="#1、Cookie" class="headerlink" title="1、Cookie"></a>1、Cookie</h3><ul>
-<li><p>概述：</p>
-<p>HTTP Cookie（也叫 Web Cookie 或浏览器 Cookie）是服务器发送到用户浏览器并保存在本地的一小块数据，它会在浏览器下次向同一服务器再发起请求时被携带并发送到服务器上。通常，它用于告知服务端两个请求是否来自同一浏览器，如保持用户的登录状态。<br>通俗的说，Cookie 是服务器下发给浏览器的一段字符串<br>浏览器必须保存这个 Cookie(除非用户删除)<br>之后发起相同二级域名请求，浏览器必须附上 Cookie<a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Cookies">MDN</a></p>
-<a id="more"></a>
-</li>
-</ul>
-<ul>
-<li>创建 Cookie<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Set-Cookie: &lt;cookie 名&gt;&#x3D;&lt;cookie 值&gt;</span><br><span class="line">&#x2F;&#x2F;例</span><br><span class="line">response.setHeader(&quot;Set-Cookie&quot;, &#96;session_id&#x3D;$&#123;random&#125;;HttpOnly&#96;);</span><br></pre></td></tr></table></figure>
-<h3 id="2、Session"><a href="#2、Session" class="headerlink" title="2、Session"></a>2、Session</h3></li>
-</ul>
-<p>session 数据放在服务器上,一般由 cookie 保存 session 的 id，保存在 Cookie 里的 session id 是独一无二的随机生成的，服务器通过 Cookie 保存的 session id 获取数据</p>
-<h3 id="3、两者区别"><a href="#3、两者区别" class="headerlink" title="3、两者区别"></a>3、两者区别</h3><ol>
-<li><p>存储位置：cookie 数据存放在客户的浏览器上，session 数据放在服务器上。</p>
-</li>
-<li><p>安全性：cookie 不是很安全，别人可以分析存放在本地的 COOKIE 并进行篡改</p>
-</li>
-<li><p>限制：单个 cookie 保存的数据不能超过 4K，很多浏览器都限制一个站点最多保存 20 个 cookie。</p>
-</li>
-</ol>
-<p>简单实现</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">if (path &#x3D;&#x3D;&#x3D; &quot;&#x2F;sign_in&quot; &amp;&amp; method &#x3D;&#x3D;&#x3D; &quot;POST&quot;) &#123;</span><br><span class="line">  const array &#x3D; [];</span><br><span class="line">  const users &#x3D; JSON.parse(fs.readFileSync(&quot;.&#x2F;db&#x2F;users.json&quot;).toString());</span><br><span class="line">  response.setHeader(&quot;Content-Type&quot;, &quot;text&#x2F;html,charset&#x3D;UTF-8&quot;);</span><br><span class="line">  request.on(&quot;data&quot;, (chunk) &#x3D;&gt; &#123;</span><br><span class="line">    array.push(chunk);</span><br><span class="line">  &#125;);</span><br><span class="line">  request.on(&quot;end&quot;, () &#x3D;&gt; &#123;</span><br><span class="line">    const string &#x3D; Buffer.concat(array).toString();</span><br><span class="line">    const obj &#x3D; JSON.parse(string);</span><br><span class="line">    const user &#x3D; users.find(</span><br><span class="line">      (user) &#x3D;&gt; user.name &#x3D;&#x3D;&#x3D; obj.name &amp;&amp; user.password &#x3D;&#x3D;&#x3D; obj.password</span><br><span class="line">    );</span><br><span class="line">    if (user &#x3D;&#x3D;&#x3D; undefined) &#123;</span><br><span class="line">      response.statusCode &#x3D; 400;</span><br><span class="line">      response.setHeader(&quot;Content-Type&quot;, &quot;text&#x2F;json;charset&#x3D;utf-8&quot;);</span><br><span class="line">      response.end();</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      response.statusCode &#x3D; 200;</span><br><span class="line">      const random &#x3D; Math.random();</span><br><span class="line">      session[random] &#x3D; &#123; user_id: user.id &#125;;</span><br><span class="line">      fs.writeFileSync(&quot;.&#x2F;session.json&quot;, JSON.stringify(session));</span><br><span class="line">      response.setHeader(&quot;Set-Cookie&quot;, &#96;session_id&#x3D;$&#123;random&#125;;HttpOnly&#96;);</span><br><span class="line">      response.end();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125; else if (path &#x3D;&#x3D;&#x3D; &quot;&#x2F;home.html&quot;) &#123;</span><br><span class="line">  const cookie &#x3D; request.headers[&quot;cookie&quot;];</span><br><span class="line">  let sessionId;</span><br><span class="line"></span><br><span class="line">  try &#123;</span><br><span class="line">    sessionId &#x3D; cookie</span><br><span class="line">      .split(&quot;;&quot;)</span><br><span class="line">      .filter((s) &#x3D;&gt; s.indexOf(&quot;session_id&#x3D;&quot;) &gt;&#x3D; 0)[0]</span><br><span class="line">      .split(&quot;&#x3D;&quot;)[1];</span><br><span class="line">    console.log(sessionId);</span><br><span class="line">  &#125; catch (error) &#123;&#125;</span><br><span class="line">  if (sessionId &amp;&amp; session[sessionId]) &#123;</span><br><span class="line">    const userId &#x3D; session[sessionId].user_id;</span><br><span class="line">    console.log(userId);</span><br><span class="line">    const homeHtml &#x3D; fs.readFileSync(&quot;.&#x2F;public&#x2F;home.html&quot;).toString();</span><br><span class="line">    const users &#x3D; JSON.parse(fs.readFileSync(&quot;.&#x2F;db&#x2F;users.json&quot;).toString());</span><br><span class="line">    const user &#x3D; users.find((user) &#x3D;&gt; user.id &#x3D;&#x3D;&#x3D; userId);</span><br><span class="line">    let string;</span><br><span class="line">    if (user) &#123;</span><br><span class="line">      string &#x3D; homeHtml</span><br><span class="line">        .replace(&quot;&#123;&#123;loginStatus&#125;&#125;&quot;, &quot;已登录&quot;)</span><br><span class="line">        .replace(&quot;&#123;&#123;userName&#125;&#125;&quot;, user.name);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      string &#x3D; homeHtml</span><br><span class="line">        .replace(&quot;&#123;&#123;loginStatus&#125;&#125;&quot;, &quot;未登录&quot;)</span><br><span class="line">        .replace(&quot;&#123;&#123;userName&#125;&#125;&quot;, &quot;&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    response.write(string);</span><br><span class="line">    response.end();</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    const homeHtml &#x3D; fs.readFileSync(&quot;.&#x2F;public&#x2F;home.html&quot;).toString();</span><br><span class="line">    const string &#x3D; homeHtml</span><br><span class="line">      .replace(&quot;&#123;&#123;loginStatus&#125;&#125;&quot;, &quot;未登录&quot;)</span><br><span class="line">      .replace(&quot;&#123;&#123;userName&#125;&#125;&quot;, &quot;&quot;);</span><br><span class="line">    response.write(string);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="Cookie-V-S-LocalStorage-V-S-SessionStorage-V-S-Session"><a href="#Cookie-V-S-LocalStorage-V-S-SessionStorage-V-S-Session" class="headerlink" title="Cookie V.S. LocalStorage V.S. SessionStorage V.S. Session"></a>Cookie V.S. LocalStorage V.S. SessionStorage V.S. Session</h4><ul>
-<li><p>Cookie V.S. LocalStorage</p>
-<p>主要区别是 Cookie 会被发送到服务器，而 LocalStorage 不会<br>Cookie 一般最大 4k，LocalStorage 可以用 5Mb 甚至 10Mb（各浏览器不同）</p>
-</li>
-</ul>
-<ul>
-<li><p>LocalStorage V.S. SessionStorage</p>
-<p>LocalStorage 一般不会自动过期（除非用户手动清除），而 SessionStorage 在回话结束时过期（如关闭浏览器）</p>
-</li>
-<li><p>Cookie V.S. Session</p>
-<p>Cookie 存在浏览器的文件里，Session 存在服务器的文件里<br>Session 是基于 Cookie 实现的，具体做法就是把 SessionID 存在 Cookie 里</p>
-</li>
-</ul>
-]]></content>
-      <tags>
-        <tag>HTTP</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Git</title>
     <url>/2020/10/04/Git%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
     <content><![CDATA[<h2 id="1、git-本地仓库"><a href="#1、git-本地仓库" class="headerlink" title="1、git 本地仓库"></a>1、git 本地仓库</h2><p>git 就是一条命令</p>
@@ -489,7 +447,7 @@
 <li>打开 Github，在设置页面粘贴公钥内容</li>
 </ul>
 <h3 id="测试："><a href="#测试：" class="headerlink" title="测试："></a>测试：</h3><ul>
-<li>运行 ssh -T <a href="mailto:&#103;&#x69;&#x74;&#x40;&#103;&#105;&#116;&#x68;&#117;&#x62;&#46;&#99;&#x6f;&#109;">&#103;&#x69;&#x74;&#x40;&#103;&#105;&#116;&#x68;&#117;&#x62;&#46;&#99;&#x6f;&#109;</a></li>
+<li>运行 ssh -T <a href="mailto:&#x67;&#x69;&#x74;&#x40;&#x67;&#105;&#x74;&#104;&#117;&#x62;&#x2e;&#x63;&#111;&#x6d;">&#x67;&#x69;&#x74;&#x40;&#x67;&#105;&#x74;&#104;&#117;&#x62;&#x2e;&#x63;&#111;&#x6d;</a></li>
 <li>询问 yes/no,回答 yes</li>
 </ul>
 <h3 id="上传代码："><a href="#上传代码：" class="headerlink" title="上传代码："></a>上传代码：</h3><ol>
@@ -542,7 +500,7 @@
 <li>打开 Github，在设置页面粘贴公钥内容</li>
 </ul>
 <h3 id="测试：-1"><a href="#测试：-1" class="headerlink" title="测试："></a>测试：</h3><ul>
-<li>运行 ssh -T <a href="mailto:&#x67;&#x69;&#x74;&#x40;&#103;&#x69;&#x74;&#x68;&#117;&#x62;&#46;&#99;&#111;&#x6d;">&#x67;&#x69;&#x74;&#x40;&#103;&#x69;&#x74;&#x68;&#117;&#x62;&#46;&#99;&#111;&#x6d;</a></li>
+<li>运行 ssh -T <a href="mailto:&#x67;&#x69;&#116;&#64;&#x67;&#x69;&#116;&#x68;&#x75;&#x62;&#x2e;&#x63;&#111;&#109;">&#x67;&#x69;&#116;&#64;&#x67;&#x69;&#116;&#x68;&#x75;&#x62;&#x2e;&#x63;&#111;&#109;</a></li>
 <li>询问 yes/no,回答 yes</li>
 </ul>
 <h3 id="上传代码：-1"><a href="#上传代码：-1" class="headerlink" title="上传代码："></a>上传代码：</h3><ol>
@@ -597,50 +555,45 @@
       </tags>
   </entry>
   <entry>
-    <title>JS 对象</title>
-    <url>/2020/11/02/JS%E5%AF%B9%E8%B1%A1/</url>
-    <content><![CDATA[<h3 id="一、常见用法"><a href="#一、常见用法" class="headerlink" title="一、常见用法"></a>一、常见用法</h3><p>变量做属性名</p>
-<p>除了字符串之外，变量也可以做属性名</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">let p1 &#x3D; &#39;name&#39;</span><br><span class="line">let obj &#x3D; &#123; p1 : &#39;ss&#39;&#125; 这样写，属性名为 &#39;p1&#39;</span><br><span class="line">let obj &#x3D; &#123; [p1] : &#39;ss&#39; &#125; 这样写，属性名为 &#39;name&#39;</span><br></pre></td></tr></table></figure>
- <a id="more"></a>
-
-<p>查看属性值</p>
-<ul>
-<li><p>中括号：<code>obj[&#39;key&#39;]</code></p>
-</li>
-<li><p>点语法：<code>obj.key</code></p>
+    <title>Cookie和Session</title>
+    <url>/2020/11/20/Cookie%E5%92%8CSession/</url>
+    <content><![CDATA[<h3 id="1、Cookie"><a href="#1、Cookie" class="headerlink" title="1、Cookie"></a>1、Cookie</h3><ul>
+<li><p>概述：</p>
+<p>HTTP Cookie（也叫 Web Cookie 或浏览器 Cookie）是服务器发送到用户浏览器并保存在本地的一小块数据，它会在浏览器下次向同一服务器再发起请求时被携带并发送到服务器上。通常，它用于告知服务端两个请求是否来自同一浏览器，如保持用户的登录状态。<br>通俗的说，Cookie 是服务器下发给浏览器的一段字符串<br>浏览器必须保存这个 Cookie(除非用户删除)<br>之后发起相同二级域名请求，浏览器必须附上 Cookie<a href="https://developer.mozilla.org/zh-CN/docs/Web/HTTP/Cookies">MDN</a></p>
+<a id="more"></a>
 </li>
 </ul>
-<h3 id="二、常用方法"><a href="#二、常用方法" class="headerlink" title="二、常用方法"></a>二、常用方法</h3><ol>
-<li><p>Object.assign()</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const returnedTarget &#x3D; Object.assign(target, source);</span><br></pre></td></tr></table></figure>
-<p>将所有可枚举属性的值从一个或多个源对象分配到目标对象,回目标对象,目标对象中的属性具有相同的键，则属性将被源对象中的属性覆盖。</p>
+<ul>
+<li>创建 Cookie<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Set-Cookie: &lt;cookie 名&gt;&#x3D;&lt;cookie 值&gt;</span><br><span class="line">&#x2F;&#x2F;例</span><br><span class="line">response.setHeader(&quot;Set-Cookie&quot;, &#96;session_id&#x3D;$&#123;random&#125;;HttpOnly&#96;);</span><br></pre></td></tr></table></figure>
+<h3 id="2、Session"><a href="#2、Session" class="headerlink" title="2、Session"></a>2、Session</h3></li>
+</ul>
+<p>session 数据放在服务器上,一般由 cookie 保存 session 的 id，保存在 Cookie 里的 session id 是独一无二的随机生成的，服务器通过 Cookie 保存的 session id 获取数据</p>
+<h3 id="3、两者区别"><a href="#3、两者区别" class="headerlink" title="3、两者区别"></a>3、两者区别</h3><ol>
+<li><p>存储位置：cookie 数据存放在客户的浏览器上，session 数据放在服务器上。</p>
 </li>
-<li><p>Object.entries()</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const object1 &#x3D; &#123;</span><br><span class="line"> a: &#39;somestring&#39;,</span><br><span class="line"> b: 42</span><br><span class="line">&#125;;</span><br><span class="line">Object.entries(object1)</span><br><span class="line">&#x2F;&#x2F;[[&quot;a&quot;, &quot;somestring&quot;],[&quot;b&quot;, 42]]</span><br></pre></td></tr></table></figure>
-<p>法返回一个给定对象自身可枚举属性的键值对数组</p>
+<li><p>安全性：cookie 不是很安全，别人可以分析存放在本地的 COOKIE 并进行篡改</p>
 </li>
-<li><p>Object.freeze()<br>冻结一个对象。一个被冻结的对象再也不能被修改</p>
-</li>
-<li><p>Object.is()<br>判断两个值是否为同一个值。<br><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/is">MDN</a></p>
-</li>
-<li><p>Object.keys()<br>返回一个由一个给定对象的自身可枚举属性组成的数组</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Object.keys([&#39;a&#39;, &#39;b&#39;, &#39;c&#39;])</span><br><span class="line">&#x2F;&#x2F;[&#39;0&#39;, &#39;1&#39;, &#39;2&#39;]</span><br><span class="line">Object.keys(&#123; 0: &#39;a&#39;, 1: &#39;b&#39;, 2: &#39;c&#39; &#125;)</span><br><span class="line">&#x2F;&#x2F;[&#39;0&#39;, &#39;1&#39;, &#39;2&#39;]</span><br></pre></td></tr></table></figure></li>
-<li><p>Object.values()</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Object.values(&#123; foo: &#39;bar&#39;, baz: 42 &#125;)</span><br><span class="line">&#x2F;&#x2F;[&#39;bar&#39;, 42]</span><br></pre></td></tr></table></figure></li>
-<li><p>Object.create()</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Object.create(&#123;a:1,b:2&#125;);</span><br><span class="line">&#x2F;&#x2F;__proto__:</span><br><span class="line">    a: 1</span><br><span class="line">    b: 2</span><br></pre></td></tr></table></figure>
-<p>创建一个新对象，使用现有的对象来提供新创建的对象的<strong>proto</strong></p>
-</li>
-<li><p>Object.defineProperty()</p>
-<p>直接在一个对象上定义一个新属性，或者修改一个对象的现有属性，并返回此对象。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Object.defineProperty(&#123;&#125;, &#39;a&#39;,&#123;value:1&#125;);  &#x2F;&#x2F;&#123;a:1&#125;</span><br><span class="line">Object.defineProperty(&#123;&#125;, &#39;property1&#39;, &#123;</span><br><span class="line">value: 42,</span><br><span class="line">writable: false   &#x2F;&#x2F;描述符</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
-<p>拥有布尔值的键 configurable、enumerable 和 writable 的默认值都是 false。<br>属性值和函数的键 value、get 和 set 字段的默认值为 undefined。</p>
+<li><p>限制：单个 cookie 保存的数据不能超过 4K，很多浏览器都限制一个站点最多保存 20 个 cookie。</p>
 </li>
 </ol>
+<p>简单实现</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">if (path &#x3D;&#x3D;&#x3D; &quot;&#x2F;sign_in&quot; &amp;&amp; method &#x3D;&#x3D;&#x3D; &quot;POST&quot;) &#123;</span><br><span class="line">  const array &#x3D; [];</span><br><span class="line">  const users &#x3D; JSON.parse(fs.readFileSync(&quot;.&#x2F;db&#x2F;users.json&quot;).toString());</span><br><span class="line">  response.setHeader(&quot;Content-Type&quot;, &quot;text&#x2F;html,charset&#x3D;UTF-8&quot;);</span><br><span class="line">  request.on(&quot;data&quot;, (chunk) &#x3D;&gt; &#123;</span><br><span class="line">    array.push(chunk);</span><br><span class="line">  &#125;);</span><br><span class="line">  request.on(&quot;end&quot;, () &#x3D;&gt; &#123;</span><br><span class="line">    const string &#x3D; Buffer.concat(array).toString();</span><br><span class="line">    const obj &#x3D; JSON.parse(string);</span><br><span class="line">    const user &#x3D; users.find(</span><br><span class="line">      (user) &#x3D;&gt; user.name &#x3D;&#x3D;&#x3D; obj.name &amp;&amp; user.password &#x3D;&#x3D;&#x3D; obj.password</span><br><span class="line">    );</span><br><span class="line">    if (user &#x3D;&#x3D;&#x3D; undefined) &#123;</span><br><span class="line">      response.statusCode &#x3D; 400;</span><br><span class="line">      response.setHeader(&quot;Content-Type&quot;, &quot;text&#x2F;json;charset&#x3D;utf-8&quot;);</span><br><span class="line">      response.end();</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      response.statusCode &#x3D; 200;</span><br><span class="line">      const random &#x3D; Math.random();</span><br><span class="line">      session[random] &#x3D; &#123; user_id: user.id &#125;;</span><br><span class="line">      fs.writeFileSync(&quot;.&#x2F;session.json&quot;, JSON.stringify(session));</span><br><span class="line">      response.setHeader(&quot;Set-Cookie&quot;, &#96;session_id&#x3D;$&#123;random&#125;;HttpOnly&#96;);</span><br><span class="line">      response.end();</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;);</span><br><span class="line">&#125; else if (path &#x3D;&#x3D;&#x3D; &quot;&#x2F;home.html&quot;) &#123;</span><br><span class="line">  const cookie &#x3D; request.headers[&quot;cookie&quot;];</span><br><span class="line">  let sessionId;</span><br><span class="line"></span><br><span class="line">  try &#123;</span><br><span class="line">    sessionId &#x3D; cookie</span><br><span class="line">      .split(&quot;;&quot;)</span><br><span class="line">      .filter((s) &#x3D;&gt; s.indexOf(&quot;session_id&#x3D;&quot;) &gt;&#x3D; 0)[0]</span><br><span class="line">      .split(&quot;&#x3D;&quot;)[1];</span><br><span class="line">    console.log(sessionId);</span><br><span class="line">  &#125; catch (error) &#123;&#125;</span><br><span class="line">  if (sessionId &amp;&amp; session[sessionId]) &#123;</span><br><span class="line">    const userId &#x3D; session[sessionId].user_id;</span><br><span class="line">    console.log(userId);</span><br><span class="line">    const homeHtml &#x3D; fs.readFileSync(&quot;.&#x2F;public&#x2F;home.html&quot;).toString();</span><br><span class="line">    const users &#x3D; JSON.parse(fs.readFileSync(&quot;.&#x2F;db&#x2F;users.json&quot;).toString());</span><br><span class="line">    const user &#x3D; users.find((user) &#x3D;&gt; user.id &#x3D;&#x3D;&#x3D; userId);</span><br><span class="line">    let string;</span><br><span class="line">    if (user) &#123;</span><br><span class="line">      string &#x3D; homeHtml</span><br><span class="line">        .replace(&quot;&#123;&#123;loginStatus&#125;&#125;&quot;, &quot;已登录&quot;)</span><br><span class="line">        .replace(&quot;&#123;&#123;userName&#125;&#125;&quot;, user.name);</span><br><span class="line">    &#125; else &#123;</span><br><span class="line">      string &#x3D; homeHtml</span><br><span class="line">        .replace(&quot;&#123;&#123;loginStatus&#125;&#125;&quot;, &quot;未登录&quot;)</span><br><span class="line">        .replace(&quot;&#123;&#123;userName&#125;&#125;&quot;, &quot;&quot;);</span><br><span class="line">    &#125;</span><br><span class="line">    response.write(string);</span><br><span class="line">    response.end();</span><br><span class="line">  &#125; else &#123;</span><br><span class="line">    const homeHtml &#x3D; fs.readFileSync(&quot;.&#x2F;public&#x2F;home.html&quot;).toString();</span><br><span class="line">    const string &#x3D; homeHtml</span><br><span class="line">      .replace(&quot;&#123;&#123;loginStatus&#125;&#125;&quot;, &quot;未登录&quot;)</span><br><span class="line">      .replace(&quot;&#123;&#123;userName&#125;&#125;&quot;, &quot;&quot;);</span><br><span class="line">    response.write(string);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="Cookie-V-S-LocalStorage-V-S-SessionStorage-V-S-Session"><a href="#Cookie-V-S-LocalStorage-V-S-SessionStorage-V-S-Session" class="headerlink" title="Cookie V.S. LocalStorage V.S. SessionStorage V.S. Session"></a>Cookie V.S. LocalStorage V.S. SessionStorage V.S. Session</h4><ul>
+<li><p>Cookie V.S. LocalStorage</p>
+<p>主要区别是 Cookie 会被发送到服务器，而 LocalStorage 不会<br>Cookie 一般最大 4k，LocalStorage 可以用 5Mb 甚至 10Mb（各浏览器不同）</p>
+</li>
+</ul>
+<ul>
+<li><p>LocalStorage V.S. SessionStorage</p>
+<p>LocalStorage 一般不会自动过期（除非用户手动清除），而 SessionStorage 在回话结束时过期（如关闭浏览器）</p>
+</li>
+<li><p>Cookie V.S. Session</p>
+<p>Cookie 存在浏览器的文件里，Session 存在服务器的文件里<br>Session 是基于 Cookie 实现的，具体做法就是把 SessionID 存在 Cookie 里</p>
+</li>
+</ul>
 ]]></content>
       <tags>
-        <tag>JavaScript</tag>
+        <tag>HTTP</tag>
       </tags>
   </entry>
   <entry>
@@ -834,6 +787,53 @@
       <tags>
         <tag>布局</tag>
         <tag>HTML</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>JS 对象</title>
+    <url>/2020/11/02/JS%E5%AF%B9%E8%B1%A1/</url>
+    <content><![CDATA[<h3 id="一、常见用法"><a href="#一、常见用法" class="headerlink" title="一、常见用法"></a>一、常见用法</h3><p>变量做属性名</p>
+<p>除了字符串之外，变量也可以做属性名</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">let p1 &#x3D; &#39;name&#39;</span><br><span class="line">let obj &#x3D; &#123; p1 : &#39;ss&#39;&#125; 这样写，属性名为 &#39;p1&#39;</span><br><span class="line">let obj &#x3D; &#123; [p1] : &#39;ss&#39; &#125; 这样写，属性名为 &#39;name&#39;</span><br></pre></td></tr></table></figure>
+ <a id="more"></a>
+
+<p>查看属性值</p>
+<ul>
+<li><p>中括号：<code>obj[&#39;key&#39;]</code></p>
+</li>
+<li><p>点语法：<code>obj.key</code></p>
+</li>
+</ul>
+<h3 id="二、常用方法"><a href="#二、常用方法" class="headerlink" title="二、常用方法"></a>二、常用方法</h3><ol>
+<li><p>Object.assign()</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const returnedTarget &#x3D; Object.assign(target, source);</span><br></pre></td></tr></table></figure>
+<p>将所有可枚举属性的值从一个或多个源对象分配到目标对象,回目标对象,目标对象中的属性具有相同的键，则属性将被源对象中的属性覆盖。</p>
+</li>
+<li><p>Object.entries()</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">const object1 &#x3D; &#123;</span><br><span class="line"> a: &#39;somestring&#39;,</span><br><span class="line"> b: 42</span><br><span class="line">&#125;;</span><br><span class="line">Object.entries(object1)</span><br><span class="line">&#x2F;&#x2F;[[&quot;a&quot;, &quot;somestring&quot;],[&quot;b&quot;, 42]]</span><br></pre></td></tr></table></figure>
+<p>法返回一个给定对象自身可枚举属性的键值对数组</p>
+</li>
+<li><p>Object.freeze()<br>冻结一个对象。一个被冻结的对象再也不能被修改</p>
+</li>
+<li><p>Object.is()<br>判断两个值是否为同一个值。<br><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Reference/Global_Objects/Object/is">MDN</a></p>
+</li>
+<li><p>Object.keys()<br>返回一个由一个给定对象的自身可枚举属性组成的数组</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Object.keys([&#39;a&#39;, &#39;b&#39;, &#39;c&#39;])</span><br><span class="line">&#x2F;&#x2F;[&#39;0&#39;, &#39;1&#39;, &#39;2&#39;]</span><br><span class="line">Object.keys(&#123; 0: &#39;a&#39;, 1: &#39;b&#39;, 2: &#39;c&#39; &#125;)</span><br><span class="line">&#x2F;&#x2F;[&#39;0&#39;, &#39;1&#39;, &#39;2&#39;]</span><br></pre></td></tr></table></figure></li>
+<li><p>Object.values()</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Object.values(&#123; foo: &#39;bar&#39;, baz: 42 &#125;)</span><br><span class="line">&#x2F;&#x2F;[&#39;bar&#39;, 42]</span><br></pre></td></tr></table></figure></li>
+<li><p>Object.create()</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Object.create(&#123;a:1,b:2&#125;);</span><br><span class="line">&#x2F;&#x2F;__proto__:</span><br><span class="line">    a: 1</span><br><span class="line">    b: 2</span><br></pre></td></tr></table></figure>
+<p>创建一个新对象，使用现有的对象来提供新创建的对象的<strong>proto</strong></p>
+</li>
+<li><p>Object.defineProperty()</p>
+<p>直接在一个对象上定义一个新属性，或者修改一个对象的现有属性，并返回此对象。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">Object.defineProperty(&#123;&#125;, &#39;a&#39;,&#123;value:1&#125;);  &#x2F;&#x2F;&#123;a:1&#125;</span><br><span class="line">Object.defineProperty(&#123;&#125;, &#39;property1&#39;, &#123;</span><br><span class="line">value: 42,</span><br><span class="line">writable: false   &#x2F;&#x2F;描述符</span><br><span class="line">&#125;);</span><br></pre></td></tr></table></figure>
+<p>拥有布尔值的键 configurable、enumerable 和 writable 的默认值都是 false。<br>属性值和函数的键 value、get 和 set 字段的默认值为 undefined。</p>
+</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>JavaScript</tag>
       </tags>
   </entry>
   <entry>
@@ -1140,6 +1140,133 @@
       </tags>
   </entry>
   <entry>
+    <title>TS的泛型</title>
+    <url>/2021/03/05/TS%E6%B3%9B%E5%9E%8B/</url>
+    <content><![CDATA[<h5 id="1、泛型有什么用？"><a href="#1、泛型有什么用？" class="headerlink" title="1、泛型有什么用？"></a>1、泛型有什么用？</h5><p>先看一个函数</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">function fn(x: string): string &#123;</span><br><span class="line">    return x</span><br><span class="line">&#125;</span><br><span class="line">console.log(fn(1)) &#x2F;&#x2F; 1</span><br><span class="line"></span><br></pre></td></tr></table></figure>
+<p>如果这样写，函数 fn 只能接受 string 类型，如果想要传入别的类型，返回别的类型呢？这样需要使用泛型</p>
+   <a id="more"></a>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">function fn&lt;T&gt;(x:T):T&#123;</span><br><span class="line">    return x</span><br><span class="line">&#125;</span><br><span class="line">console.log(fn(true)) &#x2F;&#x2F; true</span><br><span class="line">console.log(fn(1))   &#x2F;&#x2F; 1</span><br><span class="line">console.log(fn(&#39;1&#39;)) &#x2F;&#x2F; &#39;1&#39;</span><br><span class="line">console.log(fn([1, 2, 3])) &#x2F;&#x2F; [1, 2, 3]</span><br></pre></td></tr></table></figure>
+<p>T 帮助我们捕获用户传入的类型（比如：number），我们就可以使用这个类型,之后我们再次使用了 T 当做返回值类型。这个函数 fn 就叫做泛型</p>
+<ul>
+<li><p>使用</p>
+<ul>
+<li>传入参数、类型</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">let n &#x3D; identity&lt;string&gt;(&quot;n&quot;);</span><br></pre></td></tr></table></figure>
+<ul>
+<li>类型推论</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">let n &#x3D; identity(&quot;n&quot;);</span><br></pre></td></tr></table></figure>
+<h5 id="2、泛型变量"><a href="#2、泛型变量" class="headerlink" title="2、泛型变量"></a>2、泛型变量</h5></li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">function fn&lt;T&gt;(x: T[]): T[] &#123;</span><br><span class="line">  console.log(x.length);</span><br><span class="line">  return x;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>把泛型变量 T 当做类型的一部分使用，而不是整个类型，增加了灵活性。</p>
+<h5 id="3、泛型接口"><a href="#3、泛型接口" class="headerlink" title="3、泛型接口"></a>3、泛型接口</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">interface Fn&lt;T&gt; &#123;</span><br><span class="line">   (arg: T): T;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function fn&lt;T&gt;(x: T): T &#123;</span><br><span class="line">    return x;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let func: Fn&lt;number&gt; &#x3D; fn;</span><br></pre></td></tr></table></figure>
+<h5 id="4、泛型类"><a href="#4、泛型类" class="headerlink" title="4、泛型类"></a>4、泛型类</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">  class X&lt;T&gt; &#123;</span><br><span class="line">    value: T;</span><br><span class="line">    add: (x: T, y: T) &#x3D;&gt; T;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">let x &#x3D; new X&lt;number&gt;();</span><br><span class="line">x.value &#x3D; 0;</span><br><span class="line">x.add &#x3D; function(x, y) &#123; return x + y; &#125;;</span><br></pre></td></tr></table></figure>
+<p>与接口一样，直接把泛型类型放在类后面，可以帮助我们确认类的所有属性都在使用相同的类型。</p>
+<h5 id="5、泛型约束"><a href="#5、泛型约束" class="headerlink" title="5、泛型约束"></a>5、泛型约束</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">interface Lengthwise &#123;</span><br><span class="line">    length: number;</span><br><span class="line">&#125;</span><br><span class="line">function fn&lt;T extends Lengthwise&gt;(n: T): T &#123;</span><br><span class="line">    console.log(n.length);</span><br><span class="line">    return n;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>现在这个泛型函数被定义了约束，因此它不再是适用于任意类型。</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">fn(1)   &#x2F;&#x2F;error，必须带有length属性</span><br></pre></td></tr></table></figure>]]></content>
+      <tags>
+        <tag>Typescript</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Vue3的一些新特性和一些问题</title>
+    <url>/2020/12/11/Vue3/</url>
+    <content><![CDATA[<h4 id="1、Vue3-和-Vue2-的一些区别"><a href="#1、Vue3-和-Vue2-的一些区别" class="headerlink" title="1、Vue3 和 Vue2 的一些区别"></a>1、Vue3 和 Vue2 的一些区别</h4><ul>
+<li>创建实例</li>
+</ul>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; Vue3 新方法 createApp 其作用是构建实例</span><br><span class="line">import &#123; createApp &#125; from &#39;vue&#39;</span><br><span class="line">const app &#x3D; createApp(&#123;&#125;)</span><br><span class="line">&#x2F;&#x2F; Vue2 使用的是 new Vue() 构建实例</span><br></pre></td></tr></table></figure>
+<ul>
+<li><p>Vue3 支持碎片(Fragments)，就是说在组件可以拥有多个根节点</p>
+</li>
+<li><p>增<code>v-model</code>代替以前的<code>v-model</code>和<code>.sync</code></p>
+</li>
+<li><p>新增<code>context.emit</code>，与<code>this.$event</code>作用相同</p>
+</li>
+<li><p>具名插槽：</p>
+<a id="more"></a>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;template v-slot:content&gt;</span><br><span class="line">  &lt;strong&gt;hi&lt;&#x2F;strong&gt;</span><br><span class="line">  &lt;div&gt;你好&lt;&#x2F;div&gt;</span><br><span class="line">&lt;&#x2F;template&gt;</span><br><span class="line">&lt;template v-slot:title&gt;</span><br><span class="line">  &lt;strong&gt;加粗的标签 &lt;&#x2F;strong&gt;</span><br><span class="line">&lt;&#x2F;template&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&lt;header&gt;</span><br><span class="line">    &lt;slot name&#x3D;&quot;title&quot; &#x2F;&gt;  &#x2F;&#x2F;对应 v-slot:title</span><br><span class="line">    &lt;span @click&#x3D;&quot;close&quot; class&#x3D;&quot;lunzi-dialog-close&quot;&gt;&lt;&#x2F;span&gt;</span><br><span class="line">    &lt;&#x2F;header&gt;</span><br><span class="line">&lt;main&gt;</span><br><span class="line">    &lt;slot name&#x3D;&quot;content&quot; &#x2F;&gt;  &#x2F;&#x2F;对应 v-slot:content</span><br><span class="line">&lt;&#x2F;main&gt;</span><br></pre></td></tr></table></figure>
+<h4 id="2、组合式-api"><a href="#2、组合式-api" class="headerlink" title="2、组合式 api"></a>2、组合式 api</h4></li>
+<li><p>setup 组件选项</p>
+<ul>
+<li><p>在创建组件之前执行，一旦 props 被解析，就作为组合式 API 的入口。接受两个参数 props 和 context</p>
+</li>
+<li><p>props:响应式的，当传入新的 prop 时，它将被更新。</p>
+<p>不能使用 ES6 解构，因为它会消除 prop 的响应性，需要解构 prop，可以通过使用 setup 函数中的 toRefs</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import &#123; toRefs &#125; from &#39;vue&#39;</span><br><span class="line">setup(props) &#123;</span><br><span class="line">const &#123; title &#125; &#x3D; toRefs(props)</span><br><span class="line">    console.log(title.value)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+</ul>
+<ul>
+<li><p>Context:context 是一个普通的 JavaScript 对象，它暴露三个组件的 property</p>
+<pre><code>export default &#123;
+ setup(props, context) &#123;
+      // Attribute (非响应式对象)
+      console.log(context.attrs)
+     // 插槽 (非响应式对象)
+     console.log(context.slots)
+     // 触发事件 (方法)
+     console.log(context.emit)
+ &#125;
+&#125;
+//可以使用es6解构
+export default &#123;
+  setup(props, &#123; attrs, slots, emit &#125;) &#123;
+  ...
+  &#125;
+&#125;</code></pre>
+</li>
+<li><p>执行 setup 时，组件实例尚未被创建，将无法访问组件选项：data、computed、methods</p>
+</li>
+</ul>
+</li>
+</ul>
+<ul>
+<li><p>带 ref 的响应式变量</p>
+<p>接受参数，并将其包裹在一个带有 value property 的对象中返回</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import &#123; ref &#125; from &#39;vue&#39;</span><br><span class="line">const counter &#x3D; ref(0)</span><br><span class="line">console.log(counter) &#x2F;&#x2F; &#123; value: 0 &#125;</span><br><span class="line">console.log(counter.value) &#x2F;&#x2F; 读</span><br><span class="line">counter.value++     &#x2F;&#x2F;写</span><br></pre></td></tr></table></figure></li>
+<li><p>在 setup()中 methods、computed、watch、生命周期函数</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import &#123; computed, ref, onMounted,  watchEffect &#125; from &quot;vue&quot;;</span><br><span class="line">export default &#123;</span><br><span class="line">props: &#123;</span><br><span class="line">  title: String</span><br><span class="line">&#125;,</span><br><span class="line">setup (props, context) &#123;</span><br><span class="line">  const counter &#x3D; ref(0)</span><br><span class="line">  const &#123; user &#125; &#x3D; toRefs(props)</span><br><span class="line">  const add1&#x3D;()&#x3D;&gt;&#123;  &#x2F;&#x2F; context.emit代替this.$emit</span><br><span class="line">    context.emit(&#39;x&#39;,counter.value+1</span><br><span class="line">  &#125;</span><br><span class="line">  const add2 &#x3D; computed(() &#x3D;&gt; &#123;</span><br><span class="line">    return counter.value+2</span><br><span class="line">  &#125;)</span><br><span class="line">  onMounted(add1)</span><br><span class="line">  watch(user, add1)   &#x2F;&#x2F;return 之后才能在模板中使用</span><br><span class="line">  return &#123;counter,add1,add2&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>Teleport:允许我们控制在 DOM 中哪个父节点下呈现 HTML</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;teleport to&#x3D;&quot;body&quot;&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">  &lt;&#x2F;div&gt;</span><br><span class="line">&lt;&#x2F;teleport&gt;  &#x2F;&#x2F;将 div放在body里面</span><br></pre></td></tr></table></figure>
+<h4 id="3、属性绑定"><a href="#3、属性绑定" class="headerlink" title="3、属性绑定"></a>3、属性绑定</h4></li>
+</ul>
+<p>默认所有属性都绑定到根元素</p>
+<p>//<strong>Button.vue</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">    &lt;button&gt;&lt;slot &#x2F;&gt;&lt;&#x2F;button&gt;</span><br><span class="line">  &lt;&#x2F;div&gt;</span><br><span class="line">&lt;&#x2F;template&gt;</span><br></pre></td></tr></table></figure>
+<p>//<strong>ButtonDemo.vue</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;button 内容&lt;&#x2F;div&gt;</span><br><span class="line">  &lt;h1&gt;示例&lt;&#x2F;h1&gt;</span><br><span class="line">  &lt;Button @click&#x3D;&quot;&quot; @focus&#x3D;&quot;&quot;&gt;按钮&lt;&#x2F;Button&gt; &#x2F;&#x2F;Button上所有时间属性</span><br><span class="line">  会绑定到Button组件跟元素上</span><br><span class="line">&lt;&#x2F;template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">import Button from &quot;..&#x2F;lib&#x2F;Button.vue&quot;;</span><br><span class="line">export default &#123;</span><br><span class="line">  components: &#123; Button &#125;,</span><br><span class="line">&#125;;</span><br><span class="line">&lt;&#x2F;script&gt;</span><br></pre></td></tr></table></figure>
+<ul>
+<li>使用<code>inheritAttrs:false</code>可以取消默认绑定</li>
+<li>使用<code>$attrs</code>或者 <code>context.attrs</code> 获取所有属性</li>
+<li>使用 <code>v-bind=&#39;$attrs&#39;</code>批量绑定属性</li>
+<li>使用<code>const &#123;size,onclick,...xxx&#125;=context.attrs</code>将属性分开</li>
+</ul>
+<p>props 和 attrs 的区别</p>
+<ul>
+<li>props 要先声明才能取值，attrs 不需要</li>
+<li>props 不包含事件，attrs 包含</li>
+<li>props 没有声明的属性，会跑到 attrs 里</li>
+<li>props 支持 String 之外的类型，attrs 只支持 String 类型</li>
+</ul>
+<h4 id="4、context-slots-default"><a href="#4、context-slots-default" class="headerlink" title="4、context.slots.default()"></a>4、context.slots.default()</h4><p><strong>检查组件内部标签类型</strong></p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">setup(props, context) &#123;</span><br><span class="line">  const defaults &#x3D; context.slots.default();</span><br><span class="line">  defaults.forEach((tag) &#x3D;&gt; &#123;</span><br><span class="line">     if (tag.type !&#x3D;&#x3D; Tab) &#123;</span><br><span class="line">       throw new Error(&quot;Tabs子标签必须是Tab标签);</span><br><span class="line">     &#125;</span><br><span class="line">  &#125;)&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="5、Vue3-支持-TS-和-markdown"><a href="#5、Vue3-支持-TS-和-markdown" class="headerlink" title="5、Vue3 支持 TS 和 markdown"></a>5、Vue3 支持 TS 和 markdown</h4><p>支持 TS</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;shims.vue.d.ts</span><br><span class="line">declare module &quot;*.vue&quot; &#123;</span><br><span class="line">import &#123; ComponentOptions &#125; from &quot;vue&quot;;</span><br><span class="line">const componentOptions: ComponentOptions;</span><br><span class="line">export default componentOptions;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>支持 markdown</p>
+<p>//shims.vue.d.ts</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">declare module &quot;*.md&quot; &#123;</span><br><span class="line">  const str: string;</span><br><span class="line">  export default str;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>plugin/md.ts</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; @ts-nocheck</span><br><span class="line">import path from &quot;path&quot;;</span><br><span class="line">import fs from &quot;fs&quot;;</span><br><span class="line">import marked from &quot;marked&quot;;</span><br><span class="line"></span><br><span class="line">const mdToJs &#x3D; (str) &#x3D;&gt; &#123;</span><br><span class="line">  const content &#x3D; JSON.stringify(marked(str));</span><br><span class="line">  return &#96;export default $&#123;content&#125;&#96;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">export function md() &#123;</span><br><span class="line">  return &#123;</span><br><span class="line">    configureServer: [</span><br><span class="line">      &#x2F;&#x2F; 用于开发</span><br><span class="line">      async (&#123; app &#125;) &#x3D;&gt; &#123;</span><br><span class="line">        app.use(async (ctx, next) &#x3D;&gt; &#123;</span><br><span class="line">          if (ctx.path.endsWith(&quot;.md&quot;)) &#123;</span><br><span class="line">            ctx.type &#x3D; &quot;js&quot;;</span><br><span class="line">            const filePath &#x3D; path.join(process.cwd(), ctx.path);</span><br><span class="line">            ctx.body &#x3D; mdToJs(fs.readFileSync(filePath).toString());</span><br><span class="line">          &#125; else &#123;</span><br><span class="line">            await next();</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">      &#125;,</span><br><span class="line">    ],</span><br><span class="line">    transforms: [</span><br><span class="line">      &#123;</span><br><span class="line">        &#x2F;&#x2F; 用于 rollup</span><br><span class="line">        test: (context) &#x3D;&gt; context.path.endsWith(&quot;.md&quot;),</span><br><span class="line">        transform: (&#123; code &#125;) &#x3D;&gt; mdToJs(code),</span><br><span class="line">      &#125;,</span><br><span class="line">    ],</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <tags>
+        <tag>框架</tag>
+        <tag>Vue</tag>
+      </tags>
+  </entry>
+  <entry>
     <title>URL</title>
     <url>/2020/10/20/URL/</url>
     <content><![CDATA[<p><strong>URL（统一资源定位符 Uniform Resource Locator）</strong></p>
@@ -1254,40 +1381,6 @@ nslookup 命令 `nslookup baidu.com` 得到百度的 IP 地址</li>
       </tags>
   </entry>
   <entry>
-    <title>TS的泛型</title>
-    <url>/2021/03/05/TS%E6%B3%9B%E5%9E%8B/</url>
-    <content><![CDATA[<h5 id="1、泛型有什么用？"><a href="#1、泛型有什么用？" class="headerlink" title="1、泛型有什么用？"></a>1、泛型有什么用？</h5><p>先看一个函数</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">function fn(x: string): string &#123;</span><br><span class="line">    return x</span><br><span class="line">&#125;</span><br><span class="line">console.log(fn(1)) &#x2F;&#x2F; 1</span><br><span class="line"></span><br></pre></td></tr></table></figure>
-<p>如果这样写，函数 fn 只能接受 string 类型，如果想要传入别的类型，返回别的类型呢？这样需要使用泛型</p>
-   <a id="more"></a>
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">function fn&lt;T&gt;(x:T):T&#123;</span><br><span class="line">    return x</span><br><span class="line">&#125;</span><br><span class="line">console.log(fn(true)) &#x2F;&#x2F; true</span><br><span class="line">console.log(fn(1))   &#x2F;&#x2F; 1</span><br><span class="line">console.log(fn(&#39;1&#39;)) &#x2F;&#x2F; &#39;1&#39;</span><br><span class="line">console.log(fn([1, 2, 3])) &#x2F;&#x2F; [1, 2, 3]</span><br></pre></td></tr></table></figure>
-<p>T 帮助我们捕获用户传入的类型（比如：number），我们就可以使用这个类型,之后我们再次使用了 T 当做返回值类型。这个函数 fn 就叫做泛型</p>
-<ul>
-<li><p>使用</p>
-<ul>
-<li>传入参数、类型</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">let n &#x3D; identity&lt;string&gt;(&quot;n&quot;);</span><br></pre></td></tr></table></figure>
-<ul>
-<li>类型推论</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">let n &#x3D; identity(&quot;n&quot;);</span><br></pre></td></tr></table></figure>
-<h5 id="2、泛型变量"><a href="#2、泛型变量" class="headerlink" title="2、泛型变量"></a>2、泛型变量</h5></li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">function fn&lt;T&gt;(x: T[]): T[] &#123;</span><br><span class="line">  console.log(x.length);</span><br><span class="line">  return x;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>把泛型变量 T 当做类型的一部分使用，而不是整个类型，增加了灵活性。</p>
-<h5 id="3、泛型接口"><a href="#3、泛型接口" class="headerlink" title="3、泛型接口"></a>3、泛型接口</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">interface Fn&lt;T&gt; &#123;</span><br><span class="line">   (arg: T): T;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">function fn&lt;T&gt;(x: T): T &#123;</span><br><span class="line">    return x;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">let func: Fn&lt;number&gt; &#x3D; fn;</span><br></pre></td></tr></table></figure>
-<h5 id="4、泛型类"><a href="#4、泛型类" class="headerlink" title="4、泛型类"></a>4、泛型类</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">  class X&lt;T&gt; &#123;</span><br><span class="line">    value: T;</span><br><span class="line">    add: (x: T, y: T) &#x3D;&gt; T;</span><br><span class="line">  &#125;</span><br><span class="line"></span><br><span class="line">let x &#x3D; new X&lt;number&gt;();</span><br><span class="line">x.value &#x3D; 0;</span><br><span class="line">x.add &#x3D; function(x, y) &#123; return x + y; &#125;;</span><br></pre></td></tr></table></figure>
-<p>与接口一样，直接把泛型类型放在类后面，可以帮助我们确认类的所有属性都在使用相同的类型。</p>
-<h5 id="5、泛型约束"><a href="#5、泛型约束" class="headerlink" title="5、泛型约束"></a>5、泛型约束</h5><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">interface Lengthwise &#123;</span><br><span class="line">    length: number;</span><br><span class="line">&#125;</span><br><span class="line">function fn&lt;T extends Lengthwise&gt;(n: T): T &#123;</span><br><span class="line">    console.log(n.length);</span><br><span class="line">    return n;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>现在这个泛型函数被定义了约束，因此它不再是适用于任意类型。</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">fn(1)   &#x2F;&#x2F;error，必须带有length属性</span><br></pre></td></tr></table></figure>]]></content>
-      <tags>
-        <tag>Typescript</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Vue Router</title>
     <url>/2021/02/10/Vue%20router/</url>
     <content><![CDATA[<h5 id="1、Vue-Router"><a href="#1、Vue-Router" class="headerlink" title="1、Vue Router"></a>1、Vue Router</h5><p>Vue.js 官方的路由管理器。路由就是 SPA（single page application 单页应用）的路径管理器，单页面应用的思路是一个 index.html 里面有一个容器，在用户进行交互的时候，并不会重新加载某个界面，而是只选择把某个视图更新到容器中去显示。</p>
@@ -1378,99 +1471,6 @@ nslookup 命令 `nslookup baidu.com` 得到百度的 IP 地址</li>
       </tags>
   </entry>
   <entry>
-    <title>Vue3的一些新特性和一些问题</title>
-    <url>/2020/12/11/Vue3/</url>
-    <content><![CDATA[<h4 id="1、Vue3-和-Vue2-的一些区别"><a href="#1、Vue3-和-Vue2-的一些区别" class="headerlink" title="1、Vue3 和 Vue2 的一些区别"></a>1、Vue3 和 Vue2 的一些区别</h4><ul>
-<li>创建实例</li>
-</ul>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; Vue3 新方法 createApp 其作用是构建实例</span><br><span class="line">import &#123; createApp &#125; from &#39;vue&#39;</span><br><span class="line">const app &#x3D; createApp(&#123;&#125;)</span><br><span class="line">&#x2F;&#x2F; Vue2 使用的是 new Vue() 构建实例</span><br></pre></td></tr></table></figure>
-<ul>
-<li><p>Vue3 支持碎片(Fragments)，就是说在组件可以拥有多个根节点</p>
-</li>
-<li><p>增<code>v-model</code>代替以前的<code>v-model</code>和<code>.sync</code></p>
-</li>
-<li><p>新增<code>context.emit</code>，与<code>this.$event</code>作用相同</p>
-</li>
-<li><p>具名插槽：</p>
-<a id="more"></a>
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;template v-slot:content&gt;</span><br><span class="line">  &lt;strong&gt;hi&lt;&#x2F;strong&gt;</span><br><span class="line">  &lt;div&gt;你好&lt;&#x2F;div&gt;</span><br><span class="line">&lt;&#x2F;template&gt;</span><br><span class="line">&lt;template v-slot:title&gt;</span><br><span class="line">  &lt;strong&gt;加粗的标签 &lt;&#x2F;strong&gt;</span><br><span class="line">&lt;&#x2F;template&gt;</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">&lt;header&gt;</span><br><span class="line">    &lt;slot name&#x3D;&quot;title&quot; &#x2F;&gt;  &#x2F;&#x2F;对应 v-slot:title</span><br><span class="line">    &lt;span @click&#x3D;&quot;close&quot; class&#x3D;&quot;lunzi-dialog-close&quot;&gt;&lt;&#x2F;span&gt;</span><br><span class="line">    &lt;&#x2F;header&gt;</span><br><span class="line">&lt;main&gt;</span><br><span class="line">    &lt;slot name&#x3D;&quot;content&quot; &#x2F;&gt;  &#x2F;&#x2F;对应 v-slot:content</span><br><span class="line">&lt;&#x2F;main&gt;</span><br></pre></td></tr></table></figure>
-<h4 id="2、组合式-api"><a href="#2、组合式-api" class="headerlink" title="2、组合式 api"></a>2、组合式 api</h4></li>
-<li><p>setup 组件选项</p>
-<ul>
-<li><p>在创建组件之前执行，一旦 props 被解析，就作为组合式 API 的入口。接受两个参数 props 和 context</p>
-</li>
-<li><p>props:响应式的，当传入新的 prop 时，它将被更新。</p>
-<p>不能使用 ES6 解构，因为它会消除 prop 的响应性，需要解构 prop，可以通过使用 setup 函数中的 toRefs</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import &#123; toRefs &#125; from &#39;vue&#39;</span><br><span class="line">setup(props) &#123;</span><br><span class="line">const &#123; title &#125; &#x3D; toRefs(props)</span><br><span class="line">    console.log(title.value)</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-</ul>
-<ul>
-<li><p>Context:context 是一个普通的 JavaScript 对象，它暴露三个组件的 property</p>
-<pre><code>export default &#123;
- setup(props, context) &#123;
-      // Attribute (非响应式对象)
-      console.log(context.attrs)
-     // 插槽 (非响应式对象)
-     console.log(context.slots)
-     // 触发事件 (方法)
-     console.log(context.emit)
- &#125;
-&#125;
-//可以使用es6解构
-export default &#123;
-  setup(props, &#123; attrs, slots, emit &#125;) &#123;
-  ...
-  &#125;
-&#125;</code></pre>
-</li>
-<li><p>执行 setup 时，组件实例尚未被创建，将无法访问组件选项：data、computed、methods</p>
-</li>
-</ul>
-</li>
-</ul>
-<ul>
-<li><p>带 ref 的响应式变量</p>
-<p>接受参数，并将其包裹在一个带有 value property 的对象中返回</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import &#123; ref &#125; from &#39;vue&#39;</span><br><span class="line">const counter &#x3D; ref(0)</span><br><span class="line">console.log(counter) &#x2F;&#x2F; &#123; value: 0 &#125;</span><br><span class="line">console.log(counter.value) &#x2F;&#x2F; 读</span><br><span class="line">counter.value++     &#x2F;&#x2F;写</span><br></pre></td></tr></table></figure></li>
-<li><p>在 setup()中 methods、computed、watch、生命周期函数</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import &#123; computed, ref, onMounted,  watchEffect &#125; from &quot;vue&quot;;</span><br><span class="line">export default &#123;</span><br><span class="line">props: &#123;</span><br><span class="line">  title: String</span><br><span class="line">&#125;,</span><br><span class="line">setup (props, context) &#123;</span><br><span class="line">  const counter &#x3D; ref(0)</span><br><span class="line">  const &#123; user &#125; &#x3D; toRefs(props)</span><br><span class="line">  const add1&#x3D;()&#x3D;&gt;&#123;  &#x2F;&#x2F; context.emit代替this.$emit</span><br><span class="line">    context.emit(&#39;x&#39;,counter.value+1</span><br><span class="line">  &#125;</span><br><span class="line">  const add2 &#x3D; computed(() &#x3D;&gt; &#123;</span><br><span class="line">    return counter.value+2</span><br><span class="line">  &#125;)</span><br><span class="line">  onMounted(add1)</span><br><span class="line">  watch(user, add1)   &#x2F;&#x2F;return 之后才能在模板中使用</span><br><span class="line">  return &#123;counter,add1,add2&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>Teleport:允许我们控制在 DOM 中哪个父节点下呈现 HTML</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;teleport to&#x3D;&quot;body&quot;&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">  &lt;&#x2F;div&gt;</span><br><span class="line">&lt;&#x2F;teleport&gt;  &#x2F;&#x2F;将 div放在body里面</span><br></pre></td></tr></table></figure>
-<h4 id="3、属性绑定"><a href="#3、属性绑定" class="headerlink" title="3、属性绑定"></a>3、属性绑定</h4></li>
-</ul>
-<p>默认所有属性都绑定到根元素</p>
-<p>//<strong>Button.vue</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;</span><br><span class="line">    &lt;button&gt;&lt;slot &#x2F;&gt;&lt;&#x2F;button&gt;</span><br><span class="line">  &lt;&#x2F;div&gt;</span><br><span class="line">&lt;&#x2F;template&gt;</span><br></pre></td></tr></table></figure>
-<p>//<strong>ButtonDemo.vue</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;template&gt;</span><br><span class="line">  &lt;div&gt;button 内容&lt;&#x2F;div&gt;</span><br><span class="line">  &lt;h1&gt;示例&lt;&#x2F;h1&gt;</span><br><span class="line">  &lt;Button @click&#x3D;&quot;&quot; @focus&#x3D;&quot;&quot;&gt;按钮&lt;&#x2F;Button&gt; &#x2F;&#x2F;Button上所有时间属性</span><br><span class="line">  会绑定到Button组件跟元素上</span><br><span class="line">&lt;&#x2F;template&gt;</span><br><span class="line">&lt;script&gt;</span><br><span class="line">import Button from &quot;..&#x2F;lib&#x2F;Button.vue&quot;;</span><br><span class="line">export default &#123;</span><br><span class="line">  components: &#123; Button &#125;,</span><br><span class="line">&#125;;</span><br><span class="line">&lt;&#x2F;script&gt;</span><br></pre></td></tr></table></figure>
-<ul>
-<li>使用<code>inheritAttrs:false</code>可以取消默认绑定</li>
-<li>使用<code>$attrs</code>或者 <code>context.attrs</code> 获取所有属性</li>
-<li>使用 <code>v-bind=&#39;$attrs&#39;</code>批量绑定属性</li>
-<li>使用<code>const &#123;size,onclick,...xxx&#125;=context.attrs</code>将属性分开</li>
-</ul>
-<p>props 和 attrs 的区别</p>
-<ul>
-<li>props 要先声明才能取值，attrs 不需要</li>
-<li>props 不包含事件，attrs 包含</li>
-<li>props 没有声明的属性，会跑到 attrs 里</li>
-<li>props 支持 String 之外的类型，attrs 只支持 String 类型</li>
-</ul>
-<h4 id="4、context-slots-default"><a href="#4、context-slots-default" class="headerlink" title="4、context.slots.default()"></a>4、context.slots.default()</h4><p><strong>检查组件内部标签类型</strong></p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">setup(props, context) &#123;</span><br><span class="line">  const defaults &#x3D; context.slots.default();</span><br><span class="line">  defaults.forEach((tag) &#x3D;&gt; &#123;</span><br><span class="line">     if (tag.type !&#x3D;&#x3D; Tab) &#123;</span><br><span class="line">       throw new Error(&quot;Tabs子标签必须是Tab标签);</span><br><span class="line">     &#125;</span><br><span class="line">  &#125;)&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="5、Vue3-支持-TS-和-markdown"><a href="#5、Vue3-支持-TS-和-markdown" class="headerlink" title="5、Vue3 支持 TS 和 markdown"></a>5、Vue3 支持 TS 和 markdown</h4><p>支持 TS</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F;shims.vue.d.ts</span><br><span class="line">declare module &quot;*.vue&quot; &#123;</span><br><span class="line">import &#123; ComponentOptions &#125; from &quot;vue&quot;;</span><br><span class="line">const componentOptions: ComponentOptions;</span><br><span class="line">export default componentOptions;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>支持 markdown</p>
-<p>//shims.vue.d.ts</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">declare module &quot;*.md&quot; &#123;</span><br><span class="line">  const str: string;</span><br><span class="line">  export default str;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<p>plugin/md.ts</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&#x2F;&#x2F; @ts-nocheck</span><br><span class="line">import path from &quot;path&quot;;</span><br><span class="line">import fs from &quot;fs&quot;;</span><br><span class="line">import marked from &quot;marked&quot;;</span><br><span class="line"></span><br><span class="line">const mdToJs &#x3D; (str) &#x3D;&gt; &#123;</span><br><span class="line">  const content &#x3D; JSON.stringify(marked(str));</span><br><span class="line">  return &#96;export default $&#123;content&#125;&#96;;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line">export function md() &#123;</span><br><span class="line">  return &#123;</span><br><span class="line">    configureServer: [</span><br><span class="line">      &#x2F;&#x2F; 用于开发</span><br><span class="line">      async (&#123; app &#125;) &#x3D;&gt; &#123;</span><br><span class="line">        app.use(async (ctx, next) &#x3D;&gt; &#123;</span><br><span class="line">          if (ctx.path.endsWith(&quot;.md&quot;)) &#123;</span><br><span class="line">            ctx.type &#x3D; &quot;js&quot;;</span><br><span class="line">            const filePath &#x3D; path.join(process.cwd(), ctx.path);</span><br><span class="line">            ctx.body &#x3D; mdToJs(fs.readFileSync(filePath).toString());</span><br><span class="line">          &#125; else &#123;</span><br><span class="line">            await next();</span><br><span class="line">          &#125;</span><br><span class="line">        &#125;);</span><br><span class="line">      &#125;,</span><br><span class="line">    ],</span><br><span class="line">    transforms: [</span><br><span class="line">      &#123;</span><br><span class="line">        &#x2F;&#x2F; 用于 rollup</span><br><span class="line">        test: (context) &#x3D;&gt; context.path.endsWith(&quot;.md&quot;),</span><br><span class="line">        transform: (&#123; code &#125;) &#x3D;&gt; mdToJs(code),</span><br><span class="line">      &#125;,</span><br><span class="line">    ],</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <tags>
-        <tag>框架</tag>
-        <tag>Vue</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>Vue响应式原理</title>
     <url>/2020/11/24/Vue%E5%93%8D%E5%BA%94%E5%BC%8F%E5%8E%9F%E7%90%86/</url>
     <content><![CDATA[<h4 id="一、原理"><a href="#一、原理" class="headerlink" title="一、原理"></a>一、原理</h4><p><strong><code>Vue</code>会遍历<code>data</code>对象的所有<code>property</code>，并使用<code>Object.defineProperty</code>把这些<code>property</code>全部转为<code>getter/setter</code>。通过<code>getter/setter</code>让 Vue 能够追踪依赖，在<code>property</code>被访问和修改时通知变更。</strong></p>
@@ -1555,35 +1555,6 @@ export default &#123;
       </tags>
   </entry>
   <entry>
-    <title>Canvas</title>
-    <url>/2020/10/22/canvas/</url>
-    <content><![CDATA[<h2 id="canvas"><a href="#canvas" class="headerlink" title="canvas"></a>canvas</h2><p><code>&lt;canvas&gt;</code>元素可被用来通过 JS 绘制图形动画</p>
- <a id="more"></a>
-
-<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><ol>
-<li><p>canvas 标签 （自带宽高属性）</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;canvas id&#x3D;&#39;canvas&#39; width:&quot;100&quot; height:&quot;100&quot;&gt;&lt;&#x2F;canvas&gt;</span><br></pre></td></tr></table></figure></li>
-<li><p>JS</p>
-<p>创建 canvas 画布</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">let canvas &#x3D; document.getElementById(&#39;canvas&#39;);</span><br><span class="line">let ctx &#x3D; canvas.getContext(&#39;2d&#39;);</span><br></pre></td></tr></table></figure></li>
-<li><p>常用属性</p>
-</li>
-</ol>
-<ul>
-<li><p>绘制矩形:</p>
-<ul>
-<li>填充：fillRect(x,y,width,height)</li>
-<li>边框：strokeRect</li>
-<li>清除指定矩形区域 <code>clearRect(x, y, width, height)</code></li>
-</ul>
-</li>
-</ul>
-]]></content>
-      <tags>
-        <tag>HTML</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>跨域 CORS和JSON</title>
     <url>/2020/11/13/ajax/</url>
     <content><![CDATA[<ol>
@@ -1611,6 +1582,35 @@ export default &#123;
 ]]></content>
       <tags>
         <tag>AJAX</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>Canvas</title>
+    <url>/2020/10/22/canvas/</url>
+    <content><![CDATA[<h2 id="canvas"><a href="#canvas" class="headerlink" title="canvas"></a>canvas</h2><p><code>&lt;canvas&gt;</code>元素可被用来通过 JS 绘制图形动画</p>
+ <a id="more"></a>
+
+<h2 id="使用"><a href="#使用" class="headerlink" title="使用"></a>使用</h2><ol>
+<li><p>canvas 标签 （自带宽高属性）</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;canvas id&#x3D;&#39;canvas&#39; width:&quot;100&quot; height:&quot;100&quot;&gt;&lt;&#x2F;canvas&gt;</span><br></pre></td></tr></table></figure></li>
+<li><p>JS</p>
+<p>创建 canvas 画布</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">let canvas &#x3D; document.getElementById(&#39;canvas&#39;);</span><br><span class="line">let ctx &#x3D; canvas.getContext(&#39;2d&#39;);</span><br></pre></td></tr></table></figure></li>
+<li><p>常用属性</p>
+</li>
+</ol>
+<ul>
+<li><p>绘制矩形:</p>
+<ul>
+<li>填充：fillRect(x,y,width,height)</li>
+<li>边框：strokeRect</li>
+<li>清除指定矩形区域 <code>clearRect(x, y, width, height)</code></li>
+</ul>
+</li>
+</ul>
+]]></content>
+      <tags>
+        <tag>HTML</tag>
       </tags>
   </entry>
   <entry>
@@ -1665,74 +1665,6 @@ export default &#123;
       <tags>
         <tag>DOM</tag>
         <tag>库</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>函数防抖和函数节流</title>
-    <url>/2021/03/01/%E5%87%BD%E6%95%B0%E9%98%B2%E6%8A%96%E5%92%8C%E5%87%BD%E6%95%B0%E8%8A%82%E6%B5%81/</url>
-    <content><![CDATA[<h5 id="1、函数防抖"><a href="#1、函数防抖" class="headerlink" title="1、函数防抖"></a>1、函数防抖</h5><p>在事件被触发 n 秒后，在执行函数，如果 n 秒内被重新触发，则重新计时</p>
-   <a id="more"></a>
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"> const debounce&#x3D;(fn,delay)&#x3D;&gt;&#123;</span><br><span class="line">  let timer&#x3D;null</span><br><span class="line">  return function()&#123;</span><br><span class="line">    let context&#x3D;this  &#x2F;&#x2F;获取debounce执行作用域的this</span><br><span class="line">    &#x2F;&#x2F;如果计时器存在，那么就将计时器取消，新增一个计时器，重新计时</span><br><span class="line">    if(timer)&#123;clearTimeout(timer)&#125;</span><br><span class="line">    timer&#x3D;setTimeout(()&#x3D;&gt;&#123;</span><br><span class="line">      fn.apply(context,arguments)</span><br><span class="line">    &#125;,delay)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">const x&#x3D;x(()&#x3D;&gt;&#123;console.log(&#39;1&#39;)&#125;,1000)</span><br><span class="line">x()</span><br><span class="line">x()   &#x2F;&#x2F;延迟时间内多次执行，函数只会执行一次</span><br></pre></td></tr></table></figure>
-<p><a href="https://codesandbox.io/s/hardcore-bose-kq9gg">代码演示</a></p>
-<h4 id="2、函数节流"><a href="#2、函数节流" class="headerlink" title="2、函数节流"></a>2、函数节流</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">  const throttle &#x3D; (fn, delay) &#x3D;&gt; &#123;</span><br><span class="line">  let timer;</span><br><span class="line">  return function () &#123;</span><br><span class="line">    const context &#x3D; this;</span><br><span class="line">    if (!timer) &#123;</span><br><span class="line">      timer &#x3D; setTimeout(() &#x3D;&gt; &#123;</span><br><span class="line">        timer &#x3D; null;</span><br><span class="line">        fn.apply(context, arguments);</span><br><span class="line">      &#125;, delay);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br><span class="line">const x&#x3D;throttle()</span><br><span class="line">x()</span><br><span class="line">x()</span><br></pre></td></tr></table></figure>
-<p><a href="https://codesandbox.io/s/frosty-fermi-cztc1">代码演示</a></p>
-]]></content>
-      <tags>
-        <tag>JavaScript</tag>
-      </tags>
-  </entry>
-  <entry>
-    <title>常用命令行</title>
-    <url>/2020/10/02/%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
-    <content><![CDATA[ <a id="more"></a>
-
-<h4 id="查："><a href="#查：" class="headerlink" title="查："></a>查：</h4><p>查看目录绝对路径：pwd</p>
-<p>查看当前目录内容：ls</p>
-<p>查看指定目录内容：ls+路径</p>
-<p>查看文件内容：</p>
-<p>cat 路径：全部内容</p>
-<p>head 路径：前面 10 行，head 路径 -n 14（行数）</p>
-<p>tail 路径：后面 10 行，tail 路径 -n 14（行数）</p>
-<p>less 路径：分页查看 j、k</p>
-<h4 id="增："><a href="#增：" class="headerlink" title="增："></a>增：</h4><p>创建文件：</p>
-<ul>
-<li><code>touch</code>： a 创建一个空文件 多个文件空格隔开</li>
-<li><code>echo： echo &#39;hi&#39; &gt; 1.txt</code> （覆盖） “&gt;&gt;”表示添加内容 <code>echo -e &#39;1/n2&#39; &gt;&gt;1.txt</code> 添加多行</li>
-</ul>
-<p>创建目录：</p>
-<ul>
-<li><p><code>mkdir a/</code></p>
-</li>
-<li><p>mkdir <code>-p a/b/c/d/e</code>(多层目录) 多个目录 空格隔开</p>
-</li>
-<li><p>复制文件：<code>cp 1.txt 2.txt</code> 将 1.txt 的内容复制给 2.txt</p>
-</li>
-<li><p>复制目录：<code>cp -r a b</code> 将 a 目录里的内容复制给 b 目录 -r：递归、重现</p>
-</li>
-</ul>
-<h4 id="删："><a href="#删：" class="headerlink" title="删："></a>删：</h4><p><code>rm 1.txt</code> 删除文件</p>
-<p><code>rm -r a</code> 删除目录</p>
-<h4 id="改："><a href="#改：" class="headerlink" title="改："></a>改：</h4><p>追加、修改内容：<code>echo &#39;1&#39;&gt;&gt;1.txt</code></p>
-<p>打开文件修改：<code>code 1.txt start 1.txt</code></p>
-<p>清空内容：<code>echo &quot;&quot;&gt;1.txt</code> 空内容代替文档内容 打开文件删除</p>
-<p>修改文件名/目录：<code>mv 1.txt 2.txt</code>mv：移动</p>
-<p>重命名文件名/目录：同上</p>
-<p>修改文件最后更新时间：<code>touch 1.txt</code></p>
-<h4 id="命令的组合："><a href="#命令的组合：" class="headerlink" title="命令的组合："></a>命令的组合：</h4><p>命令成功：没有提示，返回 0</p>
-<p>命令失败：提示 error，返回非 0</p>
-<p><code>&amp;&amp;</code>命令：当第一条命令成功之后执行下一条命令</p>
-<p><code>;</code>命令：不管第一条命令是否成功，都执行下一条</p>
-<h4 id="脚本文件"><a href="#脚本文件" class="headerlink" title="脚本文件"></a>脚本文件</h4><p>1.创建任意后缀文件</p>
-<ol start="2">
-<li>添加可执行性权限：chmod +x ./文件名</li>
-<li>文件里写命令</li>
-<li><code>sh</code>执行</li>
-<li><code>shebang #!/usr/bin/env</code> sh</li>
-</ol>
-]]></content>
-      <tags>
-        <tag>笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -1819,6 +1751,74 @@ export default &#123;
       <tags>
         <tag>工具</tag>
         <tag>webpack</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>函数防抖和函数节流</title>
+    <url>/2021/03/01/%E5%87%BD%E6%95%B0%E9%98%B2%E6%8A%96%E5%92%8C%E5%87%BD%E6%95%B0%E8%8A%82%E6%B5%81/</url>
+    <content><![CDATA[<h5 id="1、函数防抖"><a href="#1、函数防抖" class="headerlink" title="1、函数防抖"></a>1、函数防抖</h5><p>在事件被触发 n 秒后，在执行函数，如果 n 秒内被重新触发，则重新计时</p>
+   <a id="more"></a>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"> const debounce&#x3D;(fn,delay)&#x3D;&gt;&#123;</span><br><span class="line">  let timer&#x3D;null</span><br><span class="line">  return function()&#123;</span><br><span class="line">    let context&#x3D;this  &#x2F;&#x2F;获取debounce执行作用域的this</span><br><span class="line">    &#x2F;&#x2F;如果计时器存在，那么就将计时器取消，新增一个计时器，重新计时</span><br><span class="line">    if(timer)&#123;clearTimeout(timer)&#125;</span><br><span class="line">    timer&#x3D;setTimeout(()&#x3D;&gt;&#123;</span><br><span class="line">      fn.apply(context,arguments)</span><br><span class="line">    &#125;,delay)</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">const x&#x3D;x(()&#x3D;&gt;&#123;console.log(&#39;1&#39;)&#125;,1000)</span><br><span class="line">x()</span><br><span class="line">x()   &#x2F;&#x2F;延迟时间内多次执行，函数只会执行一次</span><br></pre></td></tr></table></figure>
+<p><a href="https://codesandbox.io/s/hardcore-bose-kq9gg">代码演示</a></p>
+<h4 id="2、函数节流"><a href="#2、函数节流" class="headerlink" title="2、函数节流"></a>2、函数节流</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">  const throttle &#x3D; (fn, delay) &#x3D;&gt; &#123;</span><br><span class="line">  let timer;</span><br><span class="line">  return function () &#123;</span><br><span class="line">    const context &#x3D; this;</span><br><span class="line">    if (!timer) &#123;</span><br><span class="line">      timer &#x3D; setTimeout(() &#x3D;&gt; &#123;</span><br><span class="line">        timer &#x3D; null;</span><br><span class="line">        fn.apply(context, arguments);</span><br><span class="line">      &#125;, delay);</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;;</span><br><span class="line">&#125;;</span><br><span class="line">const x&#x3D;throttle()</span><br><span class="line">x()</span><br><span class="line">x()</span><br></pre></td></tr></table></figure>
+<p><a href="https://codesandbox.io/s/frosty-fermi-cztc1">代码演示</a></p>
+]]></content>
+      <tags>
+        <tag>JavaScript</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>常用命令行</title>
+    <url>/2020/10/02/%E5%91%BD%E4%BB%A4%E8%A1%8C%E5%B8%B8%E7%94%A8%E5%91%BD%E4%BB%A4/</url>
+    <content><![CDATA[ <a id="more"></a>
+
+<h4 id="查："><a href="#查：" class="headerlink" title="查："></a>查：</h4><p>查看目录绝对路径：pwd</p>
+<p>查看当前目录内容：ls</p>
+<p>查看指定目录内容：ls+路径</p>
+<p>查看文件内容：</p>
+<p>cat 路径：全部内容</p>
+<p>head 路径：前面 10 行，head 路径 -n 14（行数）</p>
+<p>tail 路径：后面 10 行，tail 路径 -n 14（行数）</p>
+<p>less 路径：分页查看 j、k</p>
+<h4 id="增："><a href="#增：" class="headerlink" title="增："></a>增：</h4><p>创建文件：</p>
+<ul>
+<li><code>touch</code>： a 创建一个空文件 多个文件空格隔开</li>
+<li><code>echo： echo &#39;hi&#39; &gt; 1.txt</code> （覆盖） “&gt;&gt;”表示添加内容 <code>echo -e &#39;1/n2&#39; &gt;&gt;1.txt</code> 添加多行</li>
+</ul>
+<p>创建目录：</p>
+<ul>
+<li><p><code>mkdir a/</code></p>
+</li>
+<li><p>mkdir <code>-p a/b/c/d/e</code>(多层目录) 多个目录 空格隔开</p>
+</li>
+<li><p>复制文件：<code>cp 1.txt 2.txt</code> 将 1.txt 的内容复制给 2.txt</p>
+</li>
+<li><p>复制目录：<code>cp -r a b</code> 将 a 目录里的内容复制给 b 目录 -r：递归、重现</p>
+</li>
+</ul>
+<h4 id="删："><a href="#删：" class="headerlink" title="删："></a>删：</h4><p><code>rm 1.txt</code> 删除文件</p>
+<p><code>rm -r a</code> 删除目录</p>
+<h4 id="改："><a href="#改：" class="headerlink" title="改："></a>改：</h4><p>追加、修改内容：<code>echo &#39;1&#39;&gt;&gt;1.txt</code></p>
+<p>打开文件修改：<code>code 1.txt start 1.txt</code></p>
+<p>清空内容：<code>echo &quot;&quot;&gt;1.txt</code> 空内容代替文档内容 打开文件删除</p>
+<p>修改文件名/目录：<code>mv 1.txt 2.txt</code>mv：移动</p>
+<p>重命名文件名/目录：同上</p>
+<p>修改文件最后更新时间：<code>touch 1.txt</code></p>
+<h4 id="命令的组合："><a href="#命令的组合：" class="headerlink" title="命令的组合："></a>命令的组合：</h4><p>命令成功：没有提示，返回 0</p>
+<p>命令失败：提示 error，返回非 0</p>
+<p><code>&amp;&amp;</code>命令：当第一条命令成功之后执行下一条命令</p>
+<p><code>;</code>命令：不管第一条命令是否成功，都执行下一条</p>
+<h4 id="脚本文件"><a href="#脚本文件" class="headerlink" title="脚本文件"></a>脚本文件</h4><p>1.创建任意后缀文件</p>
+<ol start="2">
+<li>添加可执行性权限：chmod +x ./文件名</li>
+<li>文件里写命令</li>
+<li><code>sh</code>执行</li>
+<li><code>shebang #!/usr/bin/env</code> sh</li>
+</ol>
+]]></content>
+      <tags>
+        <tag>笔记</tag>
       </tags>
   </entry>
   <entry>
@@ -1910,43 +1910,6 @@ export default &#123;
       </tags>
   </entry>
   <entry>
-    <title>番茄记账Vue版</title>
-    <url>/2020/12/25/%E7%95%AA%E8%8C%84%E8%AE%B0%E8%B4%A6Vue%E7%89%88/</url>
-    <content><![CDATA[<h4 id="Vue-组件三种方式（单文件组件）"><a href="#Vue-组件三种方式（单文件组件）" class="headerlink" title="Vue 组件三种方式（单文件组件）"></a>Vue 组件三种方式（单文件组件）</h4><ol>
-<li><p>用 JS 对象</p>
-<p><code>export default &#123;data,props,methods,created,...&#125;</code></p>
-</li>
-<li><p>用 TS 类</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> 组件名 <span class="keyword">extends</span> <span class="title">Vue</span> </span>&#123;</span><br><span class="line">  xxx: string = <span class="string">&quot;hi&quot;</span>;</span><br><span class="line">  @prop(<span class="built_in">Number</span>) xxx: number | <span class="literal">undefined</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
-<li><p>用 JS 类 (和 TS 类似)</p>
-<p><code>export default class 组件名 extends Vue&#123;xxx=&#39;hi&#39;&#125;</code></p>
-</li>
-<li><p>vue-property-decorator</p>
-<p>更好的支持 TS</p>
-<a id="more"></a>
-
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import Vue from &#39;vue&#39;;</span><br><span class="line">import &#123;Component, Prop&#125; from &#39;vue-property-decorator&#39;;</span><br><span class="line">@Component(&#123;</span><br><span class="line">  components: &#123;Button, FormItem&#125;,</span><br><span class="line">&#125;)</span><br><span class="line">export default class FormItem extends Vue &#123;</span><br><span class="line">  @Prop(&#123;default: &#39;&#39;&#125;) readonly value!: string; &#x2F;&#x2F;prop</span><br><span class="line">  @Prop() options?: EChartsOption;</span><br><span class="line">  ...</span><br><span class="line">  get tags() &#123;    &#x2F;&#x2F;计算属性 computed</span><br><span class="line">    return this.$store.state.tagList;</span><br><span class="line">  &#125;</span><br><span class="line">  ...</span><br><span class="line">  @Watch(&#39;options&#39;)   &#x2F;&#x2F;watch</span><br><span class="line">  onOptionsChange(newValue: EChartsOption) &#123;</span><br><span class="line">    this.chart &amp;&amp; this.chart.setOption(newValue);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
-<h4 id="搜集组件的数据"><a href="#搜集组件的数据" class="headerlink" title="搜集组件的数据"></a>搜集组件的数据</h4></li>
-</ol>
-<p>子组件触发事件,将数据发送到父组件</p>
-<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">this</span>.$emit(<span class="string">&quot;update:value&quot;</span>, <span class="built_in">this</span>.selectedTags);</span><br></pre></td></tr></table></figure>
-<p>默认数据可以是外部传入的 Prop，这样可以使用.sync 语法</p>
-<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Tags</span> <span class="attr">:data-source.sync</span>=<span class="string">&quot;tags&quot;</span> <span class="attr">:value.sync</span>=<span class="string">&quot;record.tags&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure>
-<h4 id="数据迁移"><a href="#数据迁移" class="headerlink" title="数据迁移"></a>数据迁移</h4><h4 id="数据迁移-1"><a href="#数据迁移-1" class="headerlink" title="数据迁移"></a>数据迁移</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//获取当前版本号</span></span><br><span class="line"><span class="keyword">const</span> version = <span class="built_in">window</span>.localStorage.getItem(<span class="string">&quot;version&quot;</span>);</span><br><span class="line"><span class="comment">//获取当前数据</span></span><br><span class="line"><span class="keyword">const</span> recordList: Record[] = <span class="built_in">JSON</span>.parse(</span><br><span class="line">  <span class="built_in">window</span>.localStorage.getItem(recordList)</span><br><span class="line">);</span><br><span class="line"><span class="keyword">if</span> (<span class="string">&quot;version&quot;</span> === <span class="string">&quot;0.0.1&quot;</span>) &#123;</span><br><span class="line">  recordList.forEach(<span class="function">(<span class="params">record</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">//遍历数据</span></span><br><span class="line">    record.createTime = <span class="keyword">new</span> <span class="built_in">Date</span>(<span class="number">2020</span>, <span class="number">0</span>, <span class="number">1</span>); <span class="comment">//将每个数据增加时间</span></span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="comment">//保存数据</span></span><br><span class="line">  <span class="built_in">window</span>.localStorage.setItem(<span class="string">&quot;recordList&quot;</span>, <span class="built_in">JSON</span>.stringfy(recordList));</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="string">&quot;version&quot;</span> === <span class="string">&quot;0.0.2&quot;</span>) &#123;</span><br><span class="line">  <span class="comment">//迁移</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//设置当前版本号</span></span><br><span class="line"><span class="built_in">window</span>.localStorage.setItem(<span class="string">&quot;version&quot;</span>, <span class="string">&quot;0.0.3&quot;</span>);</span><br></pre></td></tr></table></figure>
-<p>迁移数据只需要将版本一个版本一个版本的向上迁移</p>
-<h4 id="定义-TS-类型"><a href="#定义-TS-类型" class="headerlink" title="定义 TS 类型"></a>定义 TS 类型</h4><figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> RecordItem = &#123;</span><br><span class="line">  tags: <span class="built_in">string</span>[];</span><br><span class="line">  <span class="keyword">type</span>: <span class="built_in">string</span>;</span><br><span class="line">  notes: <span class="built_in">string</span>;</span><br><span class="line">  amount: <span class="built_in">string</span>;</span><br><span class="line">  createdTime?: <span class="built_in">Date</span>; <span class="comment">// ?表示有也可能没有</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
-<p>可以将内容放在根目录独立文件中，全局定义，文件名以<code>.d.ts</code>结尾，<code>cunstorm.d.ts</code>,当前文件夹内容都可以使用</p>
-<h4 id="MVC"><a href="#MVC" class="headerlink" title="MVC"></a>MVC</h4><p>Model(模型):管理应用的行为和数据，响应数据请求（经常来自视图）和更新状态的指令</p>
-<p>View(视图):管理作为位图展示到屏幕上的图形和文字输出；</p>
-<p>Controller(控制器)：翻译用户的输入并依照用户的输入操作模型和视图</p>
-<h4 id="Vuex"><a href="#Vuex" class="headerlink" title="Vuex"></a>Vuex</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import Vue from &#39;vue&#39;;</span><br><span class="line">import Vuex from &#39;vuex&#39;;</span><br><span class="line">import clone from &#39;@&#x2F;lib&#x2F;clone&#39;;</span><br><span class="line">import createId from &#39;@&#x2F;lib&#x2F;createId&#39;;</span><br><span class="line"></span><br><span class="line">Vue.use(Vuex);</span><br><span class="line"></span><br><span class="line">const store &#x3D; new Vuex.Store(&#123;</span><br><span class="line">&#x2F;&#x2F;存储数据  使用this.$store.state.recordList获取数据</span><br><span class="line">  state: &#123;</span><br><span class="line">    recordList: [] as RecordItem[],</span><br><span class="line">    createTagMessage: &#39;&#39;,</span><br><span class="line">    tagList: [] as Tag[],</span><br><span class="line">    currentTag: undefined,</span><br><span class="line">  &#125; as RootStore,</span><br><span class="line">&#x2F;&#x2F;对数据的读写  没有返回值  使用this.$store.commit(&#39;fetchTags&#39;,参数)</span><br><span class="line">  mutations: &#123;</span><br><span class="line">    setCurrentTag(state, id: string) &#123;</span><br><span class="line">      state.currentTag &#x3D; state.tagList.filter(d &#x3D;&gt; d.id &#x3D;&#x3D;&#x3D; id)[0];</span><br><span class="line">    &#125;,</span><br><span class="line">    fetchTags(state) &#123;&#125;,</span><br><span class="line">    createTag(state, name: string) &#123;</span><br><span class="line">    &#125;,</span><br><span class="line">    removeTag(state, id: string) &#123;&#125;,</span><br><span class="line">    saveTags(state) &#123;&#125;,</span><br><span class="line">    updateTag(state, object: &#123; id: string; name: string &#125;) &#123;&#125;,</span><br><span class="line">    fetchRecords(state) &#123;&#125;,</span><br><span class="line">    createRecord(state, record: RecordItem) &#123;&#125;,</span><br><span class="line">    saveRecord(state) &#123;</span><br><span class="line">      window.localStorage.setItem(&#39;recordList&#39;, JSON.stringify(state.recordList));</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;);</span><br><span class="line">export default store;</span><br></pre></td></tr></table></figure>
-<h4 id="使用多个-class"><a href="#使用多个-class" class="headerlink" title="使用多个:class"></a>使用多个<code>:class</code></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;li :class&#x3D;&quot;value&#x3D;&#x3D;&#x3D;&#39;-&#39; &amp;&amp; &#39;selected&#39;&#125;&quot;  &#x2F;&#x2F;类名加引号 @click&#x3D;&quot;selectType(&#39;-&#39;)&quot;&gt;支出&lt;&#x2F;li&gt;</span><br><span class="line"></span><br><span class="line">&lt;li :class&#x3D;&quot;&#123;[classPrefix+&#39;-item&#39;]:classPrefix,&#39;selected&#39;:value&#x3D;&#x3D;&#x3D;&#39;-&#39;&#125;&quot; @click&#x3D;&quot;selectType(&#39;-&#39;)&quot;&gt;支出&lt;&#x2F;li&gt;</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">&#x2F;&#x2F;如果存在classPrefix 就存在前面的类名  如果类名存在变量，使用[]</span><br><span class="line">[classPrefix+&#39;-item&#39;]:classPrefix,</span><br><span class="line">&#39;selected&#39;:value&#x3D;&#x3D;&#x3D;&#39;-&#39;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
-      <tags>
-        <tag>Vue</tag>
-        <tag>项目</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>异步与Promise</title>
     <url>/2020/11/16/%E5%BC%82%E6%AD%A5%E5%92%8CPromise/</url>
     <content><![CDATA[<h3 id="一、异步与同步"><a href="#一、异步与同步" class="headerlink" title="一、异步与同步"></a>一、异步与同步</h3><p>同步:一定要当前任务执行完，才会执行下一个任务。</p>
@@ -2005,6 +1968,43 @@ export default &#123;
 ]]></content>
       <tags>
         <tag>JavaScript</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>番茄记账Vue版</title>
+    <url>/2020/12/25/%E7%95%AA%E8%8C%84%E8%AE%B0%E8%B4%A6Vue%E7%89%88/</url>
+    <content><![CDATA[<h4 id="Vue-组件三种方式（单文件组件）"><a href="#Vue-组件三种方式（单文件组件）" class="headerlink" title="Vue 组件三种方式（单文件组件）"></a>Vue 组件三种方式（单文件组件）</h4><ol>
+<li><p>用 JS 对象</p>
+<p><code>export default &#123;data,props,methods,created,...&#125;</code></p>
+</li>
+<li><p>用 TS 类</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="keyword">export</span> <span class="keyword">default</span> <span class="class"><span class="keyword">class</span> 组件名 <span class="keyword">extends</span> <span class="title">Vue</span> </span>&#123;</span><br><span class="line">  xxx: string = <span class="string">&quot;hi&quot;</span>;</span><br><span class="line">  @prop(<span class="built_in">Number</span>) xxx: number | <span class="literal">undefined</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></li>
+<li><p>用 JS 类 (和 TS 类似)</p>
+<p><code>export default class 组件名 extends Vue&#123;xxx=&#39;hi&#39;&#125;</code></p>
+</li>
+<li><p>vue-property-decorator</p>
+<p>更好的支持 TS</p>
+<a id="more"></a>
+
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import Vue from &#39;vue&#39;;</span><br><span class="line">import &#123;Component, Prop&#125; from &#39;vue-property-decorator&#39;;</span><br><span class="line">@Component(&#123;</span><br><span class="line">  components: &#123;Button, FormItem&#125;,</span><br><span class="line">&#125;)</span><br><span class="line">export default class FormItem extends Vue &#123;</span><br><span class="line">  @Prop(&#123;default: &#39;&#39;&#125;) readonly value!: string; &#x2F;&#x2F;prop</span><br><span class="line">  @Prop() options?: EChartsOption;</span><br><span class="line">  ...</span><br><span class="line">  get tags() &#123;    &#x2F;&#x2F;计算属性 computed</span><br><span class="line">    return this.$store.state.tagList;</span><br><span class="line">  &#125;</span><br><span class="line">  ...</span><br><span class="line">  @Watch(&#39;options&#39;)   &#x2F;&#x2F;watch</span><br><span class="line">  onOptionsChange(newValue: EChartsOption) &#123;</span><br><span class="line">    this.chart &amp;&amp; this.chart.setOption(newValue);</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="搜集组件的数据"><a href="#搜集组件的数据" class="headerlink" title="搜集组件的数据"></a>搜集组件的数据</h4></li>
+</ol>
+<p>子组件触发事件,将数据发送到父组件</p>
+<figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="built_in">this</span>.$emit(<span class="string">&quot;update:value&quot;</span>, <span class="built_in">this</span>.selectedTags);</span><br></pre></td></tr></table></figure>
+<p>默认数据可以是外部传入的 Prop，这样可以使用.sync 语法</p>
+<figure class="highlight xml"><table><tr><td class="code"><pre><span class="line"><span class="tag">&lt;<span class="name">Tags</span> <span class="attr">:data-source.sync</span>=<span class="string">&quot;tags&quot;</span> <span class="attr">:value.sync</span>=<span class="string">&quot;record.tags&quot;</span>/&gt;</span></span><br></pre></td></tr></table></figure>
+<h4 id="数据迁移"><a href="#数据迁移" class="headerlink" title="数据迁移"></a>数据迁移</h4><h4 id="数据迁移-1"><a href="#数据迁移-1" class="headerlink" title="数据迁移"></a>数据迁移</h4><figure class="highlight js"><table><tr><td class="code"><pre><span class="line"><span class="comment">//获取当前版本号</span></span><br><span class="line"><span class="keyword">const</span> version = <span class="built_in">window</span>.localStorage.getItem(<span class="string">&quot;version&quot;</span>);</span><br><span class="line"><span class="comment">//获取当前数据</span></span><br><span class="line"><span class="keyword">const</span> recordList: Record[] = <span class="built_in">JSON</span>.parse(</span><br><span class="line">  <span class="built_in">window</span>.localStorage.getItem(recordList)</span><br><span class="line">);</span><br><span class="line"><span class="keyword">if</span> (<span class="string">&quot;version&quot;</span> === <span class="string">&quot;0.0.1&quot;</span>) &#123;</span><br><span class="line">  recordList.forEach(<span class="function">(<span class="params">record</span>) =&gt;</span> &#123;</span><br><span class="line">    <span class="comment">//遍历数据</span></span><br><span class="line">    record.createTime = <span class="keyword">new</span> <span class="built_in">Date</span>(<span class="number">2020</span>, <span class="number">0</span>, <span class="number">1</span>); <span class="comment">//将每个数据增加时间</span></span><br><span class="line">  &#125;);</span><br><span class="line">  <span class="comment">//保存数据</span></span><br><span class="line">  <span class="built_in">window</span>.localStorage.setItem(<span class="string">&quot;recordList&quot;</span>, <span class="built_in">JSON</span>.stringfy(recordList));</span><br><span class="line">&#125; <span class="keyword">else</span> <span class="keyword">if</span> (<span class="string">&quot;version&quot;</span> === <span class="string">&quot;0.0.2&quot;</span>) &#123;</span><br><span class="line">  <span class="comment">//迁移</span></span><br><span class="line">&#125;</span><br><span class="line"><span class="comment">//设置当前版本号</span></span><br><span class="line"><span class="built_in">window</span>.localStorage.setItem(<span class="string">&quot;version&quot;</span>, <span class="string">&quot;0.0.3&quot;</span>);</span><br></pre></td></tr></table></figure>
+<p>迁移数据只需要将版本一个版本一个版本的向上迁移</p>
+<h4 id="定义-TS-类型"><a href="#定义-TS-类型" class="headerlink" title="定义 TS 类型"></a>定义 TS 类型</h4><figure class="highlight typescript"><table><tr><td class="code"><pre><span class="line"><span class="keyword">type</span> RecordItem = &#123;</span><br><span class="line">  tags: <span class="built_in">string</span>[];</span><br><span class="line">  <span class="keyword">type</span>: <span class="built_in">string</span>;</span><br><span class="line">  notes: <span class="built_in">string</span>;</span><br><span class="line">  amount: <span class="built_in">string</span>;</span><br><span class="line">  createdTime?: <span class="built_in">Date</span>; <span class="comment">// ?表示有也可能没有</span></span><br><span class="line">&#125;;</span><br></pre></td></tr></table></figure>
+<p>可以将内容放在根目录独立文件中，全局定义，文件名以<code>.d.ts</code>结尾，<code>cunstorm.d.ts</code>,当前文件夹内容都可以使用</p>
+<h4 id="MVC"><a href="#MVC" class="headerlink" title="MVC"></a>MVC</h4><p>Model(模型):管理应用的行为和数据，响应数据请求（经常来自视图）和更新状态的指令</p>
+<p>View(视图):管理作为位图展示到屏幕上的图形和文字输出；</p>
+<p>Controller(控制器)：翻译用户的输入并依照用户的输入操作模型和视图</p>
+<h4 id="Vuex"><a href="#Vuex" class="headerlink" title="Vuex"></a>Vuex</h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">import Vue from &#39;vue&#39;;</span><br><span class="line">import Vuex from &#39;vuex&#39;;</span><br><span class="line">import clone from &#39;@&#x2F;lib&#x2F;clone&#39;;</span><br><span class="line">import createId from &#39;@&#x2F;lib&#x2F;createId&#39;;</span><br><span class="line"></span><br><span class="line">Vue.use(Vuex);</span><br><span class="line"></span><br><span class="line">const store &#x3D; new Vuex.Store(&#123;</span><br><span class="line">&#x2F;&#x2F;存储数据  使用this.$store.state.recordList获取数据</span><br><span class="line">  state: &#123;</span><br><span class="line">    recordList: [] as RecordItem[],</span><br><span class="line">    createTagMessage: &#39;&#39;,</span><br><span class="line">    tagList: [] as Tag[],</span><br><span class="line">    currentTag: undefined,</span><br><span class="line">  &#125; as RootStore,</span><br><span class="line">&#x2F;&#x2F;对数据的读写  没有返回值  使用this.$store.commit(&#39;fetchTags&#39;,参数)</span><br><span class="line">  mutations: &#123;</span><br><span class="line">    setCurrentTag(state, id: string) &#123;</span><br><span class="line">      state.currentTag &#x3D; state.tagList.filter(d &#x3D;&gt; d.id &#x3D;&#x3D;&#x3D; id)[0];</span><br><span class="line">    &#125;,</span><br><span class="line">    fetchTags(state) &#123;&#125;,</span><br><span class="line">    createTag(state, name: string) &#123;</span><br><span class="line">    &#125;,</span><br><span class="line">    removeTag(state, id: string) &#123;&#125;,</span><br><span class="line">    saveTags(state) &#123;&#125;,</span><br><span class="line">    updateTag(state, object: &#123; id: string; name: string &#125;) &#123;&#125;,</span><br><span class="line">    fetchRecords(state) &#123;&#125;,</span><br><span class="line">    createRecord(state, record: RecordItem) &#123;&#125;,</span><br><span class="line">    saveRecord(state) &#123;</span><br><span class="line">      window.localStorage.setItem(&#39;recordList&#39;, JSON.stringify(state.recordList));</span><br><span class="line">    &#125;</span><br><span class="line">  &#125;,</span><br><span class="line">&#125;);</span><br><span class="line">export default store;</span><br></pre></td></tr></table></figure>
+<h4 id="使用多个-class"><a href="#使用多个-class" class="headerlink" title="使用多个:class"></a>使用多个<code>:class</code></h4><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">&lt;li :class&#x3D;&quot;value&#x3D;&#x3D;&#x3D;&#39;-&#39; &amp;&amp; &#39;selected&#39;&#125;&quot;  &#x2F;&#x2F;类名加引号 @click&#x3D;&quot;selectType(&#39;-&#39;)&quot;&gt;支出&lt;&#x2F;li&gt;</span><br><span class="line"></span><br><span class="line">&lt;li :class&#x3D;&quot;&#123;[classPrefix+&#39;-item&#39;]:classPrefix,&#39;selected&#39;:value&#x3D;&#x3D;&#x3D;&#39;-&#39;&#125;&quot; @click&#x3D;&quot;selectType(&#39;-&#39;)&quot;&gt;支出&lt;&#x2F;li&gt;</span><br><span class="line"></span><br><span class="line">&#123;</span><br><span class="line">&#x2F;&#x2F;如果存在classPrefix 就存在前面的类名  如果类名存在变量，使用[]</span><br><span class="line">[classPrefix+&#39;-item&#39;]:classPrefix,</span><br><span class="line">&#39;selected&#39;:value&#x3D;&#x3D;&#x3D;&#39;-&#39;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>]]></content>
+      <tags>
+        <tag>Vue</tag>
+        <tag>项目</tag>
       </tags>
   </entry>
   <entry>
@@ -2203,37 +2203,6 @@ export default &#123;
       </tags>
   </entry>
   <entry>
-    <title>闭包和立即执行函数</title>
-    <url>/2020/12/09/%E9%97%AD%E5%8C%85%E5%92%8C%E7%AB%8B%E5%8D%B3%E6%89%A7%E8%A1%8C%E5%87%BD%E6%95%B0/</url>
-    <content><![CDATA[<h3 id="一、闭包"><a href="#一、闭包" class="headerlink" title="一、闭包"></a>一、闭包</h3><h4 id="1、概念"><a href="#1、概念" class="headerlink" title="1、概念"></a>1、概念</h4><pre><code>[MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Closures) 的解释：
-一个函数和对其周围状态（lexical environment，词法环境）的引用捆绑在一起（或者说函数被引用包围），这样的组合就是闭包</code></pre>
-<h4 id="2、作用"><a href="#2、作用" class="headerlink" title="2、作用"></a>2、作用</h4><pre><code>1. 让外部访问函数内部变量成为可能；(隐藏变量)
-
-2. 局部变量会常驻在内存中；
-
-3. 可以避免使用全局变量，防止全局变量污染；</code></pre>
- <a id="more"></a>
-
-<h4 id="3、示例"><a href="#3、示例" class="headerlink" title="3、示例"></a>3、示例</h4><pre><code><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">function fn1()&#123;</span><br><span class="line">let a&#x3D;1;</span><br><span class="line">function b()&#123;</span><br><span class="line">    console.log(a)</span><br><span class="line">    a+&#x3D;1;</span><br><span class="line">&#125;</span><br><span class="line">return b</span><br><span class="line">&#125;</span><br><span class="line">const fn2&#x3D;fn1()</span><br><span class="line">fn2()   &#x2F;&#x2F;1</span><br><span class="line">fn2()   &#x2F;&#x2F;2</span><br></pre></td></tr></table></figure>
-这就是一个最简单的闭包，fn2 可以获取到函数内部的变量 a</code></pre>
-<h3 id="二、立即调用函数表达式（IIFE）"><a href="#二、立即调用函数表达式（IIFE）" class="headerlink" title="二、立即调用函数表达式（IIFE）"></a>二、立即调用函数表达式（IIFE）</h3><ol>
-<li>在定义时就直接执行的函数<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">(function () &#123;</span><br><span class="line">    let x&#x3D;1;</span><br><span class="line">    return x</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure></li>
-<li>可以将立即执行函数分配给一个变量，变量将得到函数的返回值<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"> let a&#x3D;(function () &#123;</span><br><span class="line">    let x&#x3D;1;</span><br><span class="line">    return x</span><br><span class="line">&#125;)();</span><br><span class="line"> a &#x2F;&#x2F;1</span><br></pre></td></tr></table></figure>
-<strong>作用</strong>：由于立即执行函数内部变量无法访问，立即执行函数可以避免变量污染。</li>
-</ol>
-<h3 id="一个经典的面试题"><a href="#一个经典的面试题" class="headerlink" title="一个经典的面试题"></a>一个经典的面试题</h3><pre><code><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">for(var i&#x3D;0;i&lt;5;i++)&#123;</span><br><span class="line">    setTimeout(()&#x3D;&gt;&#123;</span><br><span class="line">        console.log(i)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;&#x2F;&#x2F;输出 5个5</span><br></pre></td></tr></table></figure></code></pre>
-<p>可以使用闭包和立即执行函数</p>
-<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">for(var i&#x3D;0;i&lt;5;i++)&#123;</span><br><span class="line">  (function (i) &#123;</span><br><span class="line">    setTimeout(()&#x3D;&gt;&#123;</span><br><span class="line">    console.log(i)</span><br><span class="line">  &#125;)</span><br><span class="line">  &#125;)(i)</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F; 依次打出0~4</span><br></pre></td></tr></table></figure>
-<p>或者把 var 改为 let</p>
-<p>var 声明的 i 相当于是在全局作用域，在 for 循环结束之后才会执行，因此打出 5 个 5</p>
-<p>而使用 let，会在每次执行 for 循环的时候重新创建一个变量 i，每次循环是一个新的作用域，因此不会打出 5 个 5</p>
-]]></content>
-      <tags>
-        <tag>闭包</tag>
-        <tag>函数</tag>
-      </tags>
-  </entry>
-  <entry>
     <title>跨域 CORS和JSON</title>
     <url>/2020/11/18/%E8%B7%A8%E5%9F%9F%20CORS%E5%92%8CJSONP/</url>
     <content><![CDATA[<h4 id="一、同源策略"><a href="#一、同源策略" class="headerlink" title="一、同源策略"></a>一、同源策略</h4><ol>
@@ -2268,6 +2237,37 @@ export default &#123;
 ]]></content>
       <tags>
         <tag>AJAX</tag>
+      </tags>
+  </entry>
+  <entry>
+    <title>闭包和立即执行函数</title>
+    <url>/2020/12/09/%E9%97%AD%E5%8C%85%E5%92%8C%E7%AB%8B%E5%8D%B3%E6%89%A7%E8%A1%8C%E5%87%BD%E6%95%B0/</url>
+    <content><![CDATA[<h3 id="一、闭包"><a href="#一、闭包" class="headerlink" title="一、闭包"></a>一、闭包</h3><h4 id="1、概念"><a href="#1、概念" class="headerlink" title="1、概念"></a>1、概念</h4><pre><code>[MDN](https://developer.mozilla.org/zh-CN/docs/Web/JavaScript/Closures) 的解释：
+一个函数和对其周围状态（lexical environment，词法环境）的引用捆绑在一起（或者说函数被引用包围），这样的组合就是闭包</code></pre>
+<h4 id="2、作用"><a href="#2、作用" class="headerlink" title="2、作用"></a>2、作用</h4><pre><code>1. 让外部访问函数内部变量成为可能；(隐藏变量)
+
+2. 局部变量会常驻在内存中；
+
+3. 可以避免使用全局变量，防止全局变量污染；</code></pre>
+ <a id="more"></a>
+
+<h4 id="3、示例"><a href="#3、示例" class="headerlink" title="3、示例"></a>3、示例</h4><pre><code><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">function fn1()&#123;</span><br><span class="line">let a&#x3D;1;</span><br><span class="line">function b()&#123;</span><br><span class="line">    console.log(a)</span><br><span class="line">    a+&#x3D;1;</span><br><span class="line">&#125;</span><br><span class="line">return b</span><br><span class="line">&#125;</span><br><span class="line">const fn2&#x3D;fn1()</span><br><span class="line">fn2()   &#x2F;&#x2F;1</span><br><span class="line">fn2()   &#x2F;&#x2F;2</span><br></pre></td></tr></table></figure>
+这就是一个最简单的闭包，fn2 可以获取到函数内部的变量 a</code></pre>
+<h3 id="二、立即调用函数表达式（IIFE）"><a href="#二、立即调用函数表达式（IIFE）" class="headerlink" title="二、立即调用函数表达式（IIFE）"></a>二、立即调用函数表达式（IIFE）</h3><ol>
+<li>在定义时就直接执行的函数<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">(function () &#123;</span><br><span class="line">    let x&#x3D;1;</span><br><span class="line">    return x</span><br><span class="line">&#125;)();</span><br></pre></td></tr></table></figure></li>
+<li>可以将立即执行函数分配给一个变量，变量将得到函数的返回值<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line"> let a&#x3D;(function () &#123;</span><br><span class="line">    let x&#x3D;1;</span><br><span class="line">    return x</span><br><span class="line">&#125;)();</span><br><span class="line"> a &#x2F;&#x2F;1</span><br></pre></td></tr></table></figure>
+<strong>作用</strong>：由于立即执行函数内部变量无法访问，立即执行函数可以避免变量污染。</li>
+</ol>
+<h3 id="一个经典的面试题"><a href="#一个经典的面试题" class="headerlink" title="一个经典的面试题"></a>一个经典的面试题</h3><pre><code><figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">for(var i&#x3D;0;i&lt;5;i++)&#123;</span><br><span class="line">    setTimeout(()&#x3D;&gt;&#123;</span><br><span class="line">        console.log(i)</span><br><span class="line">    &#125;)</span><br><span class="line">&#125;&#x2F;&#x2F;输出 5个5</span><br></pre></td></tr></table></figure></code></pre>
+<p>可以使用闭包和立即执行函数</p>
+<figure class="highlight plain"><table><tr><td class="code"><pre><span class="line">for(var i&#x3D;0;i&lt;5;i++)&#123;</span><br><span class="line">  (function (i) &#123;</span><br><span class="line">    setTimeout(()&#x3D;&gt;&#123;</span><br><span class="line">    console.log(i)</span><br><span class="line">  &#125;)</span><br><span class="line">  &#125;)(i)</span><br><span class="line">&#125;</span><br><span class="line">&#x2F;&#x2F; 依次打出0~4</span><br></pre></td></tr></table></figure>
+<p>或者把 var 改为 let</p>
+<p>var 声明的 i 相当于是在全局作用域，在 for 循环结束之后才会执行，因此打出 5 个 5</p>
+<p>而使用 let，会在每次执行 for 循环的时候重新创建一个变量 i，每次循环是一个新的作用域，因此不会打出 5 个 5</p>
+]]></content>
+      <tags>
+        <tag>闭包</tag>
+        <tag>函数</tag>
       </tags>
   </entry>
 </search>
