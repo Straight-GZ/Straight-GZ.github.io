@@ -9,6 +9,8 @@ tags:
 
 **`Vue`会遍历`data`对象的所有`property`，并使用`Object.defineProperty`把这些`property`全部转为`getter/setter`。通过`getter/setter`让 Vue 能够追踪依赖，在`property`被访问和修改时通知变更。**
 
+ <!-- more -->
+
 #### 二、Object.defineProperty 和 getter、setter
 
 `Object.defineProperty`方法会直接在一个对象上定义一个新属性，或者修改一个对象的现有属性，并返回此对象。
